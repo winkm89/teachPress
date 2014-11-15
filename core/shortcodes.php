@@ -731,7 +731,8 @@ function tp_single_shortcode ($atts) {
        'author_name' => htmlspecialchars($author_name),
        'editor_name' => htmlspecialchars($editor_name),
        'date_format' => htmlspecialchars($date_format),
-       'style' => 'simple', 
+       'style' => 'simple',
+       'use_span' => true
     );
     
     if ( $key != '' ) {
@@ -786,6 +787,8 @@ function tp_bibtex_shortcode ($atts) {
        'id' => 0,
        'key' => '',
     ), $atts));
+    
+    $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
 
     if ( $key != '' ) {
         $publication = tp_publications::get_publication_by_key($key, ARRAY_A);
@@ -797,7 +800,7 @@ function tp_bibtex_shortcode ($atts) {
     
     $tags = tp_tags::get_tags( array('pub_id' => $publication['pub_id'], 'output_type' => ARRAY_A) );
     
-    return '<h2 class="tp_bibtex">BibTeX (<a href="' . plugins_url('export.php', dirname(__FILE__)) . '?key=' . $publication['bibtex'] . '">Download</a>)</h2><pre class="tp_bibtex">' . tp_bibtex::get_single_publication_bibtex($publication, $tags) . '</pre>';
+    return '<h2 class="tp_bibtex">BibTeX (<a href="' . plugins_url('export.php', dirname(__FILE__)) . '?key=' . $publication['bibtex'] . '">Download</a>)</h2><pre class="tp_bibtex">' . tp_bibtex::get_single_publication_bibtex($publication, $tags, $convert_bibtex) . '</pre>';
 }
 
 /** 
@@ -946,6 +949,7 @@ function tp_cloud_shortcode($atts) {
         'html_anchor' => $anchor == '1' ? '#tppubs' : '',
         'date_format' => htmlspecialchars($date_format),
         'permalink' => ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;",
+        'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
         'pagination' => intval($pagination),
         'entries_per_page' => intval($entries_per_page),
         'sort_list' => htmlspecialchars($sort_list),
@@ -1187,7 +1191,8 @@ function tp_list_shortcode($atts){
         'image' => htmlspecialchars($image),
         'with_tags' => 0,
         'link_style' => htmlspecialchars($link_style),
-        'date_format' => htmlspecialchars($date_format)
+        'date_format' => htmlspecialchars($date_format),
+        'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
     );
     
     // Handle limits for pagination
@@ -1308,7 +1313,8 @@ function tp_search_shortcode ($atts) {
         'image' => htmlspecialchars($image),
         'with_tags' => 0,
         'link_style' => htmlspecialchars($link_style),
-        'date_format' => htmlspecialchars($date_format)
+        'date_format' => htmlspecialchars($date_format),
+        'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
     );
     if ($settings['image']== 'left' || $settings['image']== 'right') {
        $settings['pad_size'] = $image_size + 5;
@@ -1402,7 +1408,7 @@ function tp_search_shortcode ($atts) {
 function tp_post_shortcode ($atts, $content) {
     extract(shortcode_atts(array('id' => 0), $atts));
     $id = intval($id);
-    $test = tp_is_student_subscribed($id, true);
+    $test = tp_courses::is_student_subscribed($id, true);
     if ( $test == true ) {
         return $content;
     }

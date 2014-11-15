@@ -667,6 +667,11 @@ class tp_update_db {
             $wpdb->query("UPDATE " . TEACHPRESS_SETTINGS . " SET `category` = 'system' WHERE `variable` = 'sem'");
         }
         
+        // convert_bibtex
+        if ($wpdb->query("SELECT value FROM " . TEACHPRESS_SETTINGS . " WHERE `variable` = 'convert_bibtex' AND `category` = 'system'") == '0') {
+            $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('convert_bibtex', '0', 'system')"); 
+        }
+        
         // course_of_studies
         if ($wpdb->query("SELECT value FROM " . TEACHPRESS_SETTINGS . " WHERE `variable` = 'course_of_studies' AND `category` = 'teachpress_stud'") == '0') {
             $value = 'name = {course_of_studies}, title = {' . __('Course of studies','teachpress') . '}, type = {SELECT}, required = {false}, min = {false}, max = {false}, step = {false}, visibility = {admin}';
@@ -685,7 +690,7 @@ class tp_update_db {
         // matriculation_number
         if ($wpdb->query("SELECT value FROM " . TEACHPRESS_SETTINGS . " WHERE `variable` = 'matriculation_number' AND `category` = 'teachpress_stud'") == '0') {
             $value = 'name = {matriculation_number}, title = {' . __('Matriculation number','teachpress') . '}, type = {INT}, required = {false}, min = {1}, max = {1000000}, step = {1}, visibility = {admin}';
-            $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('matriculation_number', '$value', 'teachpress_stud')"); 
+            $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('matriculation_number', '$value', 'teachpress_stud')");
         }
         
     }

@@ -163,15 +163,17 @@ class tp_export {
      * @sinsce 4.2.0 
      */
     public static function get_publications($user_id, $format = 'bibtex') {
-        
         $user_id = intval($user_id);
+        
         // Try to set the time limit for the script
         set_time_limit(TEACHPRESS_TIME_LIMIT);
+        
         $row = tp_publications::get_publications( array('user' => $user_id, 'output_type' => ARRAY_A) );
         if ( $format === 'bibtex' ) {
+            $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
             foreach ($row as $row) {
                 $tags = tp_tags::get_tags( array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A ) );
-                echo tp_bibtex::get_single_publication_bibtex($row, $tags);
+                echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
             }
         }     
         if ( $format === 'rtf' ) {
@@ -189,9 +191,10 @@ class tp_export {
         $row = tp_publications::get_publications( array( 'include' => $selection, 'output_type' => ARRAY_A) );
         
         if ( $format === 'bibtex' ) {
+            $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
             foreach ($row as $row) {
                 $tags = tp_tags::get_tags( array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A) );
-                echo tp_bibtex::get_single_publication_bibtex($row, $tags);
+                echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
             }
         }     
         if ( $format === 'rtf' ) {
@@ -206,9 +209,10 @@ class tp_export {
      * @since 4.2.0
      */
     public static function get_publication_by_key($bibtex_key) {
+        $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
         $row = tp_publications::get_publication_by_key($bibtex_key, ARRAY_A);
         $tags = tp_tags::get_tags( array( 'pub_id' => $row['pub_id'], 'output_type' => ARRAY_A ) );
-        echo tp_bibtex::get_single_publication_bibtex($row, $tags);
+        echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
     }
 
     /**

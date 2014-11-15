@@ -483,6 +483,12 @@ class tp_settings_page {
         echo '<thead>';
         
         echo '<tr>';
+        echo '<th width="160">' . __('BibTeX special chars','teachpress') . '</th>';
+        echo '<td width="510">' . tp_admin::get_checkbox('convert_bibtex', __('Try to convert utf-8 chars into BibTeX compatible ASCII strings','teachpress'), get_tp_option('convert_bibtex')) . '</td>';
+        echo '<td></td>';
+        echo '</tr>';
+        
+        echo '<tr>';
         echo '<th width="160">' . __('Overwrite publications','teachpress') . '</th>';
         echo '<td width="510">' . tp_admin::get_checkbox('import_overwrite', __('Allow optional overwriting for publication import','teachpress'), get_tp_option('import_overwrite')) . ' <b>(EXPERIMENTAL)</b></td>';
         echo '<td></td>';
@@ -766,8 +772,10 @@ class tp_settings_page {
      * @since 5.0.0
      */
     private static function change_publication_options () {
+        $checkbox_convert_bibtex = isset( $_POST['convert_bibtex'] ) ? 1 : '';
         $checkbox_import_overwrite = isset( $_POST['import_overwrite'] ) ? 1 : '';
         $checkbox_rel_content_auto = isset( $_POST['rel_content_auto'] ) ? 1 : '';
+        tp_options::change_option('convert_bibtex', $checkbox_convert_bibtex, 'checkbox');
         tp_options::change_option('import_overwrite', $checkbox_import_overwrite, 'checkbox');
         tp_options::change_option('rel_content_auto', $checkbox_rel_content_auto, 'checkbox');
         tp_options::change_option('rel_content_template', $_POST['rel_content_template']);

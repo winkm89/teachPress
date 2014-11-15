@@ -281,11 +281,12 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.0alpha15';
+    return '5.0.0alpha16';
 }
 
 /** 
- * Function for the integrated registration mode 
+ * Function for the integrated registration mode
+ * @since 1.0.0
  */
 function tp_advanced_registration() {
     $user = wp_get_current_user();
@@ -569,5 +570,4 @@ if ( !defined('TP_PUBLICATION_SYSTEM') ) {
     add_shortcode('tpabstract', 'tp_abstract_shortcode');
     add_shortcode('tplinks', 'tp_links_shortcode');
     add_shortcode('tpsearch', 'tp_search_shortcode');
-    
 }

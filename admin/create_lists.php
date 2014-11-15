@@ -24,7 +24,7 @@ function tp_lists_page() {
     $number = isset( $_POST['number'] ) ? intval($_POST['number']) : '';
     $create = isset( $_POST['create'] ) ? $_POST['create'] : '';
 
-    echo '<div class="wrap" style="padding-top:10px;">';
+    echo '<div class="wrap">';
     echo '<form id="einzel" name="einzel" method="post">';
 
     if ( $create === '' ) {
@@ -37,19 +37,19 @@ function tp_lists_page() {
 
     if ( $create === '' ) { ?>
    <h2><?php _e('Create attendance list','teachpress'); ?></h2>
-   <table class="form-table" style="width:400px;">
+   <table class="form-table" style="width:600px;">
       <thead>
        <tr>
          <th><label for="sort"><?php _e('Sort after','teachpress'); ?></label></th>
-         <td>
+         <th>
             <select name="sort" id="sort">
                <option value="1"><?php _e('Last name','teachpress'); ?></option>
             </select>
-         </td>
+         </th>
       </tr>
       <tr>
          <th style="width:160px;"><label for="number"><?php _e('Number of free columns','teachpress'); ?></label></th>
-         <td>
+         <th>
             <select name="number" id="number">
                <?php
                for ($i = 0; $i <= 15; $i++) {
@@ -61,11 +61,11 @@ function tp_lists_page() {
                   }	
                } ?>
             </select>
-         </td>
+         </th>
       </tr>
       <tr>
          <th><label for="extra_fields"><?php _e('Additional columns','teachpress'); ?></label></th>
-         <td>
+         <th>
              <select name="extra_fields[]" id="extra_fields" multiple="multiple" style="min-height: 200px;">
                 <?php
                 $fields = get_tp_options('teachpress_stud','`setting_id` ASC');
@@ -75,7 +75,7 @@ function tp_lists_page() {
                 }
                 ?>
              </select>
-         </td>
+         </th>
       </tr>
       </thead>
    </table>

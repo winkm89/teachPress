@@ -152,6 +152,7 @@ class tp_publications_page {
      * @since 5.0.0
      */
     public static function get_bibtex_screen($array_variables) {
+        $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
         $sel = '';
         echo '<form name="form1">';
         echo '<p><a href="admin.php?page=' . $array_variables['page'] . '&amp;search=' . $array_variables['search'] . '&amp;limit=' . $array_variables['curr_page'] . '" class="button-secondary">&larr; ' . __('Back','teachpress') . '</a></p>';
@@ -164,7 +165,7 @@ class tp_publications_page {
                 $pub = intval($array_variables['checkbox'][$i]);
                 $row = tp_publications::get_publication( $pub, ARRAY_A );
                 $tags = tp_tags::get_tags( array('output_type' => ARRAY_A, 'pub_id' => $pub) );
-                echo tp_bibtex::get_single_publication_bibtex($row, $tags);
+                echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
                 $sel = ( $sel !== '' ) ? $sel . ',' . $pub : $pub;
             }
         }
@@ -172,7 +173,7 @@ class tp_publications_page {
             $row = tp_publications::get_publications( array('output_type' => ARRAY_A) );
             foreach ( $row as $row ) {
                 $tags = tp_tags::get_tags( array('output_type' => ARRAY_A, 'pub_id' => $row['pub_id']) );
-                echo tp_bibtex::get_single_publication_bibtex($row, $tags);
+                echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
             }
         }
 

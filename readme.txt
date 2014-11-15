@@ -18,10 +18,10 @@ For more information see [here](http://www.mtrv.wordpress.com/teachpress/).
 * BibTeX import for publications
 * BibTeX and RTF export for publications
 * RSS feed for publications
-* Course management with an integrated enrollment/assessment system
+* Course management with an integrated enrollment, assessment and document modules
 * XLS/CSV export for course lists
 * Many shortcodes for an easy using of publication lists, publication searches, enrollments and course overviews
-* NEW: Dymamic adding of new data fields for courses/students and publications
+* Dymamic adding of new data fields for courses, students and publications
 
 = Supported Languages =
 * English
@@ -138,6 +138,7 @@ It's **strongly** recommended to save your teachpress database tables before upg
 * New: Simple capability management for courses added
 * New: Simple document management for courses added
 * New: Direct export of .bib files for selected publications added (via "Show as BibTeX entry")
+* New: Option for converting utf-8 chars into BibTeX compatible ASCII strings
 * New: Direct creation of related content based on drafts added
 * New: Direct creation of sub courses added
 * New: Page menu for enrollments added

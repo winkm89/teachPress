@@ -39,11 +39,12 @@ elseif ( is_user_logged_in() && current_user_can('use_teachpress') ) {
     // Export publication lists
     if ( $type === 'pub' ) {
         $filename = 'teachpress_pub_' . date('dmY');
+        $encoding = ( get_tp_option('convert_bibtex') == '1' ) ? 'Cp1252' : 'UTF-8';
         if ( $format === 'bib' ) {
             header('Content-Type: text/plain; charset=utf-8' );
             header("Content-Disposition: attachment; filename=" . $filename . ".bib");
             echo '% This file was created with teachPress ' . get_tp_version() . chr(13) . chr(10);
-            echo '% Encoding: UTF-8' . chr(13) . chr(10) . chr(13) . chr(10);
+            echo '% Encoding: ' . $encoding . chr(13) . chr(10) . chr(13) . chr(10);
             if ( $sel == '' ) {
                 tp_export::get_publications($user_id);
             }
