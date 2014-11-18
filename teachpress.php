@@ -257,6 +257,7 @@ if ( is_admin() ) {
 include_once("core/general.php");
 include_once("core/class-ajax.php");
 include_once("core/class-bibtex.php");
+include_once("core/class-document-manager.php");
 include_once("core/class-export.php");
 include_once("core/class-mail.php");
 include_once("core/admin.php");
@@ -281,7 +282,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.0alpha16';
+    return '5.0.0alpha17';
 }
 
 /** 
@@ -459,13 +460,17 @@ function tp_write_data_for_tinymce () {
         }
     }
     
+    // Current post id
+    $post_id = ( isset ($_GET['post']) ) ? intval($_GET['post']) : 0;
+    
     // Write javascript
     ?>
     <script type="text/javascript">
         var teachpress_courses = <?php echo json_encode($course_list); ?>;
         var teachpress_semester = <?php echo json_encode($semester_list); ?>;
         var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
-        var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/editor.php'; ?>';
+        var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document_manager.php?post_id=' . $post_id; ?>';
+        var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
     </script>
     <?php
 }

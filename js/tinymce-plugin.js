@@ -7,6 +7,64 @@
  */
 
 (function() {
+    /**
+     * A JavaScript equivalent of PHP’s stripslashes
+     * Source: http://phpjs.org/functions/stripslashes/
+     * @param {string} str
+     * @returns {string} 
+     * @since 5.0.0
+     */
+    function tp_stripslashes(str) {
+        return (str + '')
+          .replace(/\\(.?)/g, function(s, n1) {
+            switch (n1) {
+              case '\\':
+                return '\\';
+              case '0':
+                return '\u0000';
+              case '':
+                return '';
+              default:
+                return n1;
+            }
+          });
+    }
+    
+    /**
+     * Gets a cookie from browser
+     * @param {string} cname    The name of the cookie
+     * @returns {string}        The value of the cookie
+     * @since 5.0.0
+     */
+    function tp_getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)===' ') c = c.substring(1);
+            if (c.indexOf(name) !== -1) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+    
+    /**
+     * Sets a cookie
+     * @param {string} cname            The name of the cookie
+     * @param {string} cvalue           The value of the cookie
+     * @param {int} exdays              The number of days, where the cookie will be expire
+     * @since 5.0.0
+     */
+    function tp_setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + "; " + expires + "; path=" + teachpress_cookie_path;
+    }
+    
+    /**
+     * teachPress tinyMCE Plugin
+     * @since 5.0.0
+     */
     tinymce.PluginManager.add('teachpress_tinymce', function( editor, url ) {
         editor.addButton( 'teachpress_tinymce', {
             text: 'teachPress',
@@ -16,11 +74,67 @@
                 {
                     text: 'Add document',
                     onclick: function() {
+                        
                         editor.windowManager.open( {
                             url: teachpress_editor_url,
                             title: 'teachPress Document Manager',
-                            width: 640,
-                            height: 480
+                            id: 'tp_document_manager',
+                            inline: 1,
+                            width: 950,
+                            height: 560,
+                            buttons: [
+                            
+                            {
+                                text: 'Insert',
+                                onclick: function(){
+                                    
+                                    // read cookie
+                                    var data_store = tp_getCookie("teachpress_data_store");
+                                    
+                                    // build insert string
+                                    // alert(data_store);
+                                    var insert = '';
+                                    var data = data_store.split(":::");
+                                    var length = data.length;
+                                    for ( var i = 0; i < length; i++ ) {
+                                        if ( data[i] === "") {
+                                            continue;
+                                        }
+                                        data[i] = data[i].replace('[','');
+                                        data[i] = data[i].replace(']','');
+                                        // console.log(data[i]);
+                                        var data_single = data[i].split(",");
+                                        var file_name = '', file_url = '';
+                                        for ( var j = 0; j < 2; j++ ) {
+                                            var data_inline = data_single[j].split(" = ");
+                                            data_inline[1] = data_inline[1].replace('{"','');
+                                            data_inline[1] = data_inline[1].replace('"}','');
+                                            if ( j === 0 ) {
+                                                file_name = data_inline[1];
+                                            }
+                                            if ( j === 1 ) {
+                                                file_url = data_inline[1];
+                                            }
+                                            // console.log(data_inline[1]);
+                                            
+                                        }
+                                        insert = insert + '<a class="linksecure tp_file_link" href="' + file_url + '">' + tp_stripslashes(file_name) + '</a> ';
+                                        // console.log(insert);
+                                    }
+                                    
+                                    // insert into editor
+                                    editor.insertContent(insert);
+                                    editor.windowManager.close();
+                                    
+                                    // reset cookie
+                                    tp_setCookie("teachpress_data_store", "", 1);
+                                }
+                            },
+                            {
+                                text: 'Close',
+                                onclick: 'close'
+                            }
+                        ]
                         });
                     }
                 },

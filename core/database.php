@@ -632,6 +632,21 @@ class tp_courses {
        return intval($test);
        
    }
+   
+   /**
+    * Checks if a post is used as related content for a course. If is true, the course ID will be returned otherwise it's false. 
+    * @param int $post_id
+    * @return int|boolean   Returns the course_id or false
+    * @since 5.0.0
+    */
+   public static function is_used_as_related_content($post_id) {
+       global $wpdb;
+       $post_id = intval($post_id);
+       if ( $post_id === 0 ) {
+           return false;
+       }
+       return $wpdb->get_var("SELECT `course_id` FROM `" . TEACHPRESS_COURSES . "` WHERE `rel_page` = '$post_id' ");
+   }
 
     /**
      * Returns all data of a single course

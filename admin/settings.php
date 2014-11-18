@@ -156,7 +156,7 @@ class tp_settings_page {
         echo '<div id="dialog" title="About">
                 <div style="text-align: center;">
                 <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
-                <p style="font-size: 16px; font-weight: bold;">' . get_tp_option('db-version') . ' "Cranberry Pie"</p>
+                <p style="font-size: 20px; font-weight: bold; color: #f70e1a;">' . get_tp_option('db-version') . ' "Cranberry Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="http://mtrv.wordpress.com/teachpress/changelog/">Changelog</a> | <a href="http://mtrv.wordpress.com/teachpress/shortcode-reference/">Shortcode Reference</a> | <a href="http://mtrv.wordpress.com/teachpress/function-reference/">Function Reference</a></p>
                 <p>&copy; 2008-2014 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
@@ -415,6 +415,13 @@ class tp_settings_page {
         echo '<td><select name="semester" id="semester" title="' . __('Current term','teachpress') . '">'; 
         $value = get_tp_option('sem');
         $sem = get_tp_options('semester');
+        
+        // Test if the current semester is in the semester list
+        $sem_test = ( get_tp_option($value, 'semester') === NULL ) ? false : true;
+        if ( $sem_test === false ) {
+            echo '<option selected="selected">- ' . __('Select','teachpress') . ' -</option>';
+        }
+        
         foreach ($sem as $sem) { 
             $current = ($sem->value == $value) ? 'selected="selected"' : '';
             echo '<option value="' . $sem->value . '" ' . $current . '>' . stripslashes($sem->value) . '</option>';
