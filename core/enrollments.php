@@ -965,7 +965,7 @@ function tp_enrollments_shortcode($atts) {
    
     $rtn = '<div id="enrollments">
             <h2 class="tp_enrollments">' . __('Enrollments for the','teachpress') . ' ' . $sem . '</h2>
-            <form name="anzeige" method="post" id="anzeige" action="' . $_SERVER['REQUEST_URI'] . '">';
+            <form name="anzeige" method="post" id="anzeige" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
     /*
      * actions
     */ 

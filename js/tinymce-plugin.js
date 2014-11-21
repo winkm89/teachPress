@@ -118,7 +118,7 @@
                                             // console.log(data_inline[1]);
                                             
                                         }
-                                        insert = insert + '<a class="linksecure tp_file_link" href="' + file_url + '">' + tp_stripslashes(file_name) + '</a> ';
+                                        insert = insert + '<a class="' + teachpress_file_link_css_class + '" href="' + file_url + '">' + tp_stripslashes(file_name) + '</a> ';
                                         // console.log(insert);
                                     }
                                     

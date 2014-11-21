@@ -75,7 +75,7 @@ function tp_show_authors_page () {
     }
     
     echo '<div class="wrap" style="max-width:700px;">';
-    echo '<form id="form1" name="form1" method="get" action="' . $_SERVER['REQUEST_URI'] . '">';
+    echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
     echo '<input name="page" type="hidden" value="' . $page . '" />';
     
     // actions

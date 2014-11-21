@@ -35,7 +35,7 @@ Max WP Version: 4.0
 /*************/
 
 /*
- * If you want, you can owerwrite this parameters in your wpconfig.php.
+ * If you want, you can owerwrite this parameters in your wp-config.php.
  */
 
 global $wpdb;
@@ -161,10 +161,17 @@ if ( !defined('TEACHPRESS_REL_PUB_AUTH') ) {
 
 if ( !defined('TEACHPRESS_TIME_LIMIT') ) {
     /**
-     * This value is used for PHP's set_time_limit(). The plugin set this value before an import or export of publications
+     * This value is used for PHP's set_time_limit(). The plugin sets this value before an import or export of publications
      * @since 5.0.0
     */
     define('TEACHPRESS_TIME_LIMIT', 240);}
+    
+if ( !defined('TEACHPRESS_FILE_LINK_CSS_CLASS') ) {
+    /**
+     * This value defines the CSS classes for file links which are inserted via the tinyMCE plugin
+     * @since 5.0.0
+    */
+    define('TEACHPRESS_FILE_LINK_CSS_CLASS', 'linksecure tp_file_link');}
 
 /*********/
 /* Menus */
@@ -471,6 +478,7 @@ function tp_write_data_for_tinymce () {
         var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
         var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document_manager.php?post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
+        var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
     </script>
     <?php
 }

@@ -92,7 +92,7 @@ function tp_add_publication_page() {
     $entry_limit = isset( $_GET['limit'] ) ? htmlspecialchars($_GET['limit']) : '';
 
     echo '<div class="wrap">';
-    echo '<form name="form1" method="post" action="' . $_SERVER['REQUEST_URI'] . '" id="form1">';
+    echo '<form name="form1" method="post" action="' . esc_url($_SERVER['REQUEST_URI']) . '" id="form1">';
    
     // create related content (post/page/...)
     if ( isset($_POST['create_rel_content']) ) {

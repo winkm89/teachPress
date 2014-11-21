@@ -433,7 +433,8 @@ function tp_handle_document_uploads(){
         exit;
     }
     $doc_id = tp_documents::add_document($status['filename'], $status['path'], $status['size'], $course_id);
-    echo $doc_id . ' | Course_id:' . $course_id . ', Uploaded to: '. $status['file'];
+    $upload_dir = wp_upload_dir();
+    echo $doc_id . ' | ' . $course_id . ' | ' . esc_url($upload_dir['baseurl'] . $status['path']);
     exit;
 }
 

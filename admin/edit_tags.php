@@ -41,7 +41,7 @@ function tp_tags_page(){
     }
     ?> 
     <div class="wrap" style="max-width:700px;">
-    <form id="form1" name="form1" method="get" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+    <form id="form1" name="form1" method="get" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
     <input name="page" type="hidden" value="teachpress/tags.php" />
     <?php
     // form data

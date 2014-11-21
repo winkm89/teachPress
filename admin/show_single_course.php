@@ -62,7 +62,7 @@ function tp_show_single_course_page() {
     echo '<div class="wrap">';
     tp_single_course_actions::do_actions($course_id, $_POST, $current_user, $waiting, $checkbox, $reg_action, $capability);
     
-    echo '<form id="einzel" name="einzel" action="' . $_SERVER['REQUEST_URI'] . '" method="post">';
+    echo '<form id="einzel" name="einzel" action="' . esc_url($_SERVER['REQUEST_URI']) . '" method="post">';
     echo '<input name="page" type="hidden" value="teachpress/teachpress.php">';
     echo '<input name="action" type="hidden" value="' . $action . '" />';
     echo '<input name="course_id" type="hidden" value="' . $course_id . '" />';

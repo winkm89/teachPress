@@ -137,7 +137,7 @@ function tp_add_course_page() {
           <p style="margin-bottom:0;"><a href="<?php echo $back; ?>" class="button-secondary">&larr; <?php _e('Back','teachpress'); ?></a></p>	
    <?php }?>
      <h2><?php if ($course_id == 0) { _e('Create a new course','teachpress'); } else { _e('Edit course','teachpress'); } ?></h2>
-     <form id="add_course" name="form1" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+     <form id="add_course" name="form1" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
      <input name="page" type="hidden" value="<?php if ($course_id != 0) {?>teachpress/teachpress.php<?php } else {?>teachpress/add_course.php<?php } ?>" />
      <input name="action" type="hidden" value="edit" />
      <input name="course_id" type="hidden" value="<?php echo $course_id; ?>" />

@@ -115,7 +115,7 @@ function tp_import_page() {
  */
 function tp_import_tab () {
     ?>
-    <form id="tp_file" name="tp_file" action="<?php echo $_SERVER['REQUEST_URI']; ?>" enctype="multipart/form-data" method="post">
+    <form id="tp_file" name="tp_file" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
     <input type="hidden" name="page" value="teachpress/import.php"/>
     <div style="min-width:780px; width:100%;">
     <div style="width:24%; float:right; padding-left:1%; padding-bottom:1%;">
@@ -186,7 +186,7 @@ function tp_import_show_results($entries) {
     echo '<div class="wrap">';
     echo '<p><a href="admin.php?page=teachpress/import.php" class="button-secondary">&larr; ' . __('Back','teachpress') . '</a></p>';
     echo '<h2>' . __('Imported Publications','teachpress') . '</h2>';
-    echo '<form id="import_publications" name="import_publications" method="post" action="' . $_SERVER['REQUEST_URI'] . '">';
+    echo '<form id="import_publications" name="import_publications" method="post" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
     echo '<p><input type="submit" class="button-primary" name="tp_bookmark" value="' . __('Add to your own list','teachpress') . '"/> <input type="submit" class="button-secondary" name="tp_delete" value="' . __('Delete','teachpress') . '"</p>';
     echo '<table class="widefat">';
     echo '<thead>';

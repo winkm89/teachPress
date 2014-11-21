@@ -107,7 +107,7 @@ class tp_courses_page {
 
         <div class="wrap">
             <h2><?php _e('Courses','teachpress'); ?> <a href="admin.php?page=teachpress/add_course.php" class="add-new-h2"><?php _e('Create','teachpress'); ?></a></h2>
-        <form id="showcourse" name="showcourse" method="get" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+        <form id="showcourse" name="showcourse" method="get" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
         <input name="page" type="hidden" value="teachpress/teachpress.php" />
            <?php 	
            // delete a course, part 1

@@ -549,7 +549,7 @@ function tp_courselist_shortcode($atts) {
          $rtn .= '<h2>' . __('Courses for the','teachpress') . ' ' . stripslashes($sem) . '</h2>';
     }
     $rtn .= '' . $text . '
-               <form name="lvs" method="get" action="' . $_SERVER['REQUEST_URI'] . '">
+               <form name="lvs" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">
                ' . $page . '		
                <div class="tp_auswahl"><label for="semester">' . __('Select the term','teachpress') . '</label> <select name="semester" id="semester" title="' . __('Select the term','teachpress') . '">';
     $rowsem = get_tp_options('semester');
