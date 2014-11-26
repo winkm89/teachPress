@@ -1041,28 +1041,6 @@ class tp_bibtex {
         $all_authors = str_replace( array(' and ', '{', '}'), array(', ', '', ''), $input );
         return stripslashes($all_authors);
     }
-    
-    /**
-     * Splits an author string and returns an array with the single authors
-     * @param string $input_string
-     * @param string $delimiter             Default is ','
-     * @return array
-     * @since 5.0.0
-     * @access public
-     */
-    public static function split_author_string ($input_string, $delimiter = ',') {
-        $array = explode($delimiter, $input_string);
-        $return_array = array();
-        foreach($array as $element) {
-            $element = trim($element);
-            if ( $element === '' ) {
-                continue;
-            }
-            $element = esc_sql( htmlspecialchars($element) );
-            $return_array[] = array($element, tp_bibtex::get_lastname($element) );
-        }
-        return $array;
-    }
 
     /**
      * Checks if a string is encoded with UTF-8 or not

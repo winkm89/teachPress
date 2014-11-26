@@ -132,8 +132,12 @@
                             },
                             {
                                 text: 'Close',
-                                onclick: 'close'
+                                onclick: function () {
+                                    editor.windowManager.close();
+                                    tp_setCookie("teachpress_data_store", "", 1);
+                                }
                             }
+                                
                         ]
                         });
                     }

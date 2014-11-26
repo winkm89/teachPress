@@ -165,13 +165,6 @@ if ( !defined('TEACHPRESS_TIME_LIMIT') ) {
      * @since 5.0.0
     */
     define('TEACHPRESS_TIME_LIMIT', 240);}
-
-if ( !defined('TEACHPRESS_SYNC_SIZE') ) {
-    /**
-     * This value defines how many items are processed with every step of a database synchronization. This is used for an upgrade to teachPress 5.0
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_SYNC_SIZE', 200);}
     
 if ( !defined('TEACHPRESS_FILE_LINK_CSS_CLASS') ) {
     /**

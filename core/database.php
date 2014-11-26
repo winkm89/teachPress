@@ -1919,17 +1919,6 @@ class tp_publications {
         return $pub_id;
     }
     
-    /**
-     * Returns the number of publications in the database
-     * @return int
-     * @since 5.0.0
-     */
-    public static function count_publications () {
-        global $wpdb;
-        $number = $wpdb->get_var("SELECT COUNT(`pub_id`) FROM " . TEACHPRESS_PUB);
-        return $number;
-    }
-    
     /** 
      * Delete publications
      * @param array $checkbox       An array with IDs of publication

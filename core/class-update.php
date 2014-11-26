@@ -626,7 +626,7 @@ class tp_update_db {
 
     /**
      * Use this function to fill up the table teachpress_authors with data from teachpress_pub
-     * @param int $limit
+     * @param string $limit     A normal SQL limit like 0,500. By default this value is not set.
      * @since 5.0.0
      */
     public static function fill_table_authors ($limit = '') {
@@ -636,7 +636,7 @@ class tp_update_db {
         set_time_limit(TEACHPRESS_TIME_LIMIT);
         
         if ( $limit !== '' ) {
-            $limit = ' LIMIT ' . intval($limit) . ',' . TEACHPRESS_SYNC_SIZE;
+            $limit = ' LIMIT ' . esc_sql($limit);
         }
         
         $relation = '';
