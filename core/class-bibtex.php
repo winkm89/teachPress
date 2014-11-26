@@ -920,6 +920,23 @@ class tp_bibtex {
         } 
         return $end; 
     } 
+    
+    /**
+     * The function splits a author/editor name and returns the lastname or NULL if there is no name was found
+     * @global $PARSECREATORS
+     * @param string $input     A name of an author or editor
+     * @return string
+     * @since 5.0.0
+     */
+    public static function get_lastname ($input) {
+        global $PARSECREATORS;
+        $creator = new PARSECREATORS();
+        $creatorArray = $creator->parse($input);
+        if ( isset( $creatorArray[0][2] ) ) {
+            return trim($creatorArray[0][2]);
+        }
+        return null;
+    }
 
     /**
      * Parse author names
@@ -1024,7 +1041,28 @@ class tp_bibtex {
         $all_authors = str_replace( array(' and ', '{', '}'), array(', ', '', ''), $input );
         return stripslashes($all_authors);
     }
-
+    
+    /**
+     * Splits an author string and returns an array with the single authors
+     * @param string $input_string
+     * @param string $delimiter             Default is ','
+     * @return array
+     * @since 5.0.0
+     * @access public
+     */
+    public static function split_author_string ($input_string, $delimiter = ',') {
+        $array = explode($delimiter, $input_string);
+        $return_array = array();
+        foreach($array as $element) {
+            $element = trim($element);
+            if ( $element === '' ) {
+                continue;
+            }
+            $element = esc_sql( htmlspecialchars($element) );
+            $return_array[] = array($element, tp_bibtex::get_lastname($element) );
+        }
+        return $array;
+    }
 
     /**
      * Checks if a string is encoded with UTF-8 or not

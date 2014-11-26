@@ -223,7 +223,7 @@ class tp_shortcodes {
                 $text = tp_translate_pub_type($row['type'], 'pl');
             }
             else if ( $mode === 'author' ) {
-                $text = $row['name'];
+                $text = tp_bibtex::parse_author($row['name'], $settings['author_name']);
             }
             else if ( $mode === 'user' ) {
                 $user_info = get_userdata( $row['user'] );

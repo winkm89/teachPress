@@ -600,6 +600,7 @@ class tp_tables {
         dbDelta("CREATE TABLE " . TEACHPRESS_AUTHORS . " (
                     `author_id` INT UNSIGNED AUTO_INCREMENT,
                     `name` VARCHAR(500),
+                    `sort_name` VARCHAR(500),
                     PRIMARY KEY (author_id)
                 ) $charset_collate;");
         

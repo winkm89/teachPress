@@ -539,6 +539,10 @@ class tp_update_db {
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_COURSE_DOCUMENTS . " LIKE 'size'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSE_DOCUMENTS . " ADD `size` BIGINT NULL DEFAULT NULL AFTER `added`");
         }
+        // add column sort_name to table teachpress_authors
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_AUTHORS . " LIKE 'sort_name'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_AUTHORS . " ADD `sort_name` VARCHAR( 500 ) NULL DEFAULT NULL AFTER `name`");
+        }
         // expand char limit for tp_settings::value
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_SETTINGS . " LIKE 'value'") == '1') {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_SETTINGS . " CHANGE `value` `value` LONGTEXT $charset_collate NULL DEFAULT NULL");
@@ -575,24 +579,81 @@ class tp_update_db {
         }
         return false;
     }
+    
+    /**
+     * Prepares and Returns the statement for adding all author - publications relations in one SQL Query
+     * Returns a string like: ('pub_id', 'author_id', 'is_author', 'is_editor'), ('pub_id', 'author_id', 'is_author', 'is_editor'),...
+     * 
+     * @param int $pub_id               The ID of the publication
+     * @param string $input_string      A author / editor string
+     * @param string $delimiter         default is ','
+     * @param string $rel_type          authors or editors
+     * @return string
+     * @since 5.0.0
+     * @access public
+     */
+    public static function prepare_relation ($pub_id, $input_string, $delimiter = ',', $rel_type = 'authors') {
+        global $wpdb;
+        $pub_id = intval($pub_id);
+        $array = explode($delimiter, $input_string);
+        $return = '';
+        foreach($array as $element) {
+            $element = trim($element);
+            
+            if ( $element === '' ) {
+                continue;
+            }
+            
+            $element = esc_sql( htmlspecialchars($element) );
+            
+            // check if element exists
+            $check = $wpdb->get_var("SELECT `author_id` FROM " . TEACHPRESS_AUTHORS . " WHERE `name` = '$element'");
+            
+            // if element not exists
+            if ( $check === NULL ){
+                $check = tp_authors::add_author( $element, tp_bibtex::get_lastname($element) );
+            }
+            
+            // prepare relation
+            $is_author = ( $rel_type === 'authors' ) ? 1 : 0;
+            $is_editor = ( $rel_type === 'editors' ) ? 1 : 0;
+            $check = intval($check);
+            $return = ($return === '') ? "($pub_id, $check, $is_author, $is_editor)" : $return . ", ($pub_id, $check, $is_author, $is_editor)";
+            
+        }
+        return $return;
+    }
 
     /**
      * Use this function to fill up the table teachpress_authors with data from teachpress_pub
+     * @param int $limit
      * @since 5.0.0
      */
-    public static function fill_table_authors () {
+    public static function fill_table_authors ($limit = '') {
         global $wpdb;
+        
         // Try to set the time limit for the script
         set_time_limit(TEACHPRESS_TIME_LIMIT);
-        $pubs = $wpdb->get_results("SELECT pub_id, author, editor FROM " . TEACHPRESS_PUB, ARRAY_A);
+        
+        if ( $limit !== '' ) {
+            $limit = ' LIMIT ' . intval($limit) . ',' . TEACHPRESS_SYNC_SIZE;
+        }
+        
+        $relation = '';
+        get_tp_message( __('Step 1: Read data and add authors','teachpress') );
+        $pubs = $wpdb->get_results("SELECT pub_id, author, editor FROM " . TEACHPRESS_PUB . $limit, ARRAY_A);
         foreach ( $pubs as $row ) {
             if ( $row['author'] != '' ) {
-                tp_publications::add_relation($row['pub_id'], $row['author'], ' and ', 'authors');
+                $relation .= self::prepare_relation($row['pub_id'], $row['author'], ' and ', 'authors') . ', ';
             }
             if ( $row['editor'] != '' ) {
-                tp_publications::add_relation($row['pub_id'], $row['editor'], ' and ', 'editors');
+                $relation .= self::prepare_relation($row['pub_id'], $row['editor'], ' and ', 'editors') . ', ';
             }
         }
+        $relation = substr($relation, 0, -2);
+        $relation = str_replace(', ,', ',', $relation);
+        get_tp_message( __('Step 2: Add relations between authors and publications','teachpress') );
+        $wpdb->query("INSERT INTO " . TEACHPRESS_REL_PUB_AUTH . " (`pub_id`, `author_id`, `is_author`, `is_editor`) VALUES $relation");
         get_tp_message( __('Update successful','teachpress') );
     }
     
@@ -604,13 +665,19 @@ class tp_update_db {
         global $wpdb;
         // Try to set the time limit for the script
         set_time_limit(TEACHPRESS_TIME_LIMIT);
+        $relation = '';
+        get_tp_message( __('Step 1: Read and prepare data','teachpress') );
         $students = $wpdb->get_results("SELECT wp_id, course_of_studies, birthday, semesternumber, matriculation_number FROM " . TEACHPRESS_STUD, ARRAY_A);
         foreach ( $students as $row ) {
-            tp_students::add_student_meta($row['wp_id'], 'course_of_studies', $row['course_of_studies']);
-            tp_students::add_student_meta($row['wp_id'], 'birthday', $row['birthday']);
-            tp_students::add_student_meta($row['wp_id'], 'semester_number', $row['semesternumber']);
-            tp_students::add_student_meta($row['wp_id'], 'matriculation_number', $row['matriculation_number']);
+            $relation .= "(" . $row['wp_id'] . ", 'course_of_studies', '" . $row['course_of_studies'] . "'), ";
+            $relation .= "(" . $row['wp_id'] . ", 'birthday', '" . $row['birthday'] . "'), ";
+            $relation .= "(" . $row['wp_id'] . ", 'semester_number', '" . $row['semesternumber'] . "'), ";
+            $relation .= "(" . $row['wp_id'] . ", 'matriculation_number', '" . $row['matriculation_number'] . "'), ";
         }
+        
+        $relation = substr($relation, 0, -2);
+        get_tp_message( __('Step 2: Insert data','teachpress') );
+        $wpdb->query("INSERT INTO " . TEACHPRESS_STUD_META . " (`wp_id`, `meta_key`, `meta_value`) VALUES $relation");
         get_tp_message( __('Update successful','teachpress') );
     }
 

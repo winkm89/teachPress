@@ -808,7 +808,7 @@ class tp_settings_page {
         }
         $sync = ( $check_authors === true ) ? 1 : 2;
         $table = ( $check_authors === true ) ? 'teachpress_authors' : 'teachpress_stud_meta';
-        $message = 'TABLE ' . $table . ': ' .  __('teachPress wants to fill up the new database. This can take some time.','teachpress') . ' <a href="' . $site . '&amp;sync=' . $sync . '">' . __('Continue','teachpress') . '</a>';
+        $message = 'TABLE ' . $table . ': ' .  __('teachPress wants to fill up the new database. This can take some time.','teachpress') . ' <a href="' . $site . '&amp;sync=' . $sync . '" class="button-primary">' . __('Continue','teachpress') . '</a>';
         get_tp_message($message, 'orange');
     }
     

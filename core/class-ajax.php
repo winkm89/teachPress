@@ -165,7 +165,7 @@ class tp_ajax {
      */
     public static function get_author_publications( $author_id ) {
         $author_id = intval($author_id);
-        $pubs = tp_authors::get_related_authors($author_id, ARRAY_A);
+        $pubs = tp_authors::get_related_publications($author_id, ARRAY_A);
         echo '<ol>';
         foreach ( $pubs as $pub) {
             echo '<li style="padding-left:10px;">';

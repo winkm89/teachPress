@@ -342,7 +342,7 @@ class tp_authors  {
         $group_by = $group_by === true ? " GROUP BY a.name" : '';
 
         // End
-        $sql = $select . $join . $where . $group_by . " ORDER BY a.name $order $limit";
+        $sql = $select . $join . $where . $group_by . " ORDER BY a.sort_name $order, a.name $order $limit";
         // echo $sql . '<br/><br/>';
         $sql = $count == false ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
         return $sql;
@@ -350,13 +350,14 @@ class tp_authors  {
     
     /**
      * Adds a new author
-     * @param string $name      The name of the author
+     * @param string $name          The name of the author
+     * @param string $sort_name     The name used for sorting (mostly the lastname)
      * @return int
      * @since 5.0.0
      */
-    public static function add_author ($name) {
+    public static function add_author ($name, $sort_name) {
         global $wpdb;
-        $wpdb->insert(TEACHPRESS_AUTHORS, array('name' => $name), array('%s'));
+        $wpdb->insert(TEACHPRESS_AUTHORS, array('name' => $name, 'sort_name' => $sort_name), array('%s', '%s'));
         return $wpdb->insert_id;
     }
     
@@ -432,7 +433,7 @@ class tp_authors  {
     * @param string $output_type    OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
     * @since 5.0.0
     */
-   public static function get_related_authors($author_id, $output_type = ARRAY_A){
+   public static function get_related_publications($author_id, $output_type = ARRAY_A){
        global $wpdb;
        $author_id = intval($author_id);
        return $wpdb->get_results("SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.rel_page, r.is_author, r.is_editor FROM " . TEACHPRESS_PUB .  " p INNER JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON p.pub_id = r.pub_id WHERE r.author_id = '$author_id' ORDER BY year DESC", $output_type);
@@ -1918,6 +1919,17 @@ class tp_publications {
         return $pub_id;
     }
     
+    /**
+     * Returns the number of publications in the database
+     * @return int
+     * @since 5.0.0
+     */
+    public static function count_publications () {
+        global $wpdb;
+        $number = $wpdb->get_var("SELECT COUNT(`pub_id`) FROM " . TEACHPRESS_PUB);
+        return $number;
+    }
+    
     /** 
      * Delete publications
      * @param array $checkbox       An array with IDs of publication
@@ -1981,7 +1993,7 @@ class tp_publications {
             }
             // if element not exists
             if ( $check === NULL ){
-                $check = ( $rel_type === 'tags' ) ? tp_tags::add_tag($element) : tp_authors::add_author($element);
+                $check = ( $rel_type === 'tags' ) ? tp_tags::add_tag($element) : tp_authors::add_author( $element, tp_bibtex::get_lastname($element) );
             }
             // check if relation exists, if not add relation
             if ( $rel_type === 'tags' ) {
