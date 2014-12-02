@@ -50,6 +50,10 @@ h3.tp_enrollments {color:#005A46;}
 /*************************/
 /* shortcode: [tpsearch] */
 /*************************/
+input.tp_search_button {border: 1px solid silver; padding:3px 6px; font-size:0.9em; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-size:12px; background:transparent; margin:0 0 0 6px; cursor:pointer;}
+input.tp_search_button:hover {background:#ECECEC; color:#333333;}
+a.tp_search_reset {background:transparent; cursor:pointer; border:none; font-weight: bold; padding:3px 6px; text-decoration: none; font-size:13px; color:#000;}
+a.tp_search_reset:hover {color:red;}
 .tablenav {padding-top:5px; margin:6px 0 4px; height:30px; vertical-align:middle; width:100%;}
 .tablenav-pages {float:right;}
 .tablenav-pages span.inactive {border: 1px solid silver; padding:3px 6px; font-size:0.9em; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; color:#CCCCCC; font-size:12px; }

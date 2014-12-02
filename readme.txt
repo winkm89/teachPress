@@ -3,7 +3,7 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, course management, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 5.0.0alpha
 
 With this plugin you can easy manage courses and publications.
@@ -147,7 +147,7 @@ It's **strongly** recommended to save your teachpress database tables before upg
 * New: Shortcode [tpcoursedocs]
 * New: [tpenrollments]: New parameter "date_format" added
 * New: [tpcloud]: New parameter "show_tags_as" added
-* New: tinyMCE 4 plugin for inserting shortcodes
+* New: tinyMCE 4 plugin for inserting shortcodes and documents
 * New: Editable time limit for exports and uploads added (constant TEACHPRESS_TIME_LIMIT)
 * Changed: Rewritten core API
 * Changed: Rewritten Shortcode [tpcloud]
@@ -162,6 +162,17 @@ It's **strongly** recommended to save your teachpress database tables before upg
 * Bugfix: teachPress books widget works again
 * Killed: The shortcode [tpdate] is deprecated, use [tpcourseinfo] instead
 * Killed: The following functions are deprecated: get_tp_course(), get_tp_courses(), get_tp_course_free_places(), get_tp_tags(), get_tp_tag_cloud(), get_tp_publication(), get_tp_publications(), tp_is_user_subscribed(), tp_check_bookmark(), tp_admin_page_menu()
+
+= 4.3.12 - (02.12.2014) =
+* New: [tpsearch]: Reset button for search input field added
+* New: [tpsearch]: CSS classes for search button and "Results for..." headline added
+* New: [tpsearch]: Returns a message if no publication was found
+
+= 4.3.11 - (01.12.2014) =
+* New: [tpsearch]: New parameter "order" added
+
+= 4.3.10 - (19.11.2014) =
+* Bugfix: Fixed missing ids and classes for show/hide buttons in [tpcloud, tplist] if the list style "images" is used.
 
 = 4.3.9 - (02.11.2014) =
 * Bugfix: [tpdate]: Fixed the sort order of sub courses
