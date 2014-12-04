@@ -132,8 +132,8 @@ class tp_single_course_actions {
     
     /**
      * Adds an assessment
-     * @param int $course_id
-     * @param array $post
+     * @param int $course_id        The course ID
+     * @param array $post           The $_POST array
      * @since 5.0.0
      * @access private
      */
@@ -158,9 +158,9 @@ class tp_single_course_actions {
     
     /**
      * Adds a capability
-     * @param int $course_id
-     * @param int $user_id
-     * @param string $post
+     * @param int $course_id        The course ID
+     * @param int $user_id          The user ID
+     * @param array $post           The $_POST array
      * @since 5.0.0
      * @access private
      */
@@ -173,14 +173,14 @@ class tp_single_course_actions {
             }
         }
         else {
-            get_tp_message( __('You have not enough rights for this action','teachpress'), 'red' );
+            get_tp_message( __('Access denied','teachpress'), 'red' );
         }
     }
     
     /**
      * Adds multiple assessments
-     * @param int $course_id
-     * @param array $post
+     * @param int $course_id        The course ID
+     * @param array $post           The $_POST array
      * @since 5.0.0
      * @access private
      */

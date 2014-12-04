@@ -26,6 +26,8 @@
 /* table for edit userdata */
 #enrollments .teachpress_enr_edit {border:1px solid silver;}
 #enrollments .teachpress_enr_edit td {padding:5px;}
+/* table for course results */
+tr.tp_course_result td {font-weight: bold;}
 /* misc */
 h3.tp_enrollments {color:#005A46;}
 .waitinglist {font-size:10px; color:#FF0000; padding-left:5px;}

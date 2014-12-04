@@ -71,7 +71,15 @@ class tp_export {
      * @since 3.0.0
      */
     public static function get_course_xls($course_id) {
+        global $current_user;
         $parent = '';
+        
+        // check capabilities
+        $capability = tp_courses::get_capability($course_id, $current_user->ID);
+        if ( $capability !== 'owner' && $capability !== 'approved' ) {
+            echo __('Access denied','teachpress');
+            return;
+        }
 
         // load course data
         $data = tp_courses::get_course($course_id, ARRAY_A);
@@ -128,6 +136,15 @@ class tp_export {
      * @since 3.0.0
      */
     public static function get_course_csv($course_id) {
+        global $current_user;
+        
+        // check capabilities
+        $capability = tp_courses::get_capability($course_id, $current_user->ID);
+        if ( $capability !== 'owner' && $capability !== 'approved' ) {
+            echo __('Access denied','teachpress');
+            return;
+        }
+        
         // load settings
         $option['regnum'] = get_tp_option('regnum');
         $option['studies'] = get_tp_option('studies');

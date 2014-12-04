@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, course management, BibTeX, bibliogra
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1
-Stable tag: 5.0.0alpha
+Stable tag: 5.0.0beta
 
 With this plugin you can easy manage courses and publications.
 
@@ -130,7 +130,7 @@ It's **strongly** recommended to save your teachpress database tables before upg
 
 == Changelog ==
 
-= 5.0.0 (alpha) - (xx.xx.2014) =
+= 5.0.0 (beta) - (xx.xx.2014) =
 * New: A real author filter for publications added
 * New: Autocomplete for authors/editors added
 * New: Meta data system for courses, students and publications added

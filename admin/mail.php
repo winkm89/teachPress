@@ -26,6 +26,15 @@ function tp_show_mail_page() {
     $limit = isset( $_GET['limit'] ) ? intval($_GET['limit']) : 0;
     $group = isset( $_GET['group'] ) ? htmlspecialchars($_GET['group']) : '';
     $waitinglist = '';
+    
+    // check capabilities
+    if ( $course_id !== 0 ) {
+        $capability = tp_courses::get_capability($course_id, $current_user->ID);
+        if ( $capability !== 'owner' && $capability !== 'approved' ) {
+            echo __('Access denied','teachpress');
+            return;
+        }
+    }
 
     if( !isset( $_GET['single'] ) ) {	
         // E-Mails of registered participants

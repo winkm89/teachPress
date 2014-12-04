@@ -532,7 +532,7 @@ class tp_bookmarks {
 class tp_courses {
     
     /**
-     * Returns the capability ("owner" or "approved") of an user for a course
+     * Returns the capability ("owner" or "approved") of an user for a course. For courses with no capabilities "owner" is returned.
      * @param string $course_id     The course ID
      * @param string $wp_id         WordPress user ID
      * @return string
@@ -546,6 +546,7 @@ class tp_courses {
         if ( intval($test) === 1 ){
             return $wpdb->get_var("SELECT `capability` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '$course_id' AND `wp_id` = '$wp_id'");
         }
+        // Return owner if the course has no capabilities
         return 'owner';
     }
 

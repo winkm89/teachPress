@@ -573,8 +573,8 @@ class tp_enrollments {
         $rtn .= '<table class="">';
         if ( count($assessment) !== 0 ) {
             $passed = ( $assessment[0]['passed'] == 1 ) ? __('passed','teachpress') : __('not passed','teachpress');
-            $rtn .= '<tr>'
-                    . '<td>' . __('Course result','teachpress') . '</td>'
+            $rtn .= '<tr class="tp_course_result">'
+                    . '<td class="title">' . __('Course result','teachpress') . '</td>'
                     . '<td>' . stripslashes($assessment[0]['comment']) . '</td>'
                     . '<td>' . stripslashes($assessment[0]['value']) . '</td>'
                     . '<td>' . $passed . '</td>'
@@ -587,14 +587,21 @@ class tp_enrollments {
             $x = 1;
             foreach ($assessments as $inner_row) {
                 $title = ( $x === 1 ) ? stripslashes($row['title']) : '';
-                $rtn .= '<tr>'
-                        . '<td>' . $title . '</td>'
+                $passed = ( $inner_row['passed'] == 1 ) ? __('passed','teachpress') : __('not passed','teachpress');
+                $rtn .= '<tr class="tp_assessment_result">'
+                        . '<td class="title">' . $title . '</td>'
                         . '<td>' . stripslashes($inner_row['comment']) . '</td>'
                         . '<td>' . stripslashes($inner_row['value']) . '</td>'
                         . '<td>' . $passed . '</td>'
                         . '</tr>';
                 $x++;
             }
+        }
+        // Print message if there are no results
+        if ( count($artefacts) === 0 && count($assessment) === 0 ) {
+            $rtn .= '<tr>'
+                    . '<td colspan="4"><b>' . __('No results available','teachpress') . '</b></td>'
+                    . '</tr>';
         }
         $rtn .= '</table>';
         return $rtn;
