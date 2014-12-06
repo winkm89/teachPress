@@ -173,9 +173,9 @@ class tp_settings_page {
         echo '<h4>' . __('Add new field','teachpress') . '</h4>';
         echo '<table class="form-table">';
         
-        // fieldname
+        // field name
         echo '<tr>';
-        echo '<td><label for="field_name">' . __('Fieldname','teachpress') . '</label></td>';
+        echo '<td><label for="field_name">' . __('Field name','teachpress') . '</label></td>';
         echo '<td><input name="field_name" type="text" id="field_name" size="30" title="' . __('Allowed chars','teachpress') . ': A-Z,a-z,0-9,_"/></td>';
         echo '</tr>';
         
@@ -185,9 +185,9 @@ class tp_settings_page {
         echo '<td><input name="field_label" type="text" id="field_label" size="30" title="' . __('The visible name of the field','teachpress') . '" /></td>';
         echo '</tr>';
         
-        // fieldtype
+        // field typetype
         echo '<tr>';
-        echo '<td><label for="field_type">' . __('Fieldtype','teachpress') . '</label></td>';
+        echo '<td><label for="field_type">' . __('Field type','teachpress') . '</label></td>';
         echo '<td>';
         echo '<select name="field_type" id="field_type">';
         echo '<option value="TEXT">TEXT</option>';
@@ -280,7 +280,7 @@ class tp_settings_page {
      * @since 5.0.0
      */
     private static function get_user_role_form ($type){
-        $title = ( $type === 'userrole_publications' ) ? __('Backend access for publication system','teachpress') : __('Backend access for course system','teachpress');
+        $title = ( $type === 'userrole_publications' ) ? __('Backend access for publication module','teachpress') : __('Backend access for course module','teachpress');
         $cap = ( $type === 'userrole_publications' ) ? 'use_teachpress' : 'use_teachpress_courses';
         
         echo '<tr>';
@@ -355,19 +355,19 @@ class tp_settings_page {
         echo '<tr>';
         echo '<th>' . __('Components','teachpress') . '</th>';
         echo '<td style="vertical-align: top;">';
-        $course_system = ( defined('TP_COURSE_SYSTEM') ) ? '<span style="color:#FF0000;">' . __('inactive','teachpress') . '</span>' : '<span style="color:#01DF01;">' . __('active','teachpress') . '</span>';
-        echo 'Course system: ' . $course_system;
+        $course_system = ( TEACHPRESS_COURSE_MODULE === false ) ? '<span style="color:#FF0000;">' . __('inactive','teachpress') . '</span>' : '<span style="color:#01DF01;">' . __('active','teachpress') . '</span>';
+        echo 'Course module: ' . $course_system;
         echo '<br/>';
-        $pub_system = ( defined('TP_PUBLICATION_SYSTEM') ) ? '<span style="color:#FF0000;">' . __('inactive','teachpress') . '</span>' : '<span style="color:#01DF01;">' . __('active','teachpress') . '</span>';
-        echo 'Publication system: ' . $pub_system;
+        $pub_system = ( TEACHPRESS_PUBLICATION_MODULE === false ) ? '<span style="color:#FF0000;">' . __('inactive','teachpress') . '</span>' : '<span style="color:#01DF01;">' . __('active','teachpress') . '</span>';
+        echo 'Publication module: ' . $pub_system;
         echo '</td>';
         echo '<td>';
         echo __('You can deactivate parts of the plugin, if you copy the following in your wp-config.php','teachpress') . ':<br/>';
         echo "<i>
                 // For deactivating the course system:<br/>
-                define ('TP_COURSE_SYSTEM','disable');<br/>
+                define ('TEACHPRESS_COURSE_MODULE', false);<br/>
                 // For deactivating the publication system:<br/>
-                define ('TP_PUBLICATION_SYSTEM','disable');<br/>
+                define ('TEACHPRESS_PUBLICATION_MODULE', false);<br/>
               </i>";
         echo '</td>';
         echo '</tr>';
@@ -569,7 +569,7 @@ class tp_settings_page {
 
         echo '<tr>';
         echo '<th></th>';
-        echo '<th>' . __('Fieldname','teachpress') . '</th>';
+        echo '<th>' . __('Field name','teachpress') . '</th>';
         echo '<th>' . __('Properties','teachpress') . '</th>';
         echo '</tr>';
 
@@ -674,7 +674,7 @@ class tp_settings_page {
         }
         
         // Generate an array of forbidden field names
-        $forbidden_names = array('system', 'course_type', 'semester', __('Fieldname','teachpress'));
+        $forbidden_names = array('system', 'course_type', 'semester', __('Field name','teachpress'));
         $options = get_tp_options($table);
         foreach ( $options as $row) {
             array_push( $forbidden_names, $row->variable );
@@ -695,7 +695,7 @@ class tp_settings_page {
             get_tp_message(  __('Field added','teachpress') );
         }
         else {
-            get_tp_message(  __('Warning: This fieldname is not possible.','teachpress'), 'red' );
+            get_tp_message(  __('Warning: This field name is not possible.','teachpress'), 'red' );
         }
     }
     

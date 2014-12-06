@@ -120,13 +120,13 @@ class tp_courses_page {
            }
            // delete a course, part 2
            if ( isset($_GET['delete_ok']) ) {
-               tp_courses::delete_courses($checkbox);
+                tp_courses::delete_courses($checkbox);
                 $message = __('Removing successful','teachpress');
                 get_tp_message($message);
            }
            // copy a course, part 1
            if ( $bulk === "copy" ) { 
-               tp_courses_page::get_copy_course_form($terms, $sem, $search);
+                tp_courses_page::get_copy_course_form($terms, $sem, $search);
            }
            // copy a course, part 2
            if ( isset($_GET['copy_ok']) ) {

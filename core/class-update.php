@@ -527,22 +527,42 @@ class tp_update_db {
         tp_tables::add_table_rel_pub_auth($charset);
         tp_tables::add_table_stud_meta($charset);
         tp_tables::add_table_pub_meta($charset);
+        
         // add column use_capabilites to table teachpress_courses
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_COURSES . " LIKE 'use_capabilites'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSES . " ADD `use_capabilites` INT( 1 ) NULL DEFAULT NULL AFTER `strict_signup`");
         }
+        
         // add column doi to table teachpress_pub
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'doi'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `doi` VARCHAR( 100 ) NULL DEFAULT NULL AFTER `image_url`");
         }
+        
+        // add column status to table teachpress_pub
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'status'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `status` VARCHAR( 100 ) NULL DEFAULT 'published' AFTER `rel_page`");
+        }
+        
+        // add column added to table teachpress_pub
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'added'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `added` DATETIME NULL DEFAULT NULL AFTER `status`");
+        }
+        
+        // add column modified to table teachpress_pub
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'modified'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `modified` DATETIME NULL DEFAULT NULL AFTER `added`");
+        }
+        
         // add column size to table teachpress_course_documents
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_COURSE_DOCUMENTS . " LIKE 'size'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSE_DOCUMENTS . " ADD `size` BIGINT NULL DEFAULT NULL AFTER `added`");
         }
+        
         // add column sort_name to table teachpress_authors
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_AUTHORS . " LIKE 'sort_name'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_AUTHORS . " ADD `sort_name` VARCHAR( 500 ) NULL DEFAULT NULL AFTER `name`");
         }
+        
         // expand char limit for tp_settings::value
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_SETTINGS . " LIKE 'value'") == '1') {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_SETTINGS . " CHANGE `value` `value` LONGTEXT $charset_collate NULL DEFAULT NULL");

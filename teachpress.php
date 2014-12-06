@@ -172,6 +172,20 @@ if ( !defined('TEACHPRESS_FILE_LINK_CSS_CLASS') ) {
      * @since 5.0.0
     */
     define('TEACHPRESS_FILE_LINK_CSS_CLASS', 'linksecure tp_file_link');}
+    
+if ( !defined('TEACHPRESS_COURSE_MODULE') ) {
+    /**
+     * This value defines if the course module of teachPress is active
+     * @since 5.0.0
+    */
+    define('TEACHPRESS_COURSE_MODULE', true);}
+    
+if ( !defined('TEACHPRESS_PUBLICATION_MODULE') ) {
+    /**
+     * This value defines if the publication module of teachPress is active
+     * @since 5.0.0
+    */
+    define('TEACHPRESS_PUBLICATION_MODULE', true);}
 
 /*********/
 /* Menus */
@@ -289,7 +303,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.0beta';
+    return '5.0.0-beta';
 }
 
 /** 
@@ -479,6 +493,8 @@ function tp_write_data_for_tinymce () {
         var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document_manager.php?post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
         var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
+        var teachpress_course_module = <?php echo TEACHPRESS_COURSE_MODULE; ?>;
+        var teachpress_publication_module = <?php echo TEACHPRESS_PUBLICATION_MODULE; ?>;
     </script>
     <?php
 }
@@ -561,8 +577,8 @@ add_action('wp_ajax_tp_document_upload', 'tp_handle_document_uploads' );
     add_action('admin_head', 'tp_write_data_for_tinymce' );
  }
 
-// Register course system
-if ( !defined('TP_COURSE_SYSTEM') ) {
+// Register course module
+if ( TEACHPRESS_COURSE_MODULE === true ) {
     add_action('admin_menu', 'tp_add_menu');
     add_shortcode('tpdate', 'tp_date_shortcode');  // Deprecated
     add_shortcode('tpcourseinfo', 'tp_courseinfo_shortcode');
@@ -572,8 +588,8 @@ if ( !defined('TP_COURSE_SYSTEM') ) {
     add_shortcode('tppost','tp_post_shortcode');
 }
 
-// register publication system
-if ( !defined('TP_PUBLICATION_SYSTEM') ) {
+// register publication module
+if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
     add_action('admin_menu', 'tp_add_menu2');
     add_action('widgets_init', create_function('', 'return register_widget("tp_books_widget");'));
     add_shortcode('tpcloud', 'tp_cloud_shortcode');

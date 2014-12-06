@@ -468,10 +468,13 @@ class tp_tables {
                     `techtype` VARCHAR (200),
                     `comment` TEXT,
                     `note` TEXT,
-                    `image_url` VARCHAR(400),
+                    `image_url` VARCHAR (400),
                     `doi` VARCHAR (100),
-                    `rel_page` INT,
                     `is_isbn` INT(1),
+                    `rel_page` INT,
+                    `status` VARCHAR (100) DEFAULT 'published',
+                    `added` DATETIME,
+                    `modified` DATETIME,
                     PRIMARY KEY (pub_id)
                 ) $charset_collate;");
         

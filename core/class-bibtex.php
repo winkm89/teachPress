@@ -90,7 +90,9 @@ class tp_bibtex {
         }
         
         // Add teachPress export data
-        $string .= ',' . chr(13) . chr(10) . 'tppubtype = {' . $row['type'] . '}' . chr(13) . chr(10);
+        $string .= ',' . chr(13) . chr(10);
+        $string .= 'tppubtype = {' . $row['type'] . '}' . chr(13) . chr(10);
+        $string .= 'tpstatus = {' . $row['status'] . '}' . chr(13) . chr(10);
         $string .= '}' . chr(13) . chr(10);
         
         // Convert utf-8 chars
@@ -459,6 +461,9 @@ class tp_bibtex {
             // handle export data from teachPress
             if ( $entries[$i]['tppubtype'] != '' ) {
                 $entries[$i]['type'] = $entries[$i]['tppubtype'];
+            }
+            if ( $entries[$i]['tpstatus'] != '' ) {
+                $entries[$i]['status'] = $entries[$i]['tpstatus'];
             }
             
             // replace bibtex chars

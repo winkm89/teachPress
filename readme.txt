@@ -115,10 +115,10 @@ The plugin saves course documents in your WordPress upload directory under /teac
 
 = How can I deactivate parts of the plugin? =
 If you want to use only one part of the plugin, so write the following in the wp-config.php of your WordPress installation
-`// For deactivating the course system:  
-define ('TP_COURSE_SYSTEM','disable');  
-// For deactivating the publication system:  
-define ('TP_PUBLICATION_SYSTEM','disable');  `
+`// For deactivating the course module:  
+define ('TEACHPRESS_COURSE_MODULE', false);  
+// For deactivating the publication module:  
+define ('TEACHPRESS_PUBLICATION_MODULE', false);  `
 
 = I see only error messages if I use the RSS-Feed for publications or the xls/csv export for enrollments. What's wrong? =
 If you save plugins outside the normal path (/wp-content/plugins/), the plugin can't load required WordPress files in some cases. Solution: Change the path in the following plugin files: export.php (line 9) / feed.php (line 13).
@@ -157,6 +157,7 @@ It's **strongly** recommended to save your teachpress database tables before upg
 * Changed: Using HTML5s "required" attribute for required fields in registration forms
 * Changed: Using parameters instead of variables for the definition of database table names
 * Changed: Visible names for some publication types changed
+* Changed: The parameters TP_COURSE_SYSTEM and TP_PUBLICATION_SYSTEM were renamed to TEACHPRESS_COURSE_MODULE and TEACHPRESS_PUBLICATION_MODULE
 * Changed: The plugin requires at least WordPress 3.9 instead of 3.3
 * Bugfix: Fixed the handling of curly-brackets for the definition of surnames in author/editor names
 * Bugfix: teachPress books widget works again

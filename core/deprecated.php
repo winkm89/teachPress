@@ -166,4 +166,3 @@ function tp_check_bookmark ($pub_id, $user_id) {
     trigger_error( __('tp_check_bookmark() is deprecated since teachpress 5.0.0. Use tp_bookmarks::bookmark_exists() instead.','teachpress') );
     return tp_bookmarks::bookmark_exists($pub_id, $user_id);
 }
-
