@@ -14,7 +14,7 @@
 function tp_add_student_page($fields) { 
 
     $wp_id = isset($_POST['wp_id']) ? intval($_POST['wp_id']) : '';
-    $data['userlogin'] = isset( $_POST['birthday'] ) ? htmlspecialchars($_POST['userlogin']) : '';
+    $data['userlogin'] = isset( $_POST['userlogin'] ) ? htmlspecialchars($_POST['userlogin']) : '';
     $data['email'] = isset( $_POST['email'] ) ? htmlspecialchars($_POST['email']) : '';
 
     // actions

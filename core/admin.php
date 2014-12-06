@@ -315,7 +315,7 @@ class tp_admin {
             $sql = "SELECT number, value, setting_id FROM ( SELECT COUNT(v.type) as number, e.value AS value,  e.setting_id as setting_id, e.category as category FROM " . TEACHPRESS_SETTINGS . " e LEFT JOIN " . TEACHPRESS_COURSES . " v ON e.value = v.type GROUP BY e.value ORDER BY number DESC ) AS temp WHERE category = 'course_type' ORDER BY value";
         }
         elseif ( $type === 'course_of_studies' ) {
-            $sql = "SELECT number, value, setting_id FROM ( SELECT COUNT(s.course_of_studies) as number, e.value AS value,  e.setting_id as setting_id, e.category as category FROM " . TEACHPRESS_SETTINGS . " e LEFT JOIN " . TEACHPRESS_STUD . " s ON e.value = s.course_of_studies GROUP BY e.value ORDER BY number DESC ) AS temp WHERE category = 'course_of_studies' ORDER BY value";
+            $sql = "SELECT number, value, setting_id FROM ( SELECT COUNT(m.meta_value) as number, e.value AS value,  e.setting_id as setting_id, e.category as category FROM " . TEACHPRESS_SETTINGS . " e LEFT JOIN " . TEACHPRESS_STUD_META . " m ON e.value = m.meta_value GROUP BY e.value ORDER BY number DESC ) AS temp WHERE category = 'course_of_studies' ORDER BY value";
         }
         else {
             $sql = "SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($type) . "' ORDER BY value ASC";
