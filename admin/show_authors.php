@@ -61,18 +61,17 @@ function tp_show_authors_page () {
     }
     
     // form data
-    if ( isset( $_GET['action1'] ) ) {
+    $action = '';
+    if ( isset( $_GET['action1'] ) && $_GET['action1'] !== '' ) {
         $action = htmlspecialchars($_GET['action1']);
     }
-    else if ( isset( $_GET['action2'] ) ) {
+    if ( isset( $_GET['action2'] ) && $_GET['action2'] !== '' ) {
         $action = htmlspecialchars($_GET['action2']);
     }
-    else if ( isset( $_GET['action'] ) ) {
+    if ( isset( $_GET['action'] ) && $_GET['action'] !== '' ) {
         $action = htmlspecialchars($_GET['action']);
     }
-    else {
-        $action = '';
-    }
+    
     
     echo '<div class="wrap" style="max-width:700px;">';
     echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';

@@ -45,17 +45,15 @@ function tp_tags_page(){
     <input name="page" type="hidden" value="teachpress/tags.php" />
     <?php
     // form data
-    if ( isset( $_GET['action1'] ) ) {
+    $action = '';
+    if ( isset( $_GET['action1'] ) && $_GET['action1'] !== '' ) {
         $action = htmlspecialchars($_GET['action1']);
     }
-    else if ( isset( $_GET['action2'] ) ) {
+    if ( isset( $_GET['action2'] ) && $_GET['action2'] !== '' ) {
         $action = htmlspecialchars($_GET['action2']);
     }
-    else if ( isset( $_GET['action'] ) ) {
+    if ( isset( $_GET['action'] ) && $_GET['action'] !== '' ) {
         $action = htmlspecialchars($_GET['action']);
-    }
-    else {
-        $action = '';
     }
     
     $search = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
