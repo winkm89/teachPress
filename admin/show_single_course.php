@@ -76,7 +76,7 @@ function tp_show_single_course_page() {
     echo tp_single_course_page::get_course_headline($course_id, $course_data, $parent, $link_parameter, true);
     echo tp_single_course_page::get_menu($course_id, $link_parameter, $action, $capability);
     
-    echo '<div style="min-width:780px; width:100%; float:left; margin-top: 12px;">';
+    echo '<div style="width:100%; float:left; margin-top: 12px;">';
     
     // Show tab content
     if ( $action === 'assessments' && ( $capability === 'owner' || $capability === 'approved' ) ) {
@@ -687,14 +687,25 @@ class tp_single_course_page {
      * @since 5.0.0
      */
     public static function get_assessments_tab($course_id, $link_parameter) {
+        $local_search = isset ( $_POST['local_search'] ) ? esc_html($_POST['local_search']) : '';
         $students = tp_courses::get_signups( array('output_type' => ARRAY_A, 
                                                    'course_id' => $course_id,
+                                                   'search' => $local_search,
                                                    'limit' => $link_parameter['entry_limit'] . ',' . $link_parameter['per_page'],
                                                    'order' => 'st.lastname ASC',
                                                    'waitinglist' => 0) );
         $count_students = tp_courses::get_signups( array('count' => true, 
                                                    'course_id' => $course_id,
+                                                   'search' => $local_search,
                                                    'waitinglist' => 0) );
+        // Searchbox
+        echo '<div id="searchbox" style="float:right; padding-bottom:5px;">';
+        if ( $local_search != "" ) { 
+            echo '<a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;sem=' . $link_parameter['sem'] . '&amp;search=' . $link_parameter['search'] . '&amp;action=assessments" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
+        }
+        echo '<input type="search" name="local_search" id="pub_search_field" style="margin-right:5px;" value="' . $local_search . '"/>';
+        echo '<input type="submit" name="pub_search_button" id="pub_search_button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';
+        echo '</div>';
         // Menu
         echo '<div class="tp_actions">';
         echo '<span style="margin-right:15px;"><a onclick="teachpress_showhide(' . "'tp_add_artefact_form'" . ');" id="teachpress_add_artefact" class="button-secondary" style="cursor:pointer;">' . __('Add artefact','teachpress') . '</a></span> ';
@@ -728,7 +739,7 @@ class tp_single_course_page {
         echo '<table id="tp_assessment_overview" class="widefat">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th></th>';
+        echo '<th class="check-column"></th>';
         echo '<th>' . __('Last name','teachpress') . '</th>';
         echo '<th>' . __('First name','teachpress') . '</th>';
         $artefacts = tp_artefacts::get_artefacts($course_id, 0);
@@ -741,6 +752,15 @@ class tp_single_course_page {
         echo '<tbody>';
         $pos = 1;
         $class_alternate = true;
+        
+        // if there is no search result found
+        if ( $local_search !== '' && $count_students == 0 ) {
+            echo '<tr>';
+            echo '<td></td>';
+            echo '<td colspan="' . ( count($artefacts) + 3 ) . '"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td>';
+            echo '</tr>';
+        }
+        
         foreach ( $students as $stud ) {
             if ( $class_alternate === true ) {
                 $tr_class = 'class="alternate"';
@@ -765,6 +785,8 @@ class tp_single_course_page {
         }
         echo '</tbody>';
         echo '</table>';
+        $args['mode'] = 'bottom';
+        echo tp_page_menu($args);
         ?>
         <script type="text/javascript" charset="utf-8">
             jQuery(document).ready(function($){

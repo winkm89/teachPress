@@ -1356,7 +1356,7 @@ function tp_search_shortcode ($atts) {
     // If someone wants a form reset instead of a full reset:
     // $r .= '<a name="tps_reset" class="tp_search_reset" title="' . __('Reset', 'teachpress') . '" onclick="teachpress_tp_search_clean();">X</a>';
     
-    $r .= '<input name="tps" id="tp_search_input_field" type="text" value="' . $search . '" tabindex="1" size="40"/>';
+    $r .= '<input name="tps" id="tp_search_input_field" type="search" value="' . $search . '" tabindex="1" size="40"/>';
     $r .= '<input name="tps_button" class="tp_search_button" type="submit" value="' . __('Search', 'teachpress') . '"/>';
     
     $r .= '</div>';

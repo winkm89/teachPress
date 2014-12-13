@@ -175,7 +175,7 @@ class tp_students_page {
             <?php if ($search != "") { ?>
             <a href="admin.php?page=teachpress/students.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="<?php _e('Cancel the search','teachpress'); ?>">X</a>
             <?php } ?>
-            <input name="search" type="text" value="<?php echo stripslashes($search); ?>"/></td>
+            <input name="search" type="search" value="<?php echo stripslashes($search); ?>"/></td>
             <input name="go" type="submit" value="<?php _e('Search','teachpress'); ?>" id="teachpress_search_senden" class="button-secondary"/>
         </div>
         <div class="tablenav" style="padding-bottom:5px;">

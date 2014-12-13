@@ -97,7 +97,7 @@ function tp_show_authors_page () {
     if ($search != "") {
         echo '<a href="admin.php?page=teachpress/authors.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
     }
-    echo '<input type="text" name="search" id="pub_search_field" value="' . stripslashes($search) . '"/>';
+    echo '<input type="search" name="search" id="pub_search_field" value="' . stripslashes($search) . '"/>';
     echo '<input type="submit" name="button" id="button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';
     echo '</div>';
     

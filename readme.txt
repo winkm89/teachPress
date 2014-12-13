@@ -157,6 +157,7 @@ It's **strongly** recommended to save your teachpress database tables before upg
 * Changed: Using HTML5s "required" attribute for required fields in registration forms
 * Changed: Using parameters instead of variables for the definition of database table names
 * Changed: Visible names for some publication types changed
+* Changed: Using field type "search" for search fields
 * Changed: The parameters TP_COURSE_SYSTEM and TP_PUBLICATION_SYSTEM were renamed to TEACHPRESS_COURSE_MODULE and TEACHPRESS_PUBLICATION_MODULE
 * Changed: The plugin requires at least WordPress 3.9 instead of 3.3
 * Bugfix: Fixed the handling of curly-brackets for the definition of surnames in author/editor names

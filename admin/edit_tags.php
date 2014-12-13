@@ -99,7 +99,7 @@ function tp_tags_page(){
     <h2><?php _e('Tags'); ?></h2>
     <div id="searchbox" style="float:right; padding-bottom:10px;">
             <?php if ($search != "") { ?><a href="admin.php?page=teachpress/tags.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="<?php _e('Cancel the search','teachpress'); ?>">X</a><?php } ?>
-        <input type="text" name="search" id="pub_search_field" value="<?php echo stripslashes($search); ?>"/>
+        <input type="search" name="search" id="pub_search_field" value="<?php echo stripslashes($search); ?>"/>
         <input type="submit" name="button" id="button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
     </div>
     <div class="tablenav" style="padding-bottom:5px;"> 

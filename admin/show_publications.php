@@ -471,7 +471,7 @@ class tp_publications_page {
            <?php if ($array_variables['search'] != "") { 
               echo '<a href="admin.php?page=' . $array_variables['page'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;year=' . $array_variables['year'] . '" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
            } ?>
-           <input type="text" name="search" id="pub_search_field" value="<?php echo $array_variables['search']; ?>"/>
+            <input type="search" name="search" id="pub_search_field" value="<?php echo $array_variables['search']; ?>"/>
            <input type="submit" name="pub_search_button" id="pub_search_button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
         </div>
         <div class="tablenav" style="padding-bottom:5px;">

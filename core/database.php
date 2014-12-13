@@ -984,6 +984,7 @@ class tp_courses {
      *      waitinglist (STRING)        The waitinglist flag (0 or 1 or '')
      *      order (STRING)              The SQL order by statement
      *      limit (STRING)              The SQL limit statement
+     *      search (STRING)             A search string for a name search (firstname, lastname of students)
      *      count (BOOLEAN)             If this flag is true, only the number of rows will be returned, default is false
      *      meta_visibility (STRING)    The visibility level of considered meta data fields (normal, admin, hidden, all), default is admin
      *      output_type (STRING)        OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
@@ -998,6 +999,7 @@ class tp_courses {
             'waitinglist' => '',
             'order' => '',
             'limit' => '',
+            'search' => '',
             'count' => false,
             'meta_visibility' => 'admin',
             'output_type' => OBJECT
@@ -1009,6 +1011,7 @@ class tp_courses {
 
         $course_id = intval($course_id);
         $order = esc_sql($order);
+        $search = esc_sql($search);
         $output_type = esc_sql($output_type);
         $waitinglist = esc_sql($waitinglist);
         $limit = esc_sql($limit);
@@ -1047,9 +1050,13 @@ class tp_courses {
                 . "FROM " . TEACHPRESS_SIGNUP . " s "
                 . "INNER JOIN " . TEACHPRESS_STUD . " st ON st.wp_id = s.wp_id $joins"
                 . "WHERE s.course_id = '$course_id' ";
+        
+        if ( $search !== '' ) {
+            $where .= " AND ( st.firstname LIKE '%$search%' OR st.lastname LIKE '%$search%' )";
+        }
 
         if ( $waitinglist !== '' ) {
-            $where = " AND s.waitinglist = '$waitinglist'";
+            $where .= " AND s.waitinglist = '$waitinglist'";
         }
         
         // get_tp_message($sql . $where . $order . $limit, 'orange');
