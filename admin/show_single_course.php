@@ -861,8 +861,8 @@ class tp_single_course_page {
         echo '<thead>';
         echo '<tr>';
         echo '<th class="check-column"></th>';
-        echo '<th>' . __('User') . '</th>';
-        echo '<th>' . __('Username','teachpress') . '</th>';
+        echo '<th>' . __('Username') . '</th>';
+        echo '<th>' . __('Name','teachpress') . '</th>';
         echo '<th>' . __('Capability','teachpress') . '</th>';
         echo '</thead>';
         echo '</tr>';

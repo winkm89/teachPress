@@ -186,7 +186,7 @@ class tp_document_manager {
                 
                 // Change DOM and update values
                 $('#' + file.id + " .tp_fileprogress").width("0%");
-                $('<span class="tp_file_actions"><a class="tp_file_view" href="' + response_splitted[2] + '" target="_blank"><?php _e('View'); ?></a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php _e('Edit','teachpress'); ?></a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php _e('Delete','teachpress'); ?></a></span>').appendTo('#' + file.id);
+                $('<span class="tp_file_actions"><a class="tp_file_view" href="' + response_splitted[2] + '" target="_blank"><?php _e('Show','teachpress'); ?></a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php _e('Edit','teachpress'); ?></a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php _e('Delete','teachpress'); ?></a></span>').appendTo('#' + file.id);
                 $('#' + file.id).attr("id","tp_file_" + response_splitted[0]);
                 $('#tp_file_checkbox_' + file.id).attr("value",response_splitted[0]);
                 $('#tp_file_checkbox_' + file.id).attr("data_2",response_splitted[2]);

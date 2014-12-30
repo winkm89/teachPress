@@ -1135,20 +1135,49 @@ class tp_courses {
         for( $i = 0; $i < $max; $i++ ) {
             $checkbox[$i] = intval($checkbox[$i]);
             if ( $move_up !== true ) {
-                continue;
-            }
-            $row1 = $wpdb->get_results("SELECT `course_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'");
-            foreach ($row1 as $row1) {
-                // check if there are users in the waiting list
-                $sql = "SELECT `con_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '" . $row1->course_id . "' AND `waitinglist` = '1' ORDER BY `con_id` ASC LIMIT 0, 1";
-                $con_id = $wpdb->get_var($sql);
-                // if is true subscribe the first one in the waiting list for the course
-                if ($con_id != 0 && $con_id != '') {
-                    $wpdb->query( "UPDATE " . TEACHPRESS_SIGNUP . " SET `waitinglist` = '0' WHERE `con_id` = '$con_id'" );
-                }	
+                self::move_up_signup($checkbox[$i]);
             }
             $wpdb->query( "DELETE FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'" );
         }
+    }
+    
+    /**
+     * This function is used to move a signup entry from waitinglist into the course if a signup is deleted.
+     * @param int $connect_id   The ID of the signup which will be deleted
+     * @since 5.0.0
+     * @access public
+     */
+    public static function move_up_signup($connect_id) {
+        global $wpdb;
+        
+        // Get course ID
+        $course_id = $wpdb->get_var("SELECT `course_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$connect_id'");
+        if ( $course_id === NULL ) {
+            return;
+        }
+
+        // check if there are users in the waiting list
+        $sql = "SELECT `con_id`, `course_id`, `wp_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '" . $course_id . "' AND `waitinglist` = '1' ORDER BY `con_id` ASC LIMIT 0, 1";
+        $signup = $wpdb->get_row($sql);
+        if ( $signup === NULL ) {
+            return;
+        }
+        
+        // if is true subscribe the first one in the waiting list for the course
+        if ($signup->con_id != 0 && $signup->con_id != '') {
+            $wpdb->query( "UPDATE " . TEACHPRESS_SIGNUP . " SET `waitinglist` = '0' WHERE `con_id` = '" . $signup->con_id . "'" );
+            
+            // Find course name
+            $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . $signup->course_id . "'");
+            if ($row->parent != '0') {
+                $parent = tp_courses::get_course_data($row->parent, 'name');
+                $row->name = ( $row->name != $parent ) ? $parent . ' ' . $row->name : $row->name;
+            }
+            
+            // Send notification
+            tp_enrollments::send_notification(201, $signup->wp_id, $row->name);
+        }	
+        
     }
     
     /**
@@ -2319,24 +2348,26 @@ class tp_students {
     * @return boolean
     * @since 5.0.0
     */
-   public static function has_assessment ($wp_id, $course_id) {
-       global $wpdb;
-       $wp_id = intval($wp_id);
-       $course_id = intval($course_id);
-       $artefacts = tp_artefacts::get_artefact_ids($course_id, 0);
-       
-       // Define where clause
-       $where = '';
-       foreach ( $artefacts as $row ) {
-           $where .= " OR `artefact_id` = '" . $row['artefact_id'] . "'";
-       }
-       
-       $test = $wpdb->query("SELECT assessment_id FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `wp_id` = '$wp_id' AND ( `course_id` = '$course_id' $where)");
-       if ( $test === 0 ) {
-           return false;
-       }
-       return true;
-   }
+    public static function has_assessment ($wp_id, $course_id) {
+        global $wpdb;
+        $wp_id = intval($wp_id);
+        $course_id = intval($course_id);
+        $artefacts = tp_artefacts::get_artefact_ids($course_id, 0);
+
+        // Define where clause
+        $where = '';
+        if ( count($artefacts) !== 0 ) {
+            foreach ( $artefacts as $row ) {
+                $where .= " OR `artefact_id` = '" . $row['artefact_id'] . "'";
+            }
+        }
+
+        $test = $wpdb->query("SELECT assessment_id FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `wp_id` = '$wp_id' AND ( `course_id` = '$course_id' $where)");
+        if ( $test === 0 ) {
+            return false;
+        }
+        return true;
+    }
     
 }
 

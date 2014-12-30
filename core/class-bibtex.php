@@ -185,7 +185,7 @@ class tp_bibtex {
             $abstract = '<span class="tp_abstract_link"><a id="tp_abstract_sh_' . $row['pub_id'] . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_abstract' . "'" . ')" title="' . __('Show abstract','teachpress') . '" style="cursor:pointer;">' . __('Abstract','teachpress') . '</a> | </span>';
         }
         // if are links
-        if ( $row['url'] != '' ) {
+        if ( $row['url'] != '' || $row['doi'] != '' ) {
             if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
                 $url = '<span class="tp_resource_link"><a id="tp_links_sh_' . $row['pub_id'] . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_links' . "'" . ')" title="' . __('Show links and resources','teachpress') . '" style="cursor:pointer;">' . __('Links','teachpress') . '</a> | </span>';
             }
@@ -248,7 +248,7 @@ class tp_bibtex {
             $a3 .= '</div>';
         }
         // div links
-        if ( $row['url'] != '' && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
+        if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
             $a3 .= '<div class="tp_links" id="tp_links_' . $row['pub_id'] . '" style="display:none;">';
             $a3 .= '<div class="tp_links_entry">' . tp_bibtex::prepare_url($row['url'], $row['doi'], 'list') . '</div>';
             $a3 .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_links' . "'" . ')">' . __('Close','teachpress') . '</a></p>';
@@ -422,6 +422,7 @@ class tp_bibtex {
             $entries[$i]['isbn'] = array_key_exists('isbn', $entries[$i]) === true ? $entries[$i]['isbn'] : '';
             $entries[$i]['issn'] = array_key_exists('issn', $entries[$i]) === true ? $entries[$i]['issn'] : '';
             $entries[$i]['tppubtype'] = array_key_exists('tppubtype', $entries[$i]) === true ? $entries[$i]['tppubtype'] : '';
+            $entries[$i]['tpstatus'] = array_key_exists('tpstatus', $entries[$i]) === true ? $entries[$i]['tpstatus'] : '';
             
             // for the date of publishing
             $entries[$i]['date'] = self::set_date_of_publishing($entries[$i]);
@@ -867,6 +868,9 @@ class tp_bibtex {
         $end = '';
         $url = explode(chr(13) . chr(10), $url);
         foreach ($url as $url) {
+            if ( $url == '' ) {
+                continue;
+            }
             $parts = explode(', ',$url);
             $parts[0] = trim( $parts[0] );
             $parts[1] = isset( $parts[1] ) ? $parts[1] : $parts[0];
@@ -889,7 +893,7 @@ class tp_bibtex {
          * Add DOI-URL
          * @since 5.0.0
          */
-        if ( $doi !== '' ) {
+        if ( $doi != '' ) {
             $doi_url = 'http://dx.doi.org/' . $doi;
             if ( $mode === 'list' ) {
                 $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';

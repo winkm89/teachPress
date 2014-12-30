@@ -148,6 +148,7 @@ It's **strongly** recommended to save your teachpress database tables before upg
 * New: [tpenrollments]: New parameter "date_format" added
 * New: [tpcloud]: New parameter "show_tags_as" added
 * New: tinyMCE 4 plugin for inserting shortcodes and documents
+* New: Send notification to a student if his registration is moved from the waitinglist to the course by automatic fill up
 * New: Editable time limit for exports and uploads added (constant TEACHPRESS_TIME_LIMIT)
 * Changed: Rewritten core API
 * Changed: Rewritten Shortcode [tpcloud]

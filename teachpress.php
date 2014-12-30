@@ -231,7 +231,7 @@ function tp_add_menu2() {
     $tp_admin_your_pub_page = add_submenu_page('publications.php',__('Your publications','teachpress'), __('Your publications','teachpress'),'use_teachpress','teachpress/publications.php','tp_show_publications_page');
     $tp_admin_add_pub_page = add_submenu_page('publications.php',__('Add new', 'teachpress'), __('Add new','teachpress'),'use_teachpress','teachpress/addpublications.php','tp_add_publication_page');
     $tp_admin_import_page = add_submenu_page('publications.php',__('Import/Export'), __('Import/Export'), 'use_teachpress', 'teachpress/import.php','tp_import_page');
-    $tp_admin_show_authors_page = add_submenu_page('publications.php',__('Authors'),__('Authors'),'use_teachpress','teachpress/authors.php','tp_show_authors_page');
+    $tp_admin_show_authors_page = add_submenu_page('publications.php',__('Authors', 'teachpress'),__('Authors', 'teachpress'),'use_teachpress','teachpress/authors.php','tp_show_authors_page');
     $tp_admin_edit_tags_page = add_submenu_page('publications.php',__('Tags'),__('Tags'),'use_teachpress','teachpress/tags.php','tp_tags_page');
     
     add_action("load-$tp_admin_all_pub_page", 'tp_show_publications_page_help');

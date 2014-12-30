@@ -176,18 +176,13 @@ class tp_enrollments {
             $checkbox[$i] = intval($checkbox[$i]);
             // Select course ID
             $sql = "SELECT `course_id`, `waitinglist` FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'";
-            $course = $wpdb->get_row($sql);
+            $signup = $wpdb->get_row($sql);
             // Start transaction
             $wpdb->query("SET AUTOCOMMIT=0");
             $wpdb->query("START TRANSACTION");
             // check if there are users in the waiting list
-            if ( $course->waitinglist == 0 ) {
-                $sql = "SELECT `con_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '$course->course_id' AND `waitinglist` = '1' ORDER BY `con_id` ASC LIMIT 0, 1";
-                $con_id = $wpdb->get_var($sql);
-                // if is true subscribe the first one in the waiting list for the course
-                if ($con_id != 0 && $con_id != '') {
-                    $wpdb->query( "UPDATE " . TEACHPRESS_SIGNUP . " SET `waitinglist` = '0' WHERE `con_id` = '$con_id'" );
-                }
+            if ( $signup->waitinglist == 0 ) {
+                tp_courses::move_up_signup($checkbox[$i]);
             }
             $wpdb->query("DELETE FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'");
             // End transaction
@@ -459,16 +454,16 @@ class tp_enrollments {
     
     /**
      * Creates the table for signups/waitinglist entries for old tab
-     * @param int $user_id          The user ID
-     * @param object $row           An object of course_data
-     * @param int $is_sign_out      0 or 1
+     * @param int $user_id              The user ID
+     * @param object $row               An object of course_data
+     * @param boolean $is_sign_out      Defines if there is a signout option for users (true) or not (false)
      * @return string
      * @since 5.0.0
      */
     private static function create_signups_table ($user_id, $row, $is_sign_out) {
         $rtn = '<table class="teachpress_enr_old">';
         $rtn .= '<tr>';
-        if ( $is_sign_out == '0' ) {
+        if ( $is_sign_out === true ) {
             $rtn .= '<th width="15">&nbsp;</th>';
         }
         $rtn .= '<th>' . __('Name','teachpress') . '</th>
@@ -488,8 +483,8 @@ class tp_enrollments {
                 $row1->parent_name .= ' -';
             }
             $rtn .= '<tr>';
-            if ( $is_sign_out == '0') {
-                $checkbox = ( tp_students::has_assessment($user_id, $row1->course_id) === true ) ? '<input name="checkbox2[]" type="checkbox" value="' . $row1->con_id . '" title="' . $row1->name . '" id="ver_' . $row1->con_id . '"/>' : '';
+            if ( $is_sign_out === true) {
+                $checkbox = ( tp_students::has_assessment($user_id, $row1->course_id) === false ) ? '<input name="checkbox2[]" type="checkbox" value="' . $row1->con_id . '" title="' . $row1->name . '" id="ver_' . $row1->con_id . '"/>' : '';
                 $rtn .='<td>' . $checkbox . '</td>';
             }		
             $rtn .= '<td><label for="ver_' . $row1->con_id . '" style="line-height:normal;" title="' . $row1->parent_name . ' ' .  $row1->name . '">' . stripslashes($row1->parent_name) . ' ' .  stripslashes($row1->name) . '</label></td>
@@ -505,8 +500,8 @@ class tp_enrollments {
     
     /**
      * Returns the tab for former signups/waitinglist places
-     * @param int $user_id
-     * @param int $is_sign_out
+     * @param int $user_id          The user id
+     * @param boolean $is_sign_out  Defines if there is a signout option for users (true) or not (false)
      * @return string
      * @since 5.0.0
      * @access private
@@ -524,7 +519,7 @@ class tp_enrollments {
             $rtn .= '<p><strong>' . __('Waiting list','teachpress') . '</strong></p>';
             $rtn .= self::create_signups_table($user_id, $row2, $is_sign_out);
         }
-        if ($is_sign_out == '0') {
+        if ($is_sign_out === true) {
             $rtn .= '<p><input name="austragen" type="submit" value="' . __('unsubscribe','teachpress') . '" id="austragen" /></p>';
         }
         return $rtn;
@@ -661,7 +656,7 @@ class tp_enrollments {
      * @since 5.0.0
      */
     public static function get_interface_for_users($user_id, $user_login, $user_email, $user_exists, $tab){
-        $is_sign_out = get_tp_option('sign_out');
+        $is_sign_out = ( get_tp_option('sign_out') == '0' ) ? true : false;
         $rtn = '';
         
         // if user is not registered: Registration
@@ -821,9 +816,9 @@ class tp_enrollments {
     
     /**
      * Send email notification
-     * @param int $code
-     * @param int $wp_id
-     * @param string $name
+     * @param int $code     Needs code 201 (successful course registration) or 202 (successful waitinglist registrarion)
+     * @param int $wp_id    The user ID
+     * @param string $name  The name of the course
      * @since 5.0.0
      */
     public static function send_notification($code, $wp_id, $name) {
@@ -841,7 +836,13 @@ class tp_enrollments {
             }
             $message = $message . stripslashes($name);
             $headers = 'From: ' . get_bloginfo('name') . ' ' . utf8_decode(chr(60)) .  get_bloginfo('admin_email') . utf8_decode(chr(62)) . "\r\n";
-            wp_mail($to, $subject, $message, $headers);
+            if ( defined('TP_MAIL_SYSTEM') ) {
+                $from = get_bloginfo('name') . ' <' . get_bloginfo('admin_email') . '>';
+                tuc_mail($to, $from, $subject, $message, '');
+            }
+            else {
+                wp_mail($to, $subject, $message, $headers);
+            }
         }
     }
     
