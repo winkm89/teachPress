@@ -704,12 +704,21 @@ class tp_bibtex {
      * @acces private
      */
     private static function set_date_of_publishing ($entry) {
+        $entry['month'] = array_key_exists('month', $entry) === true ? self::parse_month($entry['month']) : '';
+        $entry['day'] = array_key_exists('day', $entry) === true ? $entry['day'] : '';
+        // if complete date is given
         if ( $entry['date'] != '' ) {
             $entry['date'] = $entry['date'];
         }
+        // if month + year is given
+        elseif ( $entry['month'] != '' && $entry['day'] === '' && $entry['year'] != '' ) {
+            $entry['date'] = $entry['year'] . '-' . $entry['month'] . '-01';
+        }
+        // if day + month + year is given
         elseif ($entry['month'] != '' && $entry['day'] != '' && $entry['year'] != '') {
             $entry['date'] = $entry['year'] . '-' . $entry['month'] . '-' . $entry['day'];
         }
+        // if year is given
         else {
             $entry['date'] = $entry['year'] . '-01-01';
         }
@@ -1049,6 +1058,21 @@ class tp_bibtex {
     public static function parse_author_simple ($input) {
         $all_authors = str_replace( array(' and ', '{', '}'), array(', ', '', ''), $input );
         return stripslashes($all_authors);
+    }
+    
+    /**
+     * This function parses a month name into his numeric expression
+     * @param string $input
+     * @return string
+     * @since 5.0.0
+     * @access public
+     */
+    public static function parse_month ($input) {
+        if ( strlen($input) > 2 ) {
+            $date = date_parse($input);
+            $output = ( $date['month'] < 10 ) ? '0' . $date['month'] : $date['month'];
+        }
+        return $output;
     }
 
     /**
