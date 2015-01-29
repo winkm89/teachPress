@@ -303,7 +303,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.0-beta';
+    return '5.0.0-beta2';
 }
 
 /** 

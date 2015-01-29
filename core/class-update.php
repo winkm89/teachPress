@@ -568,6 +568,26 @@ class tp_update_db {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_SETTINGS . " CHANGE `value` `value` LONGTEXT $charset_collate NULL DEFAULT NULL");
         }
         
+        // expand char limit for tp_publications::author
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'author'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `author` `author` VARCHAR (3000) $charset_collate NULL DEFAULT NULL");
+        }
+        
+        // expand char limit for tp_publications::editor
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'editor'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `editor` `editor` VARCHAR (3000) $charset_collate NULL DEFAULT NULL");
+        }
+        
+        // expand char limit for tp_publications::institution
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'institution'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `institution` `institution` VARCHAR (500) $charset_collate NULL DEFAULT NULL");
+        }
+        
+        // expand char limit for tp_publications::organization
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'organization'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `organization` `organization` VARCHAR (500) $charset_collate NULL DEFAULT NULL");
+        }
+        
     }
     
     /**
