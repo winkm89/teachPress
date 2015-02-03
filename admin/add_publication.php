@@ -125,6 +125,14 @@ function tp_add_publication_page() {
         $pub_meta = array ( array('meta_key' => '', 'meta_value' => '') );
     }
 
+    // Check format of author/editor field
+    if ( $pub_id != 0 && !isset($_POST['create_pub']) ) {
+        $check = ( strpos($pub_data['author'], ',') !== false || strpos($pub_data['editor'], ',') !== false) ? true : false;
+        if ( $check === true ) {
+            get_tp_message( __('Please check the format of author/editor information and correct it to the following format: firstname1 lastname1 and firstname2 lastname 2. Example: Adam Smith and John M. Keynes','teachpress') , 'orange');
+        }
+    }
+
     if ( $pub_id != 0 && !isset($_POST['create_pub']) ) {
         echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
     }
@@ -206,10 +214,10 @@ class tp_publication_page {
             
             $test = ( $pub_id !== 0 ) ? tp_bookmarks::bookmark_exists($pub_id, $user_info->ID) : false;
             if ($test === true) {
-                echo '<p><input type="checkbox" name="bookmark[]" id="bookmark_' . $user_info->ID . '" disabled="disabled"/> <label for="bookmark_' . $user_info->ID . '">' . $user_info->display_name . '</label></p>';
+                echo '<p><input type="checkbox" name="bookmark[]" id="bookmark_' . $user_info->ID . '" disabled="disabled" checked="checked"/> <label for="bookmark_' . $user_info->ID . '" class="tp_bookmarks_checked">' . $user_info->display_name . '</label></p>';
             }
             else {
-                echo '<p><input type="checkbox" name="bookmark[]" id="bookmark_' . $user_info->ID . '" value="' . $user_info->ID . '" title="' . __('Bookmark for','teachpress') . ' ' . $user_info->display_name . '"/> <label for="bookmark_' . $user_info->ID . '" title="' . __('Bookmark for','teachpress') . ' ' . $user_info->display_name . '">' . $user_info->display_name . '</label></p>';
+                echo '<p><input type="checkbox" name="bookmark[]" id="bookmark_' . $user_info->ID . '" value="' . $user_info->ID . '" title="' . __('Bookmark for','teachpress') . ' ' . $user_info->display_name . '"/> <label for="bookmark_' . $user_info->ID . '" title="' . __('Bookmark for','teachpress') . ' ' . $user_info->display_name . '" class="tp_bookmarks">' . $user_info->display_name . '</label></p>';
             }
         }
     }
@@ -231,7 +239,7 @@ class tp_publication_page {
         echo '<div class="bookmarks" style="background-attachment: scroll; border:1px #DFDFDF solid; display: block; height: 100px; max-height: 205px; overflow-x: auto; overflow-y: auto; padding: 6px 11px;">';
         $test = ( $pub_id !== 0 ) ? tp_bookmarks::bookmark_exists($pub_id, $user) : false;
         if ( $test === true ) {
-            echo '<p><input type="checkbox" name="bookmark[]" id="bookmark" disabled="disabled"/> <label for="bookmark">' . __('add to your own list','teachpress') . '</label></p>';
+            echo '<p><input type="checkbox" name="bookmark[]" id="bookmark" disabled="disabled" checked="checked"/> <label for="bookmark">' . __('add to your own list','teachpress') . '</label></p>';
         }
         else {
             echo '<p><input type="checkbox" name="bookmark[]" id="bookmark" value="' . $user . '" title="' . __('Click to add the publication in your own list','teachpress') . '"/> <label for="bookmark" title="' . __('Click to add the publication in your own list','teachpress') . '">' . __('add to your own list','teachpress') . '</label></p>';

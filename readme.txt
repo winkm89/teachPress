@@ -38,7 +38,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 == Credits ==
 
-Copyright 2008-2014 by Michael Winkler
+Copyright 2008-2015 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -130,7 +130,7 @@ It's **strongly** recommended to save your teachpress database tables before upg
 
 == Changelog ==
 
-= 5.0.0 (beta) - (xx.xx.2014) =
+= 5.0.0 (beta) - (xx.xx.2015) =
 * New: A real author filter for publications added
 * New: Autocomplete for authors/editors added
 * New: Meta data system for courses, students and publications added
@@ -159,9 +159,12 @@ It's **strongly** recommended to save your teachpress database tables before upg
 * Changed: Using parameters instead of variables for the definition of database table names
 * Changed: Visible names for some publication types changed
 * Changed: Using field type "search" for search fields
+* Changed: Increased varchar limit for some field in table teachpress_pub (author,editor --> 3000 chars; institution, organization --> 500 chars)
 * Changed: The parameters TP_COURSE_SYSTEM and TP_PUBLICATION_SYSTEM were renamed to TEACHPRESS_COURSE_MODULE and TEACHPRESS_PUBLICATION_MODULE
 * Changed: The plugin requires at least WordPress 3.9 instead of 3.3
 * Bugfix: Fixed the handling of curly-brackets for the definition of surnames in author/editor names
+* Bugfix: Replace double spaces in author/editor names
+* Bugfix: BibTeX import: Better identification for the date of publishing
 * Bugfix: teachPress books widget works again
 * Killed: The shortcode [tpdate] is deprecated, use [tpcourseinfo] instead
 * Killed: The following functions are deprecated: get_tp_course(), get_tp_courses(), get_tp_course_free_places(), get_tp_tags(), get_tp_tag_cloud(), get_tp_publication(), get_tp_publications(), tp_is_user_subscribed(), tp_check_bookmark(), tp_admin_page_menu()

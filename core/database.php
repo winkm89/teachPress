@@ -1821,6 +1821,10 @@ class tp_publications {
         if ( substr($editor, -5) === ' and ' ) {
             $editor = substr($editor ,0 , strlen($editor) - 5);
         }
+        
+        // replace double spaces from author/editor fields
+        $author = str_replace('  ', ' ', $author);
+        $editor = str_replace('  ', ' ', $editor);
 
         $wpdb->insert( TEACHPRESS_PUB, array( 'title' => $title, 'type' => $type, 'bibtex' => $bibtex, 'author' => $author, 'editor' => $editor, 'isbn' => $isbn, 'url' => $url, 'date' => $date, 'urldate' => $urldate, 'booktitle' => $booktitle, 'issuetitle' => $issuetitle, 'journal' => $journal, 'volume' => $volume, 'number' => $number, 'pages' => $pages , 'publisher' => $publisher, 'address' => $address, 'edition' => $edition, 'chapter' => $chapter, 'institution' => $institution, 'organization' => $organization, 'school' => $school, 'series' => $series, 'crossref' => $crossref, 'abstract' => $abstract, 'howpublished' => $howpublished, 'key' => $key, 'techtype' => $techtype, 'comment' => $comment, 'note' => $note, 'image_url' => $image_url, 'doi' => $doi, 'is_isbn' => $is_isbn, 'rel_page' => $rel_page, 'status' => 'published', 'added' => $post_time, 'modified' => $post_time ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s' ) );
          $pub_id = $wpdb->insert_id;
@@ -1872,10 +1876,12 @@ class tp_publications {
         global $wpdb;
         $post_time = current_time('mysql',0);
         $pub_id = intval($pub_id);
+        
         // check if bibtex key has no spaces
         if ( strpos($data['bibtex'], ' ') !== false ) {
             $data['bibtex'] = str_replace(' ', '', $data['bibtex']);
         }
+        
         // check last chars of author/editor fields
         if ( substr($data['author'], -5) === ' and ' ) {
             $data['author'] = substr($data['author'] ,0 , strlen($data['author']) - 5);
@@ -1883,6 +1889,11 @@ class tp_publications {
         if ( substr($data['editor'], -5) === ' and ' ) {
             $data['editor'] = substr($data['editor'] ,0 , strlen($data['editor']) - 5);
         }
+        
+        // replace double spaces from author/editor fields
+        $data['author'] = str_replace('  ', ' ', $data['author']);
+        $data['editor'] = str_replace('  ', ' ', $data['editor']);
+        
         // update row
         $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => 'published', 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
         // Bookmarks

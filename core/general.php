@@ -300,7 +300,10 @@ function get_tp_var_types($type) {
                         'image_url' => '',
                         'doi' => '',
                         'is_isbn' => '',
-                        'rel_page' => '');
+                        'rel_page' => '',
+                        'status' => '',
+                        'added' => '',
+                        'modified' => '');
      }
      return $ret;
 }

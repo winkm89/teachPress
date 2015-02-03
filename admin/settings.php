@@ -158,7 +158,7 @@ class tp_settings_page {
                 <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
                 <p style="font-size: 20px; font-weight: bold; color: #f70e1a;">' . get_tp_option('db-version') . ' "Cranberry Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="http://mtrv.wordpress.com/teachpress/changelog/">Changelog</a> | <a href="http://mtrv.wordpress.com/teachpress/shortcode-reference/">Shortcode Reference</a> | <a href="http://mtrv.wordpress.com/teachpress/function-reference/">Function Reference</a></p>
-                <p>&copy; 2008-2014 by Michael Winkler | License: GPLv2 or later<br/></p>
+                <p>&copy; 2008-2015 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
               </div>';
     }
