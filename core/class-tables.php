@@ -371,7 +371,7 @@ class tp_tables {
         dbDelta("CREATE TABLE " . TEACHPRESS_SETTINGS . " (
                     `setting_id` INT UNSIGNED AUTO_INCREMENT,
                     `variable` VARCHAR (100),
-                    `value` TEXT,
+                    `value` LONGTEXT,
                     `category` VARCHAR (100),
                     PRIMARY KEY (setting_id)
                     ) $charset_collate;");
