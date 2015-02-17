@@ -499,9 +499,7 @@ function tp_handle_upload( &$file, $overrides = false, $course_id = 0 ) {
 
 	// A non-empty file will pass this test.
 	if ( $test_size && !($file['size'] > 0 ) ) {
-            if ( is_multisite() ) {
-                $error_msg = __( 'File is empty. Please upload something more substantial.' );
-            }
+            $error_msg = __( 'File is empty. Please upload something more substantial.' );
             return call_user_func($upload_error_handler, $file, $error_msg);
 	}
 

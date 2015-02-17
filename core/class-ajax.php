@@ -14,8 +14,8 @@
 class tp_ajax {
     /**
      * Adds a document headline
-     * @param string $doc_name
-     * @param int $course_id
+     * @param string $doc_name      The name of the document
+     * @param int $course_id        The course ID
      * @since 5.0.0
      * @access public
      */
@@ -26,8 +26,8 @@ class tp_ajax {
     
     /**
      * Changes the name of a document
-     * @param type $doc_id
-     * @param type $doc_name
+     * @param type $doc_id          The document ID
+     * @param type $doc_name        The name of the document
      * @since 5.0.0
      * @access public
      */
@@ -38,7 +38,7 @@ class tp_ajax {
     
     /**
      * Deletes a document
-     * @param int $doc_id
+     * @param int $doc_id           The document ID
      * @return boolean
      * @since 5.0.0
      * @access public
@@ -60,6 +60,12 @@ class tp_ajax {
         return true;
     }
     
+    /**
+     * Gets the artefact info screen. The info screen is used in the assessment menu of teachPress.
+     * @param int $artefact_id      The artefact ID
+     * @since 5.0.0
+     * @access public
+     */
     public static function get_artefact_screen($artefact_id) {
         $artefact = tp_artefacts::get_artefact($artefact_id);
         echo '<!doctype html>';
@@ -87,7 +93,7 @@ class tp_ajax {
     
     /**
      * Gets the info screen for a single assessment.
-     * @param type $assessment_id
+     * @param int $assessment_id       The assessment ID
      * @since 5.0.0
      * @access public
      */
@@ -159,7 +165,7 @@ class tp_ajax {
     
     /**
      * Gets a list of publications of a single author. This function is used for teachpress/admin/show_authors.php
-     * @param int $author_id
+     * @param int $author_id        The authur ID
      * @since 5.0.0
      * @access public
      */
@@ -183,7 +189,7 @@ class tp_ajax {
     
     /**
      * Gets the name of a document
-     * @param int $doc_id
+     * @param int $doc_id       The ID of the document
      * @since 5.0.0
      * @access public
      */
@@ -192,11 +198,20 @@ class tp_ajax {
         $data = tp_documents::get_document($doc_id);
         echo stripslashes($data['name']);
     }
-
+    
+    /**
+     * Gets the url of a mimetype image
+     * @param string $filename      The filename or the url
+     * @since 5.0.0
+     * @access public
+     */
+    public static function get_mimetype_image( $filename ) {
+        echo get_tp_mimetype_images($filename);
+    }
 
     /**
      * Saves the order of a document list
-     * @param array $array
+     * @param array $array      A numeric array which represents the sort order of course documents
      * @since 5.0.0
      * @access public
      */
