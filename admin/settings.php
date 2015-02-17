@@ -635,7 +635,7 @@ class tp_settings_page {
                  'count_title' => __('Number of students','teachpress'),
                  'delete_title' => __('Delete elemtent','teachpress'),
                  'add_title' => __('Add element','teachpress'),
-                 'tab' => 'student_data'
+                 'tab' => $tab
                  );
              tp_admin::get_course_option_box($elem, $elem, $args1);
         }
