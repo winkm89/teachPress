@@ -11,6 +11,7 @@ div#tp_select_course {padding: 0 0 15px 0;}
 .ui-state-highlight {margin-bottom: 4px;}
 .tp_file_label {cursor: pointer;}
 .tp_file_checkbox {margin:0 5px 0 5px;}
+#document_headline {font-size: 1.3em; margin: 1em 0;}
 
 /* drap and drop area */
 .ui-draggable, .ui-sortable {-ms-touch-action: none; touch-action: none;}

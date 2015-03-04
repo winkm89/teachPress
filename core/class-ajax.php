@@ -132,7 +132,7 @@ class tp_ajax {
         echo '<td>' . stripslashes($artefact['title'])  . '</td>';
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Type') . '</td>';
+        echo '<td>' . __('Type','teachpress') . '</td>';
         echo '<td>' . tp_admin::get_assessment_type_field('tp_type', $assessment['type']) . '</td>';
         echo '</tr>';
         echo '<tr>';

@@ -2206,7 +2206,6 @@ class tp_students {
 
         $test = $wpdb->query("SELECT `wp_id` FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '$wp_id'");
         if ($test == '0') {
-            $data['birthday'] = $data['birth_year'] . '-' . $data['birth_month'] . '-' . $data['birth_day'];
             $wpdb->insert( TEACHPRESS_STUD, array( 'wp_id' => $wp_id, 'firstname' => $data['firstname'], 'lastname' => $data['lastname'], 'userlogin' => $data['userlogin'], 'email' => $data['email'] ), array( '%d', '%s', '%s', '%s', '%s' ) );
             return true;
         }

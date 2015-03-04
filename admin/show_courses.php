@@ -16,7 +16,8 @@ function tp_show_course_page_help () {
         'title'     => __('Display courses','teachpress'),
         'content'   => '<p><strong>' . __('Shortcodes') . '</strong></p>
                         <p>' . __('You can use courses in a page or article with the following shortcodes:','teachpress') . '</p>
-                        <p>' . __('For course informations','teachpress') . ': <strong>[tpdate id="x"]</strong> ' . __('x = Course-ID','teachpress') . '</p>
+                        <p>' . __('For course informations','teachpress') . ': <strong>[tpcourseinfo id="x"]</strong> ' . __('x = Course-ID','teachpress') . '</p>
+                        <p>' . __('For course documents','teachpress') . ': <strong>[tpcoursedocs id="x"]</strong> ' . __('x = Course-ID','teachpress') . '</p>
                         <p>' . __('For the course list','teachpress') . ': <strong>[tpcourselist]</strong></p>
                         <p>' . __('For the enrollment system','teachpress') . ': <strong>[tpenrollments]</strong></p>
                         <p><strong>' . __('More information','teachpress') . '</strong></p>

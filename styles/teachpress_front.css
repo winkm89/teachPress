@@ -1,12 +1,12 @@
 /***********************/
-/* shortcode: [tpdate] */
+/* shortcode: [tpcourseinfo] */
 /***********************/
-.tpdate {width:100%; border:none;}
-.tpdate tr {}
-.tpdate td {border-bottom:1px dotted silver; padding:5px;}
-.tpdate td.tp_date_type {vertical-align:middle;}
-.tpdate td.tp_date_info p {margin-top:3px; margin-bottom:3px;}
-.tpdate td.tp_date_lecturer {vertical-align:middle;}
+.tp_courseinfo {width:100%; border:none;}
+.tp_courseinfo tr {}
+.tp_courseinfo td {border-bottom:1px dotted silver; padding:5px;}
+.tp_courseinfo td.tp_courseinfo_type {vertical-align:middle;}
+.tp_courseinfo td.tp_courseinfo_meta p {margin-top:3px; margin-bottom:3px;}
+.tp_courseinfo td.tp_courseinfo_lecturer {vertical-align:middle;}
 
 /******************************/
 /* shortcode: [tpenrollments] */
@@ -115,6 +115,7 @@ div.tp_single_image_right{float:right; padding: 0 0 5px 5px;}
 /**********************************************/
 #tpcourselist h3 {}
 #tpcourselist table.teachpress_course_list {border:none; width:100%;}
+.tp_course_headline{font-weight: bold; font-size: 1.2em;}
 .tp_auswahl {margin:3px; padding:3px;}
 .tp_lvs_name {font-size:14px;}
 td.tp_lvs_container {margin:5px; border-bottom:1px solid silver; border-right:1px solid silver; padding:7px 5px 7px 5px;}

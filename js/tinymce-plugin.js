@@ -79,7 +79,7 @@
                             url: teachpress_editor_url,
                             title: 'teachPress Document Manager',
                             id: 'tp_document_manager',
-                            inline: 1,
+							inline: 1,
                             width: 950,
                             height: 560,
                             buttons: [

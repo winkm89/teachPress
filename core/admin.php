@@ -41,8 +41,8 @@ class tp_admin {
     /**
      * Returns a select field for assessment types
      * @param string $field_name    The name of the field
-     * @param string $value         the value of the field
-     * @param string $tabindex         The tabindex number
+     * @param string $value         The value of the field
+     * @param string $tabindex      The tabindex number
      * @return string
      * @since 5.0.0
      */

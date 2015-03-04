@@ -672,7 +672,7 @@ function tp_courseinfo_shortcode($atts) {
         $head .= tp_shortcodes::get_coursemeta_line($id, $fields);
     }
     $head .= '</td>';
-    $head .= '<td clas="tp_courseinfolecturer">' . stripslashes($course->lecturer) . '</td>';
+    $head .= '<td clas="tp_courseinfo_lecturer">' . stripslashes($course->lecturer) . '</td>';
     $head .= '</tr>';
     
     // Search the child courses
@@ -683,15 +683,15 @@ function tp_courseinfo_shortcode($atts) {
             $row->name = $row->type;
         }
         $body .= '<tr>';
-        $body .= '<td class="tp_date_type"><strong>' . stripslashes($row->name) . '</strong></td>';
-        $body .= '<td class="tp_date_info">';
+        $body .= '<td class="tp_courseinfo_type"><strong>' . stripslashes($row->name) . '</strong></td>';
+        $body .= '<td class="tp_courseinfo_meta">';
         $body .= '<p>' . stripslashes($row->date) . ' ' . stripslashes($row->room) . '</p>';
         $body .= '<p>' . stripslashes($row->comment) . '</p>';
         if ( $show_meta === 1 ) {
             $body .= tp_shortcodes::get_coursemeta_line($id, $fields);
         }
         $body .= '</td>';
-        $body .= '<td class="tp_date_lecturer">' . stripslashes($row->lecturer) . '</td>';
+        $body .= '<td class="tp_courseinfo_lecturer">' . stripslashes($row->lecturer) . '</td>';
         $body .= '</tr>';
     } 
     return $head . $body . '</table>';

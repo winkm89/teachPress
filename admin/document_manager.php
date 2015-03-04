@@ -11,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" class="ie8 wp-toolbar"  lang="de-DE">
 <![endif]-->
 <!--[if !(IE 8) ]><!-->
-<html xmlns="http://www.w3.org/1999/xhtml" class="wp-toolbar"  lang="de-DE">
+<html xmlns="http://www.w3.org/1999/xhtml" class="wp-toolbar"  lang="de-DE" style="overflow: hidden;">
 <!--<![endif]-->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

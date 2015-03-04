@@ -591,8 +591,8 @@ class tp_single_course_page {
 
     /**
      * Shows the add_assessment tab
-     * @param type $course_id
-     * @param type $link_parameter
+     * @param int $course_id            The course ID
+     * @param array $link_parameter     The url link_parameter array. Used keys: sem, search
      * @since 5.0.0
      */
     public static function get_add_assessments_tab($course_id, $link_parameter) {
@@ -669,13 +669,23 @@ class tp_single_course_page {
         echo '<td>';
         foreach ( $assessments as $single_assessment ) {
             $class = '';
+            $passed_icon = '';
+            
+            // if user has a positive assessment (has passed)
             if ( $single_assessment['passed'] == 1 ) {
                 $class .= 'tp_assessment_passed';
+                $passed_icon = '&#10003;';
             }
+            else {
+                $passed_icon = '&#10007';
+            }
+            
+            // if there is a commt for the assessment
             if ( $single_assessment['comment'] != '' ) {
                 $class .= ' tp_assessment_comment';
             }
-            echo '<a href="' . plugins_url() . '/teachpress/ajax.php?assessment_id=' . $single_assessment['assessment_id'] . '" title="' . __('Edit Assessment','teachpress') . '" class="tp_assessment ' . $class . '" id="tp_assessment_' . $single_assessment['assessment_id'] . '">' . $single_assessment['value'] . '</a>';
+            
+            echo '<a href="' . plugins_url() . '/teachpress/ajax.php?assessment_id=' . $single_assessment['assessment_id'] . '" title="' . __('Edit Assessment','teachpress') . '" class="tp_assessment ' . $class . '" id="tp_assessment_' . $single_assessment['assessment_id'] . '">' . $single_assessment['value'] . '</a>' . $passed_icon;
         }
         echo '</td>';
     }
