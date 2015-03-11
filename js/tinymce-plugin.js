@@ -31,7 +31,7 @@
     }
     
     /**
-     * Gets a cookie from browser
+     * Gets a cookie
      * @param {string} cname    The name of the cookie
      * @returns {string}        The value of the cookie
      * @since 5.0.0
@@ -79,7 +79,7 @@
                             url: teachpress_editor_url,
                             title: 'teachPress Document Manager',
                             id: 'tp_document_manager',
-							inline: 1,
+                            inline: 1,
                             width: 950,
                             height: 560,
                             buttons: [
@@ -193,11 +193,23 @@
                                             type: 'listbox',
                                             name: 'tp_term',
                                             label: 'Term',
-                                            'values': teachpress_semester // teachpress_semester object is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_semester // is written with tp_write_data_for_tinymce()
                                         }
                                     ],
                                     onsubmit: function( e ) {
-                                        editor.insertContent( '[tpcourselist image="' + e.data.tp_image + '" image_size="' + e.data.tp_size + '" headline="' + e.data.tp_headline + '" text="' + e.data.tp_text + '" term="' + e.data.tp_term + '"]');
+                                        var image = e.data.tp_image;
+                                        var image_size = e.data.tp_size;
+                                        var headline = e.data.tp_headline;
+                                        var text = e.data.tp_text;
+                                        var term = e.data.tp_term;
+                                        
+                                        image = (image === 'none') ? '' : 'image="' + image + '"';
+                                        image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        headline = (headline === '1') ? '' : 'headline="' + headline + '"';
+                                        text = (text === '') ? '' : 'text="' + text + '"';
+                                        term = (term === '') ? '' : 'term="' + term + '"';
+                                        
+                                        editor.insertContent( '[tpcourselist ' + image + ' ' + image_size + ' ' + headline + ' ' + text + ' ' + term + ']');
                                     }
                                 });
                             }
@@ -216,13 +228,13 @@
                                             name: 'tp_coure_id',
                                             label: 'Select course',
                                             minWidth: 570,
-                                            'values': teachpress_courses // teachpress_courses object is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_courses //  is written with tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'textbox',
                                             name: 'tp_link_class',
                                             label: 'CSS class for links',
-                                            value: 'linksecure'
+                                            value: teachpress_file_link_css_class // is written with tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'textbox',
@@ -259,7 +271,21 @@
                                         }
                                     ],
                                     onsubmit: function( e ) {
-                                        editor.insertContent( '[tpcoursedocs id="' + e.data.tp_coure_id + '" link_class="' + e.data.tp_link_class + '" date_format="' + e.data.tp_date_format + '" show_date="' + e.data.tp_show_date + '" numbered="' + e.data.tp_numbered + '" headline="' + e.data.tp_headline + '"]');
+                                        var id = e.data.tp_coure_id;
+                                        var link_class = e.data.tp_link_class;
+                                        var date_format = e.data.tp_date_format;
+                                        var show_date = e.data.tp_show_date;
+                                        var numbered = e.data.tp_numbered;
+                                        var headline = e.data.tp_headline;
+                                        
+                                        id = (id === '0') ? '' : 'id="' + id + '"';
+                                        link_class = (link_class === teachpress_file_link_css_class) ? '' : 'link_class="' + link_class + '"';
+                                        date_format = (date_format === 'd.m.Y') ? '' : 'date_format="' + date_format + '"';
+                                        show_date = (show_date === '1') ? '' : 'show_date="' + show_date + '"';
+                                        numbered = (numbered === '1') ? '' : 'numbered="' + numbered + '"';
+                                        headline = (headline === '1') ? '' : 'headline="' + headline + '"';
+                                        
+                                        editor.insertContent( '[tpcoursedocs ' + id + ' ' + link_class + ' ' + date_format + ' ' + show_date + ' ' + numbered + ' ' + headline + ']');
                                     }
                                 });
                             }
@@ -278,7 +304,7 @@
                                             name: 'tp_coure_id',
                                             label: 'Select course',
                                             minWidth: 570,
-                                            'values': teachpress_courses // teachpress_courses object is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_courses // is written with tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -291,7 +317,13 @@
                                         }
                                     ],
                                     onsubmit: function( e ) {
-                                        editor.insertContent( '[tpcourseinfo id="' + e.data.tp_coure_id + '" show_meta="' + e.data.tp_show_meta + '"]');
+                                        var id = e.data.tp_coure_id;
+                                        var show_meta = e.data.tp_show_meta;
+                                        
+                                        id = (id === '0') ? '' : 'id="' + id + '"';
+                                        show_meta = (show_meta === '1') ? '' : 'show_meta="' + show_meta + '"';
+                                        
+                                        editor.insertContent( '[tpcourseinfo ' + id + ' ' + show_meta + ']');
                                     }
                                 });
                             }
@@ -309,7 +341,7 @@
                                             type: 'listbox',
                                             name: 'tp_term',
                                             label: 'Term',
-                                            'values': teachpress_semester // teachpress_semester object is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_semester // is written with tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'textbox',
@@ -319,7 +351,13 @@
                                         }
                                     ],
                                     onsubmit: function( e ) {
-                                        editor.insertContent( '[tpenrollments term="' + e.data.tp_term + '" date_format="' + e.data.tp_date_format + '"]');
+                                        var term = e.data.tp_term;
+                                        var date_format = e.data.tp_date_format;
+                                        
+                                        term = (term === '') ? '' : 'term="' + term + '"';
+                                        date_format = (date_format === 'd.m.Y H:i') ? '' : 'date_format="' + date_format + '"';
+                                        
+                                        editor.insertContent( '[tpenrollments ' + term + ' ' + date_format + ']');
                                     }
                                 });
                             }
@@ -342,7 +380,7 @@
                                             type: 'listbox',
                                             name: 'tp_user',
                                             label: 'Select user',
-                                            'values': teachpress_pub_user // teachpress_pub_user object is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_pub_user //  is written with tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -424,7 +462,27 @@
                                         }
                                     ],
                                     onsubmit: function( e ) {
-                                        editor.insertContent( '[tplist user="' + e.data.tp_user + '" headline="' + e.data.tp_headline + '" image="' + e.data.tp_image + '" image_size="' + e.data.tp_size + '" author_name="' + e.data.tp_author_name + '" editor_name="' + e.data.tp_editor_name + '" style="' + e.data.tp_style + '" link_style="' + e.data.tp_link_style + '" entries_per_page="' + e.data.tp_entries_per_page + '"]');
+                                        var user = e.data.tp_user;
+                                        var headline = e.data.tp_headline;
+                                        var image = e.data.tp_image;
+                                        var image_size = e.data.tp_size;
+                                        var author_name = e.data.tp_author_name;
+                                        var editor_name = e.data.tp_editor_name;
+                                        var style = e.data.tp_style;
+                                        var link_style = e.data.tp_link_style;
+                                        var entries_per_page = e.data.tp_entries_per_page;
+                                        
+                                        user = (user === '') ? '' : 'user="' + user + '"';
+                                        headline = (headline === '1') ? '' : 'headline="' + headline + '"';
+                                        image = (image === 'none') ? '' : 'image="' + image + '"';
+                                        image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
+                                        editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
+                                        style = (style === 'numbered') ? '' : 'style="' + style + '"';
+                                        link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
+                                        entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
+                                        
+                                        editor.insertContent( '[tplist ' + user + ' ' + headline + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + entries_per_page + ']');
                                     }
                                 });
                             }
@@ -442,7 +500,7 @@
                                             type: 'listbox',
                                             name: 'tp_user',
                                             label: 'Select user',
-                                            'values': teachpress_pub_user // teachpress_pub_user object is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_pub_user // is written with tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -551,7 +609,35 @@
                                         }
                                     ],
                                     onsubmit: function( e ) {
-                                        editor.insertContent( '[tpcloud user="' + e.data.tp_user + '" headline="' + e.data.tp_headline + '" max_size="' + e.data.tp_max_size + '" min_size="' + e.data.tp_min_size + '" tag_limit="' + e.data.tp_tag_limit + '" show_tags_as="' + e.data.tp_show_tags_as + '" image="' + e.data.tp_image + '" image_size="' + e.data.tp_size + '" author_name="' + e.data.tp_author_name + '" editor_name="' + e.data.tp_editor_name + '" style="' + e.data.tp_style + '" link_style="' + e.data.tp_link_style + '" entries_per_page="' + e.data.tp_entries_per_page + '"]');
+                                        var user = e.data.tp_user;
+                                        var headline = e.data.tp_headline;
+                                        var max_size = e.data.tp_max_size;
+                                        var min_size = e.data.tp_min_size;
+                                        var tag_limit = e.data.tp_tag_limit;
+                                        var show_tags_as = e.data.tp_show_tags_as;
+                                        var image = e.data.tp_image;
+                                        var image_size = e.data.tp_size;
+                                        var author_name = e.data.tp_author_name;
+                                        var editor_name = e.data.tp_editor_name;
+                                        var style = e.data.tp_style;
+                                        var link_style = e.data.tp_link_style;
+                                        var entries_per_page = e.data.tp_entries_per_page;
+                                        
+                                        user = (user === '') ? '' : 'user="' + user + '"';
+                                        headline = (headline === '1') ? '' : 'headline="' + headline + '"';
+                                        max_size = (max_size === '35') ? '' : 'max_size="' + max_size + '"';
+                                        min_size = (min_size === '11') ? '' : 'min_size="' + min_size + '"';
+                                        tag_limit = (tag_limit === '30') ? '' : 'tag_limit="' + tag_limit + '"';
+                                        show_tags_as = (show_tags_as === 'cloud') ? '' : 'show_tags_as="' + show_tags_as + '"';
+                                        image = (image === 'none') ? '' : 'image="' + image + '"';
+                                        image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
+                                        editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
+                                        style = (style === 'numbered') ? '' : 'style="' + style + '"';
+                                        link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
+                                        entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
+                                        
+                                        editor.insertContent( '[tpcloud ' + user + ' ' + headline + ' ' + max_size + ' ' + min_size + ' ' + tag_limit + ' ' + show_tags_as + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + entries_per_page + ']');
                                     }
                                 });
                             }
@@ -648,7 +734,27 @@
                                         }
                                     ],
                                     onsubmit: function( e ) {
-                                        editor.insertContent( '[tpsearch entries_per_page="' + e.data.tp_entries_per_page + '" image="' + e.data.tp_image + '" image_size="' + e.data.tp_size + '" author_name="' + e.data.tp_author_name + '" editor_name="' + e.data.tp_editor_name + '" style="' + e.data.tp_style + '" link_style="' + e.data.tp_link_style + '" as_filter="' + e.data.tp_as_filter + '" date_format="' + e.data.tp_date_format + '"]');
+                                        var image = e.data.tp_image;
+                                        var image_size = e.data.tp_size;
+                                        var author_name = e.data.tp_author_name;
+                                        var editor_name = e.data.tp_editor_name;
+                                        var style = e.data.tp_style;
+                                        var link_style = e.data.tp_link_style;
+                                        var entries_per_page = e.data.tp_entries_per_page;
+                                        var as_filter = e.data.tp_as_filter;
+                                        var date_format = e.data.tp_date_format;
+                                        
+                                        image = (image === 'none') ? '' : 'image="' + image + '"';
+                                        image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
+                                        editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
+                                        style = (style === 'numbered') ? '' : 'style="' + style + '"';
+                                        link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
+                                        entries_per_page = (entries_per_page === '20') ? '' : 'entries_per_page="' + entries_per_page + '"';
+                                        as_filter = (as_filter === 'false') ? '' : 'as_filter="' + as_filter + '"';
+                                        date_format = (date_format === 'd.m.Y') ? '' : 'date_format="' + date_format + '"';
+                                        
+                                        editor.insertContent( '[tpsearch ' + entries_per_page + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + as_filter + ' ' + date_format + ']');
                                     }
                                 });
                             }
