@@ -3,22 +3,20 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, course management, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.1
-Stable tag: 5.0.0beta
+Tested up to: 4.1.1
+Stable tag: 5.0.0
 
 With this plugin you can easy manage courses and publications.
 
 == Description ==
-The plugin unites a course management system (with modules for enrollments and assessments) and a BibTeX compatible publication management. teachPress is optimized for the needs of professorships and research groups. You can use it with WordPress 3.3.0 or higher.
-
-For more information see [here](http://www.mtrv.wordpress.com/teachpress/).
+The plugin unites a course management system (with modules for enrollments, documents and assessments) and a BibTeX compatible publication management. teachPress is optimized for the needs of professorships and research groups. You can use it with WordPress 3.9.0 or higher.
 
 = Features: =
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
 * RSS feed for publications
-* Course management with an integrated enrollment, assessment and document modules
+* Course management with an integrated modules for enrollments, assessments and documents
 * XLS/CSV export for course lists
 * Many shortcodes for an easy using of publication lists, publication searches, enrollments and course overviews
 * Dymamic adding of new data fields for courses, students and publications
@@ -32,6 +30,12 @@ For more information see [here](http://www.mtrv.wordpress.com/teachpress/).
 * Spanish (o)
 
 (o) Outdated language files
+
+= Further information = 
+* [Developer blog](https://mtrv.wordpress.com/teachpress/) 
+* [Upgrade information](https://mtrv.wordpress.com/2015/03/12/teachpress-5-0-upgrade-information/)
+* [teachPress Shortcode Reference](https://mtrv.wordpress.com/teachpress/shortcode-reference/) 
+* [teachPress on github](https://github.com/winkm89/teachPress)  
 
 = Disclaimer =  
 Use at your own risk. No warranty expressed or implied is provided.  
@@ -126,11 +130,11 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 == Upgrade Notice ==
 
 = 5.0.0 =
-It's **strongly** recommended to save your teachpress database tables before upgrading!
+It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
 
-= 5.0.0 (beta) - (xx.xx.2015) =
+= 5.0.0 - (12.03.2015) =
 * New: A real author filter for publications added
 * New: Autocomplete for authors/editors added
 * New: Meta data system for courses, students and publications added

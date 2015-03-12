@@ -9,4 +9,3 @@ jQuery(document).ready(function($) {
     $('#mail_text').resizable({handles: "se", minHeight: 55, minWidth: 400});
     $('#mail_recipients').resizable({handles: "se", minHeight: 55, minWidth: 400});
 });
-

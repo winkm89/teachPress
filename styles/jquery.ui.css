@@ -14,7 +14,7 @@
 /* jquery UI autocomplete */
 .ui-autocomplete { position: absolute; cursor: default; background: #F9F9F9; border: 1px solid #DFDFDF; }
 .ui-autocomplete .ui-menu-item {padding:5px;}
-.ui-menu-item .ui-state-hover, .ui-menu-item .ui-state-focus {background-color: #21759B; color: #fff;}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {background-color: #21759B; background-image: none; padding: 0px; margin: 0px; border-radius: 0; color: #fff;}
 .ui-autocomplete .ui-menu-item a:hover {color:#fff;}
 /* jQuery UI menu */
 .ui-menu {list-style:none; padding: 2px; margin: 0; display:block; float: left;}
