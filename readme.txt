@@ -1,25 +1,25 @@
 === teachPress ===
 Contributors: Michael Winkler
-Tags: publications, enrollments, education, course management, BibTeX, bibliography
+Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1.1
-Stable tag: 5.0.0
+Stable tag: 5.0.1
 
-With this plugin you can easy manage courses and publications.
+Manage your courses and publications with teachPress 
 
 == Description ==
-The plugin unites a course management system (with modules for enrollments, documents and assessments) and a BibTeX compatible publication management. teachPress is optimized for the needs of professorships and research groups. You can use it with WordPress 3.9.0 or higher.
+This plugin unites a course management system (with modules for enrollments, documents and assessments) and a BibTeX compatible publication management. teachPress is optimized for the needs of professorships and research groups. You can use it with WordPress 3.9.0 or higher.
 
 = Features: =
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
 * RSS feed for publications
-* Course management with an integrated modules for enrollments, assessments and documents
+* Course management with integrated modules for enrollments, assessments and documents
 * XLS/CSV export for course lists
 * Many shortcodes for an easy using of publication lists, publication searches, enrollments and course overviews
-* Dymamic adding of new data fields for courses, students and publications
+* Dymamic meta data system for courses, students and publications
 
 = Supported Languages =
 * English
@@ -89,8 +89,8 @@ I would like to thank the team of [CBIS, Chemnitz University of Technology](http
 4. Go in the backend to Courses->Settings and click on "Update to ....".
 
 == Screenshots ==
-1. Add publication menu
-2. Add course menu
+1. Add course menu
+2. Add publication menu
 3. Example for a publication list created with [tpcloud]
  
 
@@ -133,6 +133,9 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.1 - (15.03.2015) =
+* New: [tplist]: New parameter "author" added
 
 = 5.0.0 - (12.03.2015) =
 * New: A real author filter for publications added

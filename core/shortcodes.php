@@ -1133,6 +1133,7 @@ function tp_cloud_shortcode($atts) {
  *      user (STRING)          user_ids (separated by comma)
  *      tag (STRING)           tag_ids (separated by comma)
  *      type (STRING)          publication types (separated by comma)
+ *      author (STRING)        author ids (separated by comma)
  *      exclude (STRING)       a string with one or more IDs of publication you don't want to display
  *      include (STRING)       a string with one or more IDs of publication you want to display
  *      year (STRING)          the publication years (separated by comma)
@@ -1158,6 +1159,7 @@ function tp_list_shortcode($atts){
        'user' => '',
        'tag' => '',
        'type' => '',
+       'author' => '',
        'exclude' => '',
        'include' => '',
        'year' => '',
@@ -1228,7 +1230,7 @@ function tp_list_shortcode($atts){
     }
     
     // get publications
-    $args = array('tag' => $tag, 'year' => $year, 'type' => $type, 'user' => $user, 'order' => $order, 'exclude' => $exclude, 'include' => $include, 'output_type' => ARRAY_A, 'limit' => $limit);
+    $args = array('tag' => $tag, 'year' => $year, 'type' => $type, 'author_id' => $author, 'user' => $user, 'order' => $order, 'exclude' => $exclude, 'include' => $include, 'output_type' => ARRAY_A, 'limit' => $limit);
     $row = tp_publications::get_publications( $args );
     $number_entries = ( $pagination === 1 ) ? tp_publications::get_publications($args, true) : 0;
     $count = count($row);
