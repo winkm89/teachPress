@@ -104,9 +104,9 @@ class tp_bibtex {
 
     /**
      * Get a single publication in html format
-     * @param array $row        the publication array
-     * @param array $all_tags   array of tags
-     * @param array $settings   array of settings
+     * @param array $row        The publication array (used keys: title, image_url, ...)
+     * @param array $all_tags   Array of tags (used_keys: pub_id, tag_id, name)
+     * @param array $settings   Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
      * @param int $tpz          the counter for numbered publications (default: 0)
      * @return string
      * @since 3.0.0
@@ -116,6 +116,7 @@ class tp_bibtex {
         $settings['use_span'] = true; 
         $tag_string = '';
         $keywords = '';
+        $container_id = ( $settings['container_suffix'] != '' ) ? $row['pub_id'] . '_' . $settings['container_suffix'] : $row['pub_id'];
         // show tags
         if ( $settings['with_tags'] == 1 ) {
             foreach ($all_tags as $tag) {
@@ -147,29 +148,16 @@ class tp_bibtex {
                 $image_bottom = '<div class="tp_pub_image_bottom"><img name="' . stripslashes($row['title']) . '" src="' . $row['image_url'] . '" style="max-width:' . ($settings['pad_size']  - 5) .'px;" alt="' . stripslashes($row['title']) . '" /></div>';
             }
         }
-        // transform URL into full HTML link
-        if ( $row['rel_page'] != 0 ) {
-            $name = '<a href="' . get_permalink($row['rel_page']) . '">' . stripslashes($row['title']) . '</a>';
-        }
-        // for inline style
-        elseif ( $row['url'] != '' && $settings['link_style'] === 'inline' ) {
-            $name = '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . $row['title'] . '</a>';
-        }
-        // for direct style 
-        elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) { 
-            $parts = tp_bibtex::explode_url($row['url']); 
-            $name = '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . $row['title'] . '</a>'; 
-        } 
-        else {
-            $name = $row['title'];
-        }
+        
+        // prepare the title
+        $name = self::prepare_publication_title($row, $settings, $container_id);
 
         // parse author names 
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = self::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_name'] );
+            $all_authors = self::parse_author($row['author'], $settings['author_name'] );
         }
 
         // language sensitive publication type
@@ -182,15 +170,15 @@ class tp_bibtex {
 
         // if is an abstract
         if ( $row['abstract'] != '' ) {
-            $abstract = '<span class="tp_abstract_link"><a id="tp_abstract_sh_' . $row['pub_id'] . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_abstract' . "'" . ')" title="' . __('Show abstract','teachpress') . '" style="cursor:pointer;">' . __('Abstract','teachpress') . '</a> | </span>';
+            $abstract = '<span class="tp_abstract_link"><a id="tp_abstract_sh_' . $container_id . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_abstract' . "'" . ')" title="' . __('Show abstract','teachpress') . '" style="cursor:pointer;">' . __('Abstract','teachpress') . '</a> | </span>';
         }
         // if are links
         if ( $row['url'] != '' || $row['doi'] != '' ) {
             if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
-                $url = '<span class="tp_resource_link"><a id="tp_links_sh_' . $row['pub_id'] . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_links' . "'" . ')" title="' . __('Show links and resources','teachpress') . '" style="cursor:pointer;">' . __('Links','teachpress') . '</a> | </span>';
+                $url = '<span class="tp_resource_link"><a id="tp_links_sh_' . $container_id . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" title="' . __('Show links and resources','teachpress') . '" style="cursor:pointer;">' . __('Links','teachpress') . '</a> | </span>';
             }
             else {
-                $url = '<span class="tp_resource_link"> | ' . __('Links','teachpress') . ': ' . tp_bibtex::prepare_url($row['url'], $row['doi'], 'enumeration') . '</span>';
+                $url = '<span class="tp_resource_link"> | ' . __('Links','teachpress') . ': ' . self::prepare_url($row['url'], $row['doi'], 'enumeration') . '</span>';
             }
         }
         // if with tags
@@ -199,10 +187,10 @@ class tp_bibtex {
         }
         // link style
         if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
-            $a2 = $abstract . $url . '<span class="tp_bibtex_link"><a id="tp_bibtex_sh_' . $row['pub_id'] . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_bibtex' . "'" . ')" style="cursor:pointer;" title="' . __('Show BibTeX entry','teachpress') . '">' . __('BibTeX','teachpress') . '</a></span>' . $tag_string;
+            $a2 = $abstract . $url . '<span class="tp_bibtex_link"><a id="tp_bibtex_sh_' . $container_id . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_bibtex' . "'" . ')" style="cursor:pointer;" title="' . __('Show BibTeX entry','teachpress') . '">' . __('BibTeX','teachpress') . '</a></span>' . $tag_string;
         }
         else {
-            $a2 = $abstract . '<span class="tp_bibtex_link"><a id="tp_bibtex_sh_' . $row['pub_id'] . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_bibtex' . "'" . ')" style="cursor:pointer;" title="' . __('Show BibTeX entry','teachpress') . '">' . __('BibTeX','teachpress') . '</a></span>' . $tag_string . $url;
+            $a2 = $abstract . '<span class="tp_bibtex_link"><a id="tp_bibtex_sh_' . $container_id . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_bibtex' . "'" . ')" style="cursor:pointer;" title="' . __('Show BibTeX entry','teachpress') . '">' . __('BibTeX','teachpress') . '</a></span>' . $tag_string . $url;
         }
         // different styles: simple and normal
         if ( $settings['style'] === 'simple' || $settings['style'] === 'numbered' || $settings['style'] === 'numbered_desc' ) {
@@ -215,7 +203,7 @@ class tp_bibtex {
             $a1 .= '<span class="tp_pub_author_simple">' . stripslashes($all_authors) . '</span>';
             $a1 .= '<span class="tp_pub_year_simple"> (' . $row['year'] . ')</span>: ';
             $a1 .= '<span class="tp_pub_title_simple">' . stripslashes($name) . '</span>. ';
-            $a1 .= '<span class="tp_pub_additional_simple">' . tp_bibtex::single_publication_meta_row($row, $settings) . '</span>';
+            $a1 .= '<span class="tp_pub_additional_simple">' . self::single_publication_meta_row($row, $settings) . '</span>';
             $a2 = ' <span class="tp_pub_tags_simple">(' . __('Type') . ': <span class="tp_pub_typ_simple">' . stripslashes($type) . '</span> | ' . $a2 . ')</span>';
         }
         else {
@@ -227,7 +215,7 @@ class tp_bibtex {
             $a1 .= '<td class="tp_pub_info">';
             $a1 .= '<p class="tp_pub_author">' . stripslashes($all_authors) . '</p>';
             $a1 .= '<p class="tp_pub_title">' . stripslashes($name) . ' <span class="tp_pub_typ">(' . stripslashes($type) . ')</span></p>';
-            $meta_row = tp_bibtex::single_publication_meta_row($row, $settings);
+            $meta_row = self::single_publication_meta_row($row, $settings);
             if ($meta_row != '.') {
                 $a1 .= '<p class="tp_pub_additional">' . $meta_row . '</p>';
             }
@@ -236,22 +224,22 @@ class tp_bibtex {
         // end styles
 
         // div bibtex
-        $a3 = '<div class="tp_bibtex" id="tp_bibtex_' . $row['pub_id'] . '" style="display:none;">';
-        $a3 .= '<div class="tp_bibtex_entry">' . nl2br( tp_bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ) . '</div>';
-        $a3 .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_bibtex' . "'" . ')">' . __('Close','teachpress') . '</a></p>';
+        $a3 = '<div class="tp_bibtex" id="tp_bibtex_' . $container_id . '" style="display:none;">';
+        $a3 .= '<div class="tp_bibtex_entry">' . nl2br( self::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ) . '</div>';
+        $a3 .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_bibtex' . "'" . ')">' . __('Close','teachpress') . '</a></p>';
         $a3 .= '</div>';
         // div abstract
         if ( $row['abstract'] != '' ) {
-            $a3 .= '<div class="tp_abstract" id="tp_abstract_' . $row['pub_id'] . '" style="display:none;">';
-            $a3 .= '<div class="tp_abstract_entry">' . tp_bibtex::prepare_text_for_html($row['abstract']) . '</div>';
-            $a3 .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_abstract' . "'" . ')">' . __('Close','teachpress') . '</a></p>';
+            $a3 .= '<div class="tp_abstract" id="tp_abstract_' . $container_id . '" style="display:none;">';
+            $a3 .= '<div class="tp_abstract_entry">' . self::prepare_text_for_html($row['abstract']) . '</div>';
+            $a3 .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_abstract' . "'" . ')">' . __('Close','teachpress') . '</a></p>';
             $a3 .= '</div>';
         }
         // div links
         if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
-            $a3 .= '<div class="tp_links" id="tp_links_' . $row['pub_id'] . '" style="display:none;">';
-            $a3 .= '<div class="tp_links_entry">' . tp_bibtex::prepare_url($row['url'], $row['doi'], 'list') . '</div>';
-            $a3 .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $row['pub_id'] . "'" . ',' . "'" . 'tp_links' . "'" . ')">' . __('Close','teachpress') . '</a></p>';
+            $a3 .= '<div class="tp_links" id="tp_links_' . $container_id . '" style="display:none;">';
+            $a3 .= '<div class="tp_links_entry">' . self::prepare_url($row['url'], $row['doi'], 'list') . '</div>';
+            $a3 .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')">' . __('Close','teachpress') . '</a></p>';
             $a3 .= '</div>';
         }
         $a4 = $image_bottom . '
@@ -812,7 +800,7 @@ class tp_bibtex {
         return nl2br(stripslashes($input));
     }
 
-        /**
+   /**
      * Prepare a page number
      * @access public
      * @param string $input
@@ -824,6 +812,35 @@ class tp_bibtex {
             return str_replace("--", "–", $input);
         }
         return '';
+    }
+    
+    /**
+     * This function prepares the publication title for html publication lists. This is used in get_single_publication_html().
+     * @param array $row                The publication array
+     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
+     * @param string $container_id      The basic ID for div container
+     * @return string
+     * @since 5.0.2
+     */
+    private static function prepare_publication_title ($row, $settings, $container_id) {
+        $name = '';
+        // transform URL into full HTML link
+        if ( $row['rel_page'] != 0 ) {
+            $name = '<a href="' . get_permalink($row['rel_page']) . '">' . stripslashes($row['title']) . '</a>';
+        }
+        // for inline style
+        elseif ( $row['url'] != '' && $settings['link_style'] === 'inline' ) {
+            $name = '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . $row['title'] . '</a>';
+        }
+        // for direct style 
+        elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) { 
+            $parts = self::explode_url($row['url']); 
+            $name = '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . $row['title'] . '</a>'; 
+        } 
+        else {
+            $name = $row['title'];
+        }
+        return $name;
     }
 
     /**

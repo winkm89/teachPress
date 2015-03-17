@@ -876,28 +876,29 @@ function tp_links_shortcode ($atts) {
  * Publication list with tag cloud
  * 
  * Parameters for the array $atts:
- *      user (STRING)          the id of on or more users (separated by comma)
- *      type (STRING)          the publication types you want to show (separated by comma)
- *      exclude (INT)          one or more IDs of publications you don't want to show (separated by comma)
- *      order (STRING)         title, year, bibtex or type, default: date DESC
- *      headline (INT)         show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
- *      maxsize (INT)          maximal font size for the tag cloud, default: 35
- *      minsize (INT)          minimal font size for the tag cloud, default: 11
- *      limit (INT)            number of tags, default: 30
- *      hide_tags (STRING)     ids of the tags you want to hide from your users (separated by comma)
- *      exclude_tags (STRING)  similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
- *      image (STRING)         none, left, right or bottom, default: none 
- *      image_size (INT)       max. Image size, default: 0
- *      anchor (INT)           0 (false) or 1 (true), default: 1
- *      author_name (STRING)   simple, last, initials or old, default: last
- *      editor_name (STRING)   simple, last, initials or old, default: last
- *      style (STRING)         simple, numbered, numbered_desc or std, default: std
- *      link_style (STRING)    inline or images, default: inline
- *      date_format (STRING)   the format for date; needed for the types: presentations, online; default: d.m.Y
- *      pagination (INT)       activate pagination (1) or not (0), default: 0
- *      entries_per_page (INT) number of publications per page (pagination must be set to 1), default: 30
- *      sort_list (STRING)     a list of publication types (separated by comma) which overwrites the default sort order for headline = 2
- *      show_tags_as (STRING)  cloud, pulldown or none, default: cloud
+ *      user (STRING)               the id of on or more users (separated by comma)
+ *      type (STRING)               the publication types you want to show (separated by comma)
+ *      exclude (INT)               one or more IDs of publications you don't want to show (separated by comma)
+ *      order (STRING)              title, year, bibtex or type, default: date DESC
+ *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
+ *      maxsize (INT)               maximal font size for the tag cloud, default: 35
+ *      minsize (INT)               minimal font size for the tag cloud, default: 11
+ *      limit (INT)                 number of tags, default: 30
+ *      hide_tags (STRING)          ids of the tags you want to hide from your users (separated by comma)
+ *      exclude_tags (STRING)       similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
+ *      image (STRING)              none, left, right or bottom, default: none 
+ *      image_size (INT)            max. Image size, default: 0
+ *      anchor (INT)                0 (false) or 1 (true), default: 1
+ *      author_name (STRING)        simple, last, initials or old, default: last
+ *      editor_name (STRING)        simple, last, initials or old, default: last
+ *      style (STRING)              simple, numbered, numbered_desc or std, default: std
+ *      link_style (STRING)         inline or images, default: inline
+ *      date_format (STRING)        the format for date; needed for the types: presentations, online; default: d.m.Y
+ *      pagination (INT)            activate pagination (1) or not (0), default: 1
+ *      entries_per_page (INT)      number of publications per page (pagination must be set to 1), default: 30
+ *      sort_list (STRING)          a list of publication types (separated by comma) which overwrites the default sort order for headline = 2
+ *      show_tags_as (STRING)       cloud, pulldown or none, default: cloud
+ *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  * 
  * WARNING: id has been removed with teachPress 4.0.0, please use "user" instead!
  * 
@@ -935,7 +936,8 @@ function tp_cloud_shortcode($atts) {
         'pagination' => 1,
         'entries_per_page' => 50,
         'sort_list' => '',
-        'show_tags_as' => 'cloud'
+        'show_tags_as' => 'cloud',
+        'container_suffix' => ''
     ), $atts));
    
     $settings = array(
@@ -955,6 +957,7 @@ function tp_cloud_shortcode($atts) {
         'sort_list' => htmlspecialchars($sort_list),
         'show_tags_as' => htmlspecialchars($show_tags_as),
         'with_tags' => 1,
+        'container_suffix' => htmlspecialchars($container_suffix)
     );
     $cloud_settings = array (
         'tag_limit' => intval($tag_limit),
@@ -1130,25 +1133,26 @@ function tp_cloud_shortcode($atts) {
  * Publication list without tag cloud
  * 
  * possible values for $atts:
- *      user (STRING)          user_ids (separated by comma)
- *      tag (STRING)           tag_ids (separated by comma)
- *      type (STRING)          publication types (separated by comma)
- *      author (STRING)        author ids (separated by comma)
- *      exclude (STRING)       a string with one or more IDs of publication you don't want to display
- *      include (STRING)       a string with one or more IDs of publication you want to display
- *      year (STRING)          the publication years (separated by comma)
- *      order (STRING)         title, year, bibtex or type, default: date DESC
- *      headline (INT)         show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
- *      image (STRING)         none, left, right or bottom, default: none 
- *      image_size (INT)       max. Image size, default: 0
- *      author_name (STRING)   last, initials or old, default: last
- *      editor_name (STRING)   last, initials or old, default: last
- *      style (STRING)         simple, numbered, numbered_desc or std, default: std
- *      link_style (STRING)    inline or images, default: inline
- *      date_format (STRING)   the format for date; needed for the types: presentations, online; default: d.m.Y
- *      pagination (INT)       activate pagination (1) or not (0), default: 0
- *      entries_per_page (INT) number of publications per page (pagination must be set to 1), default: 30
- *      sort_list (STRING)     a list of publication types (separated by comma) which overwrites the default sort order for headline = 2 
+ *      user (STRING)               user_ids (separated by comma)
+ *      tag (STRING)                tag_ids (separated by comma)
+ *      type (STRING)               publication types (separated by comma)
+ *      author (STRING)             author ids (separated by comma)
+ *      exclude (STRING)            a string with one or more IDs of publication you don't want to display
+ *      include (STRING)            a string with one or more IDs of publication you want to display
+ *      year (STRING)               the publication years (separated by comma)
+ *      order (STRING)              title, year, bibtex or type, default: date DESC
+ *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
+ *      image (STRING)              none, left, right or bottom, default: none 
+ *      image_size (INT)            max. Image size, default: 0
+ *      author_name (STRING)        last, initials or old, default: last
+ *      editor_name (STRING)        last, initials or old, default: last
+ *      style (STRING)              simple, numbered, numbered_desc or std, default: std
+ *      link_style (STRING)         inline or images, default: inline
+ *      date_format (STRING)        the format for date; needed for the types: presentations, online; default: d.m.Y
+ *      pagination (INT)            activate pagination (1) or not (0), default: 1
+ *      entries_per_page (INT)      number of publications per page (pagination must be set to 1), default: 30
+ *      sort_list (STRING)          a list of publication types (separated by comma) which overwrites the default sort order for headline = 2 
+ *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  * 
  * @param array $atts
  * @return string
@@ -1174,7 +1178,8 @@ function tp_list_shortcode($atts){
        'date_format' => 'd.m.Y',
        'pagination' => 1,
        'entries_per_page' => 50,
-       'sort_list' => ''
+       'sort_list' => '',
+       'container_suffix' => ''
     ), $atts));
 
     $tparray = '';
@@ -1195,6 +1200,7 @@ function tp_list_shortcode($atts){
         'link_style' => htmlspecialchars($link_style),
         'date_format' => htmlspecialchars($date_format),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
+        'container_suffix' => htmlspecialchars($container_suffix)
     );
     
     // Handle limits for pagination
@@ -1272,18 +1278,19 @@ function tp_list_shortcode($atts){
  * tpsearch: Frontend search function for publications
  *
  * possible values for $atts:
- *      user (STRING)           user_ids (separated by comma)
- *      tag (STRING)            tag_ids (separated by comma)
- *      entries_per_page (INT)  number of entries per page (default: 20)
- *      image (STRING)          none, left, right or bottom, default: none 
- *      image_size (INT)        max. Image size, default: 0
- *      author_name (STRING)    last, initials or old, default: last
- *      editor_name (STRING)    last, initials or old, default: last
- *      style (STRING)          simple, numbered or std, default: numbered
- *      link_style (STRING)     inline, images or direct, default: inline
- *      as_filter (STRING)      set it to "true" if you want to display publications by default
- *      date_format (STRING)    the format for date; needed for presentations, default: d.m.Y
- *      order (STRING)          date, title, year, bibtex or type, default: date DESC
+ *      user (STRING)               user_ids (separated by comma)
+ *      tag (STRING)                tag_ids (separated by comma)
+ *      entries_per_page (INT)      number of entries per page (default: 20)
+ *      image (STRING)              none, left, right or bottom, default: none 
+ *      image_size (INT)            max. Image size, default: 0
+ *      author_name (STRING)        last, initials or old, default: last
+ *      editor_name (STRING)        last, initials or old, default: last
+ *      style (STRING)              simple, numbered or std, default: numbered
+ *      link_style (STRING)         inline, images or direct, default: inline
+ *      as_filter (STRING)          set it to "true" if you want to display publications by default
+ *      date_format (STRING)        the format for date; needed for presentations, default: d.m.Y
+ *      order (STRING)              date, title, year, bibtex or type, default: date DESC
+ *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  * 
  * @param array $atts
  * @return string
@@ -1302,7 +1309,8 @@ function tp_search_shortcode ($atts) {
        'link_style' => 'inline',
        'as_filter' => 'false',
        'date_format' => 'd.m.Y',
-       'order' => 'date DESC'
+       'order' => 'date DESC',
+       'container_suffix' => ''
     ), $atts)); 
     
     $tparray = '';
@@ -1320,6 +1328,7 @@ function tp_search_shortcode ($atts) {
         'link_style' => htmlspecialchars($link_style),
         'date_format' => htmlspecialchars($date_format),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
+        'container_suffix' => htmlspecialchars($container_suffix)
     );
     if ($settings['image']== 'left' || $settings['image']== 'right') {
        $settings['pad_size'] = $image_size + 5;

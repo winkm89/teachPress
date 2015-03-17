@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: teachPress v5.0.0beta\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-20 23:23+0100\n"
-"PO-Revision-Date: 2015-03-11 20:23:10+0000\n"
+"PO-Revision-Date: 2015-03-15 23:15:22+0000\n"
 "Last-Translator: Michael Winkler <michi.mtrv@googlemail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3073,7 +3073,7 @@ msgstr "Anzahl untergeordneter Veranstaltungen"
 #: admin/add_course.php:444
 #@ teachpress
 msgid "Number of places per course"
-msgstr "Anzahl Pläte pro Veranstaltung"
+msgstr "Anzahl Plätze pro Veranstaltung"
 
 #: admin/add_publication.php:429
 #@ teachpress
