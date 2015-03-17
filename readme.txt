@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1.1
-Stable tag: 5.0.2
+Stable tag: 5.0.3
 
 Manage your courses and publications with teachPress 
 
@@ -134,7 +134,10 @@ It's **strongly** recommended to save your teachPress database tables before upg
 
 == Changelog ==
 
-= 5.02 - (17.03.2015) =
+= 5.0.3 - (17.03.2015) =
+* Bugfix: Fixed an old installer bug, which adds the wrong template for related content. 
+
+= 5.0.2 - (17.03.2015) =
 * New: [tpcloud, tplist, tp_search]: New parameter "container_suffix" added
 
 = 5.0.1 - (15.03.2015) =
