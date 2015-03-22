@@ -16,7 +16,7 @@
 class tp_bibtex {
 
     /**
-     * Get a single publication in bibtex format
+     * Gets a single publication in bibtex format
      * @param array $row
      * @param array $all_tags               optional
      * @param boolean $convert_bibtex       Flag for the utf-8 to TeX char convertion, Default is false
@@ -89,10 +89,10 @@ class tp_bibtex {
             $string .= 'keywords = {}';
         }
         
-        // Add teachPress export data
+        // Add teachPress/biblatex extensions
         $string .= ',' . chr(13) . chr(10);
+        $string .= 'pubstate = {' . $row['status'] . '},' . chr(13) . chr(10);
         $string .= 'tppubtype = {' . $row['type'] . '}' . chr(13) . chr(10);
-        $string .= 'tpstatus = {' . $row['status'] . '}' . chr(13) . chr(10);
         $string .= '}' . chr(13) . chr(10);
         
         // Convert utf-8 chars
@@ -103,7 +103,7 @@ class tp_bibtex {
     }
 
     /**
-     * Get a single publication in html format
+     * Gets a single publication in html format
      * @param array $row        The publication array (used keys: title, image_url, ...)
      * @param array $all_tags   Array of tags (used_keys: pub_id, tag_id, name)
      * @param array $settings   Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
@@ -251,7 +251,7 @@ class tp_bibtex {
     }
 
     /**
-     * Get the second line of the publications with editor, year, volume, address, edition, etc.
+     * Gets the second line of the publications with editor, year, volume, address, edition, etc.
      * @param array $row
      * @param array $settings
      * @return string
@@ -380,7 +380,7 @@ class tp_bibtex {
     }
     
     /**
-    * Import a BibTeX String
+    * Imports a BibTeX string
     * @global class $PARSEENTRIES
     * @param string $input      The input string with bibtex entries
     * @param array $settings    With index names: keyword_separator, author_format
@@ -410,7 +410,7 @@ class tp_bibtex {
             $entries[$i]['isbn'] = array_key_exists('isbn', $entries[$i]) === true ? $entries[$i]['isbn'] : '';
             $entries[$i]['issn'] = array_key_exists('issn', $entries[$i]) === true ? $entries[$i]['issn'] : '';
             $entries[$i]['tppubtype'] = array_key_exists('tppubtype', $entries[$i]) === true ? $entries[$i]['tppubtype'] : '';
-            $entries[$i]['tpstatus'] = array_key_exists('tpstatus', $entries[$i]) === true ? $entries[$i]['tpstatus'] : '';
+            $entries[$i]['pubstate'] = array_key_exists('pubstate', $entries[$i]) === true ? $entries[$i]['pubstate'] : '';
             
             // for the date of publishing
             $entries[$i]['date'] = self::set_date_of_publishing($entries[$i]);
@@ -447,12 +447,12 @@ class tp_bibtex {
             $entries[$i]['type'] = $entries[$i]['bibtexEntryType'];
             $entries[$i]['bibtex'] = $entries[$i]['bibtexCitation'];
             
-            // handle export data from teachPress
+            // handle export data from teachPress/biblatex
             if ( $entries[$i]['tppubtype'] != '' ) {
                 $entries[$i]['type'] = $entries[$i]['tppubtype'];
             }
-            if ( $entries[$i]['tpstatus'] != '' ) {
-                $entries[$i]['status'] = $entries[$i]['tpstatus'];
+            if ( $entries[$i]['pubstate'] != '' ) {
+                $entries[$i]['status'] = $entries[$i]['pubstate'];
             }
             
             // replace bibtex chars
@@ -503,7 +503,7 @@ class tp_bibtex {
     }
 
     /**
-     * Replace some HTML special chars with the UTF-8 versions
+     * Replaces some HTML special chars with the UTF-8 versions
      * @param string $input
      * @return string
      * @since 3.0.0
@@ -735,7 +735,7 @@ class tp_bibtex {
     }
     
     /**
-     * Prepare a (html) input for bibtex and replace expressions for bold, italic, lists, etc. with their latex equivalents
+     * Prepares a (html) input for bibtex and replace expressions for bold, italic, lists, etc. with their latex equivalents
      * @param string $text          The (html) input
      * @param string $fieldname     The bibtex field name
      * @return string
@@ -771,7 +771,7 @@ class tp_bibtex {
     }
     
     /**
-     * Prepare a text for normal html output. Works like htmlspecialchars_decode, but with a white list
+     * Prepares a text for normal html output. Works like htmlspecialchars_decode, but with a white list
      * @param string $input
      * @return string
      * @since 4.2.0
@@ -801,7 +801,7 @@ class tp_bibtex {
     }
 
    /**
-     * Prepare a page number
+     * Prepares a page number
      * @access public
      * @param string $input
      * @return string
@@ -844,7 +844,7 @@ class tp_bibtex {
     }
 
     /**
-     * Prepare a single BibTeX line with the input from onde publication field
+     * Prepares a single BibTeX line with the input from onde publication field
      * @param string    $input          The value of the publication field
      * @param string    $fieldname      The name of the publication field
      * @param boolean   $stripslashes   Strip slashes (true) or not (false); default is true; since 4.2.0
@@ -860,7 +860,7 @@ class tp_bibtex {
     }
 
     /**
-     * Prepare a single HTML line with the input from one publication field
+     * Prepares a single HTML line with the input from one publication field
      * @param string $element
      * @param string $content
      * @param string $before
@@ -881,7 +881,7 @@ class tp_bibtex {
     }
 
     /**
-     * Prepare a url link for publication resources 
+     * Prepares a url link for publication resources 
      * @param string $url       The url string
      * @param string $doi       The DOI number
      * @param string $mode      list or enumeration
@@ -937,7 +937,7 @@ class tp_bibtex {
     }
     
     /** 
-     * Explode an url string into array 
+     * Explodes an url string into array 
      * @param string $url_string 
      * @return array 
      * @since 4.3.5 
@@ -974,7 +974,7 @@ class tp_bibtex {
     }
 
     /**
-     * Parse author names
+     * Parses author names
      * @global $PARSECREATORS
      * @param string $input
      * @param string $mode       --> values: last, initials, old

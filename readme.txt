@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1.1
-Stable tag: 5.0.3
+Stable tag: 5.0.4
 
 Manage your courses and publications with teachPress 
 
@@ -122,7 +122,7 @@ If you want to use only one part of the plugin, so write the following in the wp
 `// For deactivating the course module:  
 define ('TEACHPRESS_COURSE_MODULE', false);  
 // For deactivating the publication module:  
-define ('TEACHPRESS_PUBLICATION_MODULE', false);  `
+define ('TEACHPRESS_PUBLICATION_MODULE', false);`
 
 = I see only error messages if I use the RSS-Feed for publications or the xls/csv export for enrollments. What's wrong? =
 If you save plugins outside the normal path (/wp-content/plugins/), the plugin can't load required WordPress files in some cases. Solution: Change the path in the following plugin files: export.php (line 9) / feed.php (line 13).
@@ -133,6 +133,10 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.4 - (22.03.2015) =
+* Changed: BibTeX value "tpstatus" renamed to "pubstate" (adapted from biblatex)
+* Bugfix: Missing comma in BibTeX entries. 
 
 = 5.0.3 - (17.03.2015) =
 * Bugfix: Fixed an old installer bug, which adds the wrong template for related content. 
