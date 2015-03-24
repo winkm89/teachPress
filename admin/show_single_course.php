@@ -713,7 +713,7 @@ class tp_single_course_page {
         if ( $local_search != "" ) { 
             echo '<a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;sem=' . $link_parameter['sem'] . '&amp;search=' . $link_parameter['search'] . '&amp;action=assessments" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
         }
-        echo '<input type="search" name="local_search" id="pub_search_field" style="margin-right:5px;" value="' . $local_search . '"/>';
+        echo '<input type="search" name="local_search" id="pub_search_field" style="margin-right:5px;" value="' . stripslashes($local_search) . '"/>';
         echo '<input type="submit" name="pub_search_button" id="pub_search_button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';
         echo '</div>';
         // Menu

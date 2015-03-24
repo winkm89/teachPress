@@ -20,9 +20,10 @@
 */
 function get_tp_option($var, $category = 'system') {
     global $wpdb;
-    $var = esc_sql($var);
-    $category = esc_sql($category);
-    $result = $wpdb->get_var("SELECT `value` FROM " . TEACHPRESS_SETTINGS . " WHERE `variable` = '$var' AND `category` = '$category'");
+    $result = $wpdb->get_var(
+        $wpdb->prepare( "SELECT `value` FROM " . TEACHPRESS_SETTINGS . " WHERE `variable` = %s AND `category` = %s",  $var, $category )
+    );
+    // get_tp_message ($wpdb->last_query);
     return $result;
 }
 
@@ -36,9 +37,9 @@ function get_tp_option($var, $category = 'system') {
  */
 function get_tp_options($category, $order = "`setting_id` DESC", $output_type = OBJECT) {
     global $wpdb;
-    $category = esc_sql($category);
-    $order = esc_sql($order);
-    $result = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '$category' ORDER BY $order", $output_type);
+    $result = $wpdb->get_results( 
+        $wpdb->prepare( "SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = %s ORDER BY %s",  $category, $order ), $output_type
+    );
     return $result;
 }
 
@@ -99,12 +100,16 @@ class tp_artefacts {
     
     /**
      * Adds a new artefact
-     * @param array_a $data
+     * @param array_a $data     An associative array of artefact data (parent_id, course_id, title, scale, passed, max_value)
      * @return int
      * @since 5.0.0
      */
     public static function add_artefact ($data) {
         global $wpdb;
+        
+        // prevent double escapes
+        $data['title'] = stripslashes($data['title']);
+        
         $wpdb->insert(TEACHPRESS_ARTEFACTS, array('parent_id' => $data['parent_id'], 'course_id' => $data['course_id'], 'title' => $data['title'], 'scale' => $data['scale'], 'passed' => $data['passed'], 'max_value' => $data['max_value']), array('%d', '%d', '%s', '%s', '%d', '%s'));
         return $wpdb->insert_id;
     }
@@ -129,6 +134,10 @@ class tp_artefacts {
      */
     public static function change_artefact_title ($artefact_id, $title) {
         global $wpdb;
+        
+        // prevent double escapes
+        $title = stripslashes($title);
+        
         return $wpdb->update( TEACHPRESS_ARTEFACTS, array( 'title' => $title), array( 'artefact_id' => $artefact_id ), array( '%s' ), array( '%d' ) );
     }
     
@@ -199,8 +208,14 @@ class tp_assessments {
      */
     public static function add_assessment ($data) {
         global $wpdb;
+        
+        // prevent possible double escapes
+        $data['type'] = stripslashes($data['type']);
+        $data['comment'] = stripslashes($data['comment']);
+        
         $wpdb->insert(TEACHPRESS_ASSESSMENTS, array('wp_id' => $data['wp_id'], 'value' => $data['value'], 'max_value' => $data['max_value'], 'type' => $data['type'], 'examiner_id' => $data['examiner_id'], 'exam_date' => $data['exam_date'], 'comment' => $data['comment'], 'passed' => $data['passed']), array('%d', '%s', '%s', '%s', '%d', '%s', '%s', '%d'));
         $insert_id = $wpdb->insert_id;
+        
         // For possible NULL values ($wpdb doesn't like that)
         $data['artefact_id'] = ( $data['artefact_id'] === NULL ) ? "NULL" : intval($data['artefact_id']);
         $data['course_id'] = ( $data['course_id'] === NULL ) ? "NULL" : intval($data['course_id']);
@@ -219,6 +234,11 @@ class tp_assessments {
      */
     public static function change_assessment($assessment_id, $data) {
         global $wpdb;
+        
+        // prevent possible double escapes
+        $data['type'] = stripslashes($data['type']);
+        $data['comment'] = stripslashes($data['comment']);
+        
         $wpdb->query("SET foreign_key_checks = 0");
         $return = $wpdb->update( TEACHPRESS_ASSESSMENTS, array( 'type' => $data['type'], 'value' => $data['value'], 'examiner_id' => $data['examiner_id'], 'exam_date' => $data['exam_date'], 'comment' => $data['comment'], 'passed' => $data['passed']), array( 'assessment_id' => $assessment_id ), array( '%s', '%s', '%d', '%s', '%s', '%d' ), array( '%d' ) );
         $wpdb->query("SET foreign_key_checks = 1");
@@ -291,7 +311,7 @@ class tp_authors  {
         $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
         $exclude = tp_db_helpers::generate_where_clause($exclude, "r.author_id", "AND", "!=");
         $output_type = esc_sql($output_type);
-        $search = esc_sql(htmlspecialchars($search));
+        $search = esc_sql(htmlspecialchars(stripslashes($search)));
 
         // Define basics
         $select = "SELECT DISTINCT a.name, r.author_id, r.pub_id, r.con_id, r.is_author, r.is_editor FROM " . TEACHPRESS_REL_PUB_AUTH . " r INNER JOIN " . TEACHPRESS_AUTHORS . " a ON a.author_id = r.author_id";
@@ -339,12 +359,12 @@ class tp_authors  {
         }
 
         // GROUP BY clause
-        $group_by = $group_by === true ? " GROUP BY a.name" : '';
+        $group_by = ( $group_by === true ) ? " GROUP BY a.name" : '';
 
         // End
         $sql = $select . $join . $where . $group_by . " ORDER BY a.sort_name $order, a.name $order $limit";
-        // echo $sql . '<br/><br/>';
-        $sql = $count == false ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
+        $sql = ( $count == false ) ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
+        // echo get_tp_message($wpdb->last_query);
         return $sql;
     }
     
@@ -357,6 +377,11 @@ class tp_authors  {
      */
     public static function add_author ($name, $sort_name) {
         global $wpdb;
+        
+        // prevent possible double escapes
+        $name = stripslashes($name);
+        $sort_name = stripslashes($sort_name);
+        
         $wpdb->insert(TEACHPRESS_AUTHORS, array('name' => $name, 'sort_name' => $sort_name), array('%s', '%s'));
         return $wpdb->insert_id;
     }
@@ -386,7 +411,7 @@ class tp_authors  {
      */
     public static function count_authors ( $search = '', $limit = '', $output_type = ARRAY_A ) {
         global $wpdb;
-        $search = esc_sql($search);
+        $search = esc_sql(stripslashes($search));
         $limit = esc_sql($limit);
         
         // define global search
@@ -470,9 +495,7 @@ class tp_bookmarks {
         extract( $args, EXTR_SKIP );
 
         global $wpdb;
-
         $user = intval($user);
-        $output_type = esc_sql($output_type);
 
         $sql = "SELECT `bookmark_id`, `pub_id` FROM " . TEACHPRESS_USER . " WHERE `user` = '$user'";
         return $wpdb->get_results($sql, $output_type);
@@ -706,7 +729,7 @@ class tp_courses {
         $order = esc_sql($order);
         $limit = esc_sql($limit);
         $output_type = esc_sql($output_type);
-        $search = esc_sql(htmlspecialchars($search));
+        $search = esc_sql(htmlspecialchars(stripslashes($search)));
         $exclude = tp_db_helpers::generate_where_clause($exclude, "p.pub_id", "AND", "!=");
         $semester = tp_db_helpers::generate_where_clause($semester, "semester", "OR", "=");
         $visibility = tp_db_helpers::generate_where_clause($visibility, "visible", "OR", "=");
@@ -749,8 +772,8 @@ class tp_courses {
     
     /** 
      * Returns a single value of a course 
-     * @param int $course_id    id of the course
-     * @param string $col       column name
+     * @param int $course_id    The course ID
+     * @param string $col       The name of the column
      * @return string
      * @since 5.0.0
     */  
@@ -765,7 +788,7 @@ class tp_courses {
     /**
      * Returns course meta data
      * @param int $course_id        The course ID
-     * @param string $meta_key      The name of the meta field (Optional)
+     * @param string $meta_key      The name of the meta field (optional)
      * @return array
      * @since 5.0.0
      */
@@ -850,6 +873,15 @@ class tp_courses {
     */
    public static function add_course($data, $sub) {
         global $wpdb;
+        
+        // prevent possible double escapes
+        $data['name'] = stripslashes($data['name']);
+        $data['type'] = stripslashes($data['type']);
+        $data['room'] = stripslashes($data['room']);
+        $data['lecturer'] = stripslashes($data['lecturer']);
+        $data['comment'] = stripslashes($data['comment']);
+        $data['semester'] = stripslashes($data['semester']);
+        
         $data['start'] = $data['start'] . ' ' . $data['start_hour'] . ':' . $data['start_minute'] . ':00';
         $data['end'] = $data['end'] . ' ' . $data['end_hour'] . ':' . $data['end_minute'] . ':00';
         $wpdb->insert( TEACHPRESS_COURSES, array( 'name' => $data['name'], 'type' => $data['type'], 'room' => $data['room'], 'lecturer' => $data['lecturer'], 'date' => $data['date'], 'places' => $data['places'], 'start' => $data['start'], 'end' => $data['end'], 'semester' => $data['semester'], 'comment' => $data['comment'], 'rel_page' => $data['rel_page'], 'parent' => $data['parent'], 'visible' => $data['visible'], 'waitinglist' => $data['waitinglist'], 'image_url' => $data['image_url'], 'strict_signup' => $data['strict_signup'], 'use_capabilites' => $data['use_capabilites'] ), array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ) );
@@ -930,13 +962,21 @@ class tp_courses {
 
         // If the number of places is raised up
         if ( $data['places'] > $old_places ) {
-            self::handle_changes_of_free_places($course_id, $data, $old_places);
+            self::handle_changes_of_free_places($course_id, $data['places'], $old_places);
         }
         
         // Handle capabilities for old existing courses (added before teachpress 5.0)
         if ( self::is_owner($course_id) === false ) {
             self::add_capability($course_id, $current_user->ID, 'owner');
         }
+        
+        // prevent possible double escapes
+        $data['name'] = stripslashes($data['name']);
+        $data['type'] = stripslashes($data['type']);
+        $data['room'] = stripslashes($data['room']);
+        $data['lecturer'] = stripslashes($data['lecturer']);
+        $data['comment'] = stripslashes($data['comment']);
+        $data['semester'] = stripslashes($data['semester']);
 
         $data['start'] = $data['start'] . ' ' . $data['start_hour'] . ':' . $data['start_minute'] . ':00';
         $data['end'] = $data['end'] . ' ' . $data['end_hour'] . ':' . $data['end_minute'] . ':00';
@@ -1011,7 +1051,7 @@ class tp_courses {
 
         $course_id = intval($course_id);
         $order = esc_sql($order);
-        $search = esc_sql($search);
+        $search = esc_sql(stripslashes($search));
         $output_type = esc_sql($output_type);
         $waitinglist = esc_sql($waitinglist);
         $limit = esc_sql($limit);
@@ -1075,10 +1115,10 @@ class tp_courses {
     */	
     public static function add_signup($student, $course) {
         global $wpdb;
-        $student = intval($student);
-        $course = intval($course);
         if ( $student != 0 && $course != 0 ) {
-            $wpdb->query( "INSERT INTO " . TEACHPRESS_SIGNUP . " (`course_id`, `wp_id`, `waitinglist`, `date`) VALUES ('$course', '$student', '0', NOW() )" );
+            $wpdb->query( 
+                $wpdb->prepare( "INSERT INTO " . TEACHPRESS_SIGNUP . " (`course_id`, `wp_id`, `waitinglist`, `date`) VALUES (%d, %d, '0', NOW() )", $course, $student ) 
+            );
             return true;
         }
         return false;
@@ -1092,7 +1132,9 @@ class tp_courses {
      */
     public static function move_signup($checkbox, $course) {
         global $wpdb;
-        if ( $checkbox == '' ) { return false; }
+        if ( $checkbox == '' ) { 
+            return false; 
+        }
         $course = intval($course);
         $max = count($checkbox);
         for ( $i = 0; $i < $max; $i++ ) {
@@ -1112,7 +1154,7 @@ class tp_courses {
     public static function change_signup_status($checkbox, $status = 'course') {
         global $wpdb;
         if ( $checkbox == '' ) { return false; }
-        $status = $status == 'course' ? 0 : 1;
+        $status = ( $status === 'course' ) ? 0 : 1;
         $max = count( $checkbox );
         for( $i = 0; $i < $max; $i++ ) {
             $checkbox[$i] = intval($checkbox[$i]);
@@ -1150,6 +1192,8 @@ class tp_courses {
     public static function move_up_signup($connect_id) {
         global $wpdb;
         
+        $connect_id = intval($connect_id);
+        
         // Get course ID
         $course_id = $wpdb->get_var("SELECT `course_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$connect_id'");
         if ( $course_id === NULL ) {
@@ -1157,8 +1201,7 @@ class tp_courses {
         }
 
         // check if there are users in the waiting list
-        $sql = "SELECT `con_id`, `course_id`, `wp_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '" . $course_id . "' AND `waitinglist` = '1' ORDER BY `con_id` ASC LIMIT 0, 1";
-        $signup = $wpdb->get_row($sql);
+        $signup = $wpdb->get_row("SELECT `con_id`, `course_id`, `wp_id` FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '" . $course_id . "' AND `waitinglist` = '1' ORDER BY `con_id` ASC LIMIT 0, 1");
         if ( $signup === NULL ) {
             return;
         }
@@ -1192,6 +1235,7 @@ class tp_courses {
         global $user_ID;
         get_currentuserinfo();
         $course_id = intval($course_id);
+        $user_ID = intval($user_ID);
         if ( $course_id == 0 ) {
             return false;
         }
@@ -1227,30 +1271,36 @@ class tp_courses {
      * This is used in tp_courses::change_course()
      * 
      * @param int $course_id        The course ID
-     * @param array $data           An associative array of the new course data
+     * @param int $new_places       The new number of places
      * @param int $old_places       The old number of places
      * @since 5.0.0
      * @access private
      */
-    private static function handle_changes_of_free_places($course_id, $data, $old_places){
+    private static function handle_changes_of_free_places($course_id, $new_places, $old_places){
         global $wpdb;
-        $new_free_places = $data['places'] - $old_places;
+        $course_id = intval($course_id);
+        $new_free_places = $new_places - $old_places;
+        
         $sql = "SELECT s.con_id, s.waitinglist, s.date
                 FROM " . TEACHPRESS_SIGNUP . " s 
                 INNER JOIN " . TEACHPRESS_COURSES . " c ON c.course_id=s.course_id
                 WHERE c.course_id = '$course_id' AND s.waitinglist = '1' ORDER BY s.date ASC";
         $waitinglist = $wpdb->get_results($sql, ARRAY_A);
         $count_waitinglist = count($waitinglist);
-        if ( $count_waitinglist > 0 ) {
-            foreach ( $waitinglist as $waitinglist ) {
-                if ( $new_free_places > 0 ) {
-                    $wpdb->update( TEACHPRESS_SIGNUP, array ( 'waitinglist' => 0 ), array ( 'con_id' => $waitinglist["con_id"] ), array ( '%d' ), array ( '%d' ) );
-                }
-                else {
-                    break;
-                }
-                $new_free_places--;
+        
+        if ( $count_waitinglist === 0 ) {
+            return;
+        }
+        
+        // Subscribe students from waitinglist if there are new free places in the course
+        foreach ( $waitinglist as $waitinglist ) {
+            if ( $new_free_places > 0 ) {
+                $wpdb->update( TEACHPRESS_SIGNUP, array ( 'waitinglist' => 0 ), array ( 'con_id' => $waitinglist["con_id"] ), array ( '%d' ), array ( '%d' ) );
             }
+            else {
+                break;
+            }
+            $new_free_places--;
         }
     }
     
@@ -1301,6 +1351,10 @@ class tp_documents {
     public static function add_document($name, $path, $size, $course_id) {
         global $wpdb;
         $time = current_time('mysql',0);
+        
+        // prevent possible double escapes
+        $name = stripslashes($name);
+        
         $wpdb->insert( TEACHPRESS_COURSE_DOCUMENTS, array( 'name' => $name, 
                                                            'path' => $path, 
                                                            'added' => $time,
@@ -1320,6 +1374,10 @@ class tp_documents {
      */
     public static function change_document_name($doc_id, $doc_name) {
         global $wpdb;
+        
+        // prevent possible double escapes
+        $doc_name = stripslashes($doc_name);
+        
         return $wpdb->update( TEACHPRESS_COURSE_DOCUMENTS, array( 'name' => $doc_name ), array( 'doc_id' => $doc_id ), array( '%s', ), array( '%d' ) );
     }
 
@@ -1370,25 +1428,25 @@ class tp_options {
 
     /** 
      * Adds an option
-     * @param string $name      Name of the option
-     * @param string $value     Nalue of the option
+     * @param string $variable  The name of the option
+     * @param string $value     The value of the option
      * @param string $category  Category name (system, course_of_studies, course_type, semester,...)
      * @return int              The ID if the added option
      * @since 5.0.0
     */
-    public static function add_option($name, $value, $category) { 
+    public static function add_option($variable, $value, $category) { 
         global $wpdb;
-        $name = htmlspecialchars($name);
+        $variable = htmlspecialchars(stripslashes($variable));
         $value = htmlspecialchars($value);
         $category = htmlspecialchars($category);
-        $wpdb->insert( TEACHPRESS_SETTINGS, array( 'variable' => $name, 'value' => $value, 'category' => $category ), array( '%s', '%s', '%s' ) );
+        $wpdb->insert( TEACHPRESS_SETTINGS, array( 'variable' => $variable, 'value' => $value, 'category' => $category ), array( '%s', '%s', '%s' ) );
         return $wpdb->insert_id;
     }
     
     /**
      * Updates an option
-     * @param string $variable      The option variable
-     * @param string $value         The option value
+     * @param string $variable      The name of the option
+     * @param string $value         The value of the option
      * @param string $type          normal or checkbox
      * @since 5.0.0
      */
@@ -1506,7 +1564,7 @@ class tp_publications {
         $order = '';
         $having ='';
         $output_type = esc_sql($output_type);
-        $search = esc_sql($search);
+        $search = esc_sql(stripslashes($search));
         $limit = esc_sql($limit);
 
         // exclude publications via tag_id
@@ -1566,31 +1624,31 @@ class tp_publications {
         }
 
         if ( $exclude != '' ) {
-            $where = $where != '' ? $where . " AND $exclude " : $exclude;
+            $where = ( $where != '' ) ? $where . " AND $exclude " : $exclude;
         }
         if ( $include != '' ) {
-            $where = $where != '' ? $where . " AND $include " : $include;
+            $where = ( $where != '' ) ? $where . " AND $include " : $include;
         }
         if ( $type != '') {
-            $where = $where != '' ? $where . " AND ( $type )" : $type;
+            $where = ( $where != '' ) ? $where . " AND ( $type )" : $type;
         }
         if ( $user != '') {
-            $where = $where != '' ? $where . " AND ( $user )" : $user;
+            $where = ( $where != '' ) ? $where . " AND ( $user )" : $user;
         }
         if ( $tag != '' ) {
-            $where = $where != '' ? $where . " AND ( $tag )" : $tag;
+            $where = ( $where != '' ) ? $where . " AND ( $tag )" : $tag;
         }
         if ( $author_id != '') {
-            $where = $where != '' ? $where . " AND ( $author_id )" : $author_id;
+            $where = ( $where != '' ) ? $where . " AND ( $author_id )" : $author_id;
         }
         if ( $author != '') {
-            $where = $where != '' ? $where . " AND ( $author )" : $author;
+            $where = ( $where != '' ) ? $where . " AND ( $author )" : $author;
         }
         if ( $editor != '') {
-            $where = $where != '' ? $where . " AND ( $editor )" : $editor;
+            $where = ( $where != '' ) ? $where . " AND ( $editor )" : $editor;
         }
         if ( $search != '') {
-            $where = $where != '' ? $where . " AND ( $search )" : $search ;
+            $where = ( $where != '' ) ? $where . " AND ( $search )" : $search ;
         }
         if ( $where != '' ) {
             $where = " WHERE $where";
@@ -1614,7 +1672,7 @@ class tp_publications {
         }
         // print_r($args);
         // get_tp_message($sql,'red');
-        $sql = $count != true ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
+        $sql = ( $count != true ) ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
         return $sql;
     }
     
@@ -1825,6 +1883,23 @@ class tp_publications {
         // replace double spaces from author/editor fields
         $author = str_replace('  ', ' ', $author);
         $editor = str_replace('  ', ' ', $editor);
+        
+        // prevent possible double escapes
+        $title = stripslashes($title);
+        $bibtex = stripslashes($bibtex);
+        $author = stripslashes($author);
+        $editor = stripslashes($editor);
+        $booktitle = stripslashes($booktitle);
+        $issuetitle = stripslashes($issuetitle);
+        $journal = stripslashes($journal);
+        $publisher = stripslashes($publisher);
+        $address = stripslashes($address);
+        $institution = stripslashes($institution);
+        $organization = stripslashes($organization);
+        $school = stripslashes($school);
+        $abstract = stripslashes($abstract);
+        $comment = stripslashes($comment);
+        $note =  stripslashes($note);
 
         $wpdb->insert( TEACHPRESS_PUB, array( 'title' => $title, 'type' => $type, 'bibtex' => $bibtex, 'author' => $author, 'editor' => $editor, 'isbn' => $isbn, 'url' => $url, 'date' => $date, 'urldate' => $urldate, 'booktitle' => $booktitle, 'issuetitle' => $issuetitle, 'journal' => $journal, 'volume' => $volume, 'number' => $number, 'pages' => $pages , 'publisher' => $publisher, 'address' => $address, 'edition' => $edition, 'chapter' => $chapter, 'institution' => $institution, 'organization' => $organization, 'school' => $school, 'series' => $series, 'crossref' => $crossref, 'abstract' => $abstract, 'howpublished' => $howpublished, 'key' => $key, 'techtype' => $techtype, 'comment' => $comment, 'note' => $note, 'image_url' => $image_url, 'doi' => $doi, 'is_isbn' => $is_isbn, 'rel_page' => $rel_page, 'status' => 'published', 'added' => $post_time, 'modified' => $post_time ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s' ) );
          $pub_id = $wpdb->insert_id;
@@ -1894,8 +1969,28 @@ class tp_publications {
         $data['author'] = str_replace('  ', ' ', $data['author']);
         $data['editor'] = str_replace('  ', ' ', $data['editor']);
         
+        // prevent double escapes
+        $data['title'] = stripslashes($data['title']);
+        $data['bibtex'] = stripslashes($data['bibtex']);
+        $data['author'] = stripslashes($data['author']);
+        $data['editor'] = stripslashes($data['editor']);
+        $data['booktitle'] = stripslashes($data['booktitle']);
+        $data['issuetitle'] = stripslashes($data['issuetitle']);
+        $data['journal'] = stripslashes($data['journal']);
+        $data['publisher'] = stripslashes($data['publisher']);
+        $data['address'] = stripslashes($data['address']);
+        $data['institution'] = stripslashes($data['institution']);
+        $data['organization'] = stripslashes($data['organization']);
+        $data['school'] = stripslashes($data['school']);
+        $data['abstract'] = stripslashes($data['abstract']);
+        $data['comment'] = stripslashes($data['comment']);
+        $data['note'] =  stripslashes($data['note']);
+        
         // update row
         $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => 'published', 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
+        
+        // get_tp_message($wpdb->last_query);
+        
         // Bookmarks
         if ($bookmark != '') {
             $max = count( $bookmark );
@@ -1946,6 +2041,22 @@ class tp_publications {
             $data['bibtex'] = str_replace(' ', '', $data['bibtex']);
         }
         
+        // prevent double escapes
+        $data['title'] = stripslashes($data['title']);
+        $data['author'] = stripslashes($data['author']);
+        $data['editor'] = stripslashes($data['editor']);
+        $data['booktitle'] = stripslashes($data['booktitle']);
+        $data['issuetitle'] = stripslashes($data['issuetitle']);
+        $data['journal'] = stripslashes($data['journal']);
+        $data['publisher'] = stripslashes($data['publisher']);
+        $data['address'] = stripslashes($data['address']);
+        $data['institution'] = stripslashes($data['institution']);
+        $data['organization'] = stripslashes($data['organization']);
+        $data['school'] = stripslashes($data['school']);
+        $data['abstract'] = stripslashes($data['abstract']);
+        $data['comment'] = stripslashes($data['comment']);
+        $data['note'] =  stripslashes($data['note']);
+        
         // update row
         $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => 'published', 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
         
@@ -1988,9 +2099,9 @@ class tp_publications {
     }
     
     /**
-     * Deletes curse meta
+     * Deletes course meta
      * @param int $pub_id           The publication ID
-     * @param string $meta_key      the name of the meta field
+     * @param string $meta_key      The name of the meta field
      * @since 5.0.0
      */
     public static function delete_pub_meta ($pub_id, $meta_key = '') {
@@ -2015,21 +2126,25 @@ class tp_publications {
     public static function add_relation ($pub_id, $input_string, $delimiter = ',', $rel_type = 'tags') {
         global $wpdb;
         $pub_id = intval($pub_id);
+        
+        // Make sure, that there are no slashes in the input
+        $input_string = stripslashes( htmlspecialchars( $input_string ) );
+        
         $array = explode($delimiter, $input_string);
         foreach($array as $element) {
             $element = trim($element);
             
+            // if there is nothing in the element, go to the next one
             if ( $element === '' ) {
                 continue;
             }
             
-            $element = esc_sql( htmlspecialchars($element) );
             // check if element exists
             if ( $rel_type === 'tags' ) {
-                $check = $wpdb->get_var("SELECT `tag_id` FROM " . TEACHPRESS_TAGS . " WHERE `name` = '$element'");
+                $check = $wpdb->get_var( $wpdb->prepare( "SELECT `tag_id` FROM " . TEACHPRESS_TAGS . " WHERE `name` = '%s'", $element ) );
             }
             else {
-                $check = $wpdb->get_var("SELECT `author_id` FROM " . TEACHPRESS_AUTHORS . " WHERE `name` = '$element'");
+                $check = $wpdb->get_var( $wpdb->prepare( "SELECT `author_id` FROM " . TEACHPRESS_AUTHORS . " WHERE `name` = '%s'", $element ) );
             }
             // if element not exists
             if ( $check === NULL ){
@@ -2138,7 +2253,7 @@ class tp_students {
         }
 
         // define global search
-        $search = esc_sql(htmlspecialchars($search));
+        $search = esc_sql( htmlspecialchars( stripslashes($search) ) );
         if ( $search != '' ) {
             $search = "s.wp_id like '%$search%' OR s.userlogin LIKE '%$search%' OR s.firstname LIKE '%$search%' OR s.lastname LIKE '%$search%' OR s.email LIKE '%$search%'";
         }
@@ -2203,6 +2318,10 @@ class tp_students {
    public static function add_student($wp_id, $data) {
         global $wpdb;
         $wp_id = intval($wp_id);
+        
+        // prevent possible double escapes
+        $data['firstname'] = stripslashes($data['firstname']);
+        $data['lastname'] = stripslashes($data['lastname']);
 
         $test = $wpdb->query("SELECT `wp_id` FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '$wp_id'");
         if ($test == '0') {
@@ -2223,6 +2342,10 @@ class tp_students {
      */
     public static function add_student_meta ($wp_id, $meta_key, $meta_value) {
         global $wpdb;
+        
+        // prevent possible double escapes
+        $meta_value = stripslashes($meta_value);
+        
         $wpdb->insert( TEACHPRESS_STUD_META, array( 'wp_id' => $wp_id, 'meta_key' => $meta_key, 'meta_value' => $meta_value ), array( '%d', '%s', '%s' ) );
     }
     
@@ -2236,6 +2359,11 @@ class tp_students {
     */
    public static function change_student($wp_id, $data, $show_message = true) {
         global $wpdb;
+        
+        // prevent possible double escapes
+        $data['firstname'] = stripslashes($data['firstname']);
+        $data['lastname'] = stripslashes($data['lastname']);
+        
         $wpdb->update( TEACHPRESS_STUD, array( 'firstname' => $data['firstname'], 'lastname' => $data['lastname'], 'userlogin' => $data['userlogin'], 'email' => $data['email'] ), array( 'wp_id' => $wp_id ), array( '%s', '%s', '%s', '%s' ), array( '%d' ) );
         if ($show_message === true) {
             return '<div class="teachpress_message_success">' . __('Changes in your profile successful.','teachpress') . '</div>';
@@ -2321,10 +2449,10 @@ class tp_students {
         }
 
         $sql = "SELECT con_id, wp_id, course_id, waitinglist, name, type, room, date, semester, parent_name, timestamp FROM (SELECT s.con_id as con_id, s.wp_id as wp_id, s.course_id as course_id, s.waitinglist as waitinglist, c.name as name, c.type as type, c.room as room, c.date as date, c.semester as semester, c2.name as parent_name, s.date as timestamp FROM " . TEACHPRESS_SIGNUP . " s INNER JOIN " . TEACHPRESS_COURSES . " c ON s.course_id = c.course_id LEFT JOIN " . TEACHPRESS_COURSES . " c2 ON c.parent = c2.course_id $where) AS temp WHERE `wp_id` = '$wp_id'";
-        if ( $mode == 'reg' ) {
+        if ( $mode === 'reg' ) {
             $sql .= " AND `waitinglist` = '0'";
         }
-        if ( $mode == 'wtl' ) {
+        if ( $mode === 'wtl' ) {
             $sql .= " AND `waitinglist` = '1'";
         }
         $sql .= " ORDER BY con_id DESC";
@@ -2432,7 +2560,7 @@ class tp_tags {
        $pub_id = tp_db_helpers::generate_where_clause($pub_id, "r.pub_id", "OR", "=");
        $exclude = tp_db_helpers::generate_where_clause($exclude, "r.tag_id", "AND", "!=");
        $output_type = esc_sql($output_type);
-       $search = esc_sql(htmlspecialchars($search));
+       $search = esc_sql( htmlspecialchars( stripslashes($search) ) );
 
        // Define basics
        $select = "SELECT DISTINCT t.name, r.tag_id, r.pub_id, r.con_id FROM " . TEACHPRESS_RELATION . " r INNER JOIN " . TEACHPRESS_TAGS . " t ON t.tag_id = r.tag_id";
@@ -2494,6 +2622,10 @@ class tp_tags {
     */
    public static function add_tag($name) {
        global $wpdb;
+       
+       // prevent possible double escapes
+       $name = stripslashes($name);
+       
        $wpdb->insert(TEACHPRESS_TAGS, array('name' => $name), array('%s'));
        return $wpdb->insert_id;
    }
@@ -2507,6 +2639,10 @@ class tp_tags {
    */
    public static function edit_tag($tag_id, $name) {
        global $wpdb;
+       
+       // prevent possible double escapes
+       $name = stripslashes($name);
+       
        return $wpdb->update( TEACHPRESS_TAGS, array( 'name' => $name ), array( 'tag_id' => $tag_id ), array( '%s' ), array( '%d' ) );
    }
    
@@ -2546,7 +2682,7 @@ class tp_tags {
 
            // Add tags
            foreach( $array as $element ) {
-                $element = esc_sql( htmlspecialchars( trim($element) ) );
+                $element = esc_sql( htmlspecialchars( trim( stripslahes($element ) ) ) );
                 if ($element === '') {
                    continue;
                 }
@@ -2602,7 +2738,7 @@ class tp_tags {
      */
     public static function count_tags ( $search = '', $limit = '', $output_type = ARRAY_A ) {
         global $wpdb;
-        $search = esc_sql($search);
+        $search = esc_sql( htmlspecialchars( stripslahes($search) ) );
         $limit = esc_sql($limit);
         
         // define global search
@@ -2620,6 +2756,14 @@ class tp_tags {
     
     /**
      * Returns a special array for creating tag clouds
+     * 
+     * Possible values for array $args:
+     *      user (STRING)            User IDs (separated by comma)
+     *      exclude (STRING)         Tag IDs you want to exclude from result (separated by comma)
+     *      type (STRING)            Publication types (separated by comma)
+     *      number_tags (Int)        The number of tags       
+     *      output type (STRING)     OBJECT, ARRAY_A, ARRAY_N, default is OBJECT
+     * 
      * 
      * The returned array $result has the following array_keys:
      *      'tags'  => it's an array or object with tags, including following keys: tagPeak, name, tag_id
