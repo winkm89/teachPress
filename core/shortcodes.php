@@ -414,7 +414,7 @@ class tp_shortcodes {
     }
     
     /**
-     * Sorts the publications by type and by year
+     * Sorts the publications by type and by year (used for headline type 4)
      * @param array $tparray    The numeric publication array
      * @param int $tpz          The length of $tparray
      * @param array $args       An associative of arguments (colspan)
@@ -432,14 +432,13 @@ class tp_shortcodes {
             if(!array_key_exists($keyType, $typeHeadlines)) {
                 $typeHeadlines[$keyType] = array($keyYear => $pubVal); 
             }
-            if(!array_key_exists($keyYear, $typeHeadlines[$keyType])) {
+            else if(!array_key_exists($keyYear, $typeHeadlines[$keyType])) {
                 $typeHeadlines[$keyType][$keyYear] = $pubVal;
             }
             else {
                 $typeHeadlines[$keyType][$keyYear] .= $pubVal;
             }
         }
-
         foreach ( $typeHeadlines as $type => $yearHeadlines ) {
             $return .=  '<tr><td' . $args['colspan'] . '><h3 class="tp_h3" id="' . $type . '">' . tp_translate_pub_type($type, 'pl') . '</h3></td></tr>';
             foreach($yearHeadlines as $year => $pubValue) {
@@ -453,7 +452,7 @@ class tp_shortcodes {
     }
     
     /**
-     * Sorts the publications by year and by type
+     * Sorts the publications by year and by type (used for headline type 3)
      * @param array $tparray    The numeric publication array
      * @param int $tpz          The length of $tparray
      * @param array $args       An associative of arguments (colspan)
@@ -470,7 +469,7 @@ class tp_shortcodes {
             if(!array_key_exists($keyYear, $yearHeadlines)) {
                 $yearHeadlines[$keyYear] = array($keyType => '');
             }
-            if(!array_key_exists($keyType, $yearHeadlines[$keyYear])) {
+            else if(!array_key_exists($keyType, $yearHeadlines[$keyYear])) {
                 $yearHeadlines[$keyYear][$keyType] = '';
             }
             $yearHeadlines[$keyYear][$keyType] .= $tparray[$i][1];
@@ -980,9 +979,14 @@ function tp_cloud_shortcode($atts) {
         'order' => htmlspecialchars($order),
     );
 
-    // if author is set by shortcode parameter
-    if ($user != '') {
+    // if user is set by shortcode parameter
+    if ( $user != '' ) {
         $filter_parameter['user'] = htmlspecialchars($user);
+    }
+    
+    // if type is set by shortcode parameter
+    if ( $type != '' ) {
+        $filter_parameter['type'] = htmlspecialchars($type);
     }
    
     // Handle limits for pagination
@@ -1036,7 +1040,7 @@ function tp_cloud_shortcode($atts) {
     }
 
     // Endformat
-    if ($filter_parameter['year'] == '' && $filter_parameter['type'] == '' && ( $filter_parameter['author'] == '' || $filter_parameter['author'] == $user ) && $filter_parameter['tag'] == '') {
+    if ($filter_parameter['year'] == '' && ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $type ) && ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $user ) && $filter_parameter['author'] == '' && $filter_parameter['tag'] == '') {
         $showall = '';
     }
     else {
@@ -1059,7 +1063,7 @@ function tp_cloud_shortcode($atts) {
         $sql_parameter['order'] = "type ASC, date DESC"; 
     }
     if ( $settings['headline'] === 3 || $settings['headline'] === 4 ) {
-        $sql_parameter['order'] = "year DESC, type ASC , date DESC";
+        $sql_parameter['order'] = "year DESC, type ASC, date DESC";
     }
     
     $args = array(

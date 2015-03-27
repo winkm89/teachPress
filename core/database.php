@@ -786,6 +786,22 @@ class tp_courses {
     }
     
     /**
+     * Returns the course name under consideration of a possible parent course
+     * @param int $course_id    The course ID
+     * @return string
+     */
+    public static function get_course_name ($course_id) {
+        global $wpdb;
+        $course_id = intval($course_id);
+        $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . $course_id . "'");
+        if ($row->parent != '0') {
+            $parent = tp_courses::get_course_data($row->parent, 'name');
+            $row->name = ( $row->name != $parent ) ? $parent . ' ' . $row->name : $row->name;
+        }
+        return $row->name;
+    }
+    
+    /**
      * Returns course meta data
      * @param int $course_id        The course ID
      * @param string $meta_key      The name of the meta field (optional)
@@ -1108,17 +1124,26 @@ class tp_courses {
     
     /** 
      * Subscribe a student manually
-     * @param int $student      ID of the student
-     * @param int $course       ID of the course
+     * @param int $wp_id        ID of the student
+     * @param int $course_id    ID of the course
      * @return boolean
      * @since 5.0.0
     */	
-    public static function add_signup($student, $course) {
+    public static function add_signup($wp_id, $course_id) {
         global $wpdb;
-        if ( $student != 0 && $course != 0 ) {
-            $wpdb->query( 
-                $wpdb->prepare( "INSERT INTO " . TEACHPRESS_SIGNUP . " (`course_id`, `wp_id`, `waitinglist`, `date`) VALUES (%d, %d, '0', NOW() )", $course, $student ) 
-            );
+        if ( $wp_id != 0 && $course_id != 0 ) {
+            $time = current_time('mysql',0);
+            $wpdb->insert( TEACHPRESS_SIGNUP, array( 'course_id' => $course_id,
+                                                     'wp_id' => $wp_id,
+                                                     'waitinglist' => 0,
+                                                     'date' => $time, ),
+                                                     array( '%d', '%d', '%d', '%s') );
+            // Find course name
+            $name = self::get_course_name($course_id);
+            
+            // Send notification
+            tp_enrollments::send_notification(201, $wp_id, $name);
+            
             return true;
         }
         return false;
@@ -1211,14 +1236,10 @@ class tp_courses {
             $wpdb->query( "UPDATE " . TEACHPRESS_SIGNUP . " SET `waitinglist` = '0' WHERE `con_id` = '" . $signup->con_id . "'" );
             
             // Find course name
-            $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . $signup->course_id . "'");
-            if ($row->parent != '0') {
-                $parent = tp_courses::get_course_data($row->parent, 'name');
-                $row->name = ( $row->name != $parent ) ? $parent . ' ' . $row->name : $row->name;
-            }
+            $name = self::get_course_name($course_id);
             
             // Send notification
-            tp_enrollments::send_notification(201, $signup->wp_id, $row->name);
+            tp_enrollments::send_notification(201, $signup->wp_id, $name);
         }	
         
     }
@@ -1286,9 +1307,8 @@ class tp_courses {
                 INNER JOIN " . TEACHPRESS_COURSES . " c ON c.course_id=s.course_id
                 WHERE c.course_id = '$course_id' AND s.waitinglist = '1' ORDER BY s.date ASC";
         $waitinglist = $wpdb->get_results($sql, ARRAY_A);
-        $count_waitinglist = count($waitinglist);
         
-        if ( $count_waitinglist === 0 ) {
+        if ( count($waitinglist) === 0 ) {
             return;
         }
         
@@ -1296,6 +1316,11 @@ class tp_courses {
         foreach ( $waitinglist as $waitinglist ) {
             if ( $new_free_places > 0 ) {
                 $wpdb->update( TEACHPRESS_SIGNUP, array ( 'waitinglist' => 0 ), array ( 'con_id' => $waitinglist["con_id"] ), array ( '%d' ), array ( '%d' ) );
+                // Find course name
+                $name = self::get_course_name($course_id);
+
+                // Send notification
+                tp_enrollments::send_notification(201, $waitinglist["wp_id"], $name);
             }
             else {
                 break;

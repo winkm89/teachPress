@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1.1
-Stable tag: 5.0.5
+Stable tag: 5.0.6
 
 Manage your courses and publications with teachPress 
 
@@ -133,6 +133,12 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+= 5.0.6 - (27.03.2015) =
+* New: Send a notification to participants if they were added to a course by admin or after an increase of the number of places
+* Bugfix: [tpcloud, tplist]: Fixed a problem with doubled entries, if the headline type 3 or 4 is used.
+* Bugfix: [tpcloud]: The parameter "type" was ignored
+* Bugfix: [tpcloud]: The filter reset was not displayed if only the author filter was set
+* Bugfix: Fix usage of constant WPLANG under WordPress 4.0 or higher
 
 = 5.0.5 - (25.03.2015) =
 * Bugfix: Hide the author line of a publication entry, if there is no author or editor given

@@ -3,7 +3,7 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 5.0.5
+Version: 5.0.6
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
@@ -303,7 +303,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.5';
+    return '5.0.6';
 }
 
 /** 
@@ -507,6 +507,7 @@ function tp_write_data_for_tinymce () {
  * Admin interface script loader
  */
 function tp_backend_scripts() {
+    global $wp_version;
     // Define $page
     $page = isset($_GET['page']) ? $_GET['page'] : '';
     wp_enqueue_style('teachpress-print-css', plugins_url() . '/teachpress/styles/print.css', false, false, 'print');
@@ -520,9 +521,10 @@ function tp_backend_scripts() {
         wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
         wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
         wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
-        $lang = array('de_DE','it_IT','es_ES', 'sk_SK');
-        if ( in_array( WPLANG , $lang) ) {
-            wp_enqueue_script('teachpress-datepicker-de', plugins_url() . '/teachpress/js/datepicker/jquery.ui.datepicker-' . WPLANG . '.js');
+        $current_lang = ( version_compare($wp_version, '4.0', '>=') ) ? get_option('WPLANG') : WPLANG;
+        $array_lang = array('de_DE','it_IT','es_ES', 'sk_SK');
+        if ( in_array( $current_lang , $array_lang) ) {
+            wp_enqueue_script('teachpress-datepicker-de', plugins_url() . '/teachpress/js/datepicker/jquery.ui.datepicker-' . $current_lang . '.js');
         }
     }
 }
