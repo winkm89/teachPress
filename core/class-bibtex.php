@@ -200,7 +200,9 @@ class tp_bibtex {
             }
             $a1 .= $td_left;
             $a1 .= '<td class="tp_pub_info_simple">';
-            $a1 .= '<span class="tp_pub_author_simple">' . stripslashes($all_authors) . '</span>';
+            if ( $row['author'] !== '' || $row['editor'] !== '' ) {
+                $a1 .= '<span class="tp_pub_author_simple">' . stripslashes($all_authors) . '</span>';
+            }
             $a1 .= '<span class="tp_pub_year_simple"> (' . $row['year'] . ')</span>: ';
             $a1 .= '<span class="tp_pub_title_simple">' . stripslashes($name) . '</span>. ';
             $a1 .= '<span class="tp_pub_additional_simple">' . self::single_publication_meta_row($row, $settings) . '</span>';
@@ -213,7 +215,9 @@ class tp_bibtex {
             }
             $a1 .= $td_left;
             $a1 .= '<td class="tp_pub_info">';
-            $a1 .= '<p class="tp_pub_author">' . stripslashes($all_authors) . '</p>';
+            if ( $row['author'] !== '' || $row['editor'] !== '' ) {
+                $a1 .= '<p class="tp_pub_author">' . stripslashes($all_authors) . '</p>';
+            }
             $a1 .= '<p class="tp_pub_title">' . stripslashes($name) . ' <span class="tp_pub_typ">(' . stripslashes($type) . ')</span></p>';
             $meta_row = self::single_publication_meta_row($row, $settings);
             if ($meta_row != '.') {

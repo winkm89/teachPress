@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1.1
-Stable tag: 5.0.4
+Stable tag: 5.0.5
 
 Manage your courses and publications with teachPress 
 
@@ -133,6 +133,10 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.5 - (25.03.2015) =
+* Bugfix: Hide the author line of a publication entry, if there is no author or editor given
+* Bugfix: Prevent double escapes for sql statements
 
 = 5.0.4 - (22.03.2015) =
 * Changed: BibTeX value "tpstatus" renamed to "pubstate" (adapted from biblatex)

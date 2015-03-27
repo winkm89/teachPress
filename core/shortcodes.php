@@ -285,7 +285,7 @@ class tp_shortcodes {
     /**
      * Returns a tag cloud
      * @param int $user                 The user ID
-     * @param array $cloud_settings       An associative array with settings for the cloud (tag_limit, maxsize, minsize)
+     * @param array $cloud_settings     An associative array with settings for the cloud (tag_limit, maxsize, minsize)
      * @param array $filter_parameter   An associative array with filter parameter (user input). The keys are: year, type, author, user
      * @param array $sql_parameter      An assosciative array with SQL search parameter (user, type)
      * @param array $settings           An assosciative array with settings (permalink, html_anchor)
@@ -385,7 +385,7 @@ class tp_shortcodes {
      */
     private static function sort_pub_by_type_or_year($tparray, $tpz, $args, $headlines){
         $return = '';
-        $field = $args['headline'] === 2 ? 2 : 0;
+        $field = ( $args['headline'] === 2 ) ? 2 : 0;
         for ($i = 0; $i < $tpz; $i++) {
             $key = $tparray[$i][$field];
             $headlines[$key] .= $tparray[$i][1];
@@ -883,7 +883,7 @@ function tp_links_shortcode ($atts) {
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
  *      maxsize (INT)               maximal font size for the tag cloud, default: 35
  *      minsize (INT)               minimal font size for the tag cloud, default: 11
- *      limit (INT)                 number of tags, default: 30
+ *      tag_limit (INT)             number of tags, default: 30
  *      hide_tags (STRING)          ids of the tags you want to hide from your users (separated by comma)
  *      exclude_tags (STRING)       similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
  *      image (STRING)              none, left, right or bottom, default: none 
@@ -1061,8 +1061,6 @@ function tp_cloud_shortcode($atts) {
     if ( $settings['headline'] === 3 || $settings['headline'] === 4 ) {
         $sql_parameter['order'] = "year DESC, type ASC , date DESC";
     }
-   
-    // print_r($filter_parameter);
     
     $args = array(
         'tag' => $filter_parameter['tag'], 
@@ -1431,8 +1429,8 @@ function tp_search_shortcode ($atts) {
  * possible values for atts:
  *      id (INT)        The id of the course
  * 
- * @param array $atts includes
- * @param string $content
+ * @param array $atts       The parameter array (key: id)
+ * @param string $content   The content you want to display
  * @return string
  * @since 2.0.0
 */
@@ -1440,7 +1438,7 @@ function tp_post_shortcode ($atts, $content) {
     extract(shortcode_atts(array('id' => 0), $atts));
     $id = intval($id);
     $test = tp_courses::is_student_subscribed($id, true);
-    if ( $test == true ) {
+    if ( $test === true ) {
         return $content;
     }
 }

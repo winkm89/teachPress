@@ -504,7 +504,7 @@ class tp_publication_page {
                     if ($size < $minsize) {
                         $size = $minsize ;
                     }
-                    echo '<span style="font-size:' . $size . 'px;"><a href="javascript:teachpress_inserttag(' . "'" . $tagcloud['name'] . "'" . ')" title="&laquo;' . $tagcloud['name'] . '&raquo; ' . __('add as tag','teachpress') . '">' . $tagcloud['name'] . '</a></span>';
+                    echo '<span style="font-size:' . $size . 'px;"><a href="javascript:teachpress_inserttag(' . "'" . esc_js($tagcloud['name']) . "'" . ')" title="&laquo;' . $tagcloud['name'] . '&raquo; ' . __('add as tag','teachpress') . '">' . $tagcloud['name'] . '</a></span>';
                 }
             }
             
@@ -534,11 +534,11 @@ class tp_publication_page {
                 $start = '';
                 foreach ($sql as $row) {
                     if ( $start === '' ) {
-                        echo '"' . $row->name . '"';
+                        echo '"' . esc_js($row->name) . '"';
                         $start = '1';
                     }
                     else {
-                        echo ',"' . $row->name . '"';
+                        echo ',"' . esc_js($row->name) . '"';
                     }
                 } ?>];
                             

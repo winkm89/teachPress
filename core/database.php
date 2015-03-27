@@ -1281,7 +1281,7 @@ class tp_courses {
         $course_id = intval($course_id);
         $new_free_places = $new_places - $old_places;
         
-        $sql = "SELECT s.con_id, s.waitinglist, s.date
+        $sql = "SELECT s.con_id, s.wp_id, s.waitinglist, s.date
                 FROM " . TEACHPRESS_SIGNUP . " s 
                 INNER JOIN " . TEACHPRESS_COURSES . " c ON c.course_id=s.course_id
                 WHERE c.course_id = '$course_id' AND s.waitinglist = '1' ORDER BY s.date ASC";
@@ -1553,7 +1553,7 @@ class tp_publications {
         $args = wp_parse_args( $args, $defaults );
         extract( $args, EXTR_SKIP );
 
-        $order_all = $order;
+        $order_all = esc_sql($order);
 
         global $wpdb;
 
@@ -2141,15 +2141,17 @@ class tp_publications {
             
             // check if element exists
             if ( $rel_type === 'tags' ) {
-                $check = $wpdb->get_var( $wpdb->prepare( "SELECT `tag_id` FROM " . TEACHPRESS_TAGS . " WHERE `name` = '%s'", $element ) );
+                $check = $wpdb->get_var( $wpdb->prepare( "SELECT `tag_id` FROM " . TEACHPRESS_TAGS . " WHERE `name` = %s", $element ) );
             }
             else {
-                $check = $wpdb->get_var( $wpdb->prepare( "SELECT `author_id` FROM " . TEACHPRESS_AUTHORS . " WHERE `name` = '%s'", $element ) );
+                $check = $wpdb->get_var( $wpdb->prepare( "SELECT `author_id` FROM " . TEACHPRESS_AUTHORS . " WHERE `name` = %s", $element ) );
             }
+            
             // if element not exists
             if ( $check === NULL ){
                 $check = ( $rel_type === 'tags' ) ? tp_tags::add_tag($element) : tp_authors::add_author( $element, tp_bibtex::get_lastname($element) );
             }
+            
             // check if relation exists, if not add relation
             if ( $rel_type === 'tags' ) {
                 $test = $wpdb->query("SELECT `pub_id` FROM " . TEACHPRESS_RELATION . " WHERE `pub_id` = '$pub_id' AND `tag_id` = '$check'");
