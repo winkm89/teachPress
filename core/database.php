@@ -789,6 +789,7 @@ class tp_courses {
      * Returns the course name under consideration of a possible parent course
      * @param int $course_id    The course ID
      * @return string
+     * @since 5.0.6
      */
     public static function get_course_name ($course_id) {
         global $wpdb;
@@ -2709,7 +2710,7 @@ class tp_tags {
 
            // Add tags
            foreach( $array as $element ) {
-                $element = esc_sql( htmlspecialchars( trim( stripslahes($element ) ) ) );
+                $element = esc_sql( htmlspecialchars( trim( stripslashes($element ) ) ) );
                 if ($element === '') {
                    continue;
                 }
@@ -2765,7 +2766,7 @@ class tp_tags {
      */
     public static function count_tags ( $search = '', $limit = '', $output_type = ARRAY_A ) {
         global $wpdb;
-        $search = esc_sql( htmlspecialchars( stripslahes($search) ) );
+        $search = esc_sql( htmlspecialchars( stripslashes($search) ) );
         $limit = esc_sql($limit);
         
         // define global search

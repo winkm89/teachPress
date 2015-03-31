@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1.1
-Stable tag: 5.0.6
+Stable tag: 5.0.7
 
 Manage your courses and publications with teachPress 
 
@@ -29,7 +29,7 @@ This plugin unites a course management system (with modules for enrollments, doc
 * Slovak (o)
 * Spanish (o)
 
-(o) Outdated language files
+(o) Incomplete language files
 
 = Further information = 
 * [Developer blog](https://mtrv.wordpress.com/teachpress/) 
@@ -91,7 +91,8 @@ I would like to thank the team of [CBIS, Chemnitz University of Technology](http
 == Screenshots ==
 1. Add course menu
 2. Add publication menu
-3. Example for a publication list created with [tpcloud]
+3. Single course menu
+4. Example for a publication list created with [tpcloud]
  
 
 == Frequently Asked Questions ==
@@ -133,6 +134,9 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+= 5.0.7 - (31.03.2015) =
+* Bugfix: Tag list was not displayed in the backend
+
 = 5.0.6 - (27.03.2015) =
 * New: Send a notification to participants if they were added to a course by admin or after an increase of the number of places
 * Bugfix: [tpcloud, tplist]: Fixed a problem with doubled entries, if the headline type 3 or 4 is used.
