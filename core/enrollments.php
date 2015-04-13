@@ -65,8 +65,8 @@ class tp_enrollments {
             return 0;
        }
        // Start transaction
-       $wpdb->query("SET AUTOCOMMIT=0");
        $wpdb->query("START TRANSACTION");
+       $wpdb->query("SET AUTOCOMMIT=0");
        // Check if the user is already registered
        $check = $wpdb->get_var("SELECT `waitinglist` FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '$checkbox' and `wp_id` = '$wp_id'");
        if ( $check != NULL && $check == '0' ) {
@@ -178,8 +178,8 @@ class tp_enrollments {
             $sql = "SELECT `course_id`, `waitinglist` FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'";
             $signup = $wpdb->get_row($sql);
             // Start transaction
-            $wpdb->query("SET AUTOCOMMIT=0");
             $wpdb->query("START TRANSACTION");
+            $wpdb->query("SET AUTOCOMMIT=0");
             // check if there are users in the waiting list
             if ( $signup->waitinglist == 0 ) {
                 tp_courses::move_up_signup($checkbox[$i]);
@@ -555,7 +555,7 @@ class tp_enrollments {
         $assessment = tp_assessments::get_assessments($user_id, '', $course_id);
         $rtn = '';
         $parent_name = '';
-        $rtn .= '<a href="' . $url . 'results" class="teachpress_enr_button">' . __('Back','teachpress') . '</a>';
+        $rtn .= '<a href="' . $url . 'results" class="teachpress_enr_button">&larr; ' . __('Back','teachpress') . '</a>';
         
         // Handle course name
         if ( $course_data["parent"] != 0 ) {
@@ -617,6 +617,7 @@ class tp_enrollments {
                 . '<th>' . __('Type') . '</th>'
                 . '<th>' . __('Term','teachpress') . '</th>'
                 . '<th>' . __('Result','teachpress') . '</th>'
+                . '<th></th>'
                 . '</tr>';
         $courses = tp_students::get_signups( array('wp_id' => $user_id, 'mode' => 'reg') );
         if ( count($courses) === 0 ) {
@@ -837,6 +838,7 @@ class tp_enrollments {
             $message = $message . stripslashes($name);
             $headers = 'From: ' . get_bloginfo('name') . ' ' . utf8_decode(chr(60)) .  get_bloginfo('admin_email') . utf8_decode(chr(62)) . "\r\n";
             if ( defined('TP_MAIL_SYSTEM') ) {
+                require_once('php/mail.inc');
                 $from = get_bloginfo('name') . ' <' . get_bloginfo('admin_email') . '>';
                 tuc_mail($to, $from, $subject, $message, '');
             }
@@ -850,17 +852,16 @@ class tp_enrollments {
 
 /**
  * The form for user registrations
- * @param int|array $user_id
- * @param string $mode        --> register, edit or admin
+ * @param int|array $user_input    If $mode="register", it's only the ID. IF $mode = "edit", then it's an array.
+ * @param string $mode             register, edit or admin
  * @return string
  * @since 4.0.0
  * @version 2 (since 5.0.0)
  */
-function tp_registration_form ($user_id, $mode = 'register') {
-    $user = ( $mode !== 'register' ) ? tp_students::get_student($user_id) : '';
-    $user_meta = ( $mode !== 'register' ) ? tp_students::get_student_meta($user_id) : array( array('meta_key' => '', 'meta_value' => '') );
+function tp_registration_form ($user_input, $mode = 'register') {
+    $user = ( $mode !== 'register' ) ? tp_students::get_student($user_input['wp_id']) : '';
+    $user_meta = ( $mode !== 'register' ) ? tp_students::get_student_meta($user_input['wp_id']) : array( array('meta_key' => '', 'meta_value' => '') );
     $fields = get_tp_options('teachpress_stud','`setting_id` ASC', ARRAY_A);
-    
     $rtn = '';
     $rtn .= '<form id="tp_registration_form" method="post">';
     $rtn .= '<div id="teachpress_registration">';
@@ -881,7 +882,7 @@ function tp_registration_form ($user_id, $mode = 'register') {
     $lastname = ( $mode === 'register' ) ? '' : stripslashes($user['lastname']);
     $rtn .= tp_enrollments::get_form_text_field('lastname', __('Last name','teachpress'), $lastname, false, true);
     
-    $userlogin = ( is_array( $user_id ) ) ? $user_id['userlogin'] : $user['userlogin'];
+    $userlogin = ( is_array( $user_input ) ) ? $user_input['userlogin'] : $user['userlogin'];
     $rtn .= tp_enrollments::get_form_text_field('userlogin', __('User account','teachpress'), $userlogin, true);
     
     $readonly = !isset($user['email']) ? false : true;

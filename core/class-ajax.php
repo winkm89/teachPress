@@ -26,8 +26,8 @@ class tp_ajax {
     
     /**
      * Changes the name of a document
-     * @param type $doc_id          The document ID
-     * @param type $doc_name        The name of the document
+     * @param int $doc_id          The document ID
+     * @param string $doc_name     The name of the document
      * @since 5.0.0
      * @access public
      */

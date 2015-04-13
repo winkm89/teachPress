@@ -13,11 +13,11 @@
 /******************************/
 /* enrollment menu */
 #enrollments .tp_user_menu {padding:5px;}
-/* table for user's old enrollments */ 
-#enrollments .teachpress_enr_old {border-collapse: collapse; border: 1px solid silver; font-size:11px; width: 100%}
-#enrollments .teachpress_enr_old th{padding:5px; color:#333333; background-repeat:repeat-x; margin:5px; border-collapse: collapse; border: 1px solid silver; font-size:12px; font-weight:bold;}
-#enrollments .teachpress_enr_old tr {padding:5px; background-color:#FFFFFF; color:#000000; margin:5px; border-collapse: collapse; border: 1px solid silver; font-size:12px;}
-#enrollments .teachpress_enr_old td {padding:5px; margin:5px; border-collapse: collapse; border: 1px solid silver;}
+/* table for user's old enrollments / table fo results */ 
+#enrollments .teachpress_enr_old, #enrollments .teachpress_enr_results {border-collapse: collapse; border-bottom: 1px solid #ededed; font-size:11px; width: 100%}
+#enrollments .teachpress_enr_old th, #enrollments .teachpress_enr_results th{padding:5px; color:#333333; background-repeat:repeat-x; margin:5px; border-collapse: collapse; border-bottom: 1px solid #ededed; font-size:12px; font-weight:bold;}
+#enrollments .teachpress_enr_old tr, #enrollments .teachpress_enr_results tr {padding:5px; background-color:#FFFFFF; color:#000000; margin:5px; border-collapse: collapse; border-bottom: 1px solid #ededed; font-size:12px;}
+#enrollments .teachpress_enr_old td, #enrollments .teachpress_enr_results td {padding:5px; margin:5px; border-collapse: collapse; border-bottom: 1px solid #ededed;}
 /* table for current enrollments */
 #enrollments .teachpress_enr {font-size:13px; border:none;}
 #enrollments .teachpress_enr td {border:none; padding:5px; margin:5px;}

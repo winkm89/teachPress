@@ -151,7 +151,7 @@ class tp_admin {
      * @param int $value            value for the field
      * @param int $min              default is 0
      * @param int $max              default is 999
-     * @param int step              default is 1
+     * @param int $step              default is 1
      * @param boolean $readonly     true or false, default is false
      * @param boolean $required     true or false, default is false
      * @return string
@@ -453,6 +453,13 @@ function tp_handle_document_uploads(){
 function tp_handle_upload( &$file, $overrides = false, $course_id = 0 ) {
 	// The default error handler.
 	if ( ! function_exists( 'wp_handle_upload_error' ) ) {
+            /**
+             * Returns an upload error message
+             * @param array $file
+             * @param string $message
+             * @return array
+             * @since 5.0.0
+             */
             function wp_handle_upload_error( &$file, $message ) {
                 return array( 'error'=>$message );
             }

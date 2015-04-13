@@ -100,7 +100,7 @@ class tp_artefacts {
     
     /**
      * Adds a new artefact
-     * @param array_a $data     An associative array of artefact data (parent_id, course_id, title, scale, passed, max_value)
+     * @param array $data     An associative array of artefact data (parent_id, course_id, title, scale, passed, max_value)
      * @return int
      * @since 5.0.0
      */
@@ -129,7 +129,7 @@ class tp_artefacts {
      * Changes an artefact name
      * @param int $artefact_id      The artefact ID
      * @param string $title         The new title for the artefact
-     * @return type int|false
+     * @return mixed int|false
      * @since 5.0.0
      */
     public static function change_artefact_title ($artefact_id, $title) {
@@ -202,7 +202,7 @@ class tp_assessments {
     
     /**
      * Adds a new assessment
-     * @param array_a $data     An associative array with new assessment_data (wp_id, type, value, exam_date,...)
+     * @param array $data     An associative array with new assessment_data (wp_id, type, value, exam_date,...)
      * @return int
      * @since 5.0.0
      */
@@ -1342,9 +1342,9 @@ class tp_documents {
     
     /**
      * Returns the data of a document
-     * @param type $doc_id          The document ID
-     * @param type $output_type     OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
-     * @return type
+     * @param int $doc_id               The document ID
+     * @param string $output_type       OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
+     * @return array|object
      */
     public static function get_document($doc_id, $output_type = ARRAY_A) {
         global $wpdb;
@@ -1967,7 +1967,7 @@ class tp_publications {
     /** 
      * Edit a publication
      * @param int $pub_id           ID of the publication
-     * @param array_a $data         Publication data
+     * @param array $data           An associative array with publication data
      * @param array $bookmark       An array with WP_USER_ids
      * @param array $delbox         An array with tag IDs you want to delete
      * @param string $tags          A string of Tags seperate by comma
@@ -2380,7 +2380,7 @@ class tp_students {
     /** 
      * Edit userdata
      * @param int $wp_id                The user ID
-     * @param array_a $data             An associative array of user data (firstname, lastname, userlogin,...)
+     * @param array $data             An associative array of user data (firstname, lastname, userlogin,...)
      * @param boolean $show_message     Default is true
      * @return string
      * @since 5.0.0

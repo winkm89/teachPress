@@ -94,6 +94,7 @@ function tp_show_courses_page() {
 class tp_courses_page {
     
     /**
+     * Gets the show courses main page
      * @since 5.0.0
      * @access public
      */
@@ -193,11 +194,11 @@ class tp_courses_page {
     }
     
     /**
-     * 
-     * @param string $search
-     * @param string $sem
-     * @param array $bulk
-     * @param array $checkbox
+     * Returns the content for the course table
+     * @param string $search    The search string
+     * @param string $sem       The semester you want to show
+     * @param array $bulk       The bulk checkbox
+     * @param array $checkbox   The checkbox
      * @return type
      * @since 5.0.0
      * @access private

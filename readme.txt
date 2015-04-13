@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.1.1
-Stable tag: 5.0.7
+Stable tag: 5.0.8
 
 Manage your courses and publications with teachPress 
 
@@ -134,6 +134,9 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+= 5.0.8 - (13.04.2015) =
+* Bugfix: Fixed a bug in [tpenrollments] which displays the wrong student meta data
+
 = 5.0.7 - (31.03.2015) =
 * Bugfix: Tag list was not displayed in the backend
 
@@ -150,7 +153,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 
 = 5.0.4 - (22.03.2015) =
 * Changed: BibTeX value "tpstatus" renamed to "pubstate" (adapted from biblatex)
-* Bugfix: Missing comma in BibTeX entries. 
+* Bugfix: Missing comma in BibTeX entries
 
 = 5.0.3 - (17.03.2015) =
 * Bugfix: Fixed an old installer bug, which adds the wrong template for related content. 

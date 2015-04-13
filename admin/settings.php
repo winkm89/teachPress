@@ -727,6 +727,7 @@ class tp_settings_page {
     
     /**
      * Deletes student data fields
+     * @param string $tab   The name of the tab (used for return link)
      * @access private
      * @since 5.0.0
      */
@@ -793,7 +794,8 @@ class tp_settings_page {
     
     /**
      * Handles start of database updates
-     * @param string $site
+     * @param string $site                      The current URL
+     * @param boolean $with_structure_change    Update database structure (true) or not (false), Default is true
      * @access private
      * @since 5.0.0
      */

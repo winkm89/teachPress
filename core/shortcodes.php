@@ -60,6 +60,10 @@ class tp_shortcodes {
 
     /**
      * Returns a single table line for the function tp_courselist()
+     * @param object $row       The course object
+     * @param string $image     The image position (left, right, bottom)
+     * @param int image_size    The image size in px
+     * @param string $sem       The semester you want to show
      * @return string
      * @since 5.0.0
      * @access public
