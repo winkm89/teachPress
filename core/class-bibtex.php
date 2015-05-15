@@ -308,7 +308,6 @@ class tp_bibtex {
         
         // special cases for volume/number
         if ( $number == '' && $volume != '' ) {
-            $volume = substr($volume, 0, -1);
             $number = ', ';
         }
         
@@ -658,7 +657,7 @@ class tp_bibtex {
                          '\^{w}', '\^{W}',
                          '\"{y}', '\"{Y}', "\'{y}", "\'{Y}", '\^{y}', '\^{Y}',
                          "\'{z}", "\'{Z}", '\v{z}', '\v{Z}', '\.{z}', '\.{Z}',
-                         '\ss', '\O', '\o', '\L', '\l', '\AE', '\ae', '\OE', '\oe', '\t{oo}', '\textendash', '\textemdash'
+                         '{\ss}', '{\O}', '{\o}', '{\L}', '{\l}', '{\AE}', '{\ae}', '{\OE}', '{\oe}', '{\t{oo}}', '{\textendash}', '{\textemdash}'
                         );
         $return = str_replace( $array_a , $array_b ,$input);
         return $return;

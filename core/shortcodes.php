@@ -188,7 +188,8 @@ class tp_shortcodes {
         }
         // author filter
         if ( $mode === 'author' ) {
-            $row = tp_authors::get_authors( array( 'output_type' => ARRAY_A, 
+            $row = tp_authors::get_authors( array( 'user' => $sql_parameter['user'],
+                                                   'output_type' => ARRAY_A, 
                                                    'group_by' => true ) );
             $id = 'pub_author';
             $index = 'author_id';

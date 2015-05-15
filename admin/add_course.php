@@ -96,6 +96,14 @@ function tp_add_course_page() {
    $ref = isset( $_GET['ref'] ) ? htmlspecialchars($_GET['ref']) : '';
    $capability = ($course_id !== 0) ? tp_courses::get_capability($course_id, $current_user->ID) : 'owner';
    
+   // If the user has no permissions to edit this course
+   if ( $course_id !== 0 && ( $capability !== 'owner' && $capability !== 'approved' ) ) {
+       echo '<div class="wrap">';
+       get_tp_message(__('You have no capabilites to edit this course','teachpress'), 'red');
+       echo '</div>';
+       return;
+   }
+   
    // Add new course
    if ( isset($_POST['create']) ) {
         $course_id = tp_courses::add_course($data, $sub);

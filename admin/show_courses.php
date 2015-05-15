@@ -99,6 +99,7 @@ class tp_courses_page {
      * @access public
      */
     public static function get_tab() {
+        global $current_user;
         $terms = get_tp_options('semester');
         $search = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
         $checkbox = isset( $_GET['checkbox'] ) ? $_GET['checkbox'] : '';
@@ -122,7 +123,7 @@ class tp_courses_page {
            }
            // delete a course, part 2
            if ( isset($_GET['delete_ok']) ) {
-                tp_courses::delete_courses($checkbox);
+                tp_courses::delete_courses($current_user->ID, $checkbox);
                 $message = __('Removing successful','teachpress');
                 get_tp_message($message);
            }
@@ -182,7 +183,7 @@ class tp_courses_page {
                if ($search != '') {
                    $order = 'semester DESC, name';	
                }
-               tp_courses_page::get_courses($search, $sem, $bulk, $checkbox);
+               tp_courses_page::get_courses($current_user->ID, $search, $sem, $bulk, $checkbox);
   
             ?>
             </tbody>
@@ -195,6 +196,7 @@ class tp_courses_page {
     
     /**
      * Returns the content for the course table
+     * @param int $user_ID      The ID of the current user
      * @param string $search    The search string
      * @param string $sem       The semester you want to show
      * @param array $bulk       The bulk checkbox
@@ -203,9 +205,8 @@ class tp_courses_page {
      * @since 5.0.0
      * @access private
      */
-    private static function get_courses ($search, $sem, $bulk, $checkbox) {
+    private static function get_courses ($user_ID, $search, $sem, $bulk, $checkbox) {
         $row = tp_courses::get_courses( array('search' => $search, 'semester' => $sem, 'order' => 'name, course_id') );
-        
         // if the query is empty
         if ( count($row) === 0 ) { 
             echo '<tr><td colspan="13"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
@@ -240,6 +241,7 @@ class tp_courses_page {
             $courses[$z]['semester'] = stripslashes($row->semester);
             $courses[$z]['parent'] = $row->parent;
             $courses[$z]['visible'] = $row->visible;
+            $courses[$z]['use_capabilites'] = $row->use_capabilites;
             $z++;
         }
         // display courses
@@ -253,11 +255,11 @@ class tp_courses_page {
                 // alternate table rows
                 $static['tr_class'] = ( $class_alternate === true ) ? ' class="alternate"' : '';
                 $class_alternate = ( $class_alternate === true ) ? false : true;
-                echo tp_courses_page::get_single_table_row($courses[$i], $checkbox, $static);
+                echo tp_courses_page::get_single_table_row($courses[$i], $user_ID, $checkbox, $static);
                 // Search childs
                 for ($j = 0; $j < $z; $j++) {
                     if ($courses[$i]['course_id'] == $courses[$j]['parent']) {
-                        echo tp_courses_page::get_single_table_row($courses[$j], $checkbox, $static, $courses[$i]['name'],'child');
+                        echo tp_courses_page::get_single_table_row($courses[$j], $checkbox, $user_ID, $static, $courses[$i]['name'],'child');
                     }
                 }
                 // END search childs
@@ -266,7 +268,7 @@ class tp_courses_page {
             // table design for searches
             else {
                 $parent_name = ( $courses[$i]['parent'] != 0 ) ? tp_courses::get_course_data($courses[$i]['parent'], 'name') : '';
-                echo tp_courses_page::get_single_table_row($courses[$i], $checkbox, $static, $parent_name, 'search');
+                echo tp_courses_page::get_single_table_row($courses[$i], $checkbox, $user_ID, $static, $parent_name, 'search');
             }
         }	
              
@@ -275,6 +277,7 @@ class tp_courses_page {
     /** 
      * Returns a single table row for show_courses.php
      * @param array $course                     course data
+     * @param array $user_id                    The ID of the user
      * @param array $checkbox
      * @param array $static
            $static['bulk']                      copy or delete
@@ -286,19 +289,22 @@ class tp_courses_page {
      * @since 5.0.0
      * @access private
     */ 
-    private static function get_single_table_row ($course, $checkbox, $static, $parent_course_name = '', $type = 'parent') {
+    private static function get_single_table_row ($course, $user_ID, $checkbox, $static, $parent_course_name = '', $type = 'parent') {
         $check = '';
         $style = '';
+        
         // Check if checkbox must be activated or not
         if ( ( $static['bulk'] == "copy" || $static['bulk'] == "delete") && $checkbox != "" ) {
             for( $k = 0; $k < count( $checkbox ); $k++ ) { 
                 if ( $course['course_id'] == $checkbox[$k] ) { $check = 'checked="checked"';} 
             }
         }
+        
         // Change the style for an important information
         if ( $course['places'] > 0 && $course['fplaces'] <= 0 ) {
             $style = ' style="color:#ff6600; font-weight:bold;"'; 
         }
+        
         // Type specifics
         $class = ( $type == 'parent' || $type == 'search' ) ? ' class="tp_course_parent"' : ' class="tp_course_child"';
 
@@ -307,14 +313,26 @@ class tp_courses_page {
                 $course['name'] = $parent_course_name . ' - ' . $course['name'];
             }
         }
+        
+        // row actions
+        $delete_link = '';
+        $edit_link = '';
+        $capability = tp_courses::get_capability($course['course_id'], $user_ID);
+        if ( $capability === 'owner' || $capability === 'approved' ) {
+            $edit_link = '| <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course['course_id'] . '&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;action=edit&amp;ref=overview" title="' . __('Edit','teachpress') . '">' . __('Edit','teachpress') . '</a>';
+        }
+        if ( $capability === 'owner' ) {
+            $delete_link = '| <a class="tp_row_delete" href="admin.php?page=teachpress/teachpress.php&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;checkbox%5B%5D=' . $course['course_id'] . '&amp;bulk=delete" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a>';
+        }
+        
         // complete the row
         $a1 = '<tr' . $static['tr_class'] . '>
             <th class="check-column"><input name="checkbox[]" type="checkbox" value="' . $course['course_id'] . '"' . $check . '/></th>
             <td' . $class . '>
-                    <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course['course_id'] . '&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;action=show" class="teachpress_link" title="' . __('Click to show','teachpress') . '"><strong>' . $course['name'] . '</strong></a>
-                    <div class="tp_row_actions">
-                            <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course['course_id'] . '&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;action=show" title="' . __('Show','teachpress') . '">' . __('Show','teachpress') . '</a> | <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course['course_id'] . '&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;action=edit&amp;ref=overview" title="' . __('Edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=teachpress/teachpress.php&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;checkbox%5B%5D=' . $course['course_id'] . '&amp;bulk=delete" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a>
-                    </div>
+                <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course['course_id'] . '&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;action=show" class="teachpress_link" title="' . __('Click to show','teachpress') . '"><strong>' . $course['name'] . '</strong></a>
+                <div class="tp_row_actions">
+                    <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course['course_id'] . '&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;action=show" title="' . __('Show','teachpress') . '">' . __('Show','teachpress') . '</a> ' . $edit_link . $delete_link . '
+                </div>
             </td>
             <td>' . $course['course_id'] . '</td>
             <td>' . $course['type'] . '</td>

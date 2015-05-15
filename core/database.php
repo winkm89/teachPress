@@ -37,8 +37,10 @@ function get_tp_option($var, $category = 'system') {
  */
 function get_tp_options($category, $order = "`setting_id` DESC", $output_type = OBJECT) {
     global $wpdb;
+    $order = esc_sql($order);
     $result = $wpdb->get_results( 
-        $wpdb->prepare( "SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = %s ORDER BY %s",  $category, $order ), $output_type
+        $wpdb->prepare( "SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = %s ORDER BY " . $order,  $category ), $output_type
+        
     );
     return $result;
 }
@@ -1002,14 +1004,22 @@ class tp_courses {
     
     /**
      * Delete courses
+     * @param int   $user_ID    The ID of the current user
      * @param array $checkbox   IDs of the courses
      * @since 5.0.0
      */
-    public static function delete_courses($checkbox){
+    public static function delete_courses($user_ID, $checkbox){
         global $wpdb;
         $wpdb->query("SET FOREIGN_KEY_CHECKS=0");
         for( $i = 0; $i < count( $checkbox ); $i++ ) { 
-            $checkbox[$i] = intval($checkbox[$i]); 
+            $checkbox[$i] = intval($checkbox[$i]);
+            
+            // capability check
+            $capability = tp_courses::get_capability($checkbox[$i], $user_ID);
+            if ($capability !== 'owner' ) {
+                continue;
+            }
+            
             $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = $checkbox[$i]" );
             $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSE_META . " WHERE `course_id` = $checkbox[$i]" );
             $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = $checkbox[$i]" );
@@ -1706,6 +1716,7 @@ class tp_publications {
      * Returns course meta data
      * @param int $pub_id           The publication ID
      * @param string $meta_key      The name of the meta field
+     * @return array
      * @since 5.0.0
      */
     public static function get_pub_meta($pub_id, $meta_key = ''){
@@ -2307,7 +2318,8 @@ class tp_students {
     /**
      * Returns user meta data
      * @param int $wp_id            The user ID
-     * @param string $meta_key      The name of the meta field
+     * @param string $meta_key      The name of the meta field (optional)
+     * @return array
      * @since 5.0.0
      */
     public static function get_student_meta($wp_id, $meta_key = ''){

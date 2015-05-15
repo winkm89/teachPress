@@ -185,6 +185,7 @@ class tp_document_manager {
                 if ( isNaN( response_splitted[0] ) === true ) {
                     $('<div class="teachpress_message teachpress_message_red"><strong>' + response.response + '</strong></div>').prependTo(".wrap");
                     $('#' + file.id + " .tp_fileprogress").css( "background-color", "red" );
+                    $('.teachpress_message').delay( 2400 ).fadeOut('slow');
                     return;
                 }
                 
@@ -322,7 +323,7 @@ class tp_document_manager {
                     else {
                         $('<div class="teachpress_message teachpress_message_red"><strong><?php _e('Removing failed','teachpress'); ?></strong></div>').prependTo(".wrap");
                     }
-                    
+                    $('.teachpress_message').delay( 2400 ).fadeOut('slow');
                 });
             });
         });

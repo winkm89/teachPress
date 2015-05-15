@@ -228,13 +228,13 @@
                                             name: 'tp_coure_id',
                                             label: 'Select course',
                                             minWidth: 570,
-                                            'values': teachpress_courses //  is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_courses //  is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'textbox',
                                             name: 'tp_link_class',
                                             label: 'CSS class for links',
-                                            value: teachpress_file_link_css_class // is written with tp_write_data_for_tinymce()
+                                            value: teachpress_file_link_css_class // is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'textbox',
@@ -304,7 +304,7 @@
                                             name: 'tp_coure_id',
                                             label: 'Select course',
                                             minWidth: 570,
-                                            'values': teachpress_courses // is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_courses // is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -341,7 +341,7 @@
                                             type: 'listbox',
                                             name: 'tp_term',
                                             label: 'Term',
-                                            'values': teachpress_semester // is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_semester // is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'textbox',
@@ -380,7 +380,7 @@
                                             type: 'listbox',
                                             name: 'tp_user',
                                             label: 'Select user',
-                                            'values': teachpress_pub_user //  is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_pub_user //  is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -500,7 +500,7 @@
                                             type: 'listbox',
                                             name: 'tp_user',
                                             label: 'Select user',
-                                            'values': teachpress_pub_user // is written with tp_write_data_for_tinymce()
+                                            'values': teachpress_pub_user // is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',

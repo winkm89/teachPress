@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.1.1
-Stable tag: 5.0.8
+Tested up to: 4.2.2
+Stable tag: 5.0.9
 
 Manage your courses and publications with teachPress 
 
@@ -134,6 +134,17 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.9 - (15.05.2015) =
+* New: Partial slovenian translation added
+* New: Fade out status messages of the document manager after some seconds
+* Changed: Better course select list for the document manager
+* Bugfix: Fixed a bug in the handling of volume/number formatting in a publication meta row under certain conditions
+* Bugfix: Capability checks added for course actions (editing and deleting)
+* Bugfix: Fixed an "order by" bug in get_tp_options()
+* Bugfix: Prevent loading of frontent scripts/styles in the document manager tab of the tinyMCE plugin
+* Bugfix: [tpcloud]: Author filter doesn't consider the user parameter
+
 = 5.0.8 - (13.04.2015) =
 * Bugfix: Fixed a bug in [tpenrollments] which displays the wrong student meta data
 
