@@ -1,7 +1,7 @@
 <?php
 /**
  * This file contains all functions for the document manager
- * @package teachpress\core\ajax
+ * @package teachpress\core
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
  * @since 5.0.0
  */

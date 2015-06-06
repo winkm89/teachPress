@@ -762,10 +762,10 @@ function tp_single_shortcode ($atts) {
         $url = explode(chr(13) . chr(10), $publication['url']);
         $parts = explode(', ',$url[0]);
         $parts[0] = trim( $parts[0] );
-        $title = '<a href="' . $parts[0] . '">' . stripslashes($publication['title']) . '</a>';
+        $title = '<a href="' . $parts[0] . '">' . tp_html::prepare_title($publication['title'], 'decode') . '</a>';
     }
     else {
-        $title = stripslashes($publication['title']);
+        $title = tp_html::prepare_title($publication['title'], 'decode');
     }
     $asg .= '<span class="tp_single_author">' . stripslashes($author) . '</span><span class="tp_single_year"> (' . $publication['year'] . ')</span>: <span class="tp_single_title">' . $title . '</span>. <span class="tp_single_additional">' . tp_bibtex::single_publication_meta_row($publication, $settings) . '</span>';
     $asg .= '</div>';
@@ -836,7 +836,7 @@ function tp_abstract_shortcode ($atts) {
     }
 
     if ( isset($publication['abstract']) ) {
-        return '<h2 class="tp_abstract">' . __('Abstract','teachpress') . '</h2><p class="tp_abstract">' . tp_bibtex::prepare_text_for_html($publication['abstract']) . '</p>';
+        return '<h2 class="tp_abstract">' . __('Abstract','teachpress') . '</h2><p class="tp_abstract">' . tp_html::prepare_text($publication['abstract']) . '</p>';
     }
     return;
 }

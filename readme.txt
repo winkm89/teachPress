@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.2.2
-Stable tag: 5.0.9
+Stable tag: 5.0.10
 
 Manage your courses and publications with teachPress 
 
@@ -27,7 +27,8 @@ This plugin unites a course management system (with modules for enrollments, doc
 * Italian (o)
 * Portuguese (Brazil) (o)
 * Slovak (o)
-* Spanish (o)
+* Slovenian (o)
+* Spanish
 
 (o) Incomplete language files
 
@@ -69,10 +70,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 I would like to thank the team of [CBIS, Chemnitz University of Technology](http://www.tu-chemnitz.de/wirtschaft/wi2/wp/en/) for the support and the collaboration during the last years.
 
 = Translators who did a great job in translating the plugin into other languages. Thank you! =
+* Alfonso Montejo Ráez (Spanish)
+* Marcus Tavares (Portuguese-Brazil)
 * [Jozef Dobos] (http://xn--dobo-j6a.eu/) (Slovak)
 * Elisabetta Mancini (Italian)
-* Aurelio Pons (Spanish)
-* Marcus Tavares (Portuguese-Brazil)
 
 == Installation ==
 
@@ -134,6 +135,11 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+= 5.0.10 - (06.06.2015) =
+* New: Support for HTML text formatting elements (b, i, u, s, sub, sup, em, small, del) in publication titles added
+* Changed: Spanish language files updated (Thanks to Alfonso Montejo Ráez)
+* Changed: Small improvements for character encoding in exports
+* Bugfix: Fixed usage of deprecated parameter (TP_COURSE_SYSTEM, TP_PUBLICATION_SYSTEM) in settings menu
 
 = 5.0.9 - (15.05.2015) =
 * New: Partial slovenian translation added

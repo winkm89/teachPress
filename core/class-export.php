@@ -267,9 +267,9 @@ class tp_export {
             $all_authors = tp_bibtex::parse_author($row['author'], $settings['editor_name'] );
         }
         $meta = tp_bibtex::single_publication_meta_row($row, $settings);
-        $line = $all_authors . ' (' . $row['year'] . ')' . ': ' . stripslashes($row['title']) . '. ' . $meta;
+        $line = $all_authors . ' (' . $row['year'] . ')' . ': ' . tp_html::prepare_title($row['title'], 'replace') . '. ' . $meta;
         $line = str_replace('  ', ' ', $line);
-        $line = utf8_decode($line);
+        $line = utf8_decode(self::decode($line));
         return $line;
     }
 
@@ -281,8 +281,8 @@ class tp_export {
      * @access private 
     */
     private static function decode ($char) {
-        $array_1 = array('Ã¼','Ã¶', 'Ã¤', 'Ã¤', 'Ã?','Â§','Ãœ','Ã','Ã–','&Uuml;','&uuml;', '&Ouml;', '&ouml;', '&Auml;','&auml;', '&nbsp;', '&szlig;', '&sect;', '&ndash;', '&rdquo;', '&ldquo;', '&eacute;', '&egrave;', '&aacute;', '&agrave;', '&ograve;','&oacute;', '&copy;', '&reg;', '&micro;', '&pound;', '&raquo;', '&laquo;', '&yen;', '&Agrave;', '&Aacute;', '&Egrave;', '&Eacute;', '&Ograve;', '&Oacute;', '&shy;', '&amp;');
-        $array_2 = array('ü','ö', 'ä', 'ä', 'ß', '§','Ü','Ä','Ö','Ü','ü', 'Ö', 'ö', 'Ä', 'ä', ' ', 'ß', '§', '-', '”', '“', 'é', 'è', 'á', 'à', 'ò', 'ó', '©', '®', 'µ', '£', '»', '«', '¥', 'À', 'Á', 'È', 'É', 'Ò', 'Ó', '­', '&');
+        $array_1 = array('–', 'Ã¼', 'Ã¶', 'Ã¤', 'Ã¤', 'Ã?', 'Â§', 'Ãœ', 'Ã', 'Ã–','&Uuml;','&uuml;', '&Ouml;', '&ouml;', '&Auml;','&auml;', '&nbsp;', '&szlig;', '&sect;', '&ndash;', '&rdquo;', '&ldquo;', '&eacute;', '&egrave;', '&aacute;', '&agrave;', '&ograve;','&oacute;', '&copy;', '&reg;', '&micro;', '&pound;', '&raquo;', '&laquo;', '&yen;', '&Agrave;', '&Aacute;', '&Egrave;', '&Eacute;', '&Ograve;', '&Oacute;', '&shy;', '&amp;', '&quot;',);
+        $array_2 = array('-', 'ü', 'ö', 'ä', 'ä', 'ß', '§', 'Ü', 'Ä', 'Ö', 'Ü', 'ü', 'Ö', 'ö', 'Ä', 'ä', ' ', 'ß', '§', '-', '”', '“', 'é', 'è', 'á', 'à', 'ò', 'ó', '©', '®', 'µ', '£', '»', '«', '¥', 'À', 'Á', 'È', 'É', 'Ò', 'Ó', '­', '&', '"');
         $char = str_replace($array_1, $array_2, $char);
         return $char;
     }

@@ -175,7 +175,7 @@ class tp_ajax {
         echo '<ol>';
         foreach ( $pubs as $pub) {
             echo '<li style="padding-left:10px;">';
-            echo '<a target="_blank" title="' . __('Edit publication','teachpress') .'" href="admin.php?page=teachpress/addpublications.php&pub_id=' . $pub['pub_id'] . '">' . stripslashes($pub['title']) . '</a>, ' . stripslashes($pub['type']) . ', ' . $pub['year'];
+            echo '<a target="_blank" title="' . __('Edit publication','teachpress') .'" href="admin.php?page=teachpress/addpublications.php&pub_id=' . $pub['pub_id'] . '">' . tp_html::prepare_title($pub['title'], 'decode') . '</a>, ' . stripslashes($pub['type']) . ', ' . $pub['year'];
             if ( $pub['is_author'] == 1 ) {
                 echo ' (' . __('as author','teachpress') . ')';
             }

@@ -83,7 +83,7 @@ if ($feedtype == 'bibtex') {
         $settings['use_span'] = false; 
         echo '
              <item>
-                <title><![CDATA[' . stripslashes($row['title']) . ']]></title>
+                <title><![CDATA[' . tp_html::prepare_title($row['title'], 'replace') . ']]></title>
                 <description>' . tp_bibtex::single_publication_meta_row($row, $settings) . '</description>
                 <link><![CDATA[' . $item_link . ']]></link>
                 <dc:creator>' . stripslashes($all_authors) . '</dc:creator>

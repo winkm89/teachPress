@@ -111,12 +111,12 @@ class tp_settings_page {
 
         echo '<h3 class="nav-tab-wrapper">'; 
         echo '<a href="' . $site . '&amp;tab=general" class="' . $set_menu_1 . '">' . __('General','teachpress') . '</a>';
-        if ( !defined('TP_COURSE_SYSTEM') ) {
+        if ( !defined('TEACHPRESS_COURSE_MODULE') ) {
             echo '<a href="' . $site . '&amp;tab=courses" class="' . $set_menu_2 . '">' . __('Courses','teachpress') . '</a>';
             echo '<a href="' . $site . '&amp;tab=course_data" class="' . $set_menu_3 . '">' . __('Meta','teachpress') . ': ' . __('Courses','teachpress') . '</a>';
             echo '<a href="' . $site . '&amp;tab=student_data" class="' . $set_menu_4 . '">' . __('Meta','teachpress') . ': ' . __('Students','teachpress') . '</a>';
         }
-        if ( !defined('TP_PUBLICATION_SYSTEM') ) {
+        if ( !defined('TEACHPRESS_PUBLICATION_MODULE') ) {
             echo '<a href="' . $site . '&amp;tab=publication_data" class="' . $set_menu_6 . '">' . __('Meta','teachpress') . ': ' . __('Publications','teachpress') . '</a>'; 
             echo '<a href="' . $site . '&amp;tab=publications" class="' . $set_menu_5 . '">' . __('Publications','teachpress') . '</a>';
         }

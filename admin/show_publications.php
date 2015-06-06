@@ -123,7 +123,7 @@ function tp_show_publications_page() {
     if ( isset($_GET['bulk_edit']) ) {
         $mass_edit = ( isset($_GET['mass_edit']) ) ? $_GET['mass_edit'] : '';
         $tags = ( isset($_GET['add_tags']) ) ? $_GET['add_tags'] : '';
-        $delbox = ( isset($_GET['delbox']) ) ? $_GET['delbox'] : '';
+        $delbox = ( isset($_GET['delbox']) ) ? $_GET['delbox'] : array();
         tp_tags::change_tag_relations($mass_edit, $tags, $delbox);
         get_tp_message( __('Bulk edit executed','teachpress') );
     }
@@ -325,7 +325,7 @@ class tp_publications_page {
         }
         echo '<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row->pub_id . '" /></th>';
         echo '<td>';
-        echo '<a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . stripslashes($row->title) . '</strong></a>';
+        echo '<a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . tp_html::prepare_title($row->title, 'decode') . '</strong></a>';
         echo '<div class="tp_row_actions"><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=' . $array_variables['page']  .'&amp;checkbox%5B%5D=' . $row->pub_id . '&amp;action=delete' . $get_string . '" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
         echo '</td>';
         echo '<td>' . $row->pub_id . '</td>';
