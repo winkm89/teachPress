@@ -259,7 +259,7 @@ class tp_courses_page {
                 // Search childs
                 for ($j = 0; $j < $z; $j++) {
                     if ($courses[$i]['course_id'] == $courses[$j]['parent']) {
-                        echo tp_courses_page::get_single_table_row($courses[$j], $checkbox, $user_ID, $static, $courses[$i]['name'],'child');
+                        echo tp_courses_page::get_single_table_row($courses[$j], $user_ID, $checkbox, $static, $courses[$i]['name'],'child');
                     }
                 }
                 // END search childs
@@ -268,7 +268,7 @@ class tp_courses_page {
             // table design for searches
             else {
                 $parent_name = ( $courses[$i]['parent'] != 0 ) ? tp_courses::get_course_data($courses[$i]['parent'], 'name') : '';
-                echo tp_courses_page::get_single_table_row($courses[$i], $checkbox, $user_ID, $static, $parent_name, 'search');
+                echo tp_courses_page::get_single_table_row($courses[$i], $user_ID, $checkbox, $static, $parent_name, 'search');
             }
         }	
              
@@ -277,7 +277,7 @@ class tp_courses_page {
     /** 
      * Returns a single table row for show_courses.php
      * @param array $course                     course data
-     * @param array $user_id                    The ID of the user
+     * @param array $user_ID                    The ID of the user
      * @param array $checkbox
      * @param array $static
            $static['bulk']                      copy or delete

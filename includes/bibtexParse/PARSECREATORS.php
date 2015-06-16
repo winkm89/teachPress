@@ -1,7 +1,8 @@
 <?php
 /**
  * This file contains the external class PARSECREATORS of bibtexParse
- * @package teachpress\includes\bibtexParse
+ * @package teachpress
+ * @subpackage bibtexParse
  */
 
 /*

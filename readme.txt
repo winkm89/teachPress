@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.2.2
-Stable tag: 5.0.10
+Stable tag: 5.0.11
 
 Manage your courses and publications with teachPress 
 
@@ -135,6 +135,11 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+= 5.0.11 - (17.06.2015) =
+* Bugfix: Fixed a bug which prevent the visibility of some teachpress setting tabs
+* Bugfix: Fixed a bug which prevent the selection of sub courses in the course overview
+* Bugfix: [tpsingle]: Missing CSS declaration 
+
 = 5.0.10 - (06.06.2015) =
 * New: Support for HTML text formatting elements (b, i, u, s, sub, sup, em, small, del) in publication titles added
 * Changed: Spanish language files updated (Thanks to Alfonso Montejo Ráez)

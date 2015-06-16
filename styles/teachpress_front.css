@@ -1,6 +1,6 @@
-/***********************/
+/*****************************/
 /* shortcode: [tpcourseinfo] */
-/***********************/
+/*****************************/
 .tp_courseinfo {width:100%; border:none;}
 .tp_courseinfo tr {}
 .tp_courseinfo td {border-bottom:1px dotted silver; padding:5px;}
@@ -106,6 +106,7 @@ td.tp_pub_image_left, td.tp_pub_image_right{vertical-align: top; padding: 8px; b
 /*********************************************/
 span.tp_single_title {font-size:small;}
 span.tp_single_author {font-size:small;}
+span.tp_single_year {font-size:small;}
 span.tp_single_additional {font-size:small; font-style:italic;}
 div.tp_single_image_left{float:left; padding: 0 5px 5px 0;}
 div.tp_single_image_right{float:right; padding: 0 0 5px 5px;}
