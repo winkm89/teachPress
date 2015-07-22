@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.2.2
-Stable tag: 5.0.11
+Tested up to: 4.3
+Stable tag: 5.0.12
 
 Manage your courses and publications with teachPress 
 
@@ -36,7 +36,7 @@ This plugin unites a course management system (with modules for enrollments, doc
 * [Developer blog](https://mtrv.wordpress.com/teachpress/) 
 * [Upgrade information](https://mtrv.wordpress.com/2015/03/12/teachpress-5-0-upgrade-information/)
 * [teachPress Shortcode Reference](https://mtrv.wordpress.com/teachpress/shortcode-reference/) 
-* [teachPress on github](https://github.com/winkm89/teachPress)  
+* [teachPress on GitHub](https://github.com/winkm89/teachPress)  
 
 = Disclaimer =  
 Use at your own risk. No warranty expressed or implied is provided.  
@@ -135,6 +135,12 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.12 - (22.07.2015) =
+* Bugfix: Fixed a bug in the declaration of two parameter for the tinyMCE plugin
+* Bugfix: Constructor of the books widget updated to PHP 5 style, see [Deprecating PHP4 style constructors in WordPress 4.3](https://make.wordpress.org/core/2015/07/02/deprecating-php4-style-constructors-in-wordpress-4-3/)
+* Bugfix: The plural form of "Journal Articles" was not displayed 
+
 = 5.0.11 - (17.06.2015) =
 * Bugfix: Fixed a bug which prevent the visibility of some teachpress setting tabs
 * Bugfix: Fixed a bug which prevent the selection of sub courses in the course overview

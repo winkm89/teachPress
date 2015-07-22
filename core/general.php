@@ -121,7 +121,7 @@ function tp_datesplit($date_string) {
 */ 
 function get_tp_publication_types() {
     $pub_types[0] = array (0 => '0', 1 => __('All types','teachpress'), 2 => __('All types','teachpress'));
-    $pub_types[1] = array (0 => 'article', 1 => __('Journal Article','teachpress'), 2 => __('Journal Article','teachpress'));
+    $pub_types[1] = array (0 => 'article', 1 => __('Journal Article','teachpress'), 2 => __('Journal Articles','teachpress'));
     $pub_types[2] = array (0 => 'book', 1 => __('Book','teachpress'), 2 => __('Books','teachpress'));
     $pub_types[3] = array (0 => 'booklet', 1 => __('Booklet','teachpress'), 2 => __('Booklets','teachpress'));
     $pub_types[4] = array (0 => 'collection', 1 => __('Collection','teachpress'), 2 => __('Collections','teachpress'));

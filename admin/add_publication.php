@@ -142,7 +142,7 @@ function tp_add_publication_page() {
         echo '<h2>' . __('Add a new publication','teachpress') . '</h2>';
     }
     else {
-        echo '<h2>' . __('Edit publication','teachpress') . '</h2>';
+        echo '<h2>' . __('Edit publication','teachpress') . ' <a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Create','teachpress') . '</a></h2>';
     }
     
     // input fields

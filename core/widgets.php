@@ -16,10 +16,10 @@ class tp_books_widget extends WP_Widget {
     /** 
      * constructor 
      */
-    function tp_books_widget() {
+    function __construct() {
         $widget_ops = array('classname' => 'widget_teachpress_books', 'description' => __('Shows a random book in the sidebar', 'teachpress') );
         $control_ops = array('width' => 500, 'height' => 300);
-        parent::WP_Widget(false, $name = __('teachPress books','teachpress'), $widget_ops, $control_ops);
+        parent::__construct(false, $name = __('teachPress books','teachpress'), $widget_ops, $control_ops);
     }
 
     /** 
