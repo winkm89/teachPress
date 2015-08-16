@@ -199,7 +199,7 @@ function tp_show_authors_page () {
                 var author_id = $(this).attr("author_id");
                 var tr_class = $(this).attr("style_class");
                 var tr = '#resultbox_' + author_id;
-                $.get("<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>?author_id=" + author_id, 
+                $.get("<?php echo plugins_url() . '/teachpress/ajax.php' ;?>?author_id=" + author_id, 
                 function(text){
                     var ret;
                     var current = $(tr).next();

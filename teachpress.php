@@ -3,7 +3,7 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 5.0.12
+Version: 5.0.13
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
@@ -187,6 +187,13 @@ if ( !defined('TEACHPRESS_PUBLICATION_MODULE') ) {
     */
     define('TEACHPRESS_PUBLICATION_MODULE', true);}
 
+if ( !defined('TEACHPRESS_ERROR_REPORTING') ) {
+    /**
+     * This value defines if the error reporting is active or not
+     * @since 5.0.13
+    */
+    define('TEACHPRESS_ERROR_REPORTING', false);}
+    
 /*********/
 /* Menus */
 /*********/
@@ -304,7 +311,18 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.12';
+    return '5.0.13';
+}
+
+/**
+ * Returns the WordPress version
+ * @global string $wp_version
+ * @return string
+ * @since 5.0.13
+ */
+function tp_get_wp_version () {
+    global $wp_version;
+    return $wp_version;
 }
 
 /** 
@@ -383,6 +401,10 @@ function tp_activation ( $network_wide ) {
     else {
         tp_install();
     }
+}
+
+function tp_activation_error_reporting () {
+    file_put_contents(__DIR__.'/teachpress_activation_errors.html', ob_get_contents());
 }
 
 /**
@@ -508,7 +530,6 @@ function tp_write_data_for_tinymce () {
  * Admin interface script loader
  */
 function tp_backend_scripts() {
-    global $wp_version;
     // Define $page
     $page = isset($_GET['page']) ? $_GET['page'] : '';
     wp_enqueue_style('teachpress-print-css', plugins_url() . '/teachpress/styles/print.css', false, false, 'print');
@@ -522,7 +543,7 @@ function tp_backend_scripts() {
         wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
         wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
         wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
-        $current_lang = ( version_compare($wp_version, '4.0', '>=') ) ? get_option('WPLANG') : WPLANG;
+        $current_lang = ( version_compare( tp_get_wp_version() , '4.0', '>=') ) ? get_option('WPLANG') : WPLANG;
         $array_lang = array('de_DE','it_IT','es_ES', 'sk_SK');
         if ( in_array( $current_lang , $array_lang) ) {
             wp_enqueue_script('teachpress-datepicker-de', plugins_url() . '/teachpress/js/datepicker/jquery.ui.datepicker-' . $current_lang . '.js');
@@ -575,10 +596,15 @@ add_filter('plugin_action_links','tp_plugin_link', 10, 2);
 add_action('wp_ajax_tp_document_upload', 'tp_handle_document_uploads' );
 
 // Register tinyMCE Plugin
- if (version_compare($wp_version, '3.9', '>=')) {
+if (version_compare( tp_get_wp_version() , '3.9', '>=')) {
     add_action('admin_head', 'tp_add_tinymce_button');
     add_action('admin_head', 'tp_write_data_for_tinymce' );
  }
+ 
+// Activation Error Reporting
+if ( TEACHPRESS_ERROR_REPORTING === true ) {
+    register_activation_hook( __FILE__, 'tp_activation_error_reporting' ); 
+}
 
 // Register course module
 if ( TEACHPRESS_COURSE_MODULE === true ) {

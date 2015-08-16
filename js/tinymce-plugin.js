@@ -439,8 +439,10 @@
                                             label: 'Style of publication list',
                                             'values': [
                                                 {text: '1-line-style (numbered)', value: 'numbered'},
+                                                {text: '1-line-style (numbered descending)', value: 'numbered_desc'},
                                                 {text: '1-line-style', value: 'simple'},
                                                 {text: '4-line-style (numbered)', value: 'std_num'},
+                                                {text: '4-line-style (numbered descending)', value: 'std_num_desc'},
                                                 {text: '4-line-style', value: 'std'}
                                             ]
                                         },
@@ -586,8 +588,10 @@
                                             label: 'Style of publication list',
                                             'values': [
                                                 {text: '1-line-style (numbered)', value: 'numbered'},
+                                                {text: '1-line-style (numbered descending)', value: 'numbered_desc'},
                                                 {text: '1-line-style', value: 'simple'},
                                                 {text: '4-line-style (numbered)', value: 'std_num'},
+                                                {text: '4-line-style (numbered descending)', value: 'std_num_desc'},
                                                 {text: '4-line-style', value: 'std'}
                                             ]
                                         },

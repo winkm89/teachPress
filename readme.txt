@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.3
-Stable tag: 5.0.12
+Stable tag: 5.0.13
 
 Manage your courses and publications with teachPress 
 
@@ -135,6 +135,11 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.13 - (16.08.2015) =
+* New: Optional error reporting for actviations added
+* Bugfix: Descending style formats were not available via tinyMCE plugin [#11](https://github.com/winkm89/teachPress/issues/11)
+* Bugfix: Fixed a bug which leads to an error message after plugin activation
 
 = 5.0.12 - (22.07.2015) =
 * Bugfix: Fixed a bug in the declaration of two parameter for the tinyMCE plugin
