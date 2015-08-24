@@ -681,7 +681,7 @@ class tp_enrollments {
         }
         // Edit userdata
         if ( $tab === 'data' ) {
-            $rtn .= tp_registration_form($row, 'edit'); 
+            $rtn .= tp_registration_form($user_id, 'edit'); 
         }
         return $rtn;
      
@@ -852,15 +852,15 @@ class tp_enrollments {
 
 /**
  * The form for user registrations
- * @param int|array $user_input    If $mode="register", it's only the ID. IF $mode = "edit", then it's an array.
+ * @param int|array $user_input    If $mode is'register' or 'admin', it's only the ID. If $mode is 'edit', then it's an array.
  * @param string $mode             register, edit or admin
  * @return string
  * @since 4.0.0
  * @version 2 (since 5.0.0)
  */
 function tp_registration_form ($user_input, $mode = 'register') {
-    $user = ( $mode !== 'register' ) ? tp_students::get_student($user_input['wp_id']) : '';
-    $user_meta = ( $mode !== 'register' ) ? tp_students::get_student_meta($user_input['wp_id']) : array( array('meta_key' => '', 'meta_value' => '') );
+    $user = ( $mode !== 'register' ) ? tp_students::get_student($user_input) : '';
+    $user_meta = ( $mode !== 'register' ) ? tp_students::get_student_meta($user_input) : array( array('meta_key' => '', 'meta_value' => '') );
     $fields = get_tp_options('teachpress_stud','`setting_id` ASC', ARRAY_A);
     $rtn = '';
     $rtn .= '<form id="tp_registration_form" method="post">';

@@ -24,7 +24,6 @@ class tp_tables {
         $charset_collate = self::get_charset();
         // Settings
         self::add_table_settings($charset_collate);
-        self::add_default_settings();
         // Courses
         self::add_table_courses($charset_collate);
         self::add_table_course_meta($charset_collate);
@@ -378,6 +377,9 @@ class tp_tables {
         
         // test engine
         self::change_engine(TEACHPRESS_SETTINGS);
+        
+        // Add default values
+        self::add_default_settings();
     }
     
     /**

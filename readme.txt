@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.3
-Stable tag: 5.0.13
+Stable tag: 5.0.14
 
 Manage your courses and publications with teachPress 
 
@@ -136,13 +136,18 @@ It's **strongly** recommended to save your teachPress database tables before upg
 
 == Changelog ==
 
+= 5.0.14 - (24.08.2015) =
+* Changed: Spanish translation updated (Thanks to Alfonso Montejo)
+* Bugfix: Fixed a bug which has added all default values of the plugin settings after reactivation again
+* Bugfix: Edit student form doesn't display the student data
+
 = 5.0.13 - (16.08.2015) =
 * New: Optional error reporting for actviations added
 * Bugfix: Descending style formats were not available via tinyMCE plugin [#11](https://github.com/winkm89/teachPress/issues/11)
 * Bugfix: Fixed a bug which leads to an error message after plugin activation
 
 = 5.0.12 - (22.07.2015) =
-* Bugfix: Fixed a bug in the declaration of two parameter for the tinyMCE plugin
+* Bugfix: Fixed a bug in the declaration of two parameters for the tinyMCE plugin
 * Bugfix: Constructor of the books widget updated to PHP 5 style, see [Deprecating PHP4 style constructors in WordPress 4.3](https://make.wordpress.org/core/2015/07/02/deprecating-php4-style-constructors-in-wordpress-4-3/)
 * Bugfix: The plural form of "Journal Articles" was not displayed 
 

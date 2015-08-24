@@ -95,7 +95,7 @@ function tp_show_student_page($student, $fields, $search, $curr_page, $url_param
                 echo '<th class="check-column"><input name="checkbox[]" type="checkbox" value="' . $row->con_id . '"/></th>';
                 echo '<td>' . $row->con_id . '</td>';
                 echo '<td>' . $row->timestamp . '</td>';
-                echo '<td>' . stripslashes($row->parent_name) . stripslashes($row->name) . '</td>';
+                echo '<td>' . stripslashes($row->parent_name) . ' ' . stripslashes($row->name) . '</td>';
                 echo '<td>' . stripslashes($row->type) . '</td>';
                 echo '<td>' . stripslashes($row->date) . '</td>';
                 echo '</tr>';
