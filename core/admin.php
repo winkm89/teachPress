@@ -403,6 +403,108 @@ class tp_admin {
 }
 
 /**
+ * This class contains functions for copying courses via admin menu
+ * @since 5.0.15
+ */
+class tp_copy_course {
+    
+    /**
+     * This function copies courses
+     * @param array $checkbox An array of the course IDs you want to copy
+     * @param string $copysem The target semester
+     * @since 5.0.15
+     */
+    public static function init ($checkbox, $copysem) {
+        $max = count( $checkbox );
+
+        // read course data
+        for( $i = 0; $i < $max; $i++ ) {
+            $original_course_id = intval($checkbox[$i]);
+            $new_courses[$i]['orig_id'] = $original_course_id;
+            $new_courses[$i]['new_id'] = 0;
+            $new_courses[$i]['data'] = tp_courses::get_course($original_course_id, ARRAY_A);
+            $new_courses[$i]['meta'] = tp_courses::get_course_meta($original_course_id);
+            $new_courses[$i]['orig_semester'] = $new_courses[$i]['data']['semester'];
+            $new_courses[$i]['data']['semester'] = $copysem;
+
+            // if is a normal course: copy 
+            if ( $new_courses[$i]['data']['parent'] == 0 ) {
+                $new_courses[$i]['new_id'] = self::add_course($new_courses[$i]['data'], $new_courses[$i]['meta']);
+            }
+        }
+
+        // For sub courses
+        for( $i = 0; $i < $max; $i++ ) {
+            if ( $new_courses[$i]['data']['parent'] == 0 ) {
+                continue;
+            }
+            
+            // Find parent course
+            $new_parent = self::find_parent($new_courses, $max, $new_courses[$i]['data']['parent']);
+            echo $new_parent;
+            if ( $new_courses[$i]['orig_semester'] === $copysem && $new_parent === 0 ) {
+                // use the old parent
+            }
+            else {
+                // set a new parent
+                $new_courses[$i]['data']['parent'] = $new_parent;
+            }
+     
+            self::add_course($new_courses[$i]['data'], $new_courses[$i]['meta']);
+        }
+    }
+    
+    /**
+     * Adds a course based on data of an old course
+     * @param array $data
+     * @param array $meta_data
+     * @return int The ID of the created course
+     * @access private
+     * @since 5.0.15
+     */
+    private static function add_course ($data, $meta_data) {
+        
+        // reset data
+        $data['rel_page_alter'] = 0;
+        $data['start_hour'] = '00';
+        $data['start_minute'] = '00';
+        $data['end_hour'] = '00';
+        $data['end_minute'] = '00';
+        $data['start'] = '00';
+        $data['end'] = '00';
+        
+        // add data
+        $new_id = tp_courses::add_course($data, array('number' => 0));
+        foreach ( $meta_data as $meta_row ) {
+            tp_courses::add_course_meta($new_id, $meta_row['meta_key'], $meta_row['meta_value']);
+        }
+        return $new_id;
+    }
+
+    /**
+     * Checks if a parent course was in the selection for copying courses and returns the new id of his copy
+     * @param array $new_courses        The new courses array
+     * @param int $max                  The length of the new courses array
+     * @param int $parent_id            The ID your searching for
+     * @return int Returns the new ID or 0 if there was nothing found
+     * @access private
+     * @since 5.0.15
+     */
+    private static function find_parent ($new_courses, $max, $parent_id) {
+        $new_parent_id = 0;
+        
+        for( $i = 0; $i < $max; $i++ ) {
+            if ( $new_courses[$i]['orig_id'] == $parent_id ) {
+                $new_parent_id = $new_courses[$i]['new_id'];
+                break;
+            }
+        }
+        return $new_parent_id;
+        
+    }
+}
+
+/**
  * Gets all drafts of a post type as options for select menus
  * @param string $post_type
  * @param string $post_status       Default is "publish"
@@ -671,79 +773,6 @@ function tp_add_publication_as_post ($title, $bibtex_key, $date, $post_type = 'p
       'post_category' => $category,
       ));
     return $post_id;
-}
-
-/** 
- * Copy courses
- * @param array $checkbox   ID of the course you want to copy
- * @param string $copysem   semester
- * @todo Needs fixing!!!!!
-*/
-function tp_copy_course($checkbox, $copysem) {
-    global $wpdb;
-    $counter = 0;
-    $counter2 = 0;
-    $sub = array('number' => 0);
-    for( $i = 0; $i < count( $checkbox ); $i++ ) {
-        $checkbox[$i] = intval($checkbox[$i]);
-        $row = tp_courses::get_course($checkbox[$i]);
-        $daten[$counter]['id'] = $row->course_id;
-        $daten[$counter]['name'] = $row->name;
-        $daten[$counter]['type'] = $row->type;
-        $daten[$counter]['room'] = $row->room;
-        $daten[$counter]['lecturer'] = $row->lecturer;
-        $daten[$counter]['date'] = $row->date;
-        $daten[$counter]['places'] = $row->places;
-        $daten[$counter]['start'] = $row->start;
-        $daten[$counter]['end'] = $row->end;
-        $daten[$counter]['semester'] = $row->semester;
-        $daten[$counter]['comment'] = $row->comment;
-        $daten[$counter]['rel_page'] = $row->rel_page;
-        $daten[$counter]['parent'] = $row->parent;
-        $daten[$counter]['visible'] = $row->visible;
-        $daten[$counter]['waitinglist'] = $row->waitinglist;
-        $daten[$counter]['image_url'] = $row->image_url;
-        $counter++;
-        // copy parents
-        if ( $daten[$i]['parent'] == 0) {
-             $merke[$counter2] = $daten[$i]['id'];
-             $daten[$i]['semester'] = $copysem;
-             tp_courses::add_course($daten[$i], $sub);
-             $counter2++;
-        }
-    }	
-    // copy childs
-    for( $i = 0; $i < $counter ; $i++ ) {
-        if ( $daten[$i]['parent'] != 0 ) {
-            continue;
-        }
-        // check if where is a parent for the current course
-        $test = 0;
-        for( $j = 0; $j < $counter2 ; $j++ ) {
-             if ( $daten[$i]['parent'] == $merke[$j]) {
-                  $test = $merke[$j];
-             }
-        }
-        // if is true
-        if ($test != 0) {
-             // search the parent
-             for( $k = 0; $k < $counter ; $k++ ) {
-                  if ( $daten[$k]['id'] == $test) {
-                       $suche = "SELECT `course_id` FROM " . TEACHPRESS_COURSES . " WHERE `name` = '" . $daten[$k]['name'] . "' AND `type` = '" . $daten[$k]['type'] . "' AND `room` = '" . $daten[$k]['room'] . "' AND `lecturer` = '" . $daten[$k]['lecturer'] . "' AND `date` = '" . $daten[$k]['date'] . "' AND `semester` = '$copysem' AND `parent` = 0";
-                       $suche = $wpdb->get_var($suche);
-                       $daten[$i]['parent'] = $suche;
-                       $daten[$i]['semester'] = $copysem;
-                       tp_courses::add_course($daten[$i], $sub);					
-                  }
-             }
-        }
-        // if is false: create copy directly
-        else {
-             $daten[$i]['semester'] = $copysem;
-             tp_courses::add_course($daten[$i], $sub);
-        }
-          
-     }
 }
 
 /**

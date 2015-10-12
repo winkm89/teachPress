@@ -133,7 +133,7 @@ class tp_courses_page {
            }
            // copy a course, part 2
            if ( isset($_GET['copy_ok']) ) {
-                tp_copy_course($checkbox, $copysem);
+                tp_copy_course::init($checkbox, $copysem);
                 $message = __('Copying successful','teachpress');
                 get_tp_message($message);
            }

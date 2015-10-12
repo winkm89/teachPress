@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.3
-Stable tag: 5.0.14
+Tested up to: 4.3.1
+Stable tag: 5.0.15
 
 Manage your courses and publications with teachPress 
 
@@ -135,6 +135,12 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.15 - (28.09.2015) =
+* New: [tpcloud]: New parameter "author" added
+* Bugfix: Fixed a wrong definition of where clauses in some database functions under some conditions (Thanks for reporting to David Lahm)
+* Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong parameter names in shortcodes
+* Bugfix: Fixed several bugs in the copy course function
 
 = 5.0.14 - (24.08.2015) =
 * Changed: Spanish translation updated (Thanks to Alfonso Montejo)

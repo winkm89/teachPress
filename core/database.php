@@ -337,16 +337,16 @@ class tp_authors  {
 
         // WHERE clause
         if ( $pub_id != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $pub_id )" : $pub_id;
+            $where = ( $where != '' ) ? $where . " AND ( $pub_id )" : " ( $pub_id ) ";
         }
         if ( $user != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $user )" : $user;
+            $where = ( $where != '' ) ? $where . " AND ( $user )" : " ( $user ) ";
         }
         if ( $search != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $search )" : $search ;
+            $where = ( $where != '' ) ? $where . " AND ( $search )" : " ( $search ) " ;
         }
         if ( $exclude != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $exclude )" : $exclude;
+            $where = ( $where != '' ) ? $where . " AND ( $exclude )" : " ( $exclude ) ";
         }
         if ( $include_editors === false ) {
             $where = ( $where != '' ) ? $where . " AND ( r.is_editor = '0' )" : "r.is_editor = '0'";
@@ -742,20 +742,20 @@ class tp_courses {
         }
 
         if ( $exclude != '' ) {
-            $where = $where != '' ? $where . " AND $exclude " : $exclude;
+            $where = ( $where != '' ) ? $where . " AND ( $exclude ) " : " ( $exclude ) ";
         }
         if ( $semester != '') {
-            $where = $where != '' ? $where . " AND ( $semester )" : $semester;
+            $where = ( $where != '' ) ? $where . " AND ( $semester ) " : " ( $semester ) ";
         }
         if ( $visibility != '') {
-            $where = $where != '' ? $where . " AND ( $visibility )" : $visibility;
+            $where = ( $where != '' ) ? $where . " AND ( $visibility ) " : " ( $visibility ) ";
         }
         if ( $search != '') {
-            $where = $where != '' ? $where . " AND ( $search )" : $search ;
+            $where = ( $where != '' ) ? $where . " AND ( $search ) " : " ( $search ) ";
         }
         if ( $parent !== '' ) {
             $parent = intval($parent);
-            $where = $where != '' ? $where . " AND ( `parent` = '$parent' )" : "`parent` = '$parent'" ;
+            $where = ( $where != '' ) ? $where . " AND ( `parent` = '$parent' ) " : "`parent` = '$parent'" ;
         }
         if ( $where != '' ) {
             $where = " WHERE $where";
@@ -1660,31 +1660,31 @@ class tp_publications {
         }
 
         if ( $exclude != '' ) {
-            $where = ( $where != '' ) ? $where . " AND $exclude " : $exclude;
+            $where = ( $where != '' ) ? $where . " AND ( $exclude ) " : " ( $exclude ) ";
         }
         if ( $include != '' ) {
-            $where = ( $where != '' ) ? $where . " AND $include " : $include;
+            $where = ( $where != '' ) ? $where . " AND ( $include ) " : " ( $include ) ";
         }
         if ( $type != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $type )" : $type;
+            $where = ( $where != '' ) ? $where . " AND ( $type ) " : " ( $type ) ";
         }
         if ( $user != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $user )" : $user;
+            $where = ( $where != '' ) ? $where . " AND ( $user ) " : " ( $user ) ";
         }
         if ( $tag != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $tag )" : $tag;
+            $where = ( $where != '' ) ? $where . " AND ( $tag ) " : " ( $tag ) ";
         }
         if ( $author_id != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $author_id )" : $author_id;
+            $where = ( $where != '' ) ? $where . " AND ( $author_id ) " : " ( $author_id ) ";
         }
         if ( $author != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $author )" : $author;
+            $where = ( $where != '' ) ? $where . " AND ( $author ) " : " ( $author ) ";
         }
         if ( $editor != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $editor )" : $editor;
+            $where = ( $where != '' ) ? $where . " AND ( $editor ) " : " ( $editor ) ";
         }
         if ( $search != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $search )" : $search ;
+            $where = ( $where != '' ) ? $where . " AND ( $search ) " : " ( $search ) " ;
         }
         if ( $where != '' ) {
             $where = " WHERE $where";
@@ -1706,6 +1706,7 @@ class tp_publications {
         else {
             $sql = "SELECT COUNT( DISTINCT pub_id ) AS `count` FROM ( $select $join $where $having) p ";
         }
+        
         // print_r($args);
         // get_tp_message($sql,'red');
         $sql = ( $count != true ) ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
@@ -1824,11 +1825,11 @@ class tp_publications {
         $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
 
         if ( $type != '') {
-            $where = $where != '' ? $where . " AND ( $type )" : $type;
+            $where = ( $where != '' ) ? $where . " AND ( $type ) " : " ( $type ) ";
         }
         if ( $user != '') {
-            $where = $where != '' ? $where . " AND ( $user )" : $user;
-            $join = "INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id=p.pub_id";
+            $where = ( $where != '' ) ? $where . " AND ( $user ) " : " ( $user ) ";
+            $join = "INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id = p.pub_id";
         }
         if ( $where != '' ) {
             $where = " WHERE $where";
@@ -2299,7 +2300,7 @@ class tp_students {
 
         // define where clause
         if ( $search != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $search )" : $search ;
+            $where = ( $where != '' ) ? $where . " AND ( $search ) " :  " ( $search ) ";
         }
         if ( $where != '' ) {
             $where = " WHERE $where";
@@ -2624,16 +2625,16 @@ class tp_tags {
 
        // WHERE clause
        if ( $pub_id != '') {
-           $where = ( $where != '' ) ? $where . " AND ( $pub_id )" : $pub_id;
+           $where = ( $where != '' ) ? $where . " AND ( $pub_id ) " : " ( $pub_id ) ";
        }
        if ( $user != '' ) {
-           $where = ( $where != '' ) ? $where . " AND ( $user )" : $user;
+           $where = ( $where != '' ) ? $where . " AND ( $user ) " : " ( $user ) ";
        }
        if ( $search != '') {
-           $where = $where != '' ? $where . " AND ( $search )" : $search ;
+           $where = $where != '' ? $where . " AND ( $search ) " : " ( $search ) " ;
        }
        if ( $exclude != '' ) {
-           $where = ( $where != '' ) ? $where . " AND ( $exclude )" : $exclude;
+           $where = ( $where != '' ) ? $where . " AND ( $exclude ) " : " ( $exclude ) ";
        }
        if ( $where != '' ) {
            $where = " WHERE $where";
@@ -2645,12 +2646,12 @@ class tp_tags {
        }
 
        // GROUP BY clause
-       $group_by = $group_by === true ? " GROUP BY t.name" : '';
+       $group_by = ( $group_by === true ) ? " GROUP BY t.name" : '';
 
        // End
        $sql = $select . $join . $where . $group_by . " ORDER BY t.name $order $limit";
        // echo get_tp_message($sql, 'orange');
-       $sql = $count == false ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
+       $sql = ( $count == false ) ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
        return $sql;
    }
    
@@ -2848,13 +2849,13 @@ class tp_tags {
 
        // WHERE clause
        if ( $type != '') {
-           $where = $where != '' ? $where . " AND ( $type )" : $type;
+           $where = ( $where != '' ) ? $where . " AND ( $type ) " : " ( $type ) ";
        }
        if ( $user != '') {
-           $where = $where != '' ? $where . " AND ( $user )" : $user;
+           $where = ( $where != '' ) ? $where . " AND ( $user ) " : " ( $user ) ";
        }
        if ( $exclude != '' ) {
-           $where = $where != '' ? $where . " AND ( $exclude )" : $exclude;
+           $where = ( $where != '' ) ? $where . " AND ( $exclude ) " : " ( $exclude ) ";
        }
        if ( $where != '' ) {
            $where = " WHERE $where";

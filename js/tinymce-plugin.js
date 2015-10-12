@@ -615,8 +615,8 @@
                                     onsubmit: function( e ) {
                                         var user = e.data.tp_user;
                                         var headline = e.data.tp_headline;
-                                        var max_size = e.data.tp_max_size;
-                                        var min_size = e.data.tp_min_size;
+                                        var maxsize = e.data.tp_max_size;
+                                        var minsize = e.data.tp_min_size;
                                         var tag_limit = e.data.tp_tag_limit;
                                         var show_tags_as = e.data.tp_show_tags_as;
                                         var image = e.data.tp_image;
@@ -629,8 +629,8 @@
                                         
                                         user = (user === '') ? '' : 'user="' + user + '"';
                                         headline = (headline === '1') ? '' : 'headline="' + headline + '"';
-                                        max_size = (max_size === '35') ? '' : 'max_size="' + max_size + '"';
-                                        min_size = (min_size === '11') ? '' : 'min_size="' + min_size + '"';
+                                        maxsize = (maxsize === '35') ? '' : 'maxsize="' + maxsize + '"';
+                                        minsize = (minsize === '11') ? '' : 'minsize="' + minsize + '"';
                                         tag_limit = (tag_limit === '30') ? '' : 'tag_limit="' + tag_limit + '"';
                                         show_tags_as = (show_tags_as === 'cloud') ? '' : 'show_tags_as="' + show_tags_as + '"';
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
@@ -641,7 +641,7 @@
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
                                         entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
                                         
-                                        editor.insertContent( '[tpcloud ' + user + ' ' + headline + ' ' + max_size + ' ' + min_size + ' ' + tag_limit + ' ' + show_tags_as + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + entries_per_page + ']');
+                                        editor.insertContent( '[tpcloud ' + user + ' ' + headline + ' ' + maxsize + ' ' + minsize + ' ' + tag_limit + ' ' + show_tags_as + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + entries_per_page + ']');
                                     }
                                 });
                             }

@@ -882,6 +882,7 @@ function tp_links_shortcode ($atts) {
  * Parameters for the array $atts:
  *      user (STRING)               the id of on or more users (separated by comma)
  *      type (STRING)               the publication types you want to show (separated by comma)
+ *      author (STRING)             author ids (separated by comma)
  *      exclude (INT)               one or more IDs of publications you don't want to show (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
@@ -921,6 +922,7 @@ function tp_cloud_shortcode($atts) {
     extract(shortcode_atts(array(
         'user' => '',
         'type' => '',
+        'author' => '',
         'exclude' => '', 
         'order' => 'date DESC',
         'headline' => 1, 
@@ -963,12 +965,14 @@ function tp_cloud_shortcode($atts) {
         'with_tags' => 1,
         'container_suffix' => htmlspecialchars($container_suffix)
     );
+    
     $cloud_settings = array (
         'tag_limit' => intval($tag_limit),
         'hide_tags' => htmlspecialchars($hide_tags),
         'maxsize' => intval($maxsize),
         'minsize' => intval($minsize)
     );
+    
     $filter_parameter = array(
         'tag' => ( isset ($_GET['tgid']) && $_GET['tgid'] != '' ) ? intval($_GET['tgid']) : '',
         'year' => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
@@ -976,9 +980,11 @@ function tp_cloud_shortcode($atts) {
         'author' => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
         'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : ''
     );
+    
     $sql_parameter = array (
         'user' => htmlspecialchars($user),
         'type' => htmlspecialchars($type),
+        'author' => htmlspecialchars($author),
         'exclude' => htmlspecialchars($exclude),
         'exclude_tags' => htmlspecialchars($exclude_tags),
         'order' => htmlspecialchars($order),
@@ -993,6 +999,11 @@ function tp_cloud_shortcode($atts) {
     if ( $type != '' ) {
         $filter_parameter['type'] = htmlspecialchars($type);
     }
+    
+    // if author is set by shortcode parameter
+    if ( $author != '' ) {
+       $filter_parameter['author'] = htmlspecialchars($author);
+    }    
    
     // Handle limits for pagination
     if ( isset( $_GET['limit'] ) ) {
@@ -1020,6 +1031,7 @@ function tp_cloud_shortcode($atts) {
     if ( $settings['show_tags_as'] === 'cloud' ) {
         $asg = tp_shortcodes::generate_tag_cloud($user, $cloud_settings, $filter_parameter, $sql_parameter, $settings);
     }
+    
     /**********/ 
     /* Filter */
     /**********/
@@ -1037,8 +1049,10 @@ function tp_cloud_shortcode($atts) {
     }
 
     // Filter author
-    $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'author');
-
+    if ( $author == '' ) {
+        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'author');
+    }
+    
     // Filter user
     if ($user == '') {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'user');
