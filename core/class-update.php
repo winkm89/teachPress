@@ -21,12 +21,13 @@ class tp_update_db {
     public static function force_update () {
         global $wpdb;
         $db_version = get_tp_option('db-version');
+        $software_version = get_tp_version();
+        $update_level = '0';
+        
         // Fallback for very old teachPress systems
         if ( $db_version == '' ) {
             $db_version = $wpdb->get_var("SELECT `value` FROM " . TEACHPRESS_SETTINGS . " WHERE `variable` = 'db-version'");
         }
-        $software_version = get_tp_version();
-        $update_level = '0';
         
         // if is the current one
         if ( $db_version === $software_version ) {
@@ -53,6 +54,11 @@ class tp_update_db {
             $wp_roles->add_cap('administrator', 'use_teachpress_courses');
         }
         
+        // Disable foreign key checks
+        if ( TEACHPRESS_FOREIGN_KEY_CHECKS === false ) {
+            $wpdb->query("SET foreign_key_checks = 0");
+        }
+        
         // force updates to reach structure of teachPress 2.0.0
         if ( $db_version[0] === '0' || $db_version[0] === '1' ) {
             tp_update_db::upgrade_table_teachpress_ver($charset_collate);
@@ -70,11 +76,13 @@ class tp_update_db {
             tp_update_db::upgrade_to_30();
             $update_level = '3';
         }
+        
         // force updates to reach structure of teachPress 3.1.0
         if ( $db_version[0] === '3' || $update_level === '3' ) {
             tp_update_db::upgrade_to_31($charset_collate);
             $update_level = '4';
         }
+        
         // force updates to reach structure of teachPress 4.2.0
         if ( $db_version[0] === '4' || $update_level === '4' ) {
             tp_update_db::upgrade_to_40($charset_collate);
@@ -82,11 +90,20 @@ class tp_update_db {
             tp_update_db::upgrade_to_42($charset_collate);
             $update_level = '5';
         }
+        
         // force updates to reach structure of teachPress 5.0.0
         if ( $db_version[0] === '5' || $update_level === '5' ) {
             tp_update_db::upgrade_to_50($charset_collate);
         }
+        
+        // Add teachPress options
         tp_update_db::add_options();
+        
+        // Enable foreign key checks
+        if ( TEACHPRESS_FOREIGN_KEY_CHECKS === false ) {
+            $wpdb->query("SET foreign_key_checks = 1");
+        }
+        
         tp_update_db::finalize_update($software_version);
    }
 

@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.3.1
-Stable tag: 5.0.15
+Stable tag: 5.0.16
 
 Manage your courses and publications with teachPress 
 
@@ -135,6 +135,9 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.0.16 - (13.10.2015) =
+* New: Foreign key checks can be disabled for installs and updates (parameter TEACHPRESS_FOREIGN_KEY_CHECKS added).
 
 = 5.0.15 - (28.09.2015) =
 * New: [tpcloud]: New parameter "author" added

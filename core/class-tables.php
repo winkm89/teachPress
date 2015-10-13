@@ -19,11 +19,19 @@ class tp_tables {
      * @since 5.0.0
      */
     public static function create() {
+        global $wpdb;
         self::add_capabilites();
         
         $charset_collate = self::get_charset();
+        
+        // Disable foreign key checks
+        if ( TEACHPRESS_FOREIGN_KEY_CHECKS === false ) {
+            $wpdb->query("SET foreign_key_checks = 0");
+        }
+        
         // Settings
         self::add_table_settings($charset_collate);
+        
         // Courses
         self::add_table_courses($charset_collate);
         self::add_table_course_meta($charset_collate);
@@ -34,6 +42,7 @@ class tp_tables {
         self::add_table_signup($charset_collate);
         self::add_table_artefacts($charset_collate);
         self::add_table_assessments($charset_collate);
+        
         // Publications
         self::add_table_pub($charset_collate);
         self::add_table_pub_meta($charset_collate);
@@ -42,6 +51,11 @@ class tp_tables {
         self::add_table_user($charset_collate);
         self::add_table_authors($charset_collate);
         self::add_table_rel_pub_auth($charset_collate);
+        
+        // Enable foreign key checks
+        if ( TEACHPRESS_FOREIGN_KEY_CHECKS === false ) {
+            $wpdb->query("SET foreign_key_checks = 1");
+        }
     }
     
     /**
@@ -345,7 +359,7 @@ class tp_tables {
                     `passed` INT(1),
                     FOREIGN KEY (artefact_id) REFERENCES " . TEACHPRESS_ARTEFACTS . " (artefact_id),
                     FOREIGN KEY (course_id) REFERENCES " . TEACHPRESS_COURSES . " (course_id),
-                    FOREIGN KEY (wp_id) REFERENCES " . TEACHPRESS_STUD . "(wp_id),
+                    FOREIGN KEY (wp_id) REFERENCES " . TEACHPRESS_STUD . " (wp_id),
                     PRIMARY KEY (assessment_id)
                 ) $charset_collate;");
         
