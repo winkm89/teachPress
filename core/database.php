@@ -765,7 +765,7 @@ class tp_courses {
         }
 
         // define order
-        if ($order != '') {
+        if ( $order != '' ) {
             $order = " ORDER BY $order";
         }
         $result = $wpdb->get_results($sql . $where . $order . $limit, $output_type);

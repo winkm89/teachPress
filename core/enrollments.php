@@ -691,18 +691,18 @@ class tp_enrollments {
     /**
      * Returns the enrollment tab
      * @param string $sem
-     * @param string $date_format
+     * @param array $settings (date_format, order_parent, order_child)
      * @param boolean $user_exists
      * @return string
      * @since 5.0.0
      */
-    public static function get_enrollments_tab($sem, $date_format, $user_exists) {
+    public static function get_enrollments_tab($sem, $settings, $user_exists) {
         global $wpdb;
         $rtn = '';
         // Select all courses where enrollments in the current term are available
-        $row = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSES . " WHERE `semester` = '$sem' AND `parent` = '0' AND (`visible` = '1' OR `visible` = '2') ORDER BY `type` DESC, `name`");
+        $row = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSES . " WHERE `semester` = '$sem' AND `parent` = '0' AND (`visible` = '1' OR `visible` = '2') ORDER BY " . $settings['order_parent']);
         foreach( $row as $row ) {
-            $rtn .= self::load_course_entry($row, $date_format, $user_exists);	
+            $rtn .= self::load_course_entry($row, $settings, $user_exists);	
         }	
         if ( $user_exists === true ) {
             $rtn .= '<input name="einschreiben" type="submit" value="' . __('Sign up','teachpress') . '" />';
@@ -713,19 +713,19 @@ class tp_enrollments {
     /**
      * Returns a table with a course and his sub courses for enrollments tab
      * @param object $row
-     * @param string $date_format
+     * @param array $settings (date_format, order_parent, order_child)
      * @param boolean $user_exists
      * @return string
      * @since 5.0.0
      * @access private
      */
-    private static function load_course_entry ($row, $date_format, $user_exists) {
+    private static function load_course_entry ($row, $settings, $user_exists) {
         global $wpdb;
         
         $course_name = ( $row->rel_page != 0 ) ? '<a href="' . get_permalink($row->rel_page) . '">' . stripslashes($row->name) . '</a>' : stripslashes($row->name);
 
         // load all childs
-        $childs = $wpdb->get_results("Select * FROM " . TEACHPRESS_COURSES . " WHERE `parent` = '$row->course_id' AND (`visible` = '1' OR `visible` = '2') AND (`start` != '0000-00-00 00:00:00') ORDER BY `name`");
+        $childs = $wpdb->get_results("Select * FROM " . TEACHPRESS_COURSES . " WHERE `parent` = '$row->course_id' AND (`visible` = '1' OR `visible` = '2') AND (`start` != '0000-00-00 00:00:00') ORDER BY " . $settings['order_child']);
         
         // leave the function if there is nothing to show
         if ( $row->start == '0000-00-00 00:00:00' && count($childs) === 0 ) {
@@ -736,9 +736,9 @@ class tp_enrollments {
         $rtn = '<div class="teachpress_course_group">';
         $rtn .= '<div class="teachpress_course_name">' . $course_name . '</div>';
         $rtn .= '<table class="teachpress_enr" width="100%" border="0">';
-        $rtn .= self::create_course_entry($row, $date_format, $user_exists);
+        $rtn .= self::create_course_entry($row, $settings['date_format'], $user_exists);
         foreach ( $childs as $child ) {
-            $rtn .= self::create_course_entry($child, $date_format, $user_exists, $row->name);
+            $rtn .= self::create_course_entry($child, $settings['date_format'], $user_exists, $row->name);
         }
         $rtn .= '</table>';
         $rtn .= '</div>';
@@ -942,21 +942,31 @@ function tp_registration_form ($user_input, $mode = 'register') {
  * @param array $atts
  *      @type string term           The term you want to show
  *      @type string date_format    Default: d.m.Y
+ *      @type string order_parent   Default: type DESC, name
+ *      @type string order_child    Default: name
  * @return string
 */
 function tp_enrollments_shortcode($atts) {
     // Shortcode options
     extract(shortcode_atts(array(
        'term' => '',
-       'date_format' => 'd.m.Y H:i'
+       'date_format' => 'd.m.Y H:i',
+       'order_parent' => 'type DESC, name',
+       'order_child' => 'name'
     ), $atts));
     $term = htmlspecialchars($term);
-    $date_format = htmlspecialchars($date_format);
+    $settings = array (
+        'date_format' => htmlspecialchars($date_format),
+        'order_parent' => esc_sql($order_parent),
+        'order_child' => esc_sql($order_child)
+    );
+    
     // Advanced Login
     $tp_login = get_tp_option('login');
     if ( $tp_login == 'int' ) {
          tp_advanced_registration();
     }
+    
     // WordPress
     global $user_ID;
     global $user_email;
@@ -1016,7 +1026,7 @@ function tp_enrollments_shortcode($atts) {
     * Enrollments
    */
    if ($tab === '' || $tab === 'current') {
-       $rtn .= tp_enrollments::get_enrollments_tab($sem, $date_format, $user_exists);
+       $rtn .= tp_enrollments::get_enrollments_tab($sem, $settings, $user_exists);
    }
    $rtn .= '</form>';
    $rtn .= '</div>';

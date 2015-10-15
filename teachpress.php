@@ -3,7 +3,7 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 5.0.16
+Version: 5.0.17
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
@@ -42,119 +42,119 @@ global $wpdb;
 
 if ( !defined('TEACHPRESS_ARTEFACTS') ) {
     /**
-     * This constants defines the table name for teachpress_artefacts.
+     * This constant defines the table name for teachpress_artefacts.
      * @since 5.0.0
     */
     define('TEACHPRESS_ARTEFACTS', $wpdb->prefix . 'teachpress_artefacts');}
 
 if ( !defined('TEACHPRESS_ASSESSMENTS') ) {
     /**
-     * This constants defines the table name for teachpress_assessments.
+     * This constant defines the table name for teachpress_assessments.
      * @since 5.0.0
     */
     define('TEACHPRESS_ASSESSMENTS', $wpdb->prefix . 'teachpress_assessments');}
 
 if ( !defined('TEACHPRESS_STUD') ) {
     /**
-     * This constants defines the table name for teachpress_stud.
+     * This constant defines the table name for teachpress_stud.
      * @since 5.0.0
     */
     define('TEACHPRESS_STUD', $wpdb->prefix . 'teachpress_stud');}
 
 if ( !defined('TEACHPRESS_STUD_META') ) {
     /**
-     * This constants defines the table name for teachpress_stud_meta.
+     * This constant defines the table name for teachpress_stud_meta.
      * @since 5.0.0
     */
     define('TEACHPRESS_STUD_META', $wpdb->prefix . 'teachpress_stud_meta');}
 
 if ( !defined('TEACHPRESS_COURSES') ) {
     /**
-     * This constants defines the table name for teachpress_courses.
+     * This constant defines the table name for teachpress_courses.
      * @since 5.0.0
     */
     define('TEACHPRESS_COURSES', $wpdb->prefix . 'teachpress_courses');}
 
 if ( !defined('TEACHPRESS_COURSE_META') ) {
     /**
-     * This constants defines the table name for teachpress_course_meta.
+     * This constant defines the table name for teachpress_course_meta.
      * @since 5.0.0
     */
     define('TEACHPRESS_COURSE_META', $wpdb->prefix . 'teachpress_course_meta');}
 
 if ( !defined('TEACHPRESS_COURSE_CAPABILITES') ) {
     /**
-     * This constants defines the table name for teachpress_course_cababilites.
+     * This constant defines the table name for teachpress_course_cababilites.
      * @since 5.0.0
     */
     define('TEACHPRESS_COURSE_CAPABILITES', $wpdb->prefix . 'teachpress_course_capabilites');}
 
 if ( !defined('TEACHPRESS_COURSE_DOCUMENTS') ) {
     /**
-     * This constants defines the table name for teachpress_course_documents.
+     * This constant defines the table name for teachpress_course_documents.
      * @since 5.0.0
     */
     define('TEACHPRESS_COURSE_DOCUMENTS', $wpdb->prefix . 'teachpress_course_documents');}
 
 if ( !defined('TEACHPRESS_SIGNUP') ) {
     /**
-     * This constants defines the table name for teachpress_signups.
+     * This constant defines the table name for teachpress_signups.
      * @since 5.0.0
     */
     define('TEACHPRESS_SIGNUP', $wpdb->prefix . 'teachpress_signup');}
     
 if ( !defined('TEACHPRESS_SETTINGS') ) {
     /**
-     * This constants defines the table name for teachpress_settings.
+     * This constant defines the table name for teachpress_settings.
      * @since 5.0.0
     */
     define('TEACHPRESS_SETTINGS', $wpdb->prefix . 'teachpress_settings');}
 
 if ( !defined('TEACHPRESS_PUB') ) {
     /**
-     * This constants defines the table name for teachpress_pub.
+     * This constant defines the table name for teachpress_pub.
      * @since 5.0.0
     */
     define('TEACHPRESS_PUB', $wpdb->prefix . 'teachpress_pub');}
 
 if ( !defined('TEACHPRESS_PUB_META') ) {
     /**
-     * This constants defines the table name for teachpress_pub_meta.
+     * This constant defines the table name for teachpress_pub_meta.
      * @since 5.0.0
     */
     define('TEACHPRESS_PUB_META', $wpdb->prefix . 'teachpress_pub_meta');}
 
 if ( !defined('TEACHPRESS_TAGS') ) {
     /**
-     * This constants defines the table name for teachpress_tags.
+     * This constant defines the table name for teachpress_tags.
      * @since 5.0.0
     */
     define('TEACHPRESS_TAGS', $wpdb->prefix . 'teachpress_tags');}
 
 if ( !defined('TEACHPRESS_RELATION') ) {
     /**
-     * This constants defines the table name for teachpress_relation. This is the relationship tags to publications.
+     * This constant defines the table name for teachpress_relation. This is the relationship tags to publications.
      * @since 5.0.0
     */
     define('TEACHPRESS_RELATION', $wpdb->prefix . 'teachpress_relation');}
 
 if ( !defined('TEACHPRESS_USER') ) {
     /**
-     * This constants defines the table name for teachpress_user. This is the relationship publications to users.
+     * This constant defines the table name for teachpress_user. This is the relationship publications to users.
      * @since 5.0.0
     */
     define('TEACHPRESS_USER', $wpdb->prefix . 'teachpress_user');}
 
 if ( !defined('TEACHPRESS_AUTHORS') ) {
     /**
-     * This constants defines the table name for teachpress_authors.
+     * This constant defines the table name for teachpress_authors.
      * @since 5.0.0
     */
     define('TEACHPRESS_AUTHORS', $wpdb->prefix . 'teachpress_authors');}
 
 if ( !defined('TEACHPRESS_REL_PUB_AUTH') ) {
     /**
-     * This constants defines the table name for teachpress_rel_pub_auth. This is the relationship publications to authors.
+     * This constant defines the table name for teachpress_rel_pub_auth. This is the relationship publications to authors.
      * @since 5.0.0
     */
     define('TEACHPRESS_REL_PUB_AUTH', $wpdb->prefix . 'teachpress_rel_pub_auth');}
@@ -318,7 +318,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.16';
+    return '5.0.17';
 }
 
 /**
