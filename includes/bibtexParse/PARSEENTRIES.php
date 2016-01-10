@@ -61,6 +61,11 @@ This array will be empty unless the following condition is met:
   - When an undefined string is found in function removeDelimiters return the empty string
   - Return $this->undefinedStrings in the last position to allow compatibility with previous versions
   - Fix management of preamble in function returnArrays
+
+28/12/2015 Michael Winkler
+  - Outdated PHP methods replaced
+  - Fix for saving line breaks in abstracts and other fields  
+
 */
 
 /**
@@ -94,13 +99,51 @@ class PARSEENTRIES {
     }
     
     /**
+     * Sets a control character for saving line breaks
+     * @param array $line_array
+     * @return array
+     * @since 2.3
+     * @author Michael Winkler <michael.mtrv@gmail.com>
+     */
+    static function SetLineBreak($line_array) {
+        $max = count($line_array);
+        
+        // Ignore the first line
+        for ( $i = 1; $i < $max; $i++ ) {
+            $line_before = mb_substr(trim( $line_array[$i-1] ), -2, 2);
+
+            if ( strpos($line_array[$i], '@') === false &&  // No '@' in the line
+                 strpos($line_array[$i], '=') === false &&  // No '=' in the line
+                 $line_before !== '},' &&                   // No '},' at the end of the line before
+                 $line_array[$i][0] !== '}'                 // No '}' at the beginning of the line
+                ) {
+                $line_array[$i] = '<LineBreak>' . $line_array[$i];
+            }
+        }
+        return $line_array;
+    }
+    
+    /**
+     * Replaces the control character with the original line break
+     * @param string $string
+     * @return string
+     * @since 2.3
+     * @author Michael Winkler <michael.mtrv@gmail.com>
+     */
+    static function ReplaceLineBreak($string) {
+        $return = str_replace('<LineBreak>', chr(13) . chr(10), $string);
+        return $return;
+    }
+    
+    /**
      * Load a bibtex string to parse it
      * 
      * @param string $bibtex_string
      */
     function loadBibtexString($bibtex_string) {
         if(is_string($bibtex_string)) {
-            $this->bibtexString = explode("\n",$bibtex_string);
+            $line_array = explode("\n",$bibtex_string);
+            $this->bibtexString = self::SetLineBreak($line_array);
         }
         else {
             $this->bibtexString = $bibtex_string;
@@ -223,6 +266,11 @@ class PARSEENTRIES {
             if(!$value) {
                 continue;
             }
+            
+            // 28/12/2015 Michael Winkler
+            // Replace the control character for line breaks
+            $value = self::ReplaceLineBreak($value);
+            
             // 21/08/2004 G.Gardey -> expand macro
             // Don't remove delimiters now needs to know if the value is a string macro
             // $this->entries[$this->count][strtolower(trim($key))] = trim($this->removeDelimiters(trim($value)));
@@ -235,7 +283,7 @@ class PARSEENTRIES {
      * Start splitting a bibtex entry into component fields.
      * Store the entry type and citation.
      * 
-     * @param $string $entry
+     * @param string $entry
      */
     function fullSplit($entry){        
         $matches = preg_split("/@(.*)[{(](.*),/U", $entry, 2, PREG_SPLIT_DELIM_CAPTURE); 
@@ -496,4 +544,3 @@ class PARSEENTRIES {
         return array($this->preamble, $this->strings, $this->entries, $this->undefinedStrings);
     }
 }
-?>
