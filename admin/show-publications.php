@@ -472,7 +472,7 @@ class tp_publications_page {
               echo '<a href="admin.php?page=' . $array_variables['page'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;year=' . $array_variables['year'] . '" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
            } ?>
             <input type="search" name="search" id="pub_search_field" value="<?php echo stripslashes($array_variables['search']); ?>"/>
-           <input type="submit" name="pub_search_button" id="pub_search_button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
+            <input type="submit" name="pub_search_button" id="pub_search_button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
         </div>
         <div class="tablenav" style="padding-bottom:5px;">
             <div class="alignleft actions">
@@ -509,7 +509,7 @@ class tp_publications_page {
            <thead>
               <tr>
                  <th>&nbsp;</th>
-                 <th class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes('checkbox','tp_check_all');" /></th>
+                 <td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes('checkbox','tp_check_all');" /></td>
                  <th><?php _e('Title','teachpress'); ?></th>
                  <th><?php _e('ID'); ?></th>
                  <th><?php _e('Type'); ?></th> 

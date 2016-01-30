@@ -83,7 +83,8 @@ function tp_import_page() {
         }
         // if there is no import
         else {
-            $entries = tp_publications::get_publications( array( 'include' => htmlspecialchars($_POST['tp_entries'] ), 'output_type' => ARRAY_A ) );
+            $tp_entries = ( isset($_POST['tp_entries']) ) ? htmlspecialchars($_POST['tp_entries'] ) : '0';
+            $entries = tp_publications::get_publications( array( 'include' => $tp_entries, 'output_type' => ARRAY_A ) );
         }
         tp_import_show_results($entries);
     }
@@ -117,57 +118,53 @@ function tp_import_tab () {
     ?>
     <form id="tp_file" name="tp_file" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
     <input type="hidden" name="page" value="teachpress/import.php"/>
-    <div style="min-width:780px; width:100%;">
-    <div style="width:24%; float:right; padding-left:1%; padding-bottom:1%;">
-        <table class="widefat" style="margin-bottom:15px;">
-            <thead>
-                <tr>
-                    <th><?php _e('Import options','teachpress'); ?></th>
-                </tr>
-                <tr>
-                    <td>
-                    <?php if ( get_tp_option('import_overwrite') === '1' ) { ?>
-                    <p><strong><label for="overwrite"><?php _e('Overwrite Publications','teachpress'); ?></label></strong></p>
-                    <?php echo tp_admin::get_checkbox('overwrite', __('Overwrite existing publications with a similar BibTeX key','teachpress'), ''); 
-                    } ?>
-                    </td>
-                </tr>
-                <tr style="text-align:center;">
-                    <td style="height: 25px;">
-                        <input name="tp_submit" type="submit" class="button-primary" value="<?php _e('Import'); ?>"/>
-                    </td>
-                </tr>
-            </thead>    
-        </table>
-        <table class="widefat" style="margin-bottom:15px;">
-            <thead>
-                <tr>
-                    <th><?php _e('Data options','teachpress'); ?></th>
-                </tr>
-                <tr>
-                    <td>
-                        <p><strong><label for="author_format_0"><?php _e('Author/Editor Format','teachpress'); ?></label></strong></p>
-                        <label>
-                         <input type="radio" name="author_format" value="1" id="author_format_0" checked="checked" />
-                            Firstname1 Lastname1 and Firstname2 Lastname2 and ...</label>
-                        <br />
-                        <label>
-                        <input type="radio" name="author_format" value="2" id="author_format_1" />
-                            Lastname1, Firstname1 and Lastname2, Firstname2 and ...</label>
-                        <br />
-                        <p><strong><label for="keyword_option"><?php _e('Keyword Separator','teachpress'); ?></label></strong></p>
-              <input type="text" name="keyword_option" id="keyword_option" title="<?php _e('Keyword Separator','teachpress'); ?>" value="," size="3"/>
-                    </td>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div style="width:75%; float:left; padding-bottom:10px;">
-        <div style="text-align: center;">
-            <input name="file" id="upload_file" type="file" title="<?php _e('Choose a BibTeX file for upload','teachpress'); ?>" /> (<?php echo __('max file size','teachpress') . ': ' . ini_get('upload_max_filesize'); ?> )
-            <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
+    <div style="width:100%; padding-top:20px;">
+    <div class="tp_container_main">
+        <div class="tp_container_inner">
+            <div style="text-align: center;">
+                <input name="file" id="upload_file" type="file" title="<?php _e('Choose a BibTeX file for upload','teachpress'); ?>" /> (<?php echo __('max file size','teachpress') . ': ' . ini_get('upload_max_filesize'); ?> )
+                <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
+            </div>
+            <textarea name="bibtex_area" id="bibtex_area" rows="20" style="width:100%;" title="<?php _e('Insert your BibTeX entries here','teachpress'); ?>"></textarea>
         </div>
-        <textarea name="bibtex_area" id="bibtex_area" rows="20" style="width:99%;" title="<?php _e('Insert your BibTeX entries here','teachpress'); ?>"></textarea>
+    </div>
+    <div class="tp_container_right">
+        <div class="postbox">
+            <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
+            <?php if ( get_tp_option('import_overwrite') === '1' ) { ?>
+            <div class="inside">
+                <p><strong><label for="overwrite"><?php _e('Overwrite Publications','teachpress'); ?></label></strong></p>
+                <?php echo tp_admin::get_checkbox('overwrite', __('Overwrite existing publications with a similar BibTeX key','teachpress'), ''); ?>
+            </div>
+            <?php } ?>
+            <div id="major-publishing-actions">
+                <input name="tp_submit" type="submit" class="button-primary" value="<?php _e('Import'); ?>"/>
+            </div>
+        </div>
+        <div class="postbox">
+            <h3 class="tp_postbox"><?php _e('Data options','teachpress'); ?></h3>
+            <div class="inside">
+                <p><strong><label for="author_format_0"><?php _e('Author/Editor Format','teachpress'); ?></label></strong></p>
+                <label>
+                    <input type="radio" name="author_format" value="default" id="author_format_0" checked="checked" />
+                    Firstname1 Lastname1 and Firstname2 Lastname2 and ...
+                </label>
+                <br />
+                <label>
+                    <input type="radio" name="author_format" value="lastfirst" id="author_format_1" />
+                    Lastname1, Firstname1 and Lastname2, Firstname2 and ...
+                </label>
+                <br />
+                <label>
+                    <input type="radio" name="author_format" value="dynamic" id="author_format_1" />
+                    <?php _e('Dynamic detection','teachpress');?>
+                </label>
+                <br />
+                <p><strong><label for="keyword_option"><?php _e('Keyword Separator','teachpress'); ?></label></strong></p>
+                <input type="text" name="keyword_option" id="keyword_option" title="<?php _e('Keyword Separator','teachpress'); ?>" value="," size="3"/>
+            </div>
+        </div>
+        
     </div>
     </div>
     </form>
@@ -191,7 +188,7 @@ function tp_import_show_results($entries) {
     echo '<table class="widefat">';
     echo '<thead>';
     echo '<tr>';
-    echo '<th class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="' . "teachpress_checkboxes('checkbox','tp_check_all');" . '" /></th>';
+    echo '<td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="' . "teachpress_checkboxes('checkbox','tp_check_all');" . '" /></td>';
     echo '<th>' . __('Title','teachpress') . '</th>';
     echo '<th>' . __('ID') . '</th>';
     echo '<th>' . __('Type') . '</th>';
@@ -214,7 +211,7 @@ function tp_import_show_results($entries) {
         else {
             echo '<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" value="' . $value . '"/></th>';
         }
-        echo '<td><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $value . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '" target="_blank">' . $entry['title'] . '</a></td>';
+        echo '<td><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $value . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '" target="_blank"><strong>' . $entry['title'] . '</strong></a></td>';
         echo '<td>' . $value . '</td>';
         echo '<td>' . tp_translate_pub_type( $entry['type'] ) . '</td>';
         echo '<td>' . $author . '</td>';

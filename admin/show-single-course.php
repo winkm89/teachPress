@@ -1184,9 +1184,9 @@ class tp_single_course_page {
         <table class="widefat">
         <thead>
          <tr>
-           <th class="check-column">
+           <td class="check-column">
             <input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes('checkbox[]','tp_check_all');" />
-           </th>
+           </td>
            <?php
            // Order option parameter
            if ( $link_parameter['order'] == 'name' ) {
@@ -1239,9 +1239,9 @@ class tp_single_course_page {
            <table class="widefat">
             <thead>
              <tr>
-               <th class="check-column">
+               <td class="check-column">
                 <input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes('waiting[]','tp_check_all');" />
-               </th>
+               </td>
                <th><?php _e('Last name','teachpress'); ?></th>
                <th><?php _e('First name','teachpress'); ?></th>
                <th><?php _e('User account','teachpress'); ?></th>

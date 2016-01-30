@@ -7,7 +7,7 @@ Version: 5.0.17
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
-Max WP Version: 4.3.1
+Max WP Version: 4.4
 */
 
 /*
@@ -201,6 +201,13 @@ if ( !defined('TEACHPRESS_FOREIGN_KEY_CHECKS') ) {
     */
     define('TEACHPRESS_FOREIGN_KEY_CHECKS', true);}  
     
+if ( !defined('TEACHPRESS_TEMPLATE_PATH') ) {
+    /**
+     * This value defines the template path
+     * @since 5.1.0
+    */
+    define('TEACHPRESS_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');} 
+    
 /*********/
 /* Menus */
 /*********/
@@ -272,35 +279,38 @@ function tp_add_menu_settings() {
 
 // Admin menus
 if ( is_admin() ) {
-    include_once("admin/show_courses.php");
-    include_once("admin/add_course.php");
-    include_once("admin/show_single_course.php");
-    include_once("admin/create_lists.php");
+    
+    include_once("admin/add-course.php");
+    include_once("admin/add-publication.php");
+    include_once("admin/add-students.php");
+    include_once("admin/create-lists.php");
+    include_once("admin/edit-student.php");
+    include_once("admin/edit-tags.php");
+    include_once("admin/import-publications.php");
     include_once("admin/mail.php");
-    include_once("admin/show_students.php");
-    include_once("admin/add_students.php");
-    include_once("admin/edit_student.php");
     include_once("admin/settings.php");
-    include_once("admin/show_publications.php");
-    include_once("admin/add_publication.php");
-    include_once("admin/edit_tags.php");
-    include_once("admin/show_authors.php");
-    include_once("admin/import_publications.php");
+    include_once("admin/show-authors.php");
+    include_once("admin/show-courses.php");
+    include_once("admin/show-publications.php");
+    include_once("admin/show-single-course.php");
+    include_once("admin/show-students.php");
 }
 
 // Core functions
-include_once("core/general.php");
+include_once("core/admin.php");
 include_once("core/class-ajax.php");
 include_once("core/class-bibtex.php");
 include_once("core/class-document-manager.php");
 include_once("core/class-export.php");
 include_once("core/class-html.php");
 include_once("core/class-mail.php");
-include_once("core/admin.php");
 include_once("core/database.php");
 include_once("core/deprecated.php");
-include_once("core/shortcodes.php");
 include_once("core/enrollments.php");
+include_once("core/general.php");
+include_once("core/class-bibtex-import.php");
+include_once("core/shortcodes.php");
+include_once("core/templates.php");
 include_once("core/widgets.php");
 
 // BibTeX Parse
@@ -318,7 +328,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '5.0.17';
+    return '5.1beta';
 }
 
 /**
@@ -354,6 +364,60 @@ function tp_advanced_registration() {
         tp_students::add_student($user->ID, $data );
     }
 } 
+
+/**********************/
+/* Template functions */
+/**********************/
+
+/**
+ * Detects template files and returns an array with available templates
+ * @return array
+ * @since 5.1
+ */
+function tp_detect_templates() {
+    $folder = plugin_dir_path(__FILE__) . 'templates/';
+    $files = scandir($folder);
+    $return = array();
+    foreach ( $files as $file ) {
+        $infos = pathinfo($folder.$file);
+        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
+            $return[$infos['filename']] = $folder.$file;
+        }
+    }
+    return $return;
+}
+
+function tp_list_templates () {
+    $folder = plugin_dir_path(__FILE__) . 'templates/';
+    $files = scandir($folder);
+    $return = array();
+    foreach ( $files as $file ) {
+        $infos = pathinfo($folder.$file);
+        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
+            $return[] = $infos['filename'];
+        }
+    }
+    return $return;
+}
+
+/**
+ * Loads a template and returns the template object or false, if the template doesn't exist
+ * @param string $slug
+ * @return object|boolean
+ * @since 5.1.0
+ */
+function tp_load_template($slug) {
+    $slug = esc_attr($slug);
+    $templates = tp_detect_templates();
+    // load template file
+    if (array_key_exists($slug, $templates) ) {
+        include_once $templates[$slug];
+        wp_enqueue_style($slug, plugins_url() . '/teachpress/templates/' . $slug . '.css');
+        return new $slug();
+    }
+    return false;
+
+}
 
 /*************************/
 /* Installer and Updater */
@@ -515,6 +579,13 @@ function tp_write_data_for_tinymce () {
         }
     }
     
+    // List of publication templates
+    $pub_templates_list = array();
+    $pub_templates = tp_list_templates();
+    foreach ( $pub_templates as $row ) {
+        $pub_templates_list[] = array ( 'text' => $row, 'value' => $row);
+    }
+    
     // Current post id
     $post_id = ( isset ($_GET['post']) ) ? intval($_GET['post']) : 0;
     
@@ -524,7 +595,8 @@ function tp_write_data_for_tinymce () {
         var teachpress_courses = <?php echo json_encode($course_list); ?>;
         var teachpress_semester = <?php echo json_encode($semester_list); ?>;
         var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
-        var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document_manager.php?post_id=' . $post_id; ?>';
+        var teachpress_pub_templates = <?php echo json_encode($pub_templates_list); ?>;
+        var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document-manager.php?post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
         var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
         var teachpress_course_module = <?php if (TEACHPRESS_COURSE_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;

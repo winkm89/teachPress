@@ -436,15 +436,18 @@
                                         {
                                             type: 'listbox',
                                             name: 'tp_style',
-                                            label: 'Style of publication list',
+                                            label: 'Numeration of publication lists',
                                             'values': [
-                                                {text: '1-line-style (numbered)', value: 'numbered'},
-                                                {text: '1-line-style (numbered descending)', value: 'numbered_desc'},
-                                                {text: '1-line-style', value: 'simple'},
-                                                {text: '4-line-style (numbered)', value: 'std_num'},
-                                                {text: '4-line-style (numbered descending)', value: 'std_num_desc'},
-                                                {text: '4-line-style', value: 'std'}
+                                                {text: 'none', value: 'none'},
+                                                {text: 'numbered', value: 'numbered'},
+                                                {text: 'numbered descending', value: 'numbered_desc'}
                                             ]
+                                        },
+                                        {
+                                            type: 'listbox',
+                                            name: 'tp_template',
+                                            label: 'Template',
+                                            'values': teachpress_pub_templates  //  is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -468,6 +471,7 @@
                                         var headline = e.data.tp_headline;
                                         var image = e.data.tp_image;
                                         var image_size = e.data.tp_size;
+                                        var template = e.data.tp_template;
                                         var author_name = e.data.tp_author_name;
                                         var editor_name = e.data.tp_editor_name;
                                         var style = e.data.tp_style;
@@ -480,11 +484,11 @@
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
-                                        style = (style === 'numbered') ? '' : 'style="' + style + '"';
+                                        style = (style === 'none') ? '' : 'style="' + style + '"';
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
                                         entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
                                         
-                                        editor.insertContent( '[tplist ' + user + ' ' + headline + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + entries_per_page + ']');
+                                        editor.insertContent( '[tplist ' + user + ' ' + headline + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + entries_per_page + ']');
                                     }
                                 });
                             }
@@ -515,18 +519,6 @@
                                                 {text: 'headlines grouped by type then by year', value: '4'},
                                                 {text: 'none', value: '0'}
                                             ]
-                                        },
-                                        {
-                                            type: 'textbox',
-                                            name: 'tp_max_size',
-                                            label: 'Max. font size in the tag cloud',
-                                            value: '35'
-                                        },
-                                        {
-                                            type: 'textbox',
-                                            name: 'tp_min_size',
-                                            label: 'Min. font size in the tag cloud',
-                                            value: '11'
                                         },
                                         {
                                             type: 'textbox',
@@ -585,15 +577,18 @@
                                         {
                                             type: 'listbox',
                                             name: 'tp_style',
-                                            label: 'Style of publication list',
+                                            label: 'Numeration of publication lists',
                                             'values': [
-                                                {text: '1-line-style (numbered)', value: 'numbered'},
-                                                {text: '1-line-style (numbered descending)', value: 'numbered_desc'},
-                                                {text: '1-line-style', value: 'simple'},
-                                                {text: '4-line-style (numbered)', value: 'std_num'},
-                                                {text: '4-line-style (numbered descending)', value: 'std_num_desc'},
-                                                {text: '4-line-style', value: 'std'}
+                                                {text: 'none', value: 'none'},
+                                                {text: 'numbered', value: 'numbered'},
+                                                {text: 'numbered descending', value: 'numbered_desc'}
                                             ]
+                                        },
+                                        {
+                                            type: 'listbox',
+                                            name: 'tp_template',
+                                            label: 'Template',
+                                            'values': teachpress_pub_templates  //  is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -615,8 +610,6 @@
                                     onsubmit: function( e ) {
                                         var user = e.data.tp_user;
                                         var headline = e.data.tp_headline;
-                                        var maxsize = e.data.tp_max_size;
-                                        var minsize = e.data.tp_min_size;
                                         var tag_limit = e.data.tp_tag_limit;
                                         var show_tags_as = e.data.tp_show_tags_as;
                                         var image = e.data.tp_image;
@@ -624,24 +617,23 @@
                                         var author_name = e.data.tp_author_name;
                                         var editor_name = e.data.tp_editor_name;
                                         var style = e.data.tp_style;
+                                        var template = e.data.tp_template;
                                         var link_style = e.data.tp_link_style;
                                         var entries_per_page = e.data.tp_entries_per_page;
                                         
                                         user = (user === '') ? '' : 'user="' + user + '"';
                                         headline = (headline === '1') ? '' : 'headline="' + headline + '"';
-                                        maxsize = (maxsize === '35') ? '' : 'maxsize="' + maxsize + '"';
-                                        minsize = (minsize === '11') ? '' : 'minsize="' + minsize + '"';
                                         tag_limit = (tag_limit === '30') ? '' : 'tag_limit="' + tag_limit + '"';
                                         show_tags_as = (show_tags_as === 'cloud') ? '' : 'show_tags_as="' + show_tags_as + '"';
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
-                                        style = (style === 'numbered') ? '' : 'style="' + style + '"';
+                                        style = (style === 'none') ? '' : 'style="' + style + '"';
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
                                         entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
                                         
-                                        editor.insertContent( '[tpcloud ' + user + ' ' + headline + ' ' + maxsize + ' ' + minsize + ' ' + tag_limit + ' ' + show_tags_as + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + entries_per_page + ']');
+                                        editor.insertContent( '[tpcloud ' + user + ' ' + headline + ' ' + tag_limit + ' ' + show_tags_as + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + entries_per_page + ']');
                                     }
                                 });
                             }
@@ -703,13 +695,18 @@
                                         {
                                             type: 'listbox',
                                             name: 'tp_style',
-                                            label: 'Style of publication list',
+                                            label: 'Numeration of publication lists',
                                             'values': [
-                                                {text: '1-line-style (numbered)', value: 'numbered'},
-                                                {text: '1-line-style', value: 'simple'},
-                                                {text: '4-line-style (numbered)', value: 'std_num'},
-                                                {text: '4-line-style', value: 'std'}
+                                                {text: 'numbered', value: 'numbered'},
+                                                {text: 'numbered descending', value: 'numbered_desc'},
+                                                {text: 'none', value: 'none'}
                                             ]
+                                        },
+                                        {
+                                            type: 'listbox',
+                                            name: 'tp_template',
+                                            label: 'Template',
+                                            'values': teachpress_pub_templates  //  is written by tp_write_data_for_tinymce()
                                         },
                                         {
                                             type: 'listbox',
@@ -743,6 +740,7 @@
                                         var author_name = e.data.tp_author_name;
                                         var editor_name = e.data.tp_editor_name;
                                         var style = e.data.tp_style;
+                                        var template = e.data.tp_template;
                                         var link_style = e.data.tp_link_style;
                                         var entries_per_page = e.data.tp_entries_per_page;
                                         var as_filter = e.data.tp_as_filter;
@@ -758,7 +756,7 @@
                                         as_filter = (as_filter === 'false') ? '' : 'as_filter="' + as_filter + '"';
                                         date_format = (date_format === 'd.m.Y') ? '' : 'date_format="' + date_format + '"';
                                         
-                                        editor.insertContent( '[tpsearch ' + entries_per_page + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + link_style + ' ' + as_filter + ' ' + date_format + ']');
+                                        editor.insertContent( '[tpsearch ' + entries_per_page + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + as_filter + ' ' + date_format + ']');
                                     }
                                 });
                             }

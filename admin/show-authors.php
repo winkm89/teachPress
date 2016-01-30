@@ -119,7 +119,7 @@ function tp_show_authors_page () {
     
     echo '<table class="widefat" style="width:700px;">';
     echo '<thead id="tp_authors_table_header">';
-    echo '<th class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" /></th>';
+    echo '<td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" /></td>';
     echo '<th>' . __('Name','teachpress') . '</th>';
     echo '<th>' . __('ID','teachpress') . '</th>';
     echo '<th>' . __('Number publications','teachpress') . '</th>';

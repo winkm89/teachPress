@@ -165,7 +165,7 @@ class tp_courses_page {
             <table class="widefat">
                <thead>
                <tr>
-                   <th class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes('checkbox[]','tp_check_all');" /></th>
+                   <td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes('checkbox[]','tp_check_all');" /></td>
                    <th><?php _e('Name','teachpress'); ?></th>
                    <th><?php _e('ID'); ?></th>
                    <th><?php _e('Type'); ?></th>

@@ -108,6 +108,7 @@ class tp_settings_page {
         $set_menu_4 = ( $tab === 'student_data' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
         $set_menu_5 = ( $tab === 'publications' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
         $set_menu_6 = ( $tab === 'publication_data' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
+        $set_menu_7 = ( $tab === 'publication_templates' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
 
         echo '<h3 class="nav-tab-wrapper">'; 
         echo '<a href="' . $site . '&amp;tab=general" class="' . $set_menu_1 . '">' . __('General','teachpress') . '</a>';
@@ -119,6 +120,7 @@ class tp_settings_page {
         if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
             echo '<a href="' . $site . '&amp;tab=publication_data" class="' . $set_menu_6 . '">' . __('Meta','teachpress') . ': ' . __('Publications','teachpress') . '</a>'; 
             echo '<a href="' . $site . '&amp;tab=publications" class="' . $set_menu_5 . '">' . __('Publications','teachpress') . '</a>';
+            echo '<a href="' . $site . '&amp;tab=publication_templates" class="' . $set_menu_7 . '">' . __('Templates','teachpress') . '</a>';
         }
         echo '</h3>';
 
@@ -128,19 +130,23 @@ class tp_settings_page {
 
         /* General */
         if ($tab === '' || $tab === 'general') {
-            tp_settings_page::get_general_tab();
+            self::get_general_tab();
         }
         /* Courses */
         if ( $tab === 'courses' ) { 
-            tp_settings_page::get_course_tab();
+            self::get_course_tab();
         }
         /* Meta data */
         if ( $tab === 'course_data' || $tab === 'student_data' || $tab === 'publication_data' ) {
-            tp_settings_page::get_meta_tab($tab);
+            self::get_meta_tab($tab);
         }
         /* Publications */
         if ( $tab === 'publications' ) {
-            tp_settings_page::get_publication_tab();
+            self::get_publication_tab();
+        }
+        /* Templates */
+        if ( $tab === 'publication_templates' ) {
+            self::get_template_tab();
         }
 
         echo '</form>';
@@ -156,7 +162,7 @@ class tp_settings_page {
         echo '<div id="dialog" title="About">
                 <div style="text-align: center;">
                 <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
-                <p style="font-size: 20px; font-weight: bold; color: #f70e1a;">' . get_tp_option('db-version') . ' "Cranberry Pie"</p>
+                <p style="font-size: 20px; font-weight: bold; color: #ffcc00;">' . get_tp_option('db-version') . ' "Banana Cream Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="http://mtrv.wordpress.com/teachpress/changelog/">Changelog</a> | <a href="http://mtrv.wordpress.com/teachpress/shortcode-reference/">Shortcode Reference</a> | <a href="http://mtrv.wordpress.com/teachpress/function-reference/">Function Reference</a></p>
                 <p>&copy; 2008-2015 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
@@ -402,13 +408,10 @@ class tp_settings_page {
 
         tp_settings_page::get_user_role_form('userrole_publications');
         tp_settings_page::get_user_role_form('userrole_courses');
-
-        echo '</thead>';
-        echo '</table>';
-
-        echo '<h3>' . __('Enrollment system','teachpress') . '</h3>';
-        echo '<table class="form-table">';
-        echo '<thead>';
+        
+        echo '<tr>';
+        echo '<th colspan="3"><h3>' . __('Enrollment system','teachpress') . '</h3></th>';
+        echo '</tr>';
 
         echo '<tr>';
         echo '<th><label for="semester">' . __('Current term','teachpress') . '</label></th>';
@@ -491,26 +494,26 @@ class tp_settings_page {
         
         echo '<tr>';
         echo '<th width="160">' . __('BibTeX special chars','teachpress') . '</th>';
-        echo '<td width="510">' . tp_admin::get_checkbox('convert_bibtex', __('Try to convert utf-8 chars into BibTeX compatible ASCII strings','teachpress'), get_tp_option('convert_bibtex')) . '</td>';
-        echo '<td></td>';
+        echo '<td>' . tp_admin::get_checkbox('convert_bibtex', __('Try to convert utf-8 chars into BibTeX compatible ASCII strings','teachpress'), get_tp_option('convert_bibtex')) . '</td>';
         echo '</tr>';
         
         echo '<tr>';
         echo '<th width="160">' . __('Overwrite publications','teachpress') . '</th>';
-        echo '<td width="510">' . tp_admin::get_checkbox('import_overwrite', __('Allow optional overwriting for publication import','teachpress'), get_tp_option('import_overwrite')) . ' <b>(EXPERIMENTAL)</b></td>';
-        echo '<td></td>';
+        echo '<td>' . tp_admin::get_checkbox('import_overwrite', __('Allow optional overwriting for publication import','teachpress'), get_tp_option('import_overwrite')) . ' <b>(EXPERIMENTAL)</b></td>';
+        echo '</tr>';
+        
+        echo '<tr>';
+        echo '<th colspan="2"><h3>' . __('Related content','teachpress') . '</h3></th>';
         echo '</tr>';
         
         echo '<tr>';
         echo '<th>' . __('Automatic related content','teachpress') . '</th>';
         echo '<td>' . tp_admin::get_checkbox('rel_content_auto', __('Create an automatic related content with every new publication','teachpress'), get_tp_option('rel_content_auto')) . '</td>';
-        echo '<td></td>';
         echo '</tr>';
 		
         echo '<tr>';
         echo '<th>' . __('Template for related content','teachpress') . '</th>';
-        echo '<td><textarea name="rel_content_template" id="rel_content_template" style="width:100%;" rows="5">' . get_tp_option('rel_content_template') . '</textarea></td>';
-        echo '<td></td>';
+        echo '<td><textarea name="rel_content_template" id="rel_content_template" style="width:90%;" rows="10">' . get_tp_option('rel_content_template') . '</textarea></td>';
         echo '</tr>';
 		
         echo '<tr>';
@@ -519,7 +522,10 @@ class tp_settings_page {
         wp_dropdown_categories(array('hide_empty' => 0, 'name' => 'rel_content_category', 'orderby' => 'name', 'selected' => get_tp_option('rel_content_category'), 'hierarchical' => true, 'show_option_none' => __('none','teachpress'))); 
         echo '<em>' . __('Used if the related content type for publicaitons is set on "Posts"','teachpress') . '</em>
              </td>';
-		echo '<td></td>';
+        echo '</tr>';
+        
+        echo '<tr>';
+        echo '<th colspan="2"><h3>' . __('RSS','teachpress') . '</h3></th>';
         echo '</tr>';
 		
         echo '<tr>';
@@ -531,7 +537,6 @@ class tp_settings_page {
             <p><em>' . __('Example for publications of a single tag (tag = tag-id):','teachpress') . '</em><br />
             <strong>' . plugins_url() . '/teachpress/feed.php?tag=1</strong> &raquo; <a href="' . plugins_url() . '/teachpress/feed.php?tag=1" target="_blank">' . __('Show','teachpress') . '</a></p>
                   </td>';  
-        echo '<td></td>';
         echo '</tr>';
 		
         echo '</thead>';
@@ -641,6 +646,66 @@ class tp_settings_page {
         }
 
         echo '</div>';
+    }
+    
+    /**
+     * Shows the templates tab
+     * @access private
+     * @since 5.1.0 
+     */
+    private static function get_template_tab () {
+        echo '<h3>' . __('Templates','teachpress') . '</h3>';
+        echo '<table class="widefat">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>' . __('Name') . '</th>';
+        echo '<th>' . __('Key') . '</th>';
+        echo '<th>' . __('Description') . '</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo self::list_templates();
+        echo '</table>';
+    }
+    
+    /**
+     * Creates the list of publication templates
+     * @return string
+     * @access private
+     * @since 5.1.0
+     */
+    private static function list_templates () {
+        $templates = tp_detect_templates();
+        $s = '';
+        $class_alternate = true;
+        foreach ($templates as $key => $value) {
+            if ( $class_alternate === true ) {
+                $tr_class = 'class="alternate"';
+                $class_alternate = false;
+            }
+            else {
+                $tr_class = '';
+                $class_alternate = true;
+            }
+            
+            // Load template
+            include_once $templates[$key];
+            $template = new $key();
+            if (method_exists($template, 'get_settings') ) {
+                $settings = $template->get_settings();
+            }
+            else {
+                $settings = array('name' => '', 'description' => '');
+            }
+            
+            $s .= '<tr ' . $tr_class . '>';
+            $s .= '<td>' . esc_html($settings['name']) . '</td>';
+            $s .= '<td>' . esc_html($key) . '</td>';
+            $s .= '<td>' . esc_html($settings['description']) . '</td>';
+            $s .= '</tr>';
+        }
+        
+        $s .= '</table>';
+        return $s;
     }
     
     /**
