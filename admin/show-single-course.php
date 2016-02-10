@@ -332,8 +332,13 @@ class tp_single_course_actions {
         }
         // add signup
         if ( isset( $post['add_signup'] ) && ( $capability === 'owner' || $capability === 'approved' ) ) {
-            tp_courses::add_signup($post['tp_add_reg_student'], $course_id);
-            get_tp_message( __('Participant added','teachpress') );
+            if ( isset( $post['tp_add_reg_student'] ) ) {
+                $students = $post['tp_add_reg_student'];
+                foreach ($students as $row) {
+                    tp_courses::add_signup($row, $course_id);
+                }
+                get_tp_message( __('Participant added','teachpress') );
+            }
         }
         // move signup
         if ( isset( $post['move_ok'] ) && ( $capability === 'owner' || $capability === 'approved' ) ) {
@@ -539,8 +544,7 @@ class tp_single_course_page {
     private static function get_add_students_form() {
         echo '<div class="teachpress_message" id="tp_add_signup_form" style="display: none;">';
         echo '<p class="teachpress_message_headline">' . __('Add students manually','teachpress') . '</p>';
-        echo '<select name="tp_add_reg_student" id="tp_add_reg_student">';
-        echo '<option value="0">- ' . __('Select student','teachpress') . ' -</option>';
+        echo '<select name="tp_add_reg_student[]" id="tp_add_reg_student" multiple size="10">';
         $row1 = tp_students::get_students();
         $zahl = 0;
         $notice = array();
