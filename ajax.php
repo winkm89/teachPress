@@ -90,4 +90,11 @@ if ( is_user_logged_in() && current_user_can('use_teachpress') ) {
     if ( isset( $_GET['mimetype_input'] ) ) {
         tp_ajax::get_mimetype_image($_GET['mimetype_input']);
     }
+    
+    /**
+     * Getting the cite dialog
+     */
+    if ( isset( $_GET['cite_id'] ) ) {
+        tp_ajax::get_cite_screen($_GET['cite_id']);
+    }
 }

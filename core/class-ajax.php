@@ -188,6 +188,32 @@ class tp_ajax {
     }
     
     /**
+     * Gets the cite screen for a single publication.
+     * @param int $cite_id       The publication ID
+     * @since 5.1.0
+     * @access public
+     */
+    public static function get_cite_screen ($cite_id) {
+        $publication = tp_publications::get_publication($cite_id, ARRAY_A);
+        echo '<!doctype html>';
+        echo '<html>';
+        echo '<head>';
+        echo '<meta charset="utf-8">';
+	echo '<title>teachPress - cite publication</title>';
+        echo '</head>';
+        echo '<body>';
+        echo '<div id="content">';
+        echo '<form name="form_cite" method="post">';
+        echo '<input name="tp_cite_id" type="hidden" value="' . '"/>';
+        echo '<h3>' . __('Cite','teachpress') . '</h3>';
+        echo '<textarea name="tp_cite_full" id="tp_cite_full" cols="50" rows="4">' . tp_export::text_row($publication) . '</textarea>';
+        echo '</form>';
+        echo '</div>';
+        echo '</body>';
+        echo '</html>';
+    }
+    
+    /**
      * Gets the name of a document
      * @param int $doc_id       The ID of the document
      * @since 5.0.0

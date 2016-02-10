@@ -251,12 +251,12 @@ class tp_export {
 
     /**
      * Returns a single line for rtf file
-     * @param array $row
+     * @param array $row        The publication array
      * @return string
      * @since 3.0.0
-     * @access private
+     * @access public
     */
-    private static function rtf_row ($row) {
+    public static function rtf_row ($row) {
         $settings['editor_name'] = 'initials';
         $settings['style'] = 'simple';
         $settings['use_span'] = false;
@@ -271,6 +271,29 @@ class tp_export {
         $line = str_replace('  ', ' ', $line);
         $line = utf8_decode(self::decode($line));
         return $line;
+    }
+    
+    /**
+     * Returns a single line for a utf8 encoded text
+     * @param array $row        The publication array
+     * @return string
+     * @since 5.1.0
+     * @access public
+    */
+    public static function text_row ($row) {
+        $settings['editor_name'] = 'initials';
+        $settings['style'] = 'simple';
+        $settings['use_span'] = false;
+        if ( $row['type'] === 'collection' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
+            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+        }
+        else {
+            $all_authors = tp_bibtex::parse_author($row['author'], $settings['editor_name'] );
+        }
+        $meta = tp_bibtex::single_publication_meta_row($row, $settings);
+        $line = $all_authors . ' (' . $row['year'] . ')' . ': ' . tp_html::prepare_title($row['title'], 'replace') . '. ' . $meta;
+        $line = str_replace('  ', ' ', $line);
+        return trim($line);
     }
 
     /**

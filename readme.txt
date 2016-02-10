@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.3.1
-Stable tag: 5.0.17
+Tested up to: 4.4
+Stable tag: 5.1alpha
 
 Manage your courses and publications with teachPress 
 
@@ -43,7 +43,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 == Credits ==
 
-Copyright 2008-2015 by Michael Winkler
+Copyright 2008-2016 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -135,6 +135,18 @@ If you save plugins outside the normal path (/wp-content/plugins/), the plugin c
 It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
+
+= 5.x.xx - (xx.xx.2015) =
+* New: Template system for publication lists added
+* New: Optional dynamic author/editor format detection for import
+* New: [tpenrollments]: New parameter "order_signups" added
+* New: [tpcloud, tplist, tpsearch]: New parameter "template" added
+* Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
+* Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
+* Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed
+* Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
+* Bugfix: HTML output for proceedings shows the edition instead of volume/number (#18)
+* Bugfix: Prevent a deletion of line breaks by bibtexParse in the import (#21)
 
 = 5.0.17 - (15.10.2015) =
 * New: [tpenrollments]: New parameters "order_parent" and "order_child" added

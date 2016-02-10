@@ -36,7 +36,7 @@ class tp_mail {
 
         // Send mail
         // Use the normal wp_mail()
-        // The Return-Path seems to be useless, I'm no sure why
+        // The "Return-Path" seems to be useless, I'm no sure why
         if ( !defined('TP_MAIL_SYSTEM') ) {
             // Prepare header attributes
             if ( $from === 'currentuser' ) {
@@ -61,7 +61,7 @@ class tp_mail {
             $ret = wp_mail($to, $subject, $message, $headers, $attachments);
         }
         /**
-         * @expectedException used at tuc servers
+         * @expectedException only for TU Chemnitz servers
          */
         else {
             require_once('php/mail.inc');

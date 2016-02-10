@@ -326,7 +326,7 @@ class tp_publications_page {
         echo '<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row->pub_id . '" /></th>';
         echo '<td>';
         echo '<a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . tp_html::prepare_title($row->title, 'decode') . '</strong></a>';
-        echo '<div class="tp_row_actions"><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=' . $array_variables['page']  .'&amp;checkbox%5B%5D=' . $row->pub_id . '&amp;action=delete' . $get_string . '" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
+        echo '<div class="tp_row_actions"><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a href="' . plugins_url() . '/teachpress/ajax.php?cite_id=' . $row->pub_id . '" class="teachpress_cite_pub teachpress_link">' . __('Cite', 'teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=' . $array_variables['page']  .'&amp;checkbox%5B%5D=' . $row->pub_id . '&amp;action=delete' . $get_string . '" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
         echo '</td>';
         echo '<td>' . $row->pub_id . '</td>';
         echo '<td>' . tp_translate_pub_type($row->type) . '</td>';
@@ -569,8 +569,41 @@ class tp_publications_page {
         }
      
         echo '</div></div>';
+        
+        // print_scripts
+        tp_publications_page::print_scripts();
+        
         echo '</form>';
-
     } 
+    
+    /**
+     * Prints the js scripts
+     * @since 5.1.0
+     */
+    public static function print_scripts () {
+        ?>
+        <script type="text/javascript" charset="utf-8">
+            jQuery(document).ready(function($){
+                $(".teachpress_cite_pub").each(function() {
+                    var $link = $(this);
+                    var $dialog = $('<div></div>')
+                        .load($link.attr('href') + ' #content')
+                        .dialog({
+                                autoOpen: false,
+                                title: '<?php _e('Cite publication','teachpress'); ?>',
+                                width: 600
+                        });
+                        
+                    $link.click(function() {
+                        $dialog.dialog('open');
+                        $('#tp_cite_full').focus();
+                        $('#tp_cite_full').select();
+                        return false;
+                    });
+                });
+            });
+        </script>
+        <?php
+    }
     
 }

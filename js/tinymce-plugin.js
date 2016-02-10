@@ -482,6 +482,7 @@
                                         headline = (headline === '1') ? '' : 'headline="' + headline + '"';
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        template = 'template="' + template + '"';
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
                                         style = (style === 'none') ? '' : 'style="' + style + '"';
@@ -630,6 +631,7 @@
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
                                         style = (style === 'none') ? '' : 'style="' + style + '"';
+                                        template = 'template="' + template + '"';
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
                                         entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
                                         
@@ -751,6 +753,7 @@
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
                                         style = (style === 'numbered') ? '' : 'style="' + style + '"';
+                                        template = 'template="' + template + '"';
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
                                         entries_per_page = (entries_per_page === '20') ? '' : 'entries_per_page="' + entries_per_page + '"';
                                         as_filter = (as_filter === 'false') ? '' : 'as_filter="' + as_filter + '"';

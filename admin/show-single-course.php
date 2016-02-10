@@ -544,7 +544,7 @@ class tp_single_course_page {
     private static function get_add_students_form() {
         echo '<div class="teachpress_message" id="tp_add_signup_form" style="display: none;">';
         echo '<p class="teachpress_message_headline">' . __('Add students manually','teachpress') . '</p>';
-        echo '<select name="tp_add_reg_student[]" id="tp_add_reg_student" multiple size="10">';
+        echo '<select name="tp_add_reg_student[]" id="tp_add_reg_student" size="10" multiple>';
         $row1 = tp_students::get_students();
         $zahl = 0;
         $notice = array();
@@ -557,6 +557,7 @@ class tp_single_course_page {
             $zahl++;
         }
         echo '</select>';
+        echo '<p><i>' . __('Use &lt;Ctrl&gt; key to select more than one student','teachpress') . '</i></p>';
         echo '<p>
                <input type="submit" name="add_signup" class="button-primary" value="' . __('Add', 'teachpress') . '" />
                <a onclick="teachpress_showhide(' . "'" . 'tp_add_signup_form' . "'" . ');" class="button-secondary" style="cursor:pointer;">' . __('Cancel', 'teachpress') . '</a>
