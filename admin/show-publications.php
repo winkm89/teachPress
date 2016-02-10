@@ -154,9 +154,10 @@ class tp_publications_page {
     public static function get_bibtex_screen($array_variables) {
         $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
         $sel = '';
+        echo '<h2>' . __('BibTeX','teachpress') . '</h2>';
         echo '<form name="form1">';
         echo '<p><a href="admin.php?page=' . $array_variables['page'] . '&amp;search=' . $array_variables['search'] . '&amp;limit=' . $array_variables['curr_page'] . '" class="button-secondary">&larr; ' . __('Back','teachpress') . '</a></p>';
-        echo '<h2>' . __('BibTeX','teachpress') . '</h2>';
+        
         echo '<textarea name="bibtex_area" rows="20" style="width:90%;" >';
 
         if ( $array_variables['checkbox'] != '' ) {
@@ -437,6 +438,8 @@ class tp_publications_page {
      * @since 5.0.0
      */
     public static function get_tab($user, $array_variables) {
+        $title = ($array_variables['page'] == 'publications.php' && $array_variables['search'] == '') ? __('All publications','teachpress') : __('Your publications','teachpress');
+        echo '<h2>' . $title . '<a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Create','teachpress') . '</a></h2>';
         echo '<form id="showlvs" name="form1" method="get" action="admin.php">';
         echo '<input type="hidden" name="page" id="page" value="' . $array_variables['page'] . '" />';
         echo '<input type="hidden" name="tag" id="tag" value="' . $array_variables['tag_id'] . '" />';
@@ -449,9 +452,7 @@ class tp_publications_page {
                   <a href="admin.php?page=publications.php&search=' . $array_variables['search'] . '&amp;limit=' . $array_variables['curr_page'] . '" class="button-secondary"> ' . __('Cancel','teachpress') . '</a></p>
                   </div>';
         }
-
-        $title = ($array_variables['page'] == 'publications.php' && $array_variables['search'] == '') ? __('All publications','teachpress') : __('Your publications','teachpress');
-
+        
         $args = array('search' => $array_variables['search'],
                       'user' => ($array_variables['page'] == 'publications.php') ? '' : $user,
                       'tag' => $array_variables['tag_id'],
@@ -466,7 +467,7 @@ class tp_publications_page {
         // Load bookmarks
         $bookmarks = tp_bookmarks::get_bookmarks( array('user'=> $user, 'output_type' => ARRAY_A) );
         ?>
-        <h2><?php echo $title; ?> <a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2"><?php _e('Create','teachpress'); ?></a></h2>
+        
         <div id="searchbox" style="float:right; padding-bottom:5px;">
            <?php if ($array_variables['search'] != "") { 
               echo '<a href="admin.php?page=' . $array_variables['page'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;year=' . $array_variables['year'] . '" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';

@@ -139,6 +139,7 @@ class tp_students_page {
         $checkbox = isset ( $_GET['checkbox'] ) ? $_GET['checkbox'] : '';
         ?>
         <div class="wrap">
+        <h2><?php _e('Students','teachpress'); ?> <a class="add-new-h2" href="admin.php?page=teachpress/students.php&amp;action=add"><?php _e('Add student','teachpress'); ?></a></h2>
         <form name="search" method="get" action="admin.php">
         <input name="page" type="hidden" value="<?php echo $page; ?>" />
         <?php
@@ -158,8 +159,6 @@ class tp_students_page {
             get_tp_message($message);
         }
         
-        
-        
         // Load data
         $number_entries = tp_students::get_students( array('search' => $search, 
                                                            'meta_search' => $meta_search, 
@@ -170,7 +169,6 @@ class tp_students_page {
                                                      'limit' => $page_settings['entry_limit'] . ',' . $page_settings['entries_per_page'], 
                                                      'output_type' => ARRAY_A ) );
         ?>
-        <h2><?php _e('Students','teachpress'); ?> <a class="add-new-h2" href="admin.php?page=teachpress/students.php&amp;action=add"><?php _e('Add student','teachpress'); ?></a></h2>
         <div id="searchbox" style="float:right; padding-bottom:5px;">  
             <?php if ($search != "") { ?>
             <a href="admin.php?page=teachpress/students.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="<?php _e('Cancel the search','teachpress'); ?>">X</a>
@@ -199,9 +197,9 @@ class tp_students_page {
         <table class="widefat">
         <thead>
         <tr>
-            <th class="check-column">
+            <td class="check-column">
                 <input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes('checkbox[]','tp_check_all');" />
-            </th>
+            </td>
             <?php
             echo '<th>' . __('Last name','teachpress') . '</th>';
             echo '<th>' . __('First name','teachpress') . '</th>'; 

@@ -41,6 +41,7 @@ function tp_tags_page(){
     }
     ?> 
     <div class="wrap" style="max-width:700px;">
+    <h2><?php _e('Tags'); ?></h2>
     <form id="form1" name="form1" method="get" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
     <input name="page" type="hidden" value="teachpress/tags.php" />
     <?php
@@ -96,7 +97,6 @@ function tp_tags_page(){
     }
     
     ?>
-    <h2><?php _e('Tags'); ?></h2>
     <div id="searchbox" style="float:right; padding-bottom:10px;">
             <?php if ($search != "") { ?><a href="admin.php?page=teachpress/tags.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="<?php _e('Cancel the search','teachpress'); ?>">X</a><?php } ?>
         <input type="search" name="search" id="pub_search_field" value="<?php echo stripslashes($search); ?>"/>

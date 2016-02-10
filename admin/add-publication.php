@@ -92,6 +92,15 @@ function tp_add_publication_page() {
     $entry_limit = isset( $_GET['limit'] ) ? htmlspecialchars($_GET['limit']) : '';
 
     echo '<div class="wrap">';
+    
+    // headline
+    if ( $pub_id === 0 ) {
+        echo '<h2>' . __('Add a new publication','teachpress') . '</h2>';
+    }
+    else {
+        echo '<h2>' . __('Edit publication','teachpress') . ' <a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Create','teachpress') . '</a></h2>';
+    }
+    
     echo '<form name="form1" method="post" action="' . esc_url($_SERVER['REQUEST_URI']) . '" id="form1">';
    
     // create related content (post/page/...)
@@ -135,14 +144,6 @@ function tp_add_publication_page() {
 
     if ( $pub_id != 0 && !isset($_POST['create_pub']) ) {
         echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
-    }
-    
-    // headline
-    if ( $pub_id === 0 ) {
-        echo '<h2>' . __('Add a new publication','teachpress') . '</h2>';
-    }
-    else {
-        echo '<h2>' . __('Edit publication','teachpress') . ' <a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Create','teachpress') . '</a></h2>';
     }
     
     // input fields

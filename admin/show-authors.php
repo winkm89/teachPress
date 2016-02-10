@@ -74,6 +74,7 @@ function tp_show_authors_page () {
     
     
     echo '<div class="wrap" style="max-width:700px;">';
+    echo '<h2>' . __('Authors','teachpress') . '</h2>';
     echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
     echo '<input name="page" type="hidden" value="' . $page . '" />';
     
@@ -92,7 +93,6 @@ function tp_show_authors_page () {
         get_tp_message( __('Removing successful','teachpress') );
     }
     
-    echo '<h2>' . __('Authors','teachpress') . '</h2>';
     echo '<div id="searchbox" style="float:right; padding-bottom:10px;">';
     if ($search != "") {
         echo '<a href="admin.php?page=teachpress/authors.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
