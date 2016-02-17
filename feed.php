@@ -70,21 +70,21 @@ if ($feedtype == 'bibtex') {
         
         // prepare author name
         if ( $row['type'] === 'collection' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = str_replace(' and ', ', ', tp_bibtex::replace_html_chars( $row['editor'] ) ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = str_replace(' and ', ', ', tp_html::convert_special_chars( $row['editor'] ) ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = str_replace(' and ', ', ', tp_bibtex::replace_html_chars( $row['author'] ) );
+            $all_authors = str_replace(' and ', ', ', tp_html::convert_special_chars( $row['author'] ) );
         }
         
-        $row['title'] = tp_bibtex::replace_html_chars($row['title']);
-        $item_link = tp_bibtex::replace_html_chars($item_link);
+        $row['title'] = tp_html::convert_special_chars($row['title']);
+        $item_link = tp_html::convert_special_chars($item_link);
         $settings['editor_name'] = 'simple';
         $settings['style'] = 'simple';
         $settings['use_span'] = false; 
         echo '
              <item>
                 <title><![CDATA[' . tp_html::prepare_title($row['title'], 'replace') . ']]></title>
-                <description>' . tp_bibtex::single_publication_meta_row($row, $settings) . '</description>
+                <description>' . tp_html::get_publication_meta_row($row, $settings) . '</description>
                 <link><![CDATA[' . $item_link . ']]></link>
                 <dc:creator>' . stripslashes($all_authors) . '</dc:creator>
                 <guid isPermaLink="false">' . get_bloginfo('url') . '?publication=' . $row['pub_id'] . '</guid>
