@@ -266,7 +266,7 @@ class tp_export {
         else {
             $all_authors = tp_bibtex::parse_author($row['author'], $settings['editor_name'] );
         }
-        $meta = tp_bibtex::single_publication_meta_row($row, $settings);
+        $meta = tp_html::get_publication_meta_row($row, $settings);
         $line = $all_authors . ' (' . $row['year'] . ')' . ': ' . tp_html::prepare_title($row['title'], 'replace') . '. ' . $meta;
         $line = str_replace('  ', ' ', $line);
         $line = utf8_decode(self::decode($line));
@@ -290,7 +290,7 @@ class tp_export {
         else {
             $all_authors = tp_bibtex::parse_author($row['author'], $settings['editor_name'] );
         }
-        $meta = tp_bibtex::single_publication_meta_row($row, $settings);
+        $meta = tp_html::get_publication_meta_row($row, $settings);
         $line = $all_authors . ' (' . $row['year'] . ')' . ': ' . tp_html::prepare_title($row['title'], 'replace') . '. ' . $meta;
         $line = str_replace('  ', ' ', $line);
         return trim($line);

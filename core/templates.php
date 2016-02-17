@@ -18,6 +18,10 @@ interface tp_publication_template {
     public function get_type_part ($type, $class);
 }
 
+/**
+ * This class contains all functions related to the HTML publication template generator
+ * @since 5.1.0
+ */
 class tp_html_publication_template {
     
     /**
@@ -118,7 +122,7 @@ class tp_html_publication_template {
             $template->get_type_part(tp_translate_pub_type($row['type']), 'tp_pub_type_' . $row['type']), // Type
             $name,                                                                         // Title
             self::prepare_tag_author ($row, $all_authors, $template),                      // Author
-            tp_bibtex::single_publication_meta_row($row, $settings),                       // Meta
+            tp_html::get_publication_meta_row($row, $settings),                            // Meta
             $tag_string,                                                                   // Tags
             $row['year'],                                                                  // Year
             $images['left'],                                                               // IMAGES_LEFT
@@ -215,7 +219,7 @@ class tp_html_publication_template {
         
         // div links
         if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
-            $content .= self::get_info_container( tp_bibtex::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
+            $content .= self::get_info_container( self::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
         }
         
         return $content;
@@ -251,6 +255,62 @@ class tp_html_publication_template {
             return $template->get_enumeration_part($number);
         }
         return '';
+    }
+    
+        /**
+     * Prepares a url link for publication resources 
+     * @param string $url       The url string
+     * @param string $doi       The DOI number
+     * @param string $mode      list or enumeration
+     * @return string
+     * @since 3.0.0
+     * @version 2
+     * @access public
+     */
+    public static function prepare_url($url, $doi = '', $mode = 'list') {
+        $end = '';
+        $url = explode(chr(13) . chr(10), $url);
+        foreach ($url as $url) {
+            if ( $url == '' ) {
+                continue;
+            }
+            $parts = explode(', ',$url);
+            $parts[0] = trim( $parts[0] );
+            $parts[1] = isset( $parts[1] ) ? $parts[1] : $parts[0];
+            // list mode 
+            if ( $mode === 'list' ) {
+                $length = strlen($parts[1]);
+                $parts[1] = substr($parts[1], 0 , 80);
+                if ( $length > 80 ) {
+                    $parts[1] .= '[...]';
+                }
+                $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( $parts[0] ) . ')" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank">' . $parts[1] . '</a></li>';
+            }
+            // enumeration mode
+            else {
+                $end .= '<a class="tp_pub_link" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( $parts[0] ) . '"/></a>';
+            }
+        }
+        
+        /**
+         * Add DOI-URL
+         * @since 5.0.0
+         */
+        if ( $doi != '' ) {
+            $doi_url = 'http://dx.doi.org/' . $doi;
+            if ( $mode === 'list' ) {
+                $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
+            }
+            else {
+                $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( 'html' ) . '"/></a>';
+            }
+        }
+        
+        if ( $mode === 'list' ) {
+            $end = '<ul class="tp_pub_list">' . $end . '</ul>';
+        }
+        
+        return $end;
     }
 
     /**

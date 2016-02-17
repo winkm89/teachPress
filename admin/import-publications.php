@@ -79,7 +79,7 @@ function tp_import_page() {
 
             // echo $bibtex;
             // add publications to database
-            $entries = tp_bibtex::import_bibtex($bibtex, $settings);
+            $entries = tp_bibtex_import::init($bibtex, $settings);
         }
         // if there is no import
         else {

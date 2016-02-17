@@ -12,7 +12,190 @@
  * @since 5.1.0
  */
 class tp_bibtex_import {
+   /**
+    * Imports a BibTeX string
+    * @global class $PARSEENTRIES
+    * @param string $input      The input string with bibtex entries
+    * @param array $settings    With index names: keyword_separator, author_format
+    * @param string $test       Set it to true for test mode. This mode disables the inserting of publications into database
+    * @since 3.0.0
+    */
+    public static function init ($input, $settings, $test = false) {
+        // Try to set the time limit for the script
+        set_time_limit(TEACHPRESS_TIME_LIMIT);
+        global $PARSEENTRIES;
+        $input = tp_bibtex::convert_bibtex_to_utf8($input);
+        $parse = NEW PARSEENTRIES();
+        $parse->expandMacro = TRUE;
+        $array = array('RMP' => 'Rev., Mod. Phys.');
+        $parse->loadStringMacro($array);
+        $parse->loadBibtexString($input);
+        $parse->extractEntries();
+        
+        list($preamble, $strings, $entries, $undefinedStrings) = $parse->returnArrays();
+        $max = count( $entries );
+        for ( $i = 0; $i < $max; $i++ ) {
+            $entries[$i]['name'] = array_key_exists('name', $entries[$i]) === true ? $entries[$i]['name'] : '';
+            $entries[$i]['date'] = array_key_exists('date', $entries[$i]) === true ? $entries[$i]['date'] : '';
+            $entries[$i]['location'] = array_key_exists('location', $entries[$i]) === true ? $entries[$i]['location'] : '';
+            $entries[$i]['keywords'] = array_key_exists('keywords', $entries[$i]) === true ? $entries[$i]['keywords'] : '';
+            $entries[$i]['tags'] = array_key_exists('tags', $entries[$i]) === true ? $entries[$i]['tags'] : '';
+            $entries[$i]['isbn'] = array_key_exists('isbn', $entries[$i]) === true ? $entries[$i]['isbn'] : '';
+            $entries[$i]['issn'] = array_key_exists('issn', $entries[$i]) === true ? $entries[$i]['issn'] : '';
+            $entries[$i]['tppubtype'] = array_key_exists('tppubtype', $entries[$i]) === true ? $entries[$i]['tppubtype'] : '';
+            $entries[$i]['pubstate'] = array_key_exists('pubstate', $entries[$i]) === true ? $entries[$i]['pubstate'] : '';
+            
+            // for the date of publishing
+            $entries[$i]['date'] = self::set_date_of_publishing($entries[$i]);
+            
+            // for tags
+            $tags = self::set_tags($entries[$i], $settings);
+            
+            // correct name | title bug of old teachPress versions
+            if ($entries[$i]['name'] != '') {
+                $entries[$i]['title'] = $entries[$i]['name'];
+            }
+            
+            // consider old location fields
+            if ( $entries[$i]['location'] != '' ) {
+                $entries[$i]['address'] = $entries[$i]['location'];
+            }
+            
+            // for author / editor
+            $entries[$i]['author'] = tp_bibtex_import_author::init($entries[$i], 'author', $settings['author_format']);
+            
+            // for isbn/issn detection
+            if ( $entries[$i]['issn'] != '' ) {
+                $entries[$i]['is_isbn'] = 0;
+                $entries[$i]['isbn'] = $entries[$i]['issn'];
+            }
+            else {
+                $entries[$i]['is_isbn'] = 1;
+            }
+            
+            // rename to teachPress keys
+            $entries[$i]['type'] = $entries[$i]['bibtexEntryType'];
+            $entries[$i]['bibtex'] = $entries[$i]['bibtexCitation'];
+            
+            // handle export data from teachPress/biblatex
+            if ( $entries[$i]['tppubtype'] != '' ) {
+                $entries[$i]['type'] = $entries[$i]['tppubtype'];
+            }
+            if ( $entries[$i]['pubstate'] != '' ) {
+                $entries[$i]['status'] = $entries[$i]['pubstate'];
+            }
+            
+            // replace bibtex chars
+            foreach ($entries[$i] as $key => $value) {
+                /**
+                 * Leads to problems with char replacement in old teachPress versions,
+                 * reanabled for correct importing of control chars in names
+                 */
+                if ( $key == 'author' || $key == 'editor' ) {
+                    continue;
+                }
+                $entries[$i][$key] = str_replace(array('{','}'), array('',''), $value);
+            }
+            
+            // Try to fix problems with line breaks
+            if ( $tags != '' ) {
+                $tags = str_replace (array("\r\n", "\n", "\r"), ' ', $tags);
+            }
+            
+            // Add the string to database
+            if ( $test === false ) {
+                $entries[$i]['entry_id'] = self::import_publication_to_database($entries[$i], $tags, $settings);
+            }
+        }
+        return $entries;
+
+    }
     
+    /**
+     * This function is used for the import and adds publications to the database or owerwrites existing publications
+     * @param array $entry
+     * @param array $tags
+     * @param array $settings
+     * @return int Returns the ID of the new or changed publication
+     * @since 5.0.0
+     * @access private
+     */
+    private static function import_publication_to_database ($entry, $tags, $settings) {
+        $check = true;
+        if ( $settings['overwrite'] === true ) {
+            $entry['entry_id'] = tp_publications::change_publication_by_key($entry['bibtex'], $entry, $tags);
+            $check = ( $entry['entry_id'] === false ) ? false : true;
+        }
+        if ( $settings['overwrite'] === false || $check === false ) {
+            $entry['entry_id'] = tp_publications::add_publication($entry, $tags, '');
+        }
+        return $entry['entry_id'];
+    }
+    
+    /**
+     * This function parses a month name into his numeric expression
+     * @param string $input
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public static function parse_month ($input) {
+        if ( strlen($input) > 2 ) {
+            $date = date_parse($input);
+            $output = ( $date['month'] < 10 ) ? '0' . $date['month'] : $date['month'];
+        }
+        return $output;
+    }
+    
+    /**
+     * This function is used for the import and sets the date of publishing for a publications.
+     * @param array $entry
+     * @return string
+     * @since 5.0.0
+     * @acces private
+     */
+    private static function set_date_of_publishing ($entry) {
+        $entry['month'] = array_key_exists('month', $entry) === true ? self::parse_month($entry['month']) : '';
+        $entry['day'] = array_key_exists('day', $entry) === true ? $entry['day'] : '';
+        // if complete date is given
+        if ( $entry['date'] != '' ) {
+            $entry['date'] = $entry['date'];
+        }
+        // if month + year is given
+        elseif ( $entry['month'] != '' && $entry['day'] === '' && $entry['year'] != '' ) {
+            $entry['date'] = $entry['year'] . '-' . $entry['month'] . '-01';
+        }
+        // if day + month + year is given
+        elseif ($entry['month'] != '' && $entry['day'] != '' && $entry['year'] != '') {
+            $entry['date'] = $entry['year'] . '-' . $entry['month'] . '-' . $entry['day'];
+        }
+        // if year is given
+        else {
+            $entry['date'] = $entry['year'] . '-01-01';
+        }
+        return $entry['date'];
+    }
+    
+    /**
+     * This function is used for the import and sets the tags.
+     * @param array $entry
+     * @param array $settings
+     * @return string
+     * @since 5.0.0
+     * @access private
+     */
+    private static function set_tags ($entry, $settings) {
+        if ( $entry['keywords'] != '' ) {
+            $tags = str_replace($settings['keyword_separator'],",",$entry['keywords']);
+        }
+        elseif ( $entry['tags'] != '' ) {
+            $tags = str_replace($settings['keyword_separator'],",",$entry['tags']);
+        }
+        else {
+            $tags = '';
+        }
+        return $tags;
+    }
 }
 
 /**
