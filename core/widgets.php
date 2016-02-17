@@ -63,7 +63,7 @@ class tp_books_widget extends WP_Widget {
     function form($instance) {	
         $title = isset ($instance['title']) ? esc_attr($instance['title']) : '';
         $url = isset ($instance['url']) ? esc_attr($instance['url']) : '';
-        $books = isset ($instance['books']) ? $instance['books'] : '';
+        $books = isset ($instance['books']) ? $instance['books'] : array();
         echo '<p><label for="' . $this->get_field_id('title') . '">' . __('Title', 'teachpress') . ': <input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" /></label></p>';
 
         echo '<p><label for="' . $this->get_field_id('books') . '">' . __('Books', 'teachpress') . ': <select class="widefat" id="' . $this->get_field_id('books') . '" name="' . $this->get_field_name('books') . '[]" style="height:auto; max-height:25em" multiple="multiple" size="10">';
