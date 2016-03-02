@@ -10,38 +10,34 @@ class tp_template_2016 implements tp_publication_template {
     public function get_settings() {
         return array ('name' => 'teachPress 2016',
                       'description' => 'The new 4 line style for publications. Default since teachPress 5.1',
-                      'button_separator' => ' | ',
-                      'before_tags_line' => '(',
-                      'after_tags_line'  => ')'
+                      'author' => 'Michael Winkler',
+                      'version'=> '1.0',
+                      'button_separator' => ' | '
             );
     }
     
-    public function get_general_part() {
+    public function get_body() {
+        
+    }
+    
+    public function get_headline() {
+        
+    }
+    
+    public function get_entry($interface) {
         $s = '<tr class="tp_publication">';
-        $s .= '##NUMBER##';
-        $s .= '##IMAGES_LEFT##';
+        $s .= $interface->get_number('<td class="tp_pub_number">', '.</td>');
+        $s .= $interface->get_images('left');
         $s .= '<td class="tp_pub_info">';
-        $s .= '##AUTHOR##';
-        $s .= '<p class="tp_pub_title">##TITLE## ##TYPE##</p>';
-        $s .= '<p class="tp_pub_additional">##META##</p>';
-        $s .= '<p class="tp_pub_tags">##TAGS##</p>';
-        $s .= '##INFO_CONTAINER##';
-        $s .= '##IMAGES_BOTTOM##';
+        $s .= $interface->get_author('<p class="tp_pub_author">', '</p>');
+        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . '</p>';
+        $s .= '<p class="tp_pub_additional">' . $interface->get_meta() . '</p>';
+        $s .= '<p class="tp_pub_tags">' . $interface->get_tag_line() . '</p>';
+        $s .= $interface->get_infocontainer();
+        $s .= $interface->get_images('bottom');
         $s .= '</td>';
-        $s .= '##IMAGES_RIGHT##';
+        $s .= $interface->get_images('right');
         $s .= '</tr>';
         return $s;
-    }
-    
-    public function get_author_part($content) {
-        return '<p class="tp_pub_author">' . stripslashes($content) . '</p>';
-    }
-    
-    public function get_enumeration_part ($content) {
-        return '<td class="tp_pub_number">' . $content . '.</td>';
-    }
-    
-    public function get_type_part ($type, $class) {
-        return '<span class="tp_pub_type ' . $class . '">' . $type . '</span>';
     }
 }

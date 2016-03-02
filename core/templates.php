@@ -12,10 +12,182 @@
  */
 interface tp_publication_template {
     public function get_settings();
-    public function get_general_part();
-    public function get_author_part($content);
-    public function get_enumeration_part ($content);
-    public function get_type_part ($type, $class);
+    public function get_body();
+    public function get_headline();
+    public function get_entry($interface);
+}
+
+/**
+ * Contains all interface functions for publication templates
+ * @since 5.1.0
+ */
+class tp_publication_interface {
+    protected $data;
+    
+    /**
+     * Returns the data for a publication row
+     * @return array
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_data() {
+        return $this->data;
+    }
+    
+    /**
+     * Sets the data for a publication row
+     * @param array $data
+     * @since 5.1.0
+     * @access public
+     */
+    public function set_data($data) {
+        $this->data = $data;
+    }
+    
+    /**
+     * Returns the number for a numbered publication list
+     * @param string $before
+     * @param string $after
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_number ($before = '', $after = '') {
+        $settings = $this->data['settings'];
+        
+        if ( $settings['style'] === 'std_num' || $settings['style'] === 'std_num_desc' || $settings['style'] === 'numbered' || $settings['style'] === 'numbered_desc' ) {
+            return $before . $this->data['counter'] . $after;
+        }
+        
+        return '';
+    } 
+    
+    /**
+     * Returns the title
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_title () {
+        return $this->data['title'];
+    }
+    
+    /**
+     * Returns the type of a publication
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_type() {
+        $type = $this->data['row']['type'];
+        return '<span class="tp_pub_type ' . $type . '">' . tp_translate_pub_type($type) . '</span>';
+    }
+    
+    /**
+     * Returns the authors
+     * @param string $before
+     * @param string $after
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_author ($before = '', $after = '') {
+        if ( $this->data['row']['author'] === '' && $this->data['row']['editor'] === '' ) {
+            return '';
+        }
+        return $before . $this->data['all_authors']  . $after;
+    }
+    
+    /**
+     * Returns the meta row
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_meta () {
+        return tp_html::get_publication_meta_row($this->data['row'], $this->data['settings']);
+    }
+    
+    /**
+     * Returns the tags
+     * @param string $before
+     * @param string $after
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_tag_line ($before = '', $after = '') {
+        $tag_string = $this->data['tag_line'];
+        $separator = $this->data['template_settings']['button_separator'];
+        
+        // meta line formatting
+        if ( $tag_string !== '' ) {
+            $length = mb_strlen($separator);
+            $last_chars = mb_substr($tag_string, -$length);
+            $tag_string = ( $last_chars === $separator ) ? mb_substr($tag_string, 0, -$length) : $tag_string;
+            $tag_string = $before . $tag_string . $after;
+        }
+        return $tag_string;
+    }
+    
+    /**
+     * Returns the year
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_year () {
+        return $this->data['row']['year'];
+    }
+    
+    /**
+     * Returns the images
+     * @param string $position
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_images ($position) {
+        if ( $position === 'right' ) {
+            return $this->data['images']['right'];
+        }
+        if ( $position === 'left' ) {
+            return $this->data['images']['left'];
+        }
+        if ( $position === 'bottom' ) {
+            return $this->data['images']['bottom'];
+        }
+    }
+    
+    /**
+     * Returns an info container
+     * @return string
+     * @since 5.1.0
+     * @access public
+     */
+    public function get_infocontainer () {
+        $content = '';
+        $row = $this->data['row'];
+        $keywords = $this->data['keywords'];
+        $settings = $this->data['settings'];
+        $container_id = $this->data['container_id'];
+        
+        // div bibtex
+        $content .= tp_html_publication_template::get_info_container( nl2br( tp_bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ), 'bibtex', $container_id );
+        
+        // div abstract
+        if ( $row['abstract'] != '' ) {
+            $content .= tp_html_publication_template::get_info_container( tp_html::prepare_text($row['abstract']), 'abstract', $container_id );
+        }
+        
+        // div links
+        if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
+            $content .= tp_html_publication_template::get_info_container( tp_html_publication_template::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
+        }
+        
+        return $content;
+    }                      
+                        
 }
 
 /**
@@ -94,45 +266,26 @@ class tp_html_publication_template {
             $tag_string = $abstract . $bibtex . $tag_string . $url;
         }
         
-        // meta line formatting
-        if ( $tag_string !== '' ) {
-            $length = mb_strlen($separator);
-            $last_chars = mb_substr($tag_string, -$length);
-            $tag_string = ( $last_chars === $separator ) ? mb_substr($tag_string, 0, -$length) : $tag_string;
-            $tag_string = $template_settings['before_tags_line'] . $tag_string . $template_settings['after_tags_line'];
-        }
-        
-        
-        // Replace template tags
-        $search = array ('##NUMBER##',
-                         '##TYPE##',
-                         '##TITLE##',
-                         '##AUTHOR##',
-                         '##META##',
-                         '##TAGS##',
-                         '##YEAR##',
-                         '##IMAGES_LEFT##',
-                         '##IMAGES_RIGHT##',
-                         '##IMAGES_BOTTOM##',
-                         '##INFO_CONTAINER##'
+        // load template interface
+        $interface_data = array (
+            'row' => $row,
+            'title' => $name,
+            'images' => $images,
+            'tag_line' => $tag_string,
+            'settings' => $settings,
+            'counter' => $pub_count,
+            'all_authors' => $all_authors,
+            'keywords' => $keywords,
+            'container_id' => $container_id,
+            'template_settings' => $template_settings
         );
         
-        $replace = array (
-            self::prepare_tag_enumeration($settings, $pub_count, $template),               // Number
-            $template->get_type_part(tp_translate_pub_type($row['type']), 'tp_pub_type_' . $row['type']), // Type
-            $name,                                                                         // Title
-            self::prepare_tag_author ($row, $all_authors, $template),                      // Author
-            tp_html::get_publication_meta_row($row, $settings),                            // Meta
-            $tag_string,                                                                   // Tags
-            $row['year'],                                                                  // Year
-            $images['left'],                                                               // IMAGES_LEFT
-            $images['right'],                                                              // IMAGES_RIGHT
-            $images['bottom'],                                                             // IMAGES_BOTTOM
-            self::prepare_tag_info_container ($row, $keywords, $settings, $container_id)   // INFO_CONTAINER
-        );
+        $interface = new tp_publication_interface();
+        $interface->set_data($interface_data);
         
-        $s = $template->get_general_part();
-        return str_replace($search, $replace, $s);
+        // load entry template
+        $s = $template->get_entry($interface);
+        return $s;
     }
 
 
@@ -197,67 +350,6 @@ class tp_html_publication_template {
     }
     
     /**
-     * Returns the information container (bibtex/abstract/links) for a single publication
-     * @param array $row
-     * @param array $keywords
-     * @param array $settings
-     * @param string $container_id
-     * @return string
-     * @since 5.1.0
-     * @access private
-     */
-    private static function prepare_tag_info_container ($row, $keywords, $settings, $container_id) {
-        $content = '';
-        
-        // div bibtex
-        $content .= self::get_info_container( nl2br( tp_bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ), 'bibtex', $container_id );
-        
-        // div abstract
-        if ( $row['abstract'] != '' ) {
-            $content .= self::get_info_container( tp_html::prepare_text($row['abstract']), 'abstract', $container_id );
-        }
-        
-        // div links
-        if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
-            $content .= self::get_info_container( self::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
-        }
-        
-        return $content;
-    }
-
-    /**
-     * Prepares the author tag for templates
-     * @param array $row
-     * @param array $all_authors
-     * @param object $template
-     * @return string
-     * @since 5.1.0
-     * @access private
-     */
-    private static function prepare_tag_author ($row, $all_authors, $template) {
-        if ( $row['author'] === '' && $row['editor'] === '' ) {
-            return '';
-        }
-        return $template->get_author_part($all_authors);
-    }
-    
-    /**
-     * Prepeares the enumeration tag for templates
-     * @param array $settings
-     * @param int $number
-     * @param object $template
-     * @return string
-     * @since 5.1.0
-     * @access private
-     */
-    private static function prepare_tag_enumeration ($settings, $number, $template) {
-        if ( $settings['style'] === 'std_num' || $settings['style'] === 'std_num_desc' || $settings['style'] === 'numbered' || $settings['style'] === 'numbered_desc' ) {
-            return $template->get_enumeration_part($number);
-        }
-        return '';
-    }
-    
-        /**
      * Prepares a url link for publication resources 
      * @param string $url       The url string
      * @param string $doi       The DOI number
