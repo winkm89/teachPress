@@ -597,8 +597,8 @@ class tp_publications_page {
                         
                     $link.click(function() {
                         $dialog.dialog('open');
-                        $('#tp_cite_full').focus();
-                        $('#tp_cite_full').select();
+                        $('.tp_cite_full').focus();
+                        $('.tp_cite_full').select();
                         return false;
                     });
                 });

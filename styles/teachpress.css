@@ -1,3 +1,8 @@
+/* container */
+.tp_postbody { padding-top: 10px; margin-right: 300px;}
+.tp_postcontent {width: 100%; min-width: 463px; float: left;}
+.tp_postcontent_right {float: right; margin-right: -300px; width: 280px;}
+
 /* Help section */
 a.teachpress_delete {color:#a00; text-decoration:none; font-size:12px; font-weight:bold;}
 a.teachpress_delete:hover {text-decoration:underline; color:red;}
@@ -66,11 +71,9 @@ a.tp_file_view {text-decoration: none;}
 #tp_sortable>li {cursor: move; min-height: 20px; background-color: #fff;}
 .ui-state-highlight { height: 20px; padding: 8px 8px 8px 8px; border:1px dotted #ccc; }
 
-/* Import UI */
-.tp_container_main {width: 100%;}
-.tp_container_right {width: 100%; padding-top: 20px;}
-@media (min-width: 768px) { 
-    .tp_container_main {float:left; width: 66.6%;}
-    .tp_container_main .tp_container_inner {padding-right: 15px;}
-    .tp_container_right {float:right; width: 33.3%; padding: 0px;}
+/* Responsive */
+@media only screen and (max-width: 850px) {
+    .tp_postbody { padding-top: 10px; margin-right: 0px;}
+    .tp_postcontent {width: 100%;}
+    .tp_postcontent_right {width: 100%; margin-right: 0;}
 }

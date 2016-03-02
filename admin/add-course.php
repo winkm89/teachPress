@@ -104,48 +104,38 @@ function tp_add_course_page() {
        return;
    }
    
-   // Add new course
-   if ( isset($_POST['create']) ) {
-        $course_id = tp_courses::add_course($data, $sub);
-        tp_db_helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
-        $message = __('Course created successful.','teachpress') . ' <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;action=show&amp;search=&amp;sem=' . get_tp_option('sem') . '">' . __('Show course','teachpress') . '</a> | <a href="admin.php?page=teachpress/add_course.php">' . __('Add new','teachpress') . '</a>';
-        get_tp_message($message);
-   }
    
-   // Saves changes
-   if ( isset($_POST['save']) ) {
-        tp_courses::delete_course_meta($course_id);
-        tp_courses::change_course($course_id, $data);
-        tp_db_helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
-        $message = __('Saved');
-        get_tp_message($message);
-   }
-   
-   // Default vaulues
-   if ( $course_id != 0 ) {
-        $course_data = tp_courses::get_course($course_id, ARRAY_A);
-        $course_meta = tp_courses::get_course_meta($course_id);
-   }
-   else {
-        $course_data = get_tp_var_types('course_array');
-        $course_meta = array ( array('meta_key' => '', 'meta_value' => '') );
-   }
    ?>
    <div class="wrap">
-   <h2><?php if ($course_id == 0) { _e('Create a new course','teachpress'); } else { _e('Edit course','teachpress'); } ?></h2>
+       <h2><?php if ($course_id == 0) { _e('Create a new course','teachpress'); } else { _e('Edit course','teachpress'); } ?></h2>
    <?php 
-      if ($sem != "") {
-         // Define URL for "back"-button
-         if ($ref == 'overview' ) {
-            $back = 'admin.php?page=teachpress/teachpress.php&amp;sem=' . stripslashes($sem) . '&amp;search=' . stripslashes($search) . '';
-         }
-         else {
-            $back = 'admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;sem=' . stripslashes($sem) . '&amp;search=' . stripslashes($search) . '&amp;action=show';
-         }
-         ?>
-          <p style="margin-bottom:0;"><a href="<?php echo $back; ?>" class="button-secondary">&larr; <?php _e('Back','teachpress'); ?></a></p>	
-   <?php }?>
-     
+        // Add new course
+        if ( isset($_POST['create']) ) {
+             $course_id = tp_courses::add_course($data, $sub);
+             tp_db_helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
+             $message = __('Course created successful.','teachpress') . ' <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;action=show&amp;search=&amp;sem=' . get_tp_option('sem') . '">' . __('Show course','teachpress') . '</a> | <a href="admin.php?page=teachpress/add_course.php">' . __('Add new','teachpress') . '</a>';
+             get_tp_message($message);
+        }
+
+        // Saves changes
+        if ( isset($_POST['save']) ) {
+             tp_courses::delete_course_meta($course_id);
+             tp_courses::change_course($course_id, $data);
+             tp_db_helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
+             $message = __('Saved');
+             get_tp_message($message);
+        }
+
+        // Default vaulues
+        if ( $course_id != 0 ) {
+             $course_data = tp_courses::get_course($course_id, ARRAY_A);
+             $course_meta = tp_courses::get_course_meta($course_id);
+        }
+        else {
+             $course_data = get_tp_var_types('course_array');
+             $course_meta = array ( array('meta_key' => '', 'meta_value' => '') );
+        }
+     ?>
      <form id="add_course" name="form1" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
      <input name="page" type="hidden" value="<?php if ($course_id != 0) {?>teachpress/teachpress.php<?php } else {?>teachpress/add_course.php<?php } ?>" />
      <input name="action" type="hidden" value="edit" />
@@ -154,15 +144,8 @@ function tp_add_course_page() {
      <input name="search" type="hidden" value="<?php echo $search; ?>" />
      <input name="ref" type="hidden" value="<?php echo $ref; ?>" />
      <input name="upload_mode" id="upload_mode" type="hidden" value="" />
-     <div style="min-width:780px; width:100%;">
-     <div style="width:30%; float:right; padding-right:2%; padding-left:1%;">
-         
-     <?php
-     tp_add_course::get_meta_box ($course_id, $course_data, $capability);
-     tp_add_course::get_enrollments_box ($course_id, $course_data);
-     ?>
-     </div>
-     <div style="width:67%; float:left;">
+     <div class="tp_postbody">
+     <div class="tp_postcontent">
         <div id="post-body">
            <div id="post-body-content">
                <div id="titlediv" style="padding-bottom: 15px;">
@@ -183,6 +166,12 @@ function tp_add_course_page() {
                 ?>
            </div>
         </div>
+     </div>
+     <div class="tp_postcontent_right">  
+        <?php
+        tp_add_course::get_meta_box ($course_id, $course_data, $capability);
+        tp_add_course::get_enrollments_box ($course_id, $course_data);
+        ?>
      </div>
      </div>
       
@@ -316,7 +305,7 @@ class tp_add_course {
             ?>
             
             <p><label for="comment" title="<?php _e('For parent courses the comment is showing in the overview and for child courses in the enrollments system.','teachpress'); ?>"><strong><?php _e('Comment or Description','teachpress'); ?></strong></label></p>
-            <textarea name="comment" cols="75" rows="3" id="comment" title="<?php _e('For parent courses the comment is showing in the overview and for child courses in the enrollments system.','teachpress'); ?>" tabindex="9" style="width:95%;"><?php echo stripslashes($course_data["comment"]); ?></textarea>
+            <textarea name="comment" rows="3" id="comment" title="<?php _e('For parent courses the comment is showing in the overview and for child courses in the enrollments system.','teachpress'); ?>" tabindex="9" style="width:95%;"><?php echo stripslashes($course_data["comment"]); ?></textarea>
             <p><label for="rel_page" title="<?php _e('If you will connect a course with a page (it is used as link in the courses overview) so you can do this here','teachpress'); ?>"><strong><?php _e('Related content','teachpress'); ?></strong></label></p>
 
             <div id="rel_page_alternative" style="display:none;">

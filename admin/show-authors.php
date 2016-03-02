@@ -33,34 +33,6 @@ function tp_show_authors_page_screen_options(){
  * @since 5.0.0
  */
 function tp_show_authors_page () {
-    $search = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
-    $checkbox = isset( $_GET['checkbox'] ) ? $_GET['checkbox'] : array();
-    $page = 'teachpress/authors.php';
-    
-    // Get screen options
-    $user = get_current_user_id();
-    $screen = get_current_screen();
-    $screen_option = $screen->get_option('per_page', 'option');
-    $per_page = get_user_meta($user, $screen_option, true);
-    if ( empty ( $per_page) || $per_page < 1 ) {
-        $per_page = $screen->get_option( 'per_page', 'default' );
-    }
-    
-    // Handle limits
-    $number_messages = $per_page;
-    if (isset($_GET['limit'])) {
-        $curr_page = (int)$_GET['limit'] ;
-        if ( $curr_page <= 0 ) {
-            $curr_page = 1;
-        }
-        $entry_limit = ( $curr_page - 1 ) * $number_messages;
-    }
-    else {
-        $entry_limit = 0;
-        $curr_page = 1;
-    }
-    
-    // form data
     $action = '';
     if ( isset( $_GET['action1'] ) && $_GET['action1'] !== '' ) {
         $action = htmlspecialchars($_GET['action1']);
@@ -71,64 +43,172 @@ function tp_show_authors_page () {
     if ( isset( $_GET['action'] ) && $_GET['action'] !== '' ) {
         $action = htmlspecialchars($_GET['action']);
     }
+    tp_show_authors_page::get_page($action);
     
+}
+
+/**
+ * This class contains all functions for the show authors page
+ * @since 5.1.0
+ */
+class tp_show_authors_page {
     
-    echo '<div class="wrap" style="max-width:700px;">';
-    echo '<h2>' . __('Authors','teachpress') . '</h2>';
-    echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
-    echo '<input name="page" type="hidden" value="' . $page . '" />';
-    
-    // actions
-    // Delete tags - part 1
-    if ( $action === 'delete' ) {
-        echo '<div class="teachpress_message teachpress_message_orange">
-            <p class="teachpress_message_headline">' . __('Do you want to delete the selected items?','teachpress') . '</p>
-            <p><input name="delete_ok" type="submit" class="button-secondary" value="' . __('Delete','teachpress') . '"/>
-            <a href="admin.php?page=' . $page . '&search=' . $search . '&amp;limit=' . $curr_page . '"> ' . __('Cancel','teachpress') . '</a></p>
-            </div>';
-    }
-    // delete tags - part 2
-    if ( isset($_GET['delete_ok']) ) {
-        tp_authors::delete_authors($checkbox);
-        get_tp_message( __('Removing successful','teachpress') );
-    }
-    
-    echo '<div id="searchbox" style="float:right; padding-bottom:10px;">';
-    if ($search != "") {
-        echo '<a href="admin.php?page=teachpress/authors.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
-    }
-    echo '<input type="search" name="search" id="pub_search_field" value="' . stripslashes($search) . '"/>';
-    echo '<input type="submit" name="button" id="button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';
-    echo '</div>';
-    
-    echo '<div class="tablenav" style="padding-bottom:5px;">';
-    echo '<select name="action1">';
-    echo '<option value="">- ' . __('Bulk actions','teachpress') . ' -</option>';
-    echo '<option value="delete">' . __('Delete','teachpress') . '</option>';
-    echo '</select>';
-    echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
-    $test = tp_authors::get_authors( array( 'count' => true, 'search' => $search, 'include_editors' => true ) );
-    $args = array('number_entries' => $test,
-                      'entries_per_page' => $number_messages,
-                      'current_page' => $curr_page,
-                      'entry_limit' => $entry_limit,
-                      'page_link' => "admin.php?page=$page&amp;",
-                      'link_attributes' => "search=$search");
-    echo tp_page_menu($args);
-    echo '</div>';
-    
-    echo '<table class="widefat" style="width:700px;">';
-    echo '<thead id="tp_authors_table_header">';
-    echo '<td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" /></td>';
-    echo '<th>' . __('Name','teachpress') . '</th>';
-    echo '<th>' . __('ID','teachpress') . '</th>';
-    echo '<th>' . __('Number publications','teachpress') . '</th>';
-    echo '</thead>';
-    echo '<tbody id="tp_authors_table_content">';
-    if ($test === 0) {
-            echo '<tr><td colspan="4"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
+    /**
+     * This function executes all actions for this page
+     * @param string $action        The current action
+     * @param array $checkbox       The checkbox array
+     * @param string $page          The current page 
+     * @param string $search        The search string
+     * @param int $curr_page        The current page in the page menu
+     * @since 5.1.0
+     * @access private
+     */
+    private static function actions ($action, $checkbox, $page, $search, $curr_page) {
+        // Delete tags - part 1
+        if ( $action === 'delete' ) {
+            echo '<div class="teachpress_message teachpress_message_orange">
+                <p class="teachpress_message_headline">' . __('Do you want to delete the selected items?','teachpress') . '</p>
+                <p><input name="delete_ok" type="submit" class="button-secondary" value="' . __('Delete','teachpress') . '"/>
+                <a href="admin.php?page=' . $page . '&search=' . $search . '&amp;limit=' . $curr_page . '"> ' . __('Cancel','teachpress') . '</a></p>
+                </div>';
         }
-    else {
+        // delete tags - part 2
+        if ( isset( $_GET['delete_ok'] ) ) {
+            tp_authors::delete_authors($checkbox);
+            get_tp_message( __('Removing successful','teachpress') );
+        }
+    }
+    
+    /**
+     * This function prints the page
+     * @param string $action
+     * @since 5.1.0
+     */
+    public static function get_page ($action) {
+        $search = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
+        $checkbox = isset( $_GET['checkbox'] ) ? $_GET['checkbox'] : array();
+        $page = 'teachpress/authors.php';
+        
+        // Get screen options
+        $user = get_current_user_id();
+        $screen = get_current_screen();
+        $screen_option = $screen->get_option('per_page', 'option');
+        $per_page = get_user_meta($user, $screen_option, true);
+        if ( empty ( $per_page) || $per_page < 1 ) {
+            $per_page = $screen->get_option( 'per_page', 'default' );
+        }
+
+        // Handle limits
+        $number_messages = $per_page;
+        if (isset($_GET['limit'])) {
+            $curr_page = (int)$_GET['limit'] ;
+            if ( $curr_page <= 0 ) {
+                $curr_page = 1;
+            }
+            $entry_limit = ( $curr_page - 1 ) * $number_messages;
+        }
+        else {
+            $entry_limit = 0;
+            $curr_page = 1;
+        }
+        
+        echo '<div class="wrap" style="max-width:700px;">';
+        echo '<h2>' . __('Authors','teachpress') . '</h2>';
+        echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
+        echo '<input name="page" type="hidden" value="' . $page . '" />';
+
+        // actions
+        self::actions($action, $checkbox, $page, $search, $curr_page);
+
+        echo '<div id="searchbox" style="float:right; padding-bottom:10px;">';
+        if ($search != "") {
+            echo '<a href="admin.php?page=teachpress/authors.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
+        }
+        echo '<input type="search" name="search" id="pub_search_field" value="' . stripslashes($search) . '"/>';
+        echo '<input type="submit" name="button" id="button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';
+        echo '</div>';
+
+        echo '<div class="tablenav" style="padding-bottom:5px;">';
+        echo '<select name="action1">';
+        echo '<option value="">- ' . __('Bulk actions','teachpress') . ' -</option>';
+        echo '<option value="delete">' . __('Delete','teachpress') . '</option>';
+        echo '</select>';
+        echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
+        $test = tp_authors::get_authors( array( 'count' => true, 'search' => $search, 'include_editors' => true ) );
+        $args = array('number_entries' => $test,
+                          'entries_per_page' => $number_messages,
+                          'current_page' => $curr_page,
+                          'entry_limit' => $entry_limit,
+                          'page_link' => "admin.php?page=$page&amp;",
+                          'link_attributes' => "search=$search");
+        echo tp_page_menu($args);
+        echo '</div>';
+
+        echo '<table class="widefat" style="width:700px;">';
+        echo '<thead id="tp_authors_table_header">';
+        echo '<td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" /></td>';
+        echo '<th>' . __('Name','teachpress') . '</th>';
+        echo '<th>' . __('ID','teachpress') . '</th>';
+        echo '<th>' . __('Number publications','teachpress') . '</th>';
+        echo '</thead>';
+        echo '<tbody id="tp_authors_table_content">';
+        if ($test === 0) {
+                echo '<tr><td colspan="4"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
+            }
+        else {
+            self::get_table($action, $checkbox, $page, $search, $curr_page, $entry_limit, $number_messages);
+        }
+        echo '</tbody>';
+        echo '</table>';
+
+        echo '<div class="tablenav bottom">';
+        echo '<div class="alignleft actions">';
+        echo '<select name="action2">';
+        echo '<option value="">- ' . __('Bulk actions','teachpress') . ' -</option>';
+        echo '<option value="delete">' . __('Delete','teachpress') . '</option>';
+        echo '</select>';
+        echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
+        echo '</div>';
+        echo '<div class="tablenav-pages" style="float:right;">'; 
+            if ($test > $number_messages) {
+                $args = array('number_entries' => $test,
+                          'entries_per_page' => $number_messages,
+                          'current_page' => $curr_page,
+                          'entry_limit' => $entry_limit,
+                          'page_link' => "admin.php?page=$page&amp;",
+                          'link_attributes' => "search=$search",
+                          'mode' => 'bottom');
+                echo tp_page_menu($args);
+            } 
+            else {
+               if ($test === 1) {
+                  echo $test . ' ' . __('entry','teachpress');
+               }
+               else {
+                  echo $test . ' ' . __('entries','teachpress');
+               }
+            }
+        echo '</div>';
+        echo '</div>';
+
+        echo '</form>';
+        self::print_scripts();
+        echo '</div>';
+    }
+    
+    /**
+     * Prints the authors table
+     * @param type $action
+     * @param type $checkbox
+     * @param type $page
+     * @param type $search
+     * @param type $curr_page
+     * @param type $entry_limit
+     * @param type $number_messages
+     * @since 5.1.0
+     * @access private 
+     */
+    private static function get_table ($action, $checkbox, $page, $search, $curr_page, $entry_limit, $number_messages) {
         $class_alternate = true;
         $row = tp_authors::count_authors($search, $entry_limit . ',' . $number_messages);
         foreach ( $row as $row ) {
@@ -158,62 +238,34 @@ function tp_show_authors_page () {
             echo '<tr>';
         }
     }
-    echo '</tbody>';
-    echo '</table>';
     
-    echo '<div class="tablenav bottom">';
-    echo '<div class="alignleft actions">';
-    echo '<select name="action2">';
-    echo '<option value="">- ' . __('Bulk actions','teachpress') . ' -</option>';
-    echo '<option value="delete">' . __('Delete','teachpress') . '</option>';
-    echo '</select>';
-    echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
-    echo '</div>';
-    echo '<div class="tablenav-pages" style="float:right;">'; 
-        if ($test > $number_messages) {
-            $args = array('number_entries' => $test,
-                      'entries_per_page' => $number_messages,
-                      'current_page' => $curr_page,
-                      'entry_limit' => $entry_limit,
-                      'page_link' => "admin.php?page=$page&amp;",
-                      'link_attributes' => "search=$search",
-                      'mode' => 'bottom');
-            echo tp_page_menu($args);
-        } 
-        else {
-           if ($test === 1) {
-              echo $test . ' ' . __('entry','teachpress');
-           }
-           else {
-              echo $test . ' ' . __('entries','teachpress');
-           }
-        }
-    echo '</div>';
-    echo '</div>';
-    
-    echo '</form>';
-    ?>
-    <script type="text/javascript" charset="utf-8">
-        jQuery(document).ready(function($) {
-            $(".tp_show_pub_info").click( function(){
-                var author_id = $(this).attr("author_id");
-                var tr_class = $(this).attr("style_class");
-                var tr = '#resultbox_' + author_id;
-                $.get("<?php echo plugins_url() . '/teachpress/ajax.php' ;?>?author_id=" + author_id, 
-                function(text){
-                    var ret;
-                    var current = $(tr).next();
-                    current.attr('class', tr_class);
-                    current.attr('id', 'pub_info_' + author_id);
-                    ret = ret + '<td id="pub_details_' + author_id + '" colspan="4" style="padding-left:40px;"><b><?php echo __('Publications','teachpress') ;?></b><br />' + text + '</td>';
-                    current.html(ret);
-                    $('<a class="button-secondary" style="cursor:pointer;" onclick="javascript:teachpress_del_node(' + "'#pub_info_" + author_id + "'" + ');">Close</a>').appendTo('#pub_details_' + author_id);
-                    
+    /**
+     * Prints the js for the page
+     * @since 5.1.0
+     */
+    private static function print_scripts () {
+        ?>
+        <script type="text/javascript" charset="utf-8">
+            jQuery(document).ready(function($) {
+                $(".tp_show_pub_info").click( function(){
+                    var author_id = $(this).attr("author_id");
+                    var tr_class = $(this).attr("style_class");
+                    var tr = '#resultbox_' + author_id;
+                    $.get("<?php echo plugins_url() . '/teachpress/ajax.php' ;?>?author_id=" + author_id, 
+                    function(text){
+                        var ret;
+                        var current = $(tr).next();
+                        current.attr('class', tr_class);
+                        current.attr('id', 'pub_info_' + author_id);
+                        ret = ret + '<td id="pub_details_' + author_id + '" colspan="4" style="padding-left:40px;"><b><?php echo __('Publications','teachpress') ;?></b><br />' + text + '</td>';
+                        current.html(ret);
+                        $('<a class="button-secondary" style="cursor:pointer;" onclick="javascript:teachpress_del_node(' + "'#pub_info_" + author_id + "'" + ');">Close</a>').appendTo('#pub_details_' + author_id);
+
+                    });
                 });
+
             });
-            
-        });
-    </script>
-    <?php
-    echo '</div>';
+        </script>
+        <?php
+    }
 }

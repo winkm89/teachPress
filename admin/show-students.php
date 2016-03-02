@@ -72,10 +72,10 @@ function tp_students_page() {
 
     // Event handler
     if ( $action === 'show' ) {
-        tp_show_student_page($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
+        tp_student_page::show_tab($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
     }
     elseif ( $action === 'edit' ) {
-        tp_edit_student_page($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
+        tp_student_page::edit_tab($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
     }
     elseif ( $action === 'add' ) {
         tp_add_student_page($fields);

@@ -203,10 +203,10 @@ class tp_ajax {
         echo '</head>';
         echo '<body>';
         echo '<div id="content">';
+        echo '<div><a class="button-secondary">' . __('Text','teachpress') . '</a> <a class="button-secondary">' . __('bibTeX','teachpress') . '</a></div>';
         echo '<form name="form_cite" method="post">';
         echo '<input name="tp_cite_id" type="hidden" value="' . '"/>';
-        echo '<h3>' . __('Cite','teachpress') . '</h3>';
-        echo '<textarea name="tp_cite_full" id="tp_cite_full" cols="50" rows="4">' . tp_export::text_row($publication) . '</textarea>';
+        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="5" style="width:90%;">' . tp_export::text_row($publication) . '</textarea>';
         echo '</form>';
         echo '</div>';
         echo '</body>';

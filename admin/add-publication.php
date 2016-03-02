@@ -142,9 +142,13 @@ function tp_add_publication_page() {
         }
     }
 
+    /*
+     * Disabled since tp 5.1
     if ( $pub_id != 0 && !isset($_POST['create_pub']) ) {
         echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
     }
+     * 
+     */
     
     // input fields
     echo '<input name="page" type="hidden" value="teachpress/addpublications.php">';
@@ -158,14 +162,9 @@ function tp_add_publication_page() {
         echo '<input type="hidden" name="year" id="year" value="' . $year . '" />';
     }
     
-    echo '<div style="min-width:780px; width:100%;">';
-    echo '<div style="width:30%; float:right; padding-right:2%; padding-left:1%;">';
-    tp_publication_page::get_boobmarks_box ($pub_id, $user);
-    tp_publication_page::get_tags_box ($pub_id);
-    tp_publication_page::get_image_box ($pub_data);
-    echo '</div>';
+    echo '<div class="tp_postbody">';
     
-    echo '<div style="width:67%; float:left;">';
+    echo '<div class="tp_postcontent">';
     echo '<div id="post-body">';
     echo '<div id="post-body-content">';
     
@@ -185,6 +184,13 @@ function tp_add_publication_page() {
     echo '</div>';
     echo '</div>';
     echo '</div>';
+    
+    echo '<div class="tp_postcontent_right">';
+    tp_publication_page::get_boobmarks_box ($pub_id, $user);
+    tp_publication_page::get_tags_box ($pub_id);
+    tp_publication_page::get_image_box ($pub_data);
+    echo '</div>';
+    
     echo '</form>';
     tp_publication_page::print_scripts();
     echo '</div>';
