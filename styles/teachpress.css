@@ -44,6 +44,10 @@ a.tp_row_delete:hover, a.tp_file_delete:hover {color:red;}
 #teachpress_create_xls { background: url( ../images/mimetypes/application-msexcel.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
 #teachpress_create_csv { background: url( ../images/mimetypes/text-csv.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
 
+/* cite screen */
+.tp_cite_text { cursor: pointer; }
+.tp_cite_bibtex { cursor: pointer; }
+
 /* assessments */
 .tp_assessment  { padding: 5px 7px; float: left; cursor: pointer; text-align: center; font-weight: bold; color:red; }
 .tp_assessment:hover { color: #d54e21; }

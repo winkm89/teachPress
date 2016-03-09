@@ -20,7 +20,7 @@ if ( is_user_logged_in() && current_user_can('use_teachpress') ) {
     }
     
     /**
-     * Getting assessment screent (for show_single_course.php)
+     * Getting assessment screen (for show_single_course.php)
      * Works if $_GET['assessment_id'] is given
      */
     $assessment_id = ( isset( $_GET['assessment_id'] ) ) ? intval( $_GET['assessment_id'] ) : 0;
@@ -29,7 +29,7 @@ if ( is_user_logged_in() && current_user_can('use_teachpress') ) {
     }
     
     /**
-     * Getting artefact screent (for show_single_course.php)
+     * Getting artefact screen (for show_single_course.php)
      * Works if $_GET['artefact_id'] is given
      */
     $artefact_id = ( isset( $_GET['artefact_id'] ) ) ? intval( $_GET['artefact_id'] ) : 0;
@@ -93,8 +93,17 @@ if ( is_user_logged_in() && current_user_can('use_teachpress') ) {
     
     /**
      * Getting the cite dialog
+     * @since 5.1.0
      */
     if ( isset( $_GET['cite_id'] ) ) {
         tp_ajax::get_cite_screen($_GET['cite_id']);
+    }
+    
+    /**
+     * Getting the cite text for a cite dialog
+     * @since 5.1.0
+     */
+    if ( isset( $_GET['cite_pub'] ) && isset( $_GET['cite_type'] )  ) {
+        tp_ajax::get_cite_text($_GET['cite_pub'], $_GET['cite_type']);
     }
 }

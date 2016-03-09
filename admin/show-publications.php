@@ -585,6 +585,7 @@ class tp_publications_page {
         ?>
         <script type="text/javascript" charset="utf-8">
             jQuery(document).ready(function($){
+                // Start cite publication window
                 $(".teachpress_cite_pub").each(function() {
                     var $link = $(this);
                     var $dialog = $('<div></div>')
@@ -600,6 +601,31 @@ class tp_publications_page {
                         $('.tp_cite_full').focus();
                         $('.tp_cite_full').select();
                         return false;
+                    });
+                    
+                });
+                
+                // bibtex button in the cite publication window 
+                $(".tp_cite_bibtex").live('click',function() {
+                    var pub_id = $(this).attr("pub_id");
+                    $.get("<?php echo plugins_url() . '/teachpress/ajax.php' ;?>?cite_pub=" + pub_id + "&cite_type=bibtex", 
+                    function(text){
+                        $("#tp_cite_full_" + pub_id).text(text);
+                        $("#tp_cite_full_" + pub_id).select();
+                        $("#tp_cite_bibtex_" + pub_id).addClass("nav-tab-active");
+                        $("#tp_cite_text_" + pub_id).removeClass("nav-tab-active");
+                    });
+                });
+                
+                // text button in the cite publication window 
+                $(".tp_cite_text").live('click',function() {
+                    var pub_id = $(this).attr("pub_id");
+                    $.get("<?php echo plugins_url() . '/teachpress/ajax.php' ;?>?cite_pub=" + pub_id + "&cite_type=text", 
+                    function(text){
+                        $("#tp_cite_full_" + pub_id).text(text);
+                        $("#tp_cite_full_" + pub_id).select();
+                        $("#tp_cite_text_" + pub_id).addClass("nav-tab-active");
+                        $("#tp_cite_bibtex_" + pub_id).removeClass("nav-tab-active");
                     });
                 });
             });

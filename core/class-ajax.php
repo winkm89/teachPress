@@ -203,16 +203,37 @@ class tp_ajax {
         echo '</head>';
         echo '<body>';
         echo '<div id="content">';
-        echo '<div><a class="button-secondary">' . __('Text','teachpress') . '</a> <a class="button-secondary">' . __('bibTeX','teachpress') . '</a></div>';
+        echo '<div class="wrap">';
+        echo '<h3 class="nav-tab-wrapper"><a class="nav-tab nav-tab-active tp_cite_text" id="tp_cite_text_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('Text','teachpress') . '</a> <a class="nav-tab tp_cite_bibtex" id="tp_cite_bibtex_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('BibTeX','teachpress') . '</a></h3>';
         echo '<form name="form_cite" method="post">';
         echo '<input name="tp_cite_id" type="hidden" value="' . '"/>';
-        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="5" style="width:90%;">' . tp_export::text_row($publication) . '</textarea>';
+        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="7" style="width:100%; border-top:none;">' . tp_export::text_row($publication) . '</textarea>';
         echo '</form>';
+        echo '</div>';
         echo '</div>';
         echo '</body>';
         echo '</html>';
     }
     
+    /**
+     * Gets the cite text for a publication
+     * @param int $cite_id
+     * @param string $mode      text or bibtex
+     * @access public
+     * @since 5.1.0
+     */
+    public static function get_cite_text ($cite_id, $mode) {
+        if ( $mode === 'bibtex' ) {
+            $publication = tp_publications::get_publication($cite_id, ARRAY_A);
+            echo tp_bibtex::get_single_publication_bibtex($publication);
+        }
+        if ( $mode === 'text' ) {
+            $publication = tp_publications::get_publication($cite_id, ARRAY_A);
+            echo tp_export::text_row($publication);
+        }
+    }
+
+
     /**
      * Gets the name of a document
      * @param int $doc_id       The ID of the document

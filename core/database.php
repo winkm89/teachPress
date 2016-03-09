@@ -283,7 +283,7 @@ class tp_authors  {
     *       search (STRING)          A normal search string
     *       inclue_editors (BOOLEAN) Boolean flag, set it to true if you want to include editors (default: false)
     *       group by (BOOLEAN)       Boolean flag for the group by clause (default: false)
-    *       count (BOOLEAN)          Set it to true if you only need an number of authors which will be returned by your selection (default: false)
+    *       count (BOOLEAN)          Set it to true, if you only need a number of authors, which will be returned by your selection (default: false)
     *       output type (STRING)     OBJECT, ARRAY_A, ARRAY_N, default is OBJECT
     * 
     * @param array $args
