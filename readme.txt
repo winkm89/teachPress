@@ -9,7 +9,7 @@ Stable tag: 5.1alpha
 Manage your courses and publications with teachPress 
 
 == Description ==
-This plugin unites a course management system (with modules for enrollments, documents and assessments) and a BibTeX compatible publication management. teachPress is optimized for the needs of professorships and research groups. You can use it with WordPress 3.9.0 or higher.
+This plugin unites a course management system (with modules for enrollments, documents and assessments) and a powerful BibTeX compatible publication management. Both modules can be operated independently. teachPress is optimized for the needs of professorships and research groups. You can use it with WordPress 3.9.0 or higher.
 
 = Features: =
 * BibTeX compatible multi user publication management
@@ -137,7 +137,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 == Changelog ==
 
 = 5.1.xx - (xx.xx.2016) =
-* New: Template system for publication lists added
+* New: Template system for publication lists added (#26)
 * New: Cite function for publications in the backend (#22)
 * New: Optional dynamic author/editor format detection for bibtex imports
 * New: Enroll multiple students at one time (#23)
@@ -150,6 +150,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
 * Bugfix: HTML output for proceedings shows the edition instead of volume/number (#18)
 * Bugfix: Prevent a deletion of line breaks by bibtexParse in the import (#21)
+* Bugfix: Fixed a variable initialization bug in core/widgets.php (#24)
 
 = 5.0.17 - (15.10.2015) =
 * New: [tpenrollments]: New parameters "order_parent" and "order_child" added
