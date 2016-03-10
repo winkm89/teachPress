@@ -11,9 +11,46 @@
  * @since 5.1.0
  */
 interface tp_publication_template {
+    /**
+     * Returns the settings of the template
+     * @return array
+     * @since 5.1.0
+     */
     public function get_settings();
-    public function get_body();
-    public function get_headline();
+    
+    /**
+     * Returns the body element for a publication list
+     * @param string $content   The content of the publication list itself
+     * @param array $args       An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
+     * @return string
+     * @since 5.1.0
+     */
+    public function get_body($content, $args);
+    
+    /**
+     * Returns the headline for a publication list or a part of that
+     * @param type $content     The content of the headline
+     * @param type $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
+     * @return string
+     * @scine 5.1.0
+     */
+    public function get_headline($content, $args);
+    
+    /**
+     * Returns the headline (second level) for a publication list or a part of that
+     * @param type $content     The content of the headline
+     * @param type $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
+     * @return string
+     * @since 5.1.0
+     */
+    public function get_headline_sl($content, $args);
+    
+    /**
+     * Returns the single entry of a publication list
+     * @param object $interface     The interface object
+     * @return string
+     * @since 5.1.0
+     */
     public function get_entry($interface);
 }
 

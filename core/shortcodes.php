@@ -300,30 +300,31 @@ class tp_shortcodes {
     /**
      * Generates the list of publications for [tplist], [tpcloud], [tpsearch]
      * @param array $tparray    The array of publications
+     * @param object $template  The template object
      * @param array $args       An associative array with options (headline,...)
      * @return string
      * @since 5.0.0
      * @access public
      */
-    public static function generate_pub_table($tparray, $args ) {
+    public static function generate_pub_table($tparray, $template, $args ) {
         $headlines = array();
         if ( $args['headline'] == 1 ) {
             foreach( $args['years'] as $row ) {
                 $headlines[$row['year']] = '';
             }
-            $pubs = tp_shortcodes::sort_pub_table($tparray, $headlines , $args);
+            $pubs = tp_shortcodes::sort_pub_table( $tparray, $template, $headlines , $args );
         }
         elseif ( $args['headline'] == 2 ) {
             $pub_types = tp_publications::get_used_pubtypes( array('user' => $args['user'] ) );
             foreach( $pub_types as $row ) {
                 $headlines[$row['type']] = '';
             }
-            $pubs = tp_shortcodes::sort_pub_table($tparray, $headlines, $args);
+            $pubs = tp_shortcodes::sort_pub_table( $tparray, $template, $headlines, $args );
         }
         else {
-            $pubs = tp_shortcodes::sort_pub_table($tparray,'',$args);
+            $pubs = tp_shortcodes::sort_pub_table( $tparray, $template, '', $args );
         }
-        return '<table class="teachpress_publication_list">' . $pubs . '</table>';
+        return $template->get_body($pubs, $args);
     }
     
     /**
@@ -386,23 +387,24 @@ class tp_shortcodes {
     /**
      * Sort the table lines of a publication table
      * @param array $tparray        Array of publications
+     * @param object $template      The template object
      * @param array $headlines      Array of headlines
      * @param array $args           Array of arguments
      * @return string 
      * @since 5.0.0
      * @access public
      */
-    public static function sort_pub_table($tparray, $headlines, $args) {
+    public static function sort_pub_table($tparray, $template, $headlines, $args) {
         $publications = '';
         $tpz = $args['number_publications'];
 
         // with headlines
         if ( $args['headline'] === 1 || $args['headline'] === 2 ) {
-            $publications = tp_shortcodes::sort_pub_by_type_or_year($tparray, $tpz, $args, $headlines);
+            $publications = tp_shortcodes::sort_pub_by_type_or_year($tparray, $template, $tpz, $args, $headlines);
         }
         // with headlines grouped by year then by type
         else if ($args['headline'] === 3) {
-            $publications = tp_shortcodes::sort_pub_by_year_type($tparray, $tpz, $args);
+            $publications = tp_shortcodes::sort_pub_by_year_type($tparray, $template, $tpz, $args);
         }
         // with headlines grouped by type then by year
         else if ($args['headline'] === 4) {
@@ -421,19 +423,21 @@ class tp_shortcodes {
     /**
      * Sorts the publications by type or by year. This is the default sort function
      * @param array $tparray    The numeric publication array
+     * @param object $template  The template object
      * @param int $tpz          The length of $tparray
      * @param array $args       An associative of arguments (colspan)
      * @return string
      * @access private
      * @since 5.0.0
      */
-    private static function sort_pub_by_type_or_year($tparray, $tpz, $args, $headlines){
+    private static function sort_pub_by_type_or_year($tparray, $template, $tpz, $args, $headlines){
         $return = '';
         $field = ( $args['headline'] === 2 ) ? 2 : 0;
-        for ($i = 0; $i < $tpz; $i++) {
+        for ( $i = 0; $i < $tpz; $i++ ) {
             $key = $tparray[$i][$field];
             $headlines[$key] .= $tparray[$i][1];
         }
+        
         // custom sort order
         if ( $args['sort_list'] !== '' ) {
             $args['sort_list'] = str_replace(' ', '', $args['sort_list']);
@@ -441,16 +445,18 @@ class tp_shortcodes {
             $max = count($sort_list);
             $sorted = array();
             for ($i = 0; $i < $max; $i++) {
-                if (array_key_exists($sort_list[$i], $headlines) ) {
+                if ( array_key_exists($sort_list[$i], $headlines) ) {
                     $sorted[$sort_list[$i]] = $headlines[$sort_list[$i]];
                 }
             }
             $headlines = $sorted;
         }
+        
+        // set headline
         foreach ( $headlines as $key => $value ) {
             if ( $value != '' ) {
                 $line_title = ( $args['headline'] === 1 ) ? $key : tp_translate_pub_type($key, 'pl');
-                $return .=  '<tr><td' . $args['colspan'] . '><h3 class="tp_h3">' . $line_title . '</h3></td></tr>';
+                $return .=  $template->get_headline($line_title, $args);
                 $return .=  $value;
             }
         }
@@ -460,13 +466,14 @@ class tp_shortcodes {
     /**
      * Sorts the publications by type and by year (used for headline type 4)
      * @param array $tparray    The numeric publication array
+     * @param object $template  The template object
      * @param int $tpz          The length of $tparray
      * @param array $args       An associative of arguments (colspan)
      * @return string
      * @access private
      * @since 5.0.0
      */
-    private static function sort_pub_by_type_year($tparray, $tpz, $args) {
+    private static function sort_pub_by_type_year($tparray, $template, $tpz, $args) {
         $return = '';
         $typeHeadlines = array();
         for ($i = 0; $i < $tpz; $i++) {
@@ -484,11 +491,11 @@ class tp_shortcodes {
             }
         }
         foreach ( $typeHeadlines as $type => $yearHeadlines ) {
-            $return .=  '<tr><td' . $args['colspan'] . '><h3 class="tp_h3" id="' . $type . '">' . tp_translate_pub_type($type, 'pl') . '</h3></td></tr>';
+            $return .= $template->get_headline( tp_translate_pub_type($type, 'pl'), $args );
             foreach($yearHeadlines as $year => $pubValue) {
                 if ($pubValue != '' ) {
-                    $return .=  '<tr><td' . $args['colspan'] . '><h4 class="tp_h3">' . $year . '</h4></td></tr>';
-                    $return .=  $pubValue;
+                    $return .= $template->get_headline( $year, $args );
+                    $return .= $pubValue;
                 }
             }
         }
@@ -498,13 +505,14 @@ class tp_shortcodes {
     /**
      * Sorts the publications by year and by type (used for headline type 3)
      * @param array $tparray    The numeric publication array
+     * @param object $template  The template object
      * @param int $tpz          The length of $tparray
      * @param array $args       An associative of arguments (colspan)
      * @return string
      * @access private
      * @since 5.0.0
      */
-    private static function sort_pub_by_year_type ($tparray, $tpz, $args) {
+    private static function sort_pub_by_year_type ($tparray, $template, $tpz, $args) {
         $return = '';
         $yearHeadlines = array();
         for ($i = 0; $i < $tpz; $i++) {
@@ -520,11 +528,10 @@ class tp_shortcodes {
         }
 
         foreach ( $yearHeadlines as $year => $typeHeadlines ) {
-            $return .=  '<tr><td' . $args['colspan'] . '><h3 class="tp_h3" id="' . $year . '">' . $year . '</h3></td></tr>';
+            $return .= $template->get_headline($year, $args);
             foreach($typeHeadlines as $type => $value) {
                 if ($value != '' ) {
-                    $type_title = tp_translate_pub_type($type, 'pl');
-                    $return .=  '<tr><td' . $args['colspan'] . '><h4 class="tp_h3">' . $type_title . '</h4></td></tr>';
+                    $return .= $template->get_headline( tp_translate_pub_type($type, 'pl'), $args );
                     $return .=  $value;
                 }
             }
@@ -1177,13 +1184,21 @@ function tp_cloud_shortcode($atts) {
                                                                        'before' => '<div class="tablenav">',
                                                                        'after' => '</div>')) : '';
         $part2 .= $menu;
-        $row_year = tp_publications::get_years( array( 'user' => $sql_parameter['user'], 'type' => $sql_parameter['type'], 'order' => 'DESC', 'output_type' => ARRAY_A ) );
-        $part2 .= tp_shortcodes::generate_pub_table($tparray, array('number_publications' => $tpz, 
-                                                     'headline' => $settings['headline'],
-                                                     'years' => $row_year,
-                                                     'colspan' => $colspan,
-                                                     'user' => $user,
-                                                     'sort_list' => $settings['sort_list']));
+        $row_year = tp_publications::get_years( 
+                        array( 'user' => $sql_parameter['user'], 
+                               'type' => $sql_parameter['type'], 
+                               'order' => 'DESC', 
+                               'output_type' => ARRAY_A ) );
+        
+        $part2 .= tp_shortcodes::generate_pub_table( 
+                        $tparray, 
+                        $template, 
+                        array( 'number_publications' => $tpz, 
+                               'headline' => $settings['headline'],
+                               'years' => $row_year,
+                               'colspan' => $colspan,
+                               'user' => $user,
+                               'sort_list' => $settings['sort_list'] ) );
         $part2 .= $menu;
     }
     // If there are no publications founded
@@ -1333,12 +1348,16 @@ function tp_list_shortcode($atts){
     $r .= $menu;
 
     $row_year = ( $headline === 1 ) ? tp_publications::get_years( array('output_type' => ARRAY_A, 'order' => 'DESC') ) : '';
-    $r .= tp_shortcodes::generate_pub_table($tparray, array('number_publications' => $tpz, 
-                                                            'headline' => $headline,
-                                                            'years' => $row_year,
-                                                            'colspan' => $colspan,
-                                                            'user' => $user,
-                                                            'sort_list' => $sort_list ));
+    
+    $r .= tp_shortcodes::generate_pub_table(
+                $tparray, 
+                $template, 
+                array( 'number_publications' => $tpz, 
+                       'headline' => $headline,
+                       'years' => $row_year,
+                       'colspan' => $colspan,
+                       'user' => $user,
+                       'sort_list' => $sort_list ) );
     $r .= $menu;
     return $r;
 }
@@ -1492,10 +1511,13 @@ function tp_search_shortcode ($atts) {
                 $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count);
                 $tpz++;
             }
-            $r .= tp_shortcodes::generate_pub_table($tparray, array('number_publications' => $tpz, 
-                                                                    'colspan' => $colspan,
-                                                                    'headline' => 0,
-                                                                    'user' => ''));
+            $r .= tp_shortcodes::generate_pub_table(
+                        $tparray, 
+                        $template, 
+                        array( 'number_publications' => $tpz, 
+                               'colspan' => $colspan,
+                               'headline' => 0,
+                               'user' => '') );
         }
         $r .= $menu;
     }

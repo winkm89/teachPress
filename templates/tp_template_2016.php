@@ -7,24 +7,63 @@
  */
 
 class tp_template_2016 implements tp_publication_template {
+    /**
+     * Returns the settings of the template
+     * @return array
+     */
     public function get_settings() {
         return array ('name' => 'teachPress 2016',
-                      'description' => 'The new 4 line style for publications. Default since teachPress 5.1',
+                      'description' => 'A new 4 line style template for publication lists.',
                       'author' => 'Michael Winkler',
                       'version'=> '1.0',
                       'button_separator' => ' | '
-            );
+        );
     }
     
-    public function get_body() {
-        
+    /**
+     * Returns the body element for a publication list
+     * @param string $content   The content of the publication list itself
+     * @param array $args       An array with some basic settings for the publication list 
+     * @return string
+     */
+    public function get_body ($content, $args = array() ) {
+        return '<table class="teachpress_publication_list">' . $content . '</table>';
     }
     
-    public function get_headline() {
-        
+    /**
+     * Returns the headline for a publication list or a part of that
+     * @param type $content     The content of the headline
+     * @param type $args        An array with some basic settings for the publication list
+     * @return string
+     */
+    public function get_headline ($content, $args = array()) {
+        return '<tr>
+                    <td' . $args['colspan'] . '>
+                        <h3 class="tp_h3" id="tp_h3_' . esc_attr($content) .'">' . $content . '</h3>
+                    </td>
+                </tr>';
     }
     
-    public function get_entry($interface) {
+    /**
+     * Returns the headline (second level) for a publication list or a part of that
+     * @param type $content     The content of the headline
+     * @param type $args        An array with some basic settings for the publication list
+     * @return string
+     */
+    public function get_headline_sl ($content, $args = array()) {
+        return '<tr>
+                    <td' . $args['colspan'] . '>
+                        <h4 class="tp_h4" id="tp_h4_' . esc_attr($content) .'">' . $content . '</h4>
+                    </td>
+                </tr>';
+    }
+    
+    /**
+     * Returns the single entry of a publication list
+     * @param object $interface     The interface object
+     * @return string
+     */
+    public function get_entry ($interface) {
         $s = '<tr class="tp_publication">';
         $s .= $interface->get_number('<td class="tp_pub_number">', '.</td>');
         $s .= $interface->get_images('left');

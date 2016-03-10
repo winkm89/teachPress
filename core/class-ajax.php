@@ -217,7 +217,7 @@ class tp_ajax {
     
     /**
      * Gets the cite text for a publication
-     * @param int $cite_id
+     * @param int $cite_id      the publication ID
      * @param string $mode      text or bibtex
      * @access public
      * @since 5.1.0
