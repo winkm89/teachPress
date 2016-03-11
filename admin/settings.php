@@ -654,7 +654,7 @@ class tp_settings_page {
      * @since 5.1.0 
      */
     private static function get_template_tab () {
-        echo '<h3>' . __('Templates','teachpress') . '</h3>';
+        echo '<h3>' . __('Available templates for publication lists','teachpress') . '</h3>';
         echo '<table class="widefat">';
         echo '<thead>';
         echo '<tr>';
@@ -690,17 +690,21 @@ class tp_settings_page {
             // Load template
             include_once $templates[$key];
             $template = new $key();
+            
+            // default values
+            $settings = array('name' => '', 'description' => '', 'author' => '', 'version' => '');
+            
+            // overwrite defaults
             if ( method_exists($template, 'get_settings') ) {
-                $settings = $template->get_settings();
-            }
-            else {
-                $settings = array('name' => '', 'description' => '');
+                $settings = shortcode_atts( $settings, $template->get_settings() );
             }
             
             $s .= '<tr ' . $tr_class . '>';
             $s .= '<td>' . esc_html($settings['name']) . '</td>';
             $s .= '<td>' . esc_html($key) . '</td>';
-            $s .= '<td>' . esc_html($settings['description']) . '</td>';
+            $s .= '<td>' . esc_html($settings['description']) . '
+                       <p>' . __('Version', 'teachpress') . ' ' . esc_html($settings['version']) . ' | ' . __('by', 'teachpress') . ' ' . esc_html($settings['author']) . '</p>
+                  </td>';
             $s .= '</tr>';
         }
         
