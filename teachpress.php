@@ -525,9 +525,16 @@ function tp_uninstall() {
  * @since 5.0.0
  */
 function tp_add_tinymce_button() {
-    if ( !current_user_can( 'edit_posts' ) && !current_user_can( 'edit_pages' ) ) {
+    // the user need at least the edit_post capability (by default authors, editors, administrators)
+    if ( !current_user_can( 'edit_posts' ) ) {
         return;
     }
+    
+    // the user need at least one of the teachpress capabilites
+    if ( !current_user_can( 'use_teachpress' ) || !current_user_can( 'use_teachpress_courses' ) ) {
+        return;
+    }
+    
     add_filter('mce_buttons', 'tp_register_tinymce_buttons');
     add_filter('mce_external_plugins', 'tp_register_tinymce_js');
 }
