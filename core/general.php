@@ -369,3 +369,72 @@ function tp_convert_file_size ($bytes) {
     }
     return '0 bytes';
 }
+
+/**
+ * Writes data for the teachPress tinyMCE plugin in Javascript objects
+ * @since 5.0.0
+ */
+function tp_write_data_for_tinymce () {
+    
+    // Only write the data if the page is a page/post editor
+    if ( $GLOBALS['current_screen']->base !== 'post' ) {
+        return;
+    }
+    
+    // List of courses
+    $course_list = array();
+    $course_list[] = array( 'text' => '=== SELECT ===' , 'value' => 0 );
+    $semester = get_tp_options('semester', '`setting_id` DESC');
+    foreach ( $semester as $row ) {
+        $courses = tp_courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
+        foreach ($courses as $course) {
+            $course_list[] = array( 'text' => $course->name . ' (' . $course->semester . ')' , 'value' => $course->course_id );
+        }
+        if ( count($courses) > 0 ) {
+            $course_list[] = array( 'text' => '====================' , 'value' => 0 );
+        }
+    }
+    
+    // List of semester/term
+    $semester_list = array();
+    $semester_list[] = array( 'text' => 'Default' , 'value' => '' );
+    foreach ($semester as $sem) { 
+        $semester_list[] = array( 'text' => stripslashes($sem->value) , 'value' => stripslashes($sem->value) );
+    }
+    
+    // List of publication users
+    $pub_user_list = array();
+    $pub_user_list[] = array( 'text' => 'All' , 'value' => '' );
+    $pub_users = tp_publications::get_pub_users();
+    foreach ($pub_users as $row) { 
+        $user_data = get_userdata($row->user);
+        if ( $user_data !== false ) {
+            $pub_user_list[] = array( 'text' => $user_data->display_name , 'value' => intval($row->user) );
+        }
+    }
+    
+    // List of publication templates
+    $pub_templates_list = array();
+    $pub_templates = tp_list_templates();
+    foreach ( $pub_templates as $row ) {
+        $pub_templates_list[] = array ( 'text' => $row, 'value' => $row);
+    }
+    
+    // Current post id
+    $post_id = ( isset ($_GET['post']) ) ? intval($_GET['post']) : 0;
+    
+    // Write javascript
+    ?>
+    <script type="text/javascript">
+        var teachpress_courses = <?php echo json_encode($course_list); ?>;
+        var teachpress_semester = <?php echo json_encode($semester_list); ?>;
+        var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
+        var teachpress_pub_templates = <?php echo json_encode($pub_templates_list); ?>;
+        var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document-manager.php?post_id=' . $post_id; ?>';
+        var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
+        var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
+        var teachpress_course_module = <?php if (TEACHPRESS_COURSE_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
+        var teachpress_publication_module = <?php if (TEACHPRESS_PUBLICATION_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
+    </script>
+    <?php
+}

@@ -207,6 +207,14 @@ if ( !defined('TEACHPRESS_TEMPLATE_PATH') ) {
      * @since 5.1.0
     */
     define('TEACHPRESS_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');} 
+
+if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
+    /**
+     * This value defines the template url
+     * @since 5.1.0
+    */
+    define('TEACHPRESS_TEMPLATE_URL', plugins_url() . '/teachpress/templates/');}     
+    
     
 /*********/
 /* Menus */
@@ -246,7 +254,7 @@ function tp_add_menu2() {
     global $tp_admin_show_authors_page;
     global $tp_admin_edit_tags_page;
     
-    $logo = (version_compare($wp_version, '3.8', '>=')) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
+    $logo = ( version_compare($wp_version, '3.8', '>=') ) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
     
     $tp_admin_all_pub_page = add_menu_page (__('Publications','teachpress'), __('Publications','teachpress'), 'use_teachpress', 'publications.php', 'tp_show_publications_page', $logo);
     $tp_admin_your_pub_page = add_submenu_page('publications.php',__('Your publications','teachpress'), __('Your publications','teachpress'),'use_teachpress','teachpress/publications.php','tp_show_publications_page');
@@ -279,7 +287,6 @@ function tp_add_menu_settings() {
 
 // Admin menus
 if ( is_admin() ) {
-    
     include_once("admin/add-course.php");
     include_once("admin/add-publication.php");
     include_once("admin/add-students.php");
@@ -372,10 +379,10 @@ function tp_advanced_registration() {
 /**
  * Detects template files and returns an array with available templates
  * @return array
- * @since 5.1
+ * @since 5.1.0
  */
 function tp_detect_templates() {
-    $folder = plugin_dir_path(__FILE__) . 'templates/';
+    $folder = TEACHPRESS_TEMPLATE_PATH;
     $files = scandir($folder);
     $return = array();
     foreach ( $files as $file ) {
@@ -387,8 +394,13 @@ function tp_detect_templates() {
     return $return;
 }
 
+/**
+ * Returns an array with the data of all available templates
+ * @return array
+ * @since 5.1.0
+ */
 function tp_list_templates () {
-    $folder = plugin_dir_path(__FILE__) . 'templates/';
+    $folder = TEACHPRESS_TEMPLATE_PATH;
     $files = scandir($folder);
     $return = array();
     foreach ( $files as $file ) {
@@ -407,14 +419,20 @@ function tp_list_templates () {
  * @since 5.1.0
  */
 function tp_load_template($slug) {
+    if ( $slug === '' ) {
+        return;
+    }
+    
     $slug = esc_attr($slug);
     $templates = tp_detect_templates();
+    
     // load template file
-    if (array_key_exists($slug, $templates) ) {
+    if ( array_key_exists($slug, $templates) ) {
         include_once $templates[$slug];
-        wp_enqueue_style($slug, plugins_url() . '/teachpress/templates/' . $slug . '.css');
+        wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . '.css');
         return new $slug();
     }
+    
     return false;
 
 }
@@ -536,75 +554,6 @@ function tp_register_tinymce_js ($plugins) {
     return $plugins;
 }
 
-/**
- * Writes data for the teachPress tinyMCE plugin in Javascript objects
- * @since 5.0.0
- */
-function tp_write_data_for_tinymce () {
-    
-    // Only write the data if the page is a page/post editor
-    if ( $GLOBALS['current_screen']->base !== 'post' ) {
-        return;
-    }
-    
-    // List of courses
-    $course_list = array();
-    $course_list[] = array( 'text' => '=== SELECT ===' , 'value' => 0 );
-    $semester = get_tp_options('semester', '`setting_id` DESC');
-    foreach ( $semester as $row ) {
-        $courses = tp_courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
-        foreach ($courses as $course) {
-            $course_list[] = array( 'text' => $course->name . ' (' . $course->semester . ')' , 'value' => $course->course_id );
-        }
-        if ( count($courses) > 0 ) {
-            $course_list[] = array( 'text' => '====================' , 'value' => 0 );
-        }
-    }
-    
-    // List of semester/term
-    $semester_list = array();
-    $semester_list[] = array( 'text' => 'Default' , 'value' => '' );
-    foreach ($semester as $sem) { 
-        $semester_list[] = array( 'text' => stripslashes($sem->value) , 'value' => stripslashes($sem->value) );
-    }
-    
-    // List of publication users
-    $pub_user_list = array();
-    $pub_user_list[] = array( 'text' => 'All' , 'value' => '' );
-    $pub_users = tp_publications::get_pub_users();
-    foreach ($pub_users as $row) { 
-        $user_data = get_userdata($row->user);
-        if ( $user_data !== false ) {
-            $pub_user_list[] = array( 'text' => $user_data->display_name , 'value' => intval($row->user) );
-        }
-    }
-    
-    // List of publication templates
-    $pub_templates_list = array();
-    $pub_templates = tp_list_templates();
-    foreach ( $pub_templates as $row ) {
-        $pub_templates_list[] = array ( 'text' => $row, 'value' => $row);
-    }
-    
-    // Current post id
-    $post_id = ( isset ($_GET['post']) ) ? intval($_GET['post']) : 0;
-    
-    // Write javascript
-    ?>
-    <script type="text/javascript">
-        var teachpress_courses = <?php echo json_encode($course_list); ?>;
-        var teachpress_semester = <?php echo json_encode($semester_list); ?>;
-        var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
-        var teachpress_pub_templates = <?php echo json_encode($pub_templates_list); ?>;
-        var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document-manager.php?post_id=' . $post_id; ?>';
-        var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
-        var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
-        var teachpress_course_module = <?php if (TEACHPRESS_COURSE_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
-        var teachpress_publication_module = <?php if (TEACHPRESS_PUBLICATION_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
-    </script>
-    <?php
-}
-
 /*********************/
 /* Loading functions */
 /*********************/
@@ -679,7 +628,7 @@ add_filter('plugin_action_links','tp_plugin_link', 10, 2);
 add_action('wp_ajax_tp_document_upload', 'tp_handle_document_uploads' );
 
 // Register tinyMCE Plugin
-if (version_compare( tp_get_wp_version() , '3.9', '>=')) {
+if ( version_compare( tp_get_wp_version() , '3.9', '>=') ) {
     add_action('admin_head', 'tp_add_tinymce_button');
     add_action('admin_head', 'tp_write_data_for_tinymce' );
  }

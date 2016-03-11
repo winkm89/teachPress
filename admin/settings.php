@@ -690,7 +690,7 @@ class tp_settings_page {
             // Load template
             include_once $templates[$key];
             $template = new $key();
-            if (method_exists($template, 'get_settings') ) {
+            if ( method_exists($template, 'get_settings') ) {
                 $settings = $template->get_settings();
             }
             else {
