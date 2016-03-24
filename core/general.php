@@ -413,6 +413,14 @@ function tp_write_data_for_tinymce () {
         }
     }
     
+    // List of publication tags
+    $pub_tag_list = array();
+    $pub_tag_list[] = array( 'text' => 'All', 'value' => null );
+    $pub_tags = tp_tags::get_tags(array( 'group_by' => true ));
+    foreach($pub_tags as $pub_tag){
+		$pub_tag_list[] = array( 'text' => $pub_tag->name, 'value' => intval($pub_tag->tag_id) );
+    }
+    
     // List of publication templates
     $pub_templates_list = array();
     $pub_templates = tp_list_templates();
@@ -429,6 +437,7 @@ function tp_write_data_for_tinymce () {
         var teachpress_courses = <?php echo json_encode($course_list); ?>;
         var teachpress_semester = <?php echo json_encode($semester_list); ?>;
         var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
+        var teachpress_pub_tags = <?php echo json_encode($pub_tag_list) ?>;
         var teachpress_pub_templates = <?php echo json_encode($pub_templates_list); ?>;
         var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document-manager.php?post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
