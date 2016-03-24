@@ -394,7 +394,14 @@
                                                     name: 'tp_entries_per_page',
                                                     label: 'Entries per page',
                                                     value: '50'
-                                                }
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_filter_tag',
+                                                    label: 'Only entries with tag',
+                                                    value: null,
+                                                    values: teachpress_pub_tags
+                                                },
                                             ]
                                         },
                                         {
@@ -488,7 +495,7 @@
                                         
                                         var user = filterData.tp_user;
                                         var entries_per_page = filterData.tp_entries_per_page;
-                                        
+                                        var tag = filterData.tp_filter_tag;                                        
                                         var headline = designData.tp_headline;
                                         var image = designData.tp_image;
                                         var image_size = designData.tp_size;
@@ -499,6 +506,8 @@
                                         var link_style = designData.tp_link_style;
                                         
                                         user = (user === '') ? '' : 'user="' + user + '"';
+                                        entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
+                                        tag = (tag == null) ? '' : 'tag="' + tag + '"';                                        
                                         headline = (headline === '1') ? '' : 'headline="' + headline + '"';
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
@@ -507,9 +516,8 @@
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
                                         style = (style === 'none') ? '' : 'style="' + style + '"';
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
-                                        entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
                                         
-                                        editor.insertContent( '[tplist ' + user + ' ' + headline + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + entries_per_page + ']');
+                                        editor.insertContent( '[tplist ' + user + ' ' + entries_per_page + ' ' + tag + ' ' + headline + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ']');
                                     }
                                 });
                             }
