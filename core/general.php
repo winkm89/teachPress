@@ -397,14 +397,14 @@ function tp_write_data_for_tinymce () {
     
     // List of semester/term
     $semester_list = array();
-    $semester_list[] = array( 'text' => 'Default' , 'value' => '' );
+    $semester_list[] = array( 'text' => __('Default','teachpress') , 'value' => '' );
     foreach ($semester as $sem) { 
         $semester_list[] = array( 'text' => stripslashes($sem->value) , 'value' => stripslashes($sem->value) );
     }
     
     // List of publication users
     $pub_user_list = array();
-    $pub_user_list[] = array( 'text' => 'All' , 'value' => '' );
+    $pub_user_list[] = array( 'text' => __('All','teachpress') , 'value' => '' );
     $pub_users = tp_publications::get_pub_users();
     foreach ($pub_users as $row) { 
         $user_data = get_userdata($row->user);
@@ -415,10 +415,17 @@ function tp_write_data_for_tinymce () {
     
     // List of publication tags
     $pub_tag_list = array();
-    $pub_tag_list[] = array( 'text' => 'All', 'value' => null );
+    $pub_tag_list[] = array( 'text' => __('All','teachpress'), 'value' => null );
     $pub_tags = tp_tags::get_tags(array( 'group_by' => true ));
     foreach($pub_tags as $pub_tag){
-		$pub_tag_list[] = array( 'text' => $pub_tag->name, 'value' => intval($pub_tag->tag_id) );
+	$pub_tag_list[] = array( 'text' => $pub_tag->name, 'value' => intval($pub_tag->tag_id) );
+    }
+    
+    // List of publication types
+    $pub_type_list = array();
+    $pub_types = get_tp_publication_types();
+    foreach ( $pub_types as $pub_type ) {
+        $pub_type_list[] = array ( 'text' => $pub_type[1], 'value' => stripslashes($pub_type[0]) );
     }
     
     // List of publication templates
@@ -437,6 +444,7 @@ function tp_write_data_for_tinymce () {
         var teachpress_courses = <?php echo json_encode($course_list); ?>;
         var teachpress_semester = <?php echo json_encode($semester_list); ?>;
         var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
+        var teachpress_pub_types = <?php echo json_encode($pub_type_list); ?>;
         var teachpress_pub_tags = <?php echo json_encode($pub_tag_list) ?>;
         var teachpress_pub_templates = <?php echo json_encode($pub_templates_list); ?>;
         var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document-manager.php?post_id=' . $post_id; ?>';
