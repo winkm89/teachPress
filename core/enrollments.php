@@ -15,8 +15,8 @@ class tp_enrollments {
     
     /**
      * Add signups for a student
-     * @param int $user_id
-     * @param array $checkbox
+     * @param int $user_id          The user ID
+     * @param array $checkbox       An array of course IDs
      * @return string
      * @since 5.0.0
      */
@@ -25,7 +25,7 @@ class tp_enrollments {
         $return = '';
         $max = count( $checkbox );
         for ($n = 0; $n < $max; $n++) {
-            $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '$checkbox[$n]'");
+            $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($checkbox[$n]) . "'");
             if ($row->parent != '0') {
                 $parent = tp_courses::get_course_data($row->parent, 'name');
                 $row->name = ( $row->name != $parent ) ? $parent . ' ' . $row->name : $row->name;
@@ -44,8 +44,8 @@ class tp_enrollments {
     
     /** 
      * Add signup (= subscribe student in a course)
-     * @param int $checkbox     course_id
-     * @param int $wp_id        user_id
+     * @param int $checkbox     A course ID
+     * @param int $wp_id        The user ID
      * @return int      This function returns a status code. This means:
      *                  code 0    --> ERROR: course_id was 0
      *                  code 101  --> user is already registered
@@ -174,17 +174,21 @@ class tp_enrollments {
         global $wpdb;
         for( $i = 0; $i < count( $checkbox ); $i++ ) {
             $checkbox[$i] = intval($checkbox[$i]);
+            
             // Select course ID
             $sql = "SELECT `course_id`, `waitinglist` FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'";
             $signup = $wpdb->get_row($sql);
+            
             // Start transaction
             $wpdb->query("START TRANSACTION");
             $wpdb->query("SET AUTOCOMMIT=0");
+            
             // check if there are users in the waiting list
             if ( $signup->waitinglist == 0 ) {
                 tp_courses::move_up_signup($checkbox[$i]);
             }
             $wpdb->query("DELETE FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'");
+            
             // End transaction
             $wpdb->query("COMMIT");
         }	
@@ -223,7 +227,7 @@ class tp_enrollments {
      */
     public static function get_form_checkbox_field($field_name, $label, $checked, $readonly = false, $required = false){
         global $wpdb;
-        $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . $field_name . "' ORDER BY value ASC");
+        $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
         $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
         $required = ( $required === true ) ? 'required="required"' : '';
         // extrakt checkbox_values
@@ -326,7 +330,7 @@ class tp_enrollments {
      */
     public static function get_form_radio_field ($field_name, $label, $value, $readonly = false, $required = false) {
         global $wpdb;
-        $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . $field_name . "' ORDER BY value ASC");
+        $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
         $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
         $required = ( $required === true ) ? 'required="required"' : '';
         $return = '<tr>';
@@ -357,7 +361,7 @@ class tp_enrollments {
         $return .= '<tr>';
         $return .= '<td><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></td>';
         $return .= '<td><select name="' . $field_name . '" id="' . $field_name . '">';
-        $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . $field_name . "' ORDER BY value ASC");
+        $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
         if ( $value == '' ) {
             $return .= '<option value="">- ' . __('Please select','teachpress') . ' -</option>';
         }
@@ -719,6 +723,7 @@ class tp_enrollments {
     public static function get_enrollments_tab($sem, $settings, $user_exists) {
         global $wpdb;
         $rtn = '';
+        $sem = esc_sql($sem);
         // Select all courses where enrollments in the current term are available
         $row = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSES . " WHERE `semester` = '$sem' AND `parent` = '0' AND (`visible` = '1' OR `visible` = '2') ORDER BY " . $settings['order_parent']);
         foreach( $row as $row ) {
@@ -745,7 +750,7 @@ class tp_enrollments {
         $course_name = ( $row->rel_page != 0 ) ? '<a href="' . get_permalink($row->rel_page) . '">' . stripslashes($row->name) . '</a>' : stripslashes($row->name);
 
         // load all childs
-        $childs = $wpdb->get_results("Select * FROM " . TEACHPRESS_COURSES . " WHERE `parent` = '$row->course_id' AND (`visible` = '1' OR `visible` = '2') AND (`start` != '0000-00-00 00:00:00') ORDER BY " . $settings['order_child']);
+        $childs = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSES . " WHERE `parent` = '" . $row->course_id . "' AND (`visible` = '1' OR `visible` = '2') AND (`start` != '0000-00-00 00:00:00') ORDER BY " . $settings['order_child']);
         
         // leave the function if there is nothing to show
         if ( $row->start == '0000-00-00 00:00:00' && count($childs) === 0 ) {
@@ -846,7 +851,7 @@ class tp_enrollments {
         global $wpdb;
         if ( $code == 201 || $code == 202 ) {
             // Send user an E-Mail and return a message
-            $to = $wpdb->get_var("SELECT `email` FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '$wp_id'");
+            $to = $wpdb->get_var("SELECT `email` FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '" . intval($wp_id) . "'");
             if ( $code == 201 ) {
                 $subject = '[' . get_bloginfo('name') . '] ' . __('Registration','teachpress');
                 $message = __('Your Registration for the following course was successful:','teachpress') . chr(13) . chr(10);

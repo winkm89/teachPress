@@ -367,19 +367,23 @@ class tp_html_publication_template {
      */
     public static function prepare_publication_title ($row, $settings, $container_id) {
         $name = '';
+        
         // transform URL into full HTML link
         if ( $row['rel_page'] != 0 ) {
             $name = '<a href="' . get_permalink($row['rel_page']) . '">' . stripslashes($row['title']) . '</a>';
         }
+        
         // for inline style
         elseif ( $row['url'] != '' && $settings['link_style'] === 'inline' ) {
             $name = '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
         }
+        
         // for direct style 
         elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) { 
             $parts = self::explode_url($row['url']); 
             $name = '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . tp_html::prepare_title($row['title'], 'decode') . '</a>'; 
         } 
+        
         else {
             $name = tp_html::prepare_title($row['title'], 'decode');
         }

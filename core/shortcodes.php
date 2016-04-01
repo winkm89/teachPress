@@ -77,43 +77,43 @@ class tp_shortcodes {
         $td_left = '';
         $td_right = '';
         if ( $image == 'left' || $image == 'right' ) {
-           $pad_size = $image_size + 5;
+            $pad_size = $image_size + 5;
         }
         $image_marginally = '';
         $image_bottom = '';
         if ( $image == 'left' || $image == 'right' ) {
-           if ( $row->image_url != '' ) {
-              $image_marginally = '<img name="' . $row->name . '" src="' . $row->image_url . '" width="' . $image_size .'" alt="' . $row->name . '" />';
+            if ( $row->image_url != '' ) {
+                $image_marginally = '<img name="' . $row->name . '" src="' . $row->image_url . '" width="' . $image_size .'" alt="' . $row->name . '" />';
            }
         }
         if ( $image == 'left' ) {
-           $td_left = '<td width="' . $pad_size . '">' . $image_marginally . '</td>';
+            $td_left = '<td width="' . $pad_size . '">' . $image_marginally . '</td>';
         }
         if ( $image == 'right' ) {
-           $td_right = '<td width="' . $pad_size . '">' . $image_marginally . '</td>';
+            $td_right = '<td width="' . $pad_size . '">' . $image_marginally . '</td>';
         }
         if ( $image == 'bottom' && $row->image_url != '' ) {
-            $image_bottom = '<div class="tp_pub_image_bottom"><img name="' . $row->name . '" src="' . $row->image_url . '" style="max-width:' . $image_size .'px;" alt="' . $row->name . '" /></div>';
+                $image_bottom = '<div class="tp_pub_image_bottom"><img name="' . $row->name . '" src="' . $row->image_url . '" style="max-width:' . $image_size .'px;" alt="' . $row->name . '" /></div>';
         }
 
         // handle childs
         if ( $row->visible == 2 ) {
-           $div_cl_com = "_c";
-           $row2 = tp_courses::get_courses( array('semester' => $sem, 'parent' => $row->course_id, 'visibility' => '1,2') );
-           foreach ( $row2 as $row2 ) {
-              $childs .= '<p><a href="' . get_permalink($row2->rel_page) . '" title="' . $row2->name . '">' . $row2->name . '</a></p>'; 
-           }
-           if ( $childs != '') {
-              $childs = '<div class="tp_lvs_childs" style="padding-left:10px;">' . $childs . '</div>';
-           }
+            $div_cl_com = "_c";
+            $row2 = tp_courses::get_courses( array('semester' => $sem, 'parent' => $row->course_id, 'visibility' => '1,2') );
+            foreach ( $row2 as $row2 ) {
+                $childs .= '<p><a href="' . get_permalink($row2->rel_page) . '" title="' . $row2->name . '">' . $row2->name . '</a></p>'; 
+            }
+            if ( $childs != '') {
+                $childs = '<div class="tp_lvs_childs" style="padding-left:10px;">' . $childs . '</div>';
+            }
         }
 
         // handle page link
         if ( $row->rel_page == 0 ) {
-           $direct_to = '<strong>' . $row->name . '</strong>';
+            $direct_to = '<strong>' . $row->name . '</strong>';
         }
         else {
-           $direct_to = '<a href="' . get_permalink($row->rel_page) . '" title ="' . $row->name . '"><strong>' . $row->name . '</strong></a>';
+            $direct_to = '<a href="' . get_permalink($row->rel_page) . '" title ="' . $row->name . '"><strong>' . $row->name . '</strong></a>';
         }
         
         $return = '<tr>
@@ -953,7 +953,8 @@ function tp_links_shortcode ($atts) {
  *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
  *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  * 
- * WARNING: id has been removed with teachPress 4.0.0, please use "user" instead!
+ * WARNINGS: 
+ *      "id" has been removed with teachPress 4.0.0, please use "user" instead!
  * 
  * Parameters from $_GET: 
  *      $yr (INT)              Year 
@@ -1005,7 +1006,7 @@ function tp_cloud_shortcode($atts) {
         'image' => htmlspecialchars($image),
         'image_size' => intval($image_size),
         'link_style' => htmlspecialchars($link_style),
-        'html_anchor' => $anchor == '1' ? '#tppubs' : '',
+        'html_anchor' => ( $anchor == '1' ) ? '#tppubs' : '',
         'date_format' => htmlspecialchars($date_format),
         'permalink' => ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;",
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
@@ -1013,7 +1014,7 @@ function tp_cloud_shortcode($atts) {
         'entries_per_page' => intval($entries_per_page),
         'sort_list' => htmlspecialchars($sort_list),
         'show_tags_as' => htmlspecialchars($show_tags_as),
-        'show_bibtex' => $show_bibtex == '1' ? true : false,
+        'show_bibtex' => ( $show_bibtex == '1' ) ? true : false,
         'with_tags' => 1,
         'container_suffix' => htmlspecialchars($container_suffix)
     );

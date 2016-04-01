@@ -678,6 +678,7 @@ class tp_settings_page {
         $s = '';
         $class_alternate = true;
         foreach ($templates as $key => $value) {
+            // alternate row style
             if ( $class_alternate === true ) {
                 $tr_class = 'class="alternate"';
                 $class_alternate = false;
@@ -687,12 +688,12 @@ class tp_settings_page {
                 $class_alternate = true;
             }
             
-            // Load template
+            // load template
             include_once $templates[$key];
             $template = new $key();
             
             // default values
-            $settings = array('name' => '', 'description' => '', 'author' => '', 'version' => '');
+            $settings = array('name' => '', 'description' => '', 'author' => '', 'version' => '0.0');
             
             // overwrite defaults
             if ( method_exists($template, 'get_settings') ) {
