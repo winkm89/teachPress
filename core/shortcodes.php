@@ -747,6 +747,91 @@ function tp_courseinfo_shortcode($atts) {
     return $head . $body . '</table>';
 }
 
+/**
+ * Prints a citation link
+ * 
+ * possible values of $atts:
+ *      id (INT)            - ID of the publication
+ *      key (STRING)        - BibTeX key of a publication
+ *      ref_style (STRING)  - Reference style
+ * 
+ * @param array $atts
+ * @return string
+ * @since 5.2.0
+ */
+function tp_cite_shortcode ($atts) {
+    global $tp_cite_object;
+    $param = shortcode_atts(array(
+       'id' => 0,
+       'key' => '',
+       'ref_style' => ''
+    ), $atts);
+    
+    // Load cite object
+    if ( !isset($tp_cite_object) ) {
+        $tp_cite_object = new tp_cite_object;
+    }
+    
+    // Check parameter
+    if ( $param['key'] != '' ) {
+        $publication = tp_publications::get_publication_by_key($param['key'], ARRAY_A);
+    }
+    else {
+        $publication = tp_publications::get_publication($param['id'], ARRAY_A);
+    }
+    
+    // Count ref number
+    $count = $tp_cite_object->get_count();
+    
+    // Add ref to cite object
+    $tp_cite_object->add_ref($publication);
+    
+    // Return
+    return '<sup><a href="#tp_cite_' . $publication['pub_id'] . '">[' . ( $count + 1 ) . ']</a></sup>';
+}
+
+/**
+ * Prints the references
+ * 
+ * possible values of $atts:
+ *      author_name (STRING)    last, initials or old, default: simple
+ *      author_name (STRING)    last, initials or old, default: last
+ *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y * 
+ * @param array $atts
+ * @return string
+ * @since 5.2.0
+ */
+function tp_ref_shortcode($atts) {
+    global $tp_cite_object;
+    
+    // shortcode parameter defaults
+    extract(shortcode_atts(array(
+       'author_name' => 'simple',
+       'editor_name' => 'last',
+       'date_format' => 'd.m.Y'
+    ), $atts));
+    
+    // define settings
+    $settings = array(
+       'author_name' => htmlspecialchars($author_name),
+       'editor_name' => htmlspecialchars($editor_name),
+       'date_format' => htmlspecialchars($date_format),
+       'style' => 'simple',
+       'use_span' => false
+    );
+    
+    // define reference part
+    $references = $tp_cite_object->get_ref();
+    
+    $ret = '<h3 class="teachpress_ref_headline">' . __('References','teachpress') . '</h3>';
+    $ret .= '<ol>';
+    foreach ( $references as $row ) {
+        $ret .= '<li id="tp_cite_' . $row['pub_id'] . '"><span class="tp_single_author">' . stripslashes($row['author']) . '</span><span class="tp_single_year"> (' . $row['year'] . ')</span>: <span class="tp_single_title">' . tp_html::prepare_title($row['title'], 'decode') . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($row, $settings) . '</span></li>';
+    }
+    $ret .= '</ol>';
+    return $ret;
+}
+
 /** 
  * Shorcode for a single publication
  * 

@@ -311,6 +311,7 @@ if ( is_admin() ) {
 include_once("core/admin.php");
 include_once("core/class-ajax.php");
 include_once("core/class-bibtex.php");
+include_once("core/class-cite-object.php");
 include_once("core/class-document-manager.php");
 include_once("core/class-export.php");
 include_once("core/class-html.php");
@@ -671,4 +672,6 @@ if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
     add_shortcode('tpabstract', 'tp_abstract_shortcode');
     add_shortcode('tplinks', 'tp_links_shortcode');
     add_shortcode('tpsearch', 'tp_search_shortcode');
+    add_shortcode('tpcite', 'tp_cite_shortcode');
+    add_shortcode('tpref','tp_ref_shortcode');
 }
