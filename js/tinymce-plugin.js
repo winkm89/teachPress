@@ -412,6 +412,7 @@
                                                 
                                             ]
                                         },
+                                        // Design box
                                         {
                                             title: 'Design',
                                             type: 'form',
@@ -428,23 +429,6 @@
                                                         {text: 'headlines grouped by type then by year', value: '4'},
                                                         {text: 'none', value: '0'}
                                                     ]
-                                                },
-                                                {
-                                                    type: 'listbox',
-                                                    name: 'tp_image',
-                                                    label: 'Show images',
-                                                    'values': [
-                                                        {text: 'none', value: 'none'},
-                                                        {text: 'left', value: 'left'},
-                                                        {text: 'right', value: 'right'},
-                                                        {text: 'bottom', value: 'bottom'}
-                                                    ]
-                                                },
-                                                {
-                                                    type: 'textbox',
-                                                    name: 'tp_size',
-                                                    label: 'Image size in px',
-                                                    value: '0'
                                                 },
                                                 {
                                                     type: 'listbox',
@@ -495,19 +479,58 @@
                                                     ]
                                                 }
                                             ]
+                                        },
+                                        // Image box
+                                        {
+                                            title: 'Images',
+                                            type: 'form',
+                                            name: 'tp_imagesform',
+                                            items: [
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_image',
+                                                    label: 'Show images',
+                                                    'values': [
+                                                        {text: 'none', value: 'none'},
+                                                        {text: 'left', value: 'left'},
+                                                        {text: 'right', value: 'right'},
+                                                        {text: 'bottom', value: 'bottom'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'textbox',
+                                                    name: 'tp_image_size',
+                                                    label: 'Image size in px',
+                                                    value: '0'
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_image_link',
+                                                    label: 'Image refers to',
+                                                    'values': [
+                                                        {text: 'none', value: 'none'},
+                                                        {text: 'self', value: 'self'},
+                                                        {text: 'post or page', value: 'post'}
+                                                    ]
+                                                }
+                                            ]
                                         }
+                                        // End Panels
+                                        
                                     ],
                                     onsubmit: function( e ) {
                                         var filterData = this.find('[name=tp_filterform]')[0].toJSON();
                                         var designData = this.find('[name=tp_designform]')[0].toJSON();
+                                        var imageData = this.find('[name=tp_imagesform]')[0].toJSON();
                                         
                                         var user = filterData.tp_user;
                                         var entries_per_page = filterData.tp_entries_per_page;
                                         var tag = filterData.tp_filter_tag;  
                                         var type = filterData.tp_filter_type;
                                         var headline = designData.tp_headline;
-                                        var image = designData.tp_image;
-                                        var image_size = designData.tp_size;
+                                        var image = imageData.tp_image;
+                                        var image_size = imageData.tp_size;
+                                        var image_link = imageData.tp_link;
                                         var template = designData.tp_template;
                                         var author_name = designData.tp_author_name;
                                         var editor_name = designData.tp_editor_name;
@@ -521,13 +544,14 @@
                                         headline = (headline === '1') ? '' : 'headline="' + headline + '"';
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        image_link = (image_size === 'none') ? '' : 'image_link="' + image_link + '"';
                                         template = 'template="' + template + '"';
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
                                         style = (style === 'none') ? '' : 'style="' + style + '"';
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
                                         
-                                        editor.insertContent( '[tplist ' + user + ' ' + entries_per_page + ' ' + tag + ' ' + type + ' ' + headline + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ']');
+                                        editor.insertContent( '[tplist ' + user + ' ' + entries_per_page + ' ' + tag + ' ' + type + ' ' + headline + ' ' + image + ' ' + image_size + ' ' + image_link + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ']');
                                     }
                                 });
                             }
@@ -588,23 +612,6 @@
                                                 },
                                                 {
                                                     type: 'listbox',
-                                                    name: 'tp_image',
-                                                    label: 'Show images',
-                                                    'values': [
-                                                        {text: 'none', value: 'none'},
-                                                        {text: 'left', value: 'left'},
-                                                        {text: 'right', value: 'right'},
-                                                        {text: 'bottom', value: 'bottom'}
-                                                    ]
-                                                },
-                                                {
-                                                    type: 'textbox',
-                                                    name: 'tp_size',
-                                                    label: 'Image size in px',
-                                                    value: '0'
-                                                },
-                                                {
-                                                    type: 'listbox',
                                                     name: 'tp_author_name',
                                                     label: 'Style of the author names',
                                                     'values': [
@@ -653,7 +660,7 @@
                                                 }
                                             ]
                                         },
-                                         {
+                                        {
                                             title: 'Tag Cloud',
                                             type: 'form',
                                             name: 'tp_tagcloudform',
@@ -686,12 +693,47 @@
                                                     ]
                                                 }
                                             ]
+                                        },
+                                        {
+                                            title: 'Images',
+                                            type: 'form',
+                                            name: 'tp_imagesform',
+                                            items: [
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_image',
+                                                    label: 'Show images',
+                                                    'values': [
+                                                        {text: 'none', value: 'none'},
+                                                        {text: 'left', value: 'left'},
+                                                        {text: 'right', value: 'right'},
+                                                        {text: 'bottom', value: 'bottom'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'textbox',
+                                                    name: 'tp_image_size',
+                                                    label: 'Image size in px',
+                                                    value: '0'
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_image_link',
+                                                    label: 'Image refers to',
+                                                    'values': [
+                                                        {text: 'none', value: 'none'},
+                                                        {text: 'self', value: 'self'},
+                                                        {text: 'post or page', value: 'post'}
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ],
                                     onsubmit: function( e ) {
                                         var filterData = this.find('[name=tp_filterform]')[0].toJSON();
                                         var designData = this.find('[name=tp_designform]')[0].toJSON();
                                         var tagcloudData = this.find('[name=tp_tagcloudform]')[0].toJSON();
+                                        var imageData = this.find('[name=tp_imagesform]')[0].toJSON();
                                         var user = filterData.tp_user;
                                         var type = filterData.tp_filter_type;
                                         var headline = designData.tp_headline;
@@ -699,8 +741,9 @@
                                         var tag_maxsize = tagcloudData.tp_tag_maxsize;
                                         var tag_limit = tagcloudData.tp_tag_limit;
                                         var show_tags_as = tagcloudData.tp_show_tags_as;
-                                        var image = designData.tp_image;
-                                        var image_size = designData.tp_size;
+                                        var image = imageData.tp_image;
+                                        var image_size = imageData.tp_image_size;
+                                        var image_link = imageData.tp_image_link;
                                         var author_name = designData.tp_author_name;
                                         var editor_name = designData.tp_editor_name;
                                         var style = designData.tp_style;
@@ -717,6 +760,7 @@
                                         show_tags_as = (show_tags_as === 'cloud') ? '' : 'show_tags_as="' + show_tags_as + '"';
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        image_link = (image_link=== 'none') ? '' : 'image_link="' + image_link + '"';
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
                                         style = (style === 'none') ? '' : 'style="' + style + '"';
@@ -724,7 +768,7 @@
                                         link_style = (link_style === 'inline') ? '' : 'link_style="' + link_style + '"';
                                         entries_per_page = (entries_per_page === '50') ? '' : 'entries_per_page="' + entries_per_page + '"';
                                         
-                                        editor.insertContent( '[tpcloud ' + user + ' ' + type + ' ' + headline + ' ' + tag_limit + ' ' + tag_minsize + ' ' + tag_maxsize + ' ' + show_tags_as + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + entries_per_page + ']');
+                                        editor.insertContent( '[tpcloud ' + user + ' ' + type + ' ' + headline + ' ' + tag_limit + ' ' + tag_minsize + ' ' + tag_maxsize + ' ' + show_tags_as + ' ' + image + ' ' + image_size + ' ' + image_link + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + entries_per_page + ']');
                                     }
                                 });
                             }
@@ -737,108 +781,161 @@
                             onclick: function() {
                                  editor.windowManager.open( {
                                     title: 'Insert publication search [tpsearch]',
+                                    bodyType: 'tabpanel',
                                     body: [
+                                        // Filter box
                                         {
-                                            type: 'textbox',
-                                            name: 'tp_entries_per_page',
-                                            label: 'Entries per page',
-                                            value: '20'
-                                        },
-                                        {
-                                            type: 'listbox',
-                                            name: 'tp_image',
-                                            label: 'Show images',
-                                            'values': [
-                                                {text: 'none', value: 'none'},
-                                                {text: 'left', value: 'left'},
-                                                {text: 'right', value: 'right'},
-                                                {text: 'bottom', value: 'bottom'}
+                                            title: 'Filter',
+                                            type: 'form',
+                                            name: 'tp_filterform',
+                                            items: [
+                                                 {
+                                                    type: 'listbox',
+                                                    name: 'tp_as_filter',
+                                                    label: 'Show all publications by default',
+                                                    'values': [
+                                                        {text: 'No', value: 'false'},
+                                                        {text: 'Yes', value: 'true'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'textbox',
+                                                    name: 'tp_entries_per_page',
+                                                    label: 'Entries per page',
+                                                    value: '20'
+                                                }
                                             ]
                                         },
+                                        // Design box
                                         {
-                                            type: 'textbox',
-                                            name: 'tp_size',
-                                            label: 'Image size in px',
-                                            value: '0'
-                                        },
-                                        {
-                                            type: 'listbox',
-                                            name: 'tp_author_name',
-                                            label: 'Style of the author names',
-                                            'values': [
-                                                {text: 'last (example: van der Vaart, Ludwig)', value: 'last'},
-                                                {text: 'initials (example: van der Vaart, Ludwig C)', value: 'initials'},
-                                                {text: 'simple (example: Ludwig C. van der Vaart)', value: 'simple'},
-                                                {text: 'old (example: Vaart, Ludwig C. van der)', value: 'old'}
+                                            title: 'Design',
+                                            type: 'form',
+                                            name: 'tp_designform',
+                                            items: [
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_headline',
+                                                    label: 'Headline',
+                                                    'values': [
+                                                        {text: 'years', value: '1'},
+                                                        {text: 'publication types', value: '2'},
+                                                        {text: 'headlines grouped by year then by type', value: '3'},
+                                                        {text: 'headlines grouped by type then by year', value: '4'},
+                                                        {text: 'none', value: '0'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_author_name',
+                                                    label: 'Style of the author names',
+                                                    'values': [
+                                                        {text: 'last (example: van der Vaart, Ludwig)', value: 'last'},
+                                                        {text: 'initials (example: van der Vaart, Ludwig C)', value: 'initials'},
+                                                        {text: 'simple (example: Ludwig C. van der Vaart)', value: 'simple'},
+                                                        {text: 'old (example: Vaart, Ludwig C. van der)', value: 'old'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_editor_name',
+                                                    label: 'Style of the editor names',
+                                                    'values': [
+                                                        {text: 'last (example: van der Vaart, Ludwig)', value: 'last'},
+                                                        {text: 'initials (example: van der Vaart, Ludwig C)', value: 'initials'},
+                                                        {text: 'simple (example: Ludwig C. van der Vaart)', value: 'simple'},
+                                                        {text: 'old (example: Vaart, Ludwig C. van der)', value: 'old'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_style',
+                                                    label: 'Numeration of publication lists',
+                                                    'values': [
+                                                        {text: 'none', value: 'none'},
+                                                        {text: 'numbered', value: 'numbered'},
+                                                        {text: 'numbered descending', value: 'numbered_desc'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_template',
+                                                    label: 'Template',
+                                                    'values': teachpress_pub_templates  //  is written by tp_write_data_for_tinymce()
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_link_style',
+                                                    label: 'Style of publication links',
+                                                    'values': [
+                                                        {text: 'inline', value: 'inline'},
+                                                        {text: 'images', value: 'images'},
+                                                        {text: 'direct', value: 'direct'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'textbox',
+                                                    name: 'tp_date_format',
+                                                    label: 'Date format',
+                                                    value: 'd.m.Y'
+                                                }
                                             ]
                                         },
+                                        // Image box
                                         {
-                                            type: 'listbox',
-                                            name: 'tp_editor_name',
-                                            label: 'Style of the editor names',
-                                            'values': [
-                                                {text: 'last (example: van der Vaart, Ludwig)', value: 'last'},
-                                                {text: 'initials (example: van der Vaart, Ludwig C)', value: 'initials'},
-                                                {text: 'simple (example: Ludwig C. van der Vaart)', value: 'simple'},
-                                                {text: 'old (example: Vaart, Ludwig C. van der)', value: 'old'}
+                                            title: 'Images',
+                                            type: 'form',
+                                            name: 'tp_imagesform',
+                                            items: [
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_image',
+                                                    label: 'Show images',
+                                                    'values': [
+                                                        {text: 'none', value: 'none'},
+                                                        {text: 'left', value: 'left'},
+                                                        {text: 'right', value: 'right'},
+                                                        {text: 'bottom', value: 'bottom'}
+                                                    ]
+                                                },
+                                                {
+                                                    type: 'textbox',
+                                                    name: 'tp_image_size',
+                                                    label: 'Image size in px',
+                                                    value: '0'
+                                                },
+                                                {
+                                                    type: 'listbox',
+                                                    name: 'tp_image_link',
+                                                    label: 'Image refers to',
+                                                    'values': [
+                                                        {text: 'none', value: 'none'},
+                                                        {text: 'self', value: 'self'},
+                                                        {text: 'post or page', value: 'post'}
+                                                    ]
+                                                }
                                             ]
-                                        },
-                                        {
-                                            type: 'listbox',
-                                            name: 'tp_style',
-                                            label: 'Numeration of publication lists',
-                                            'values': [
-                                                {text: 'numbered', value: 'numbered'},
-                                                {text: 'numbered descending', value: 'numbered_desc'},
-                                                {text: 'none', value: 'none'}
-                                            ]
-                                        },
-                                        {
-                                            type: 'listbox',
-                                            name: 'tp_template',
-                                            label: 'Template',
-                                            'values': teachpress_pub_templates  //  is written by tp_write_data_for_tinymce()
-                                        },
-                                        {
-                                            type: 'listbox',
-                                            name: 'tp_link_style',
-                                            label: 'Style of publication links',
-                                            'values': [
-                                                {text: 'inline', value: 'inline'},
-                                                {text: 'images', value: 'images'},
-                                                {text: 'direct', value: 'direct'}
-                                            ]
-                                        },
-                                        {
-                                            type: 'listbox',
-                                            name: 'tp_as_filter',
-                                            label: 'Show all publications by default',
-                                            'values': [
-                                                {text: 'No', value: 'false'},
-                                                {text: 'Yes', value: 'true'}
-                                            ]
-                                        },
-                                        {
-                                            type: 'textbox',
-                                            name: 'tp_date_format',
-                                            label: 'Date format',
-                                            value: 'd.m.Y'
                                         }
+                                        // End Panels
                                     ],
                                     onsubmit: function( e ) {
-                                        var image = e.data.tp_image;
-                                        var image_size = e.data.tp_size;
-                                        var author_name = e.data.tp_author_name;
-                                        var editor_name = e.data.tp_editor_name;
-                                        var style = e.data.tp_style;
-                                        var template = e.data.tp_template;
-                                        var link_style = e.data.tp_link_style;
-                                        var entries_per_page = e.data.tp_entries_per_page;
-                                        var as_filter = e.data.tp_as_filter;
-                                        var date_format = e.data.tp_date_format;
+                                        var filterData = this.find('[name=tp_filterform]')[0].toJSON();
+                                        var designData = this.find('[name=tp_designform]')[0].toJSON();
+                                        var imageData = this.find('[name=tp_imagesform]')[0].toJSON();
+                                        var image = imageData.tp_image;
+                                        var image_size = imageData.tp_image_size;
+                                        var image_link = imageData.tp_image_link;
+                                        var author_name = designData.tp_author_name;
+                                        var editor_name = designData.tp_editor_name;
+                                        var style = designData.tp_style;
+                                        var template = designData.tp_template;
+                                        var link_style = designData.tp_link_style;
+                                        var entries_per_page = filterData.tp_entries_per_page;
+                                        var as_filter = filterData.tp_as_filter;
+                                        var date_format = designData.tp_date_format;
                                         
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
+                                        image_link = (image_link === 'none') ? '' : 'image_link="' + image_link + '"';
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
                                         style = (style === 'numbered') ? '' : 'style="' + style + '"';
@@ -848,7 +945,7 @@
                                         as_filter = (as_filter === 'false') ? '' : 'as_filter="' + as_filter + '"';
                                         date_format = (date_format === 'd.m.Y') ? '' : 'date_format="' + date_format + '"';
                                         
-                                        editor.insertContent( '[tpsearch ' + entries_per_page + ' ' + image + ' ' + image_size + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + as_filter + ' ' + date_format + ']');
+                                        editor.insertContent( '[tpsearch ' + entries_per_page + ' ' + image + ' ' + image_size + ' ' + image_link + ' ' + author_name + ' ' + editor_name + ' ' + style + ' ' + template + ' ' + link_style + ' ' + as_filter + ' ' + date_format + ']');
                                     }
                                 });
                             }
