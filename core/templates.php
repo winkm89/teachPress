@@ -479,30 +479,40 @@ class tp_html_publication_template {
                          'left' => '',
                          'right' => '');
         
+        $image = '';
+        
         // return if no images is set
         if ( $settings['image'] === 'none' ) {
             return $return;
         }
         
         // define the width of the image
-        $width = ( $settings['image'] === 'bottom' ) ? 'style="max-width:' . ($settings['pad_size']  - 5) .'px;"' : 'width="' . ($settings['pad_size'] - 5) .'"';
+        $width = ( $settings['image'] === 'bottom' ) ? 'style="max-width:' . ($settings['pad_size']  - 5) .'px;"' : 'width="' . ( $settings['pad_size'] - 5 ) .'"';
         
-        // generate html output
+        // general html output
         if ( $row['image_url'] !== '' ) {
             $image = '<img name="' . tp_html::prepare_title($row['title'], 'replace') . '" src="' . $row['image_url'] . '" ' . $width . ' alt="' . tp_html::prepare_title($row['title'], 'replace') . '" />';
         }
-        else {
-            $image = '';
+        
+        // image link
+        if ( $settings['image_link'] === 'self' ) {
+            $image = '<a href="' . $row['image_url'] . '" target="_blank">' . $image . '</a>';
+        }
+        if ( $settings['image_link'] === 'post' && $row['rel_page'] != 0 ) {
+            $image = '<a href="' . get_permalink($row['rel_page']) . '" title="' . stripslashes($row['title']) . '">' . $image . '</a>';
         }
 
+        // left position
         if ( $settings['image'] === 'left' ) {
             $return['left'] = '<td class="tp_pub_image_left" width="' . $settings['pad_size'] . '">' . $image . '</td>';
         }
         
+        // right position
         if ( $settings['image'] === 'right' ) {
             $return['right'] = '<td class="tp_pub_image_right" width="' . $settings['pad_size']  . '">' . $image . '</td>';
         }
         
+        // bottom position
         if ( $settings['image'] === 'bottom' ) {
             $return['bottom'] = '<div class="tp_pub_image_bottom">' . $image . '</div>';
         }

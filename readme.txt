@@ -142,15 +142,19 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * New: Optional dynamic author/editor format detection for bibtex imports
 * New: Enroll multiple students at one time (#23)
 * New: [tpenrollments]: New parameter "order_signups" added
-* New: [tpcloud, tplist, tpsearch]: New parameter "template" added
+* New: [tpcloud, tplist, tpsearch]: New parameters "template" added
+* New: [tpcloud, tplist, tpsearch]: New parameters "image_link" added (#8)
 * Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
 * Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
 * Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed
 * Changed: Style improvements for better support for WordPress 4.4+
+* Changed: Replaced get_currentuserinfo() with wp_get_current_user() (#31)
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
 * Bugfix: HTML output for proceedings shows the edition instead of volume/number (#18)
 * Bugfix: Prevent a deletion of line breaks by bibtexParse in the import (#21)
 * Bugfix: Fixed a variable initialization bug in core/widgets.php (#24)
+* Bugfix: Hide document manager in tinyMCE plugin for users who have no capabilities to use teachPress (#3)
+* Bugfix: Fix possible security issues in enrollments.php
 
 = 5.0.17 - (15.10.2015) =
 * New: [tpenrollments]: New parameters "order_parent" and "order_child" added
