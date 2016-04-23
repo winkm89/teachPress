@@ -26,8 +26,7 @@ class tp_mail {
      * @since 3.0.0
      */
     public static function sendMail($from, $to, $subject, $message, $options, $attachments = '') {
-        global $current_user;
-        get_currentuserinfo();
+        $current_user = wp_get_current_user();
         $message = htmlspecialchars($message);
 
         if ( $from == '' || $message == '' ) {

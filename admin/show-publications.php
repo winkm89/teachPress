@@ -51,8 +51,8 @@ function tp_show_publications_page_help () {
  */
 function tp_show_publications_page() {
     // WordPress User informations
-    global $current_user;
-    get_currentuserinfo();
+    $current_user = wp_get_current_user();
+    
     // Get screen options
     $screen = get_current_screen();
     $screen_option = $screen->get_option('per_page', 'option');

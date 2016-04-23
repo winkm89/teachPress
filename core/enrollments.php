@@ -996,10 +996,10 @@ function tp_enrollments_shortcode($atts) {
     }
     
     // WordPress
-    global $user_ID;
-    global $user_email;
-    global $user_login;
-    get_currentuserinfo();
+    $current_user = wp_get_current_user();
+    $user_ID = $current_user->ID;
+    $user_email = $current_user->user_email;
+    $user_login = $current_user->user_login;
 
     // teachPress
     $sem = ( $term != '' ) ? $term : get_tp_option('sem');

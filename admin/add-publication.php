@@ -36,8 +36,7 @@ function tp_add_publication_page_help () {
 function tp_add_publication_page() {
    
     // WordPress current unser info
-    global $current_user;
-    get_currentuserinfo();
+    $current_user = wp_get_current_user();
     $user = $current_user->ID;
     $fields = get_tp_options('teachpress_pub','`setting_id` ASC', ARRAY_A);
 

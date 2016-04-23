@@ -55,8 +55,7 @@ function tp_add_course_page_help () {
 */
 function tp_add_course_page() {
 
-   global $current_user;
-   get_currentuserinfo();
+   $current_user = wp_get_current_user();
    $fields = get_tp_options('teachpress_courses','`setting_id` ASC', ARRAY_A);
    $course_types = get_tp_options('course_type', '`value` ASC');
 

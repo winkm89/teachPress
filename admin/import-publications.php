@@ -64,8 +64,7 @@ class tp_import_publication_page {
      * @access public
      */
     public static function import_actions ($post) {
-        global $current_user;
-        get_currentuserinfo();
+        $current_user = wp_get_current_user();
         $tp_bookmark = isset( $post['tp_bookmark'] ) ? $post['tp_bookmark'] : '';
         $tp_delete = isset( $post['tp_delete'] ) ? $post['tp_delete'] : '';
         $checkbox = isset( $post['checkbox'] ) ? $post['checkbox'] : '';
@@ -199,8 +198,7 @@ class tp_import_publication_page {
     public static function show_results($entries) {
 
        // WordPress User informations
-       global $current_user;
-       get_currentuserinfo();
+       $current_user = wp_get_current_user();
 
        echo '<div class="wrap">';
        echo '<p><a href="admin.php?page=teachpress/import.php" class="button-secondary">&larr; ' . __('Back','teachpress') . '</a></p>';

@@ -13,8 +13,7 @@
  */
 function tp_show_mail_page() {
 
-    global $current_user;
-    get_currentuserinfo();
+    $current_user = wp_get_current_user();
 
     $course_id = isset( $_GET['course_id'] ) ? intval($_GET['course_id']) : 0;
     $redirect = isset( $_GET['redirect'] ) ?  intval($_GET['redirect']) : 0;

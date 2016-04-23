@@ -17,8 +17,7 @@
 */
 function tp_show_single_course_page() {
     
-    global $current_user;
-    get_currentuserinfo();
+    $current_user = wp_get_current_user();
 
     // form
     $checkbox = ( isset( $_POST['checkbox'] ) ) ?  $_POST['checkbox'] : '';

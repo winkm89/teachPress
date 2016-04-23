@@ -1264,10 +1264,11 @@ class tp_courses {
      */
     public static function is_student_subscribed ($course_id, $consider_childcourses = false) {
         global $wpdb;
-        global $user_ID;
-        get_currentuserinfo();
+        
+        $current_user = wp_get_current_user();
         $course_id = intval($course_id);
-        $user_ID = intval($user_ID);
+        $user_ID = $current_user->ID;
+        
         if ( $course_id == 0 ) {
             return false;
         }
