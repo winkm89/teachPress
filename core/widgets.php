@@ -41,7 +41,7 @@ class tp_books_widget extends WP_Widget {
             echo $before_title . $title . $after_title;
         }
         echo '<p style="text-align:center"><a href="' . get_permalink($row->rel_page) . '" title="' . $row->title . '"><img class="tp_image" src="' . $row->image_url . '" alt="' . $row->title . '" title="' . $row->title . '" /></a></p>';
-        echo '<p style="text-align:center"><a href="' . $all_url . '" title="' . __('All books','teachpress') . '">' . __('All books','teachpress') . '</a></p>';
+        echo '<p style="text-align:center" class="tp_allbooks_link"><a href="' . $all_url . '" title="' . __('All books','teachpress') . '">' . __('All books','teachpress') . '</a></p>';
         echo $after_widget;
     }
 
