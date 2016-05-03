@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: teachPress
+Plugin Name: teachPress (Fork by Dominic Scheurer)
 Plugin URI: http://mtrv.wordpress.com/teachpress/
-Description: With teachPress you can easy manage courses, enrollments and publications.
+Description: With teachPress you can easy manage courses, enrollments and publications. This fork facilitates BibTeX export via pure GET (small tweak).
 Version: 5.1alpha
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
