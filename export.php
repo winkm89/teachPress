@@ -20,7 +20,10 @@ elseif ( is_user_logged_in() && current_user_can('use_teachpress') ) {
     $type = isset ( $_GET['type'] ) ? htmlspecialchars($_GET['type']) : '';
     $course_id = isset ( $_GET['course_id'] ) ? intval($_GET['course_id']) : 0;
     $user_id = isset ( $_POST['tp_user'] ) ? intval($_POST['tp_user']) : 0;
-    $format = isset ( $_POST['tp_format'] ) ?  htmlspecialchars($_POST['tp_format']) : '';
+    $format = isset ( $_POST['tp_format'] ) ?
+      htmlspecialchars($_POST['tp_format']) : 
+      (isset ( $_GET['tp_format'] ) ?
+      htmlspecialchars($_GET['tp_format']) : '');
     $sel = isset ( $_POST['tp_sel'] ) ?  htmlspecialchars($_POST['tp_sel']) : '';
     $filename = 'teachpress_course_' . $course_id . '_' . date('dmY');
 
