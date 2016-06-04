@@ -3,7 +3,7 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.4
+Tested up to: 4.5.2
 Stable tag: 5.1alpha
 
 Manage your courses and publications with teachPress 
@@ -142,8 +142,9 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * New: Optional dynamic author/editor format detection for bibtex imports
 * New: Enroll multiple students at one time (#23)
 * New: [tpenrollments]: New parameter "order_signups" added
-* New: [tpcloud, tplist, tpsearch]: New parameters "template" added
-* New: [tpcloud, tplist, tpsearch]: New parameters "image_link" added (#8)
+* New: [tpcloud, tplist, tpsearch]: New parameter "template" added
+* New: [tpcloud, tplist, tpsearch]: New parameter "image_link" added (#8)
+* New: [tpcloud, tplist, tpsearch]: New parameter "title_ref" added (#14)
 * Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
 * Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
 * Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed
