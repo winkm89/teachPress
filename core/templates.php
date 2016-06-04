@@ -360,34 +360,56 @@ class tp_html_publication_template {
     /**
      * This function prepares the publication title for html publication lists.
      * @param array $row                The publication array
-     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
+     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, title_ref, date_format, convert_bibtex, container_suffix)
      * @param string $container_id      The basic ID for div container
      * @return string
      * @since 5.1.0
      */
     public static function prepare_publication_title ($row, $settings, $container_id) {
-        $name = '';
+        
+        // open abstracts instead of links
+        if ( $settings['title_ref'] === 'abstract' ) {
+            return self::prepare_title_link_to_abstracts($row, $container_id);
+        }
         
         // transform URL into full HTML link
         if ( $row['rel_page'] != 0 ) {
-            $name = '<a href="' . get_permalink($row['rel_page']) . '">' . stripslashes($row['title']) . '</a>';
+            return '<a href="' . get_permalink($row['rel_page']) . '">' . stripslashes($row['title']) . '</a>';
         }
         
         // for inline style
         elseif ( $row['url'] != '' && $settings['link_style'] === 'inline' ) {
-            $name = '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
+            return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
         }
         
         // for direct style 
         elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) { 
-            $parts = self::explode_url($row['url']); 
-            $name = '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . tp_html::prepare_title($row['title'], 'decode') . '</a>'; 
+            $parts = tp_bibtex::explode_url($row['url']); 
+            return '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . tp_html::prepare_title($row['title'], 'decode') . '</a>'; 
         } 
         
+        // if there is no link
         else {
-            $name = tp_html::prepare_title($row['title'], 'decode');
+            return tp_html::prepare_title($row['title'], 'decode');
         }
-        return $name;
+
+    }
+    
+    /**
+     * Prepares a title if the link should refers to the abstract
+     * @param array $row                The publication array
+     * @param string $container_id      The basic ID for div container
+     * @return string
+     * @since 5.1.0
+     * @access private
+     */
+    private static function prepare_title_link_to_abstracts($row, $container_id) {
+        if ( $row['abstract'] != '' ) {
+            return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_abstract' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
+        }
+        else {
+            return tp_html::prepare_title($row['title'], 'decode');
+        }
     }
     
     /**

@@ -539,6 +539,26 @@ class tp_shortcodes {
         return $return;
     }
     
+    /**
+     * Sets and returns the publication data. Used for tp_bibtex, tp_abstract and tp_links shortcodes
+     * @param array $param
+     * @param array $tp_single_publication
+     * @return array
+     * @since 5.1.0
+     * @access public
+     */
+    public static function set_publication ($param, $tp_single_publication) {
+        if ( $param['key'] != '' ) {
+            return tp_publications::get_publication_by_key($param['key'], ARRAY_A);
+        } 
+        elseif ( $param['id'] != 0 ) {
+            return tp_publications::get_publication($param['id'], ARRAY_A);
+        } 
+        else {
+            return $tp_single_publication;
+        }
+    }
+    
 }
 
 /** 
@@ -557,18 +577,18 @@ class tp_shortcodes {
  * @since 2.0.0
 */
 function tp_courselist_shortcode($atts) {	
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'image' => 'none',
        'image_size' => 0,
        'headline' => 1,
        'text' => '',
        'term' => ''
-    ), $atts));
-    $image = htmlspecialchars($image);
-    $text = htmlspecialchars($text);
-    $term = htmlspecialchars($term);
-    $image_size = intval($image_size);
-    $headline = intval($headline);
+    ), $atts);
+    $image = htmlspecialchars($param['image']);
+    $text = htmlspecialchars($param['text']);
+    $term = htmlspecialchars($param['term']);
+    $image_size = intval($param['image_size']);
+    $headline = intval($param['headline']);
 
     $url = array(
         'post_id' => get_the_id()
@@ -640,20 +660,20 @@ function tp_courselist_shortcode($atts) {
  * @since 5.0.0
  */
 function tp_coursedocs_shortcode($atts) {
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'id' => '',
        'link_class' => 'linksecure',
        'date_format' => 'd.m.Y',
        'show_date' => 1,
        'numbered' => 0,
        'headline' => 1
-    ), $atts));
-    $course_id = intval($id);
-    $headline = intval($headline);
-    $link_class = htmlspecialchars($link_class);
-    $date_format = htmlspecialchars($date_format);
-    $show_date = intval($show_date);
-    $numbered = intval($numbered);
+    ), $atts);
+    $course_id = intval($param['id']);
+    $headline = intval($param['headline']);
+    $link_class = htmlspecialchars($param['link_class']);
+    $date_format = htmlspecialchars($param['date_format']);
+    $show_date = intval($param['show_date']);
+    $numbered = intval($param['numbered']);
     $upload_dir = wp_upload_dir();
     $documents = tp_documents::get_documents($course_id);
     
@@ -667,7 +687,7 @@ function tp_coursedocs_shortcode($atts) {
     
     $num = 1;
     $body = '<table class="tp_coursedocs">';
-    foreach ($documents as $row) {
+    foreach ( $documents as $row ) {
         $body .= '<tr>';
         if ( $row['path'] === '' ) {
             $body .= tp_shortcodes::get_coursedocs_headline($row, $numbered, $show_date);
@@ -695,12 +715,12 @@ function tp_coursedocs_shortcode($atts) {
  * @since 5.0.0
 */
 function tp_courseinfo_shortcode($atts) {
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'id' => 0,
        'show_meta' => 1
-    ), $atts));
-    $id = intval($id);
-    $show_meta = intval($show_meta);
+    ), $atts);
+    $id = intval($param['id']);
+    $show_meta = intval($param['show_meta']);
     
     if ( $id === 0 ) {
         return;
@@ -805,17 +825,17 @@ function tp_ref_shortcode($atts) {
     global $tp_cite_object;
     
     // shortcode parameter defaults
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'author_name' => 'simple',
        'editor_name' => 'last',
        'date_format' => 'd.m.Y'
-    ), $atts));
+    ), $atts);
     
     // define settings
     $settings = array(
-       'author_name' => htmlspecialchars($author_name),
-       'editor_name' => htmlspecialchars($editor_name),
-       'date_format' => htmlspecialchars($date_format),
+       'author_name' => htmlspecialchars($param['author_name']),
+       'editor_name' => htmlspecialchars($param['editor_name']),
+       'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => false
     );
@@ -851,7 +871,7 @@ function tp_ref_shortcode($atts) {
 */ 
 function tp_single_shortcode ($atts) {
     global $tp_single_publication;
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'id' => 0,
        'key' => '',
        'author_name' => 'simple',
@@ -860,35 +880,36 @@ function tp_single_shortcode ($atts) {
        'image' => 'none',
        'image_size' => 0,
        'link' => ''
-    ), $atts));
+    ), $atts);
 
     $settings = array(
-       'author_name' => htmlspecialchars($author_name),
-       'editor_name' => htmlspecialchars($editor_name),
-       'date_format' => htmlspecialchars($date_format),
+       'author_name' => htmlspecialchars($param['author_name']),
+       'editor_name' => htmlspecialchars($param['editor_name']),
+       'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => true
     );
     
-    if ( $key != '' ) {
-        $publication = tp_publications::get_publication_by_key($key, ARRAY_A);
+    // Set publication
+    if ( $param['key'] != '' ) {
+        $publication = tp_publications::get_publication_by_key($param['key'], ARRAY_A);
     }
     else {
-        $publication = tp_publications::get_publication($id, ARRAY_A);
+        $publication = tp_publications::get_publication($param['id'], ARRAY_A);
     }
     $tp_single_publication = $publication;
     
     $author = tp_bibtex::parse_author($publication['author'], $settings['author_name']);
-    $image_size = intval($image_size);
+    $image_size = intval($param['image_size']);
     
     $asg = '<div class="tp_single_publication">';
     // add image
-    if ( ( $image === 'left' || $image === 'right' ) && $publication['image_url'] != '' ) {
-        $class = ( $image === 'left' ) ? 'tp_single_image_left' : 'tp_single_image_right';
+    if ( ( $param['image'] === 'left' || $param['image'] === 'right' ) && $publication['image_url'] != '' ) {
+        $class = ( $param['image'] === 'left' ) ? 'tp_single_image_left' : 'tp_single_image_right';
         $asg .= '<div class="' . $class . '"><img name="' . $publication['title'] . '" src="' . $publication['image_url'] . '" width="' . $image_size .'" alt="" /></div>';
     }
     // define title
-    if ( $link !== '' && $publication['url'] !== '' ) {
+    if ( $param['link'] !== '' && $publication['url'] !== '' ) {
         // Use the first link in url field without the original title
         $url = explode(chr(13) . chr(10), $publication['url']);
         $parts = explode(', ',$url[0]);
@@ -918,20 +939,13 @@ function tp_single_shortcode ($atts) {
 */ 
 function tp_bibtex_shortcode ($atts) {
     global $tp_single_publication;
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'id' => 0,
        'key' => '',
-    ), $atts));
+    ), $atts);
     
     $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
-
-    if ( $key != '' ) {
-        $publication = tp_publications::get_publication_by_key($key, ARRAY_A);
-    } elseif ( $id != 0 ) {
-        $publication = tp_publications::get_publication($id, ARRAY_A);
-    } else {
-        $publication = $tp_single_publication;
-    }
+    $publication = tp_shortcodes::set_publication($param, $tp_single_publication);
     
     $tags = tp_tags::get_tags( array('pub_id' => $publication['pub_id'], 'output_type' => ARRAY_A) );
     
@@ -953,18 +967,12 @@ function tp_bibtex_shortcode ($atts) {
 */ 
 function tp_abstract_shortcode ($atts) {
     global $tp_single_publication;
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'id' => 0,
        'key' => '',
-    ), $atts));
+    ), $atts);
 
-    if ( $key != '' ) {
-        $publication = tp_publications::get_publication_by_key($key, ARRAY_A);
-    } elseif ( $id != 0 ) {
-        $publication = tp_publications::get_publication($id, ARRAY_A);
-    } else {
-        $publication = $tp_single_publication;
-    }
+    $publication = tp_shortcodes::set_publication($param, $tp_single_publication);
 
     if ( isset($publication['abstract']) ) {
         return '<h2 class="tp_abstract">' . __('Abstract','teachpress') . '</h2><p class="tp_abstract">' . tp_html::prepare_text($publication['abstract']) . '</p>';
@@ -987,18 +995,12 @@ function tp_abstract_shortcode ($atts) {
  */
 function tp_links_shortcode ($atts) {
     global $tp_single_publication;
-    extract(shortcode_atts(array(
+    $param = shortcode_atts(array(
        'id' => 0,
        'key' => '',
-    ), $atts));
+    ), $atts);
     
-    if ( $key != '' ) {
-        $publication = tp_publications::get_publication_by_key($key, ARRAY_A);
-    } elseif ( $id != 0 ) {
-        $publication = tp_publications::get_publication($id, ARRAY_A);
-    } else {
-        $publication = $tp_single_publication;
-    }
+    $publication = tp_shortcodes::set_publication($param, $tp_single_publication);
     
     if ( isset($publication['url']) ) {
         return '<h2 class="tp_links">' . __('Links','teachpress') . '</h2><p class="tp_abstract">' . tp_html_publication_template::prepare_url($publication['url'], $publication['doi'], 'list') . '</p>';
@@ -1030,7 +1032,8 @@ function tp_links_shortcode ($atts) {
  *      editor_name (STRING)        simple, last, initials or old, default: last
  *      style (STRING)              numbered, numbered_desc or none, default: none
  *      template (STRING)           the key of the template, default: tp_template_2016
- *      link_style (STRING)         inline or images, default: inline
+ *      title_ref (STRING)          links or abstract, default: links
+ *      link_style (STRING)         inline, direct or images, default: inline
  *      date_format (STRING)        the format for date; needed for the types: presentations, online; default: d.m.Y
  *      pagination (INT)            activate pagination (1) or not (0), default: 1
  *      entries_per_page (INT)      number of publications per page (pagination must be set to 1), default: 30
@@ -1074,6 +1077,7 @@ function tp_cloud_shortcode($atts) {
         'editor_name' => 'initials',
         'style' => 'none',
         'template' => 'tp_template_2016',
+        'title_ref' => 'links',
         'link_style' => 'inline',
         'date_format' => 'd.m.Y',
         'pagination' => 1,
@@ -1093,6 +1097,7 @@ function tp_cloud_shortcode($atts) {
         'image' => htmlspecialchars($atts['image']),
         'image_link' => htmlspecialchars($atts['image_link']),
         'link_style' => htmlspecialchars($atts['link_style']),
+        'title_ref' => htmlspecialchars($atts['title_ref']),
         'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' : '',
         'date_format' => htmlspecialchars($atts['date_format']),
         'permalink' => ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;",
@@ -1189,7 +1194,7 @@ function tp_cloud_shortcode($atts) {
     }
 
     // Endformat
-    if ($filter_parameter['year'] == '' && ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $type ) && ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && $filter_parameter['author'] == '' && $filter_parameter['tag'] == '') {
+    if ($filter_parameter['year'] == '' && ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $atts['type'] ) && ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && $filter_parameter['author'] == '' && $filter_parameter['tag'] == '') {
         $showall = '';
     }
     else {
@@ -1318,6 +1323,7 @@ function tp_cloud_shortcode($atts) {
  *      editor_name (STRING)        last, initials or old, default: last
  *      style (STRING)              numbered, numbered_desc or none, default: none
  *      template (STRING)           the key of the template, default: tp_template_2016
+ *      title_ref (STRING)          links or abstract, default: links
  *      link_style (STRING)         inline or images, default: inline
  *      date_format (STRING)        the format for date; needed for the types: presentations, online; default: d.m.Y
  *      pagination (INT)            activate pagination (1) or not (0), default: 1
@@ -1348,6 +1354,7 @@ function tp_list_shortcode($atts){
        'editor_name' => 'initials',
        'style' => 'none',
        'template' => 'tp_template_2016',
+       'title_ref' => 'links',
        'link_style' => 'inline',
        'date_format' => 'd.m.Y',
        'pagination' => 1,
@@ -1375,6 +1382,7 @@ function tp_list_shortcode($atts){
         'image' => htmlspecialchars($image),
         'image_link' => htmlspecialchars($image_link),
         'with_tags' => 0,
+        'title_ref' => htmlspecialchars($title_ref),
         'link_style' => htmlspecialchars($link_style),
         'date_format' => htmlspecialchars($date_format),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
@@ -1467,6 +1475,7 @@ function tp_list_shortcode($atts){
  *      editor_name (STRING)        last, initials or old, default: last
  *      style (STRING)              numbered, numbered_desc or none, default: none
  *      template (STRING)           the key of the template, default: tp_template_2016
+ *      title_ref (STRING)          links or abstract, default: links
  *      link_style (STRING)         inline, images or direct, default: inline
  *      as_filter (STRING)          set it to "true" if you want to display publications by default
  *      date_format (STRING)        the format for date; needed for presentations, default: d.m.Y
@@ -1490,6 +1499,7 @@ function tp_search_shortcode ($atts) {
        'editor_name' => 'initials',
        'style' => 'numbered',
        'template' => 'tp_template_orig_s',
+       'title_ref' => 'links',
        'link_style' => 'inline',
        'as_filter' => 'false',
        'date_format' => 'd.m.Y',
@@ -1510,9 +1520,10 @@ function tp_search_shortcode ($atts) {
         'style' => htmlspecialchars($style),
         'template' => htmlspecialchars($template),
         'image' => htmlspecialchars($image),
-        'image_link' => htmlspecialchars($atts['image_link']),
+        'image_link' => htmlspecialchars($image_link),
         'with_tags' => 0,
         'link_style' => htmlspecialchars($link_style),
+        'title_ref' => htmlspecialchars($title_ref),
         'date_format' => htmlspecialchars($date_format),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
         'show_bibtex' => $show_bibtex == '1' ? true : false,
@@ -1634,8 +1645,8 @@ function tp_search_shortcode ($atts) {
  * @since 2.0.0
 */
 function tp_post_shortcode ($atts, $content) {
-    extract(shortcode_atts(array('id' => 0), $atts));
-    $id = intval($id);
+    $param = shortcode_atts(array('id' => 0), $atts);
+    $id = intval($param['id']);
     $test = tp_courses::is_student_subscribed($id, true);
     if ( $test === true ) {
         return $content;
