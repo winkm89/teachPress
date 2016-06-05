@@ -169,32 +169,39 @@ class tp_shortcodes {
     public static function generate_filter ($filter_parameter, $sql_parameter, $settings, $mode = 'year'){
 
         $options = '';
+        
         // year filter
         if ( $mode === 'year' ) {
             $row = tp_publications::get_years( array( 'user' => $sql_parameter['user'], 
-                                                      'type' => $sql_parameter['type'], 
+                                                      'type' => $sql_parameter['type'],
+                                                      'include' => $sql_parameter['year'],
                                                       'order' => 'DESC', 
                                                       'output_type' => ARRAY_A ) );
             $id = 'pub_year';
             $index = 'year';
             $title = __('All years','teachpress');
         }
+        
         // type filter
         if ( $mode === 'type' ) {
-            $row = tp_publications::get_used_pubtypes( array( 'user' => $sql_parameter['user'] ) );
+            $row = tp_publications::get_used_pubtypes( array( 'user' => $sql_parameter['user'],
+                                                              'include' => $sql_parameter['type']) );
             $id = 'pub_type';
             $index = 'type';
             $title = __('All types','teachpress');
         }
+        
         // author filter
         if ( $mode === 'author' ) {
             $row = tp_authors::get_authors( array( 'user' => $sql_parameter['user'],
+                                                   'author_id' => $sql_parameter['author'],
                                                    'output_type' => ARRAY_A, 
                                                    'group_by' => true ) );
             $id = 'pub_author';
             $index = 'author_id';
             $title = __('All authors','teachpress');
         }
+        
         // user filter
         if ( $mode === 'user' ) {
             $row = tp_publications::get_pub_users( array('output_type' => ARRAY_A) );
@@ -202,6 +209,7 @@ class tp_shortcodes {
             $index = 'user';
             $title = __('All users','teachpress');
         }
+        
         // tag filter
         if ( $mode === 'tag' ) {
             $row = tp_tags::get_tags( array( 'output_type' => ARRAY_A, 
@@ -253,7 +261,7 @@ class tp_shortcodes {
         
         // return filter menu
         return '<select name="' . $id . '" id="' . $id . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this,0)">
-                   <option value="' . $settings['permalink'] . 'tgid=' . $filter_parameter['tag'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '' . $settings['html_anchor'] . '">' . $title . '</option>
+                   <option value="' . $settings['permalink'] . 'tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '' . $settings['html_anchor'] . '">' . $title . '</option>
                    ' . $options . '
                 </select>';
     }
@@ -1016,6 +1024,7 @@ function tp_links_shortcode ($atts) {
  *      user (STRING)               the id of on or more users (separated by comma)
  *      type (STRING)               the publication types you want to show (separated by comma)
  *      author (STRING)             author ids (separated by comma)
+ *      year (STRING)               one or more years (separated by comma)
  *      exclude (INT)               one or more IDs of publications you don't want to show (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
@@ -1061,6 +1070,7 @@ function tp_cloud_shortcode($atts) {
         'user' => '',
         'type' => '',
         'author' => '',
+        'year' => '',
         'exclude' => '', 
         'order' => 'date DESC',
         'headline' => 1, 
@@ -1130,25 +1140,31 @@ function tp_cloud_shortcode($atts) {
         'user' => htmlspecialchars($atts['user']),
         'type' => htmlspecialchars($atts['type']),
         'author' => htmlspecialchars($atts['author']),
+        'year' => htmlspecialchars($atts['year']),
         'exclude' => htmlspecialchars($atts['exclude']),
         'exclude_tags' => htmlspecialchars($atts['exclude_tags']),
         'order' => htmlspecialchars($atts['order']),
     );
 
-    // if user is set by shortcode parameter
-    if ( $atts['user'] != '' ) {
+    // user: overwrite filter with the shortcode value if the filter param is unset
+    if ( $filter_parameter['user'] === '' ) {
         $filter_parameter['user'] = htmlspecialchars($atts['user']);
     }
     
-    // if type is set by shortcode parameter
-    if ( $atts['type'] != '' ) {
+    // types: overwrite filter with the shortcode value if the filter param is unset
+    if ( $filter_parameter['type'] === '' ) {
         $filter_parameter['type'] = htmlspecialchars($atts['type']);
     }
     
-    // if author is set by shortcode parameter
-    if ( $atts['author'] != '' ) {
+    // authors: overwrite filter with the shortcode value if the filter param is unset
+    if ( $filter_parameter['author'] === '' ) {
        $filter_parameter['author'] = htmlspecialchars($atts['author']);
-    }    
+    }
+    
+    // years: overwrite filter with the shortcode value if the filter param is unset
+    if ( $filter_parameter['year'] === '' ) {
+       $filter_parameter['year'] = htmlspecialchars($atts['year']);
+    } 
    
     // Handle limits for pagination   
     $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
@@ -1170,11 +1186,15 @@ function tp_cloud_shortcode($atts) {
     /**********/ 
     /* Filter */
     /**********/
+    $filter = '';
+    
     // Filter year
-    $filter = tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'year');
+    if ( $atts['year'] == '' || strpos($atts['year'], ',') !== false ) {
+        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'year');
+    }
 
     // Filter type
-    if ($sql_parameter['type'] == '') {
+    if ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'type');
     }
     
@@ -1184,12 +1204,12 @@ function tp_cloud_shortcode($atts) {
     }
 
     // Filter author
-    if ( $atts['author'] == '' ) {
+    if ( $atts['author'] == '' || strpos($atts['author'], ',') !== false ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'author');
     }
     
     // Filter user
-    if ( $atts['user'] == '' ) {
+    if ( $atts['user'] == '' || strpos($atts['user'], ',') !== false  ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'user');
     }
 

@@ -271,10 +271,11 @@ class tp_authors  {
    /**
     * Returns an array/object of authors/editors of publications
     * 
-    * Note: If you only need a list of used tags, set group_by to true.
+    * Note: If you only need a list of used authors, set group_by to true.
     * In this case you should ignore the columns con_id and pub_id from return
     * 
     * Possible values for the array $args:
+    *       author_id (STRING)       Author IDs (separated by comma)
     *       pub_id (STRING)          Publication IDs (separated by comma)
     *       user (STRING)            User IDs (separated by comma)
     *       exclude (STRING)         Authors IDs you want to exclude from result (separated by comma)
@@ -292,6 +293,7 @@ class tp_authors  {
     */
     public static function get_authors ( $args = array() ) {
         $defaults = array(
+           'author_id' => '',
            'pub_id' => '',
            'user' => '',
            'exclude' => '',
@@ -309,6 +311,7 @@ class tp_authors  {
         global $wpdb;
         $limit = esc_sql($limit);
         $order = esc_sql($order);
+        $author_id = tp_db_helpers::generate_where_clause($author_id, "r.author_id", "OR", "=");
         $pub_id = tp_db_helpers::generate_where_clause($pub_id, "r.pub_id", "OR", "=");
         $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
         $exclude = tp_db_helpers::generate_where_clause($exclude, "r.author_id", "AND", "!=");
@@ -336,6 +339,9 @@ class tp_authors  {
         }
 
         // WHERE clause
+        if ( $author_id != '') {
+            $where = ( $where != '' ) ? $where . " AND ( $author_id )" : " ( $author_id ) ";
+        }
         if ( $pub_id != '') {
             $where = ( $where != '' ) ? $where . " AND ( $pub_id )" : " ( $pub_id ) ";
         }
@@ -1773,21 +1779,26 @@ class tp_publications {
     public static function get_used_pubtypes( $args = array() ) {
         $defaults = array(
             'user' => '',
+            'include' => '',
             'output_type' => ARRAY_A
         ); 
         $args = wp_parse_args( $args, $defaults );
-        extract( $args, EXTR_SKIP );
 
         global $wpdb;
-        $output_type = esc_sql($output_type);
-        $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
+        $output_type = esc_sql($args['output_type']);
+        $include = tp_db_helpers::generate_where_clause($args['include'], "type", "OR", "=");
+        $user = tp_db_helpers::generate_where_clause($args['user'], "u.user", "OR", "=");
+        
+        $having = ( $include != '' ) ? " HAVING $include" : "";
+        
         if ( $user == '' ) {
-            $result = $wpdb->get_results("SELECT DISTINCT p.type FROM " .TEACHPRESS_PUB . " p ORDER BY p.type ASC", $output_type);
+            $result = $wpdb->get_results("SELECT DISTINCT p.type FROM " .TEACHPRESS_PUB . " p $having ORDER BY p.type ASC", $output_type);
         }    
         else {
-            $result = $wpdb->get_results("SELECT DISTINCT p.type from " .TEACHPRESS_PUB . " p 
+            $result = $wpdb->get_results("SELECT DISTINCT p.type AS type from " .TEACHPRESS_PUB . " p 
                                           INNER JOIN " .TEACHPRESS_USER . " u ON u.pub_id=p.pub_id 
                                           WHERE $user 
+                                          $having
                                           ORDER BY p.type ASC", $output_type);
         }
         return $result;
@@ -1810,20 +1821,22 @@ class tp_publications {
         $defaults = array(
             'type' => '',
             'user' => '',
+            'include' => '',
             'order' => 'ASC',
             'output_type' => OBJECT
         ); 
         $args = wp_parse_args( $args, $defaults );
-        extract( $args, EXTR_SKIP );
 
         global $wpdb;
 
         $join = '';
         $where = '';
-        $order = esc_sql($order);
-        $output_type = esc_sql($output_type);
-        $type = tp_db_helpers::generate_where_clause($type, "p.type", "OR", "=");
-        $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
+        $having= '';
+        $order = esc_sql($args['order']);
+        $output_type = esc_sql($args['output_type']);
+        $type = tp_db_helpers::generate_where_clause($args['type'], "p.type", "OR", "=");
+        $user = tp_db_helpers::generate_where_clause($args['user'], "u.user", "OR", "=");
+        $year = tp_db_helpers::generate_where_clause($args['include'], "year", "OR", "=");
 
         if ( $type != '') {
             $where = ( $where != '' ) ? $where . " AND ( $type ) " : " ( $type ) ";
@@ -1835,8 +1848,11 @@ class tp_publications {
         if ( $where != '' ) {
             $where = " WHERE $where";
         }
+        if ( $year != '' ) {
+            $having = " HAVING $year ";
+        }
 
-        $result = $wpdb->get_results("SELECT DISTINCT DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $join $where ORDER BY year $order", $output_type);
+        $result = $wpdb->get_results("SELECT DISTINCT DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $join $where $having ORDER BY year $order", $output_type);
         return $result;
     }
     
