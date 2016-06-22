@@ -26,7 +26,8 @@ class tp_mail {
      * @since 3.0.0
      */
     public static function sendMail($from, $to, $subject, $message, $options, $attachments = '') {
-        $current_user = wp_get_current_user();
+        global $current_user;
+        get_currentuserinfo();
         $message = htmlspecialchars($message);
 
         if ( $from == '' || $message == '' ) {
@@ -78,7 +79,7 @@ class tp_mail {
             
             // Display errors
             if ( $ret !== true ) {
-                get_tp_message( htmlspecialchars($ret) );
+                get_tp_message( htmlspecialchars($ret), 'red' );
             }
             else {
                 // Send backup mail
