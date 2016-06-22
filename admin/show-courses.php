@@ -63,7 +63,7 @@ function tp_show_courses_page() {
         $options['recipients'] = isset ( $_POST['recipients_option'] ) ? htmlspecialchars($_POST['recipients_option']) : '';
         $attachments = isset ( $_POST['attachments'] ) ? $_POST['attachments'] : '';
         $ret = tp_mail::sendMail($from, $to, $subject, $text, $options, $attachments);
-        $message = $ret == true ? __('E-Mail sent','teachpress') : __('Error: E-Mail could not sent','teachpress');
+        $message = ( $ret === true ) ? __('E-Mail sent','teachpress') : __('Error: E-Mail could not sent','teachpress');
         get_tp_message($message);
     }
 
