@@ -185,7 +185,7 @@ class tp_publications_page {
                document.form1.bibtex_area.select();
                </script>';
         if ( $sel != '' ) {
-            echo '<form id="tp_export" method="post" action="' . plugins_url() . '/teachpress/export.php?type=pub">';
+            echo '<form id="tp_export" method="post" action="' . home_url() . '?feed=tp_pub_bibtex">';
             echo '<input type="hidden" name="tp_sel" value="' . $sel . '"/>';
             echo '<input type="hidden" name="tp_format" value="bib"/>';
             echo '<input type="submit" name="tp_submit" class="button-primary" value="' . __('Export','teachpress') . ' (.bibtex)"/>';

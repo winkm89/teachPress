@@ -253,7 +253,7 @@ class tp_import_publication_page {
      */
     public static function export_tab () {
         ?>
-        <form id="tp_export" name="tp_export" action="<?php echo plugins_url(); ?>/teachpress/export.php?type=pub" method="post">
+        <form id="tp_export" name="tp_export" action="<?php echo home_url(); ?>?feed=tp_pub_bibtex" method="post">
         <table class="form-table">
             <tr>
                 <th style="width: 150px;">

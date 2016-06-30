@@ -7,7 +7,7 @@ Version: 5.1alpha
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
-Max WP Version: 4.5.2
+Max WP Version: 4.5.3
 Text Domain: teachpress
 Domain Path: /languages
 GitHub Plugin URI: https://github.com/winkm89/teachPress
@@ -314,6 +314,7 @@ include_once("core/class-bibtex.php");
 include_once("core/class-cite-object.php");
 include_once("core/class-document-manager.php");
 include_once("core/class-export.php");
+include_once("core/feeds.php");
 include_once("core/class-html.php");
 include_once("core/class-mail.php");
 include_once("core/database.php");
@@ -376,6 +377,20 @@ function tp_advanced_registration() {
         tp_students::add_student($user->ID, $data );
     }
 } 
+
+/**********************/
+/* RSS feed functions */
+/**********************/
+
+/**
+ * Adds publication feeds
+ * @since 5.1.0
+ */
+function tp_pub_rss_init(){
+    add_feed('tp_pub_rss', 'tp_pub_rss_feed_func');
+    add_feed('tp_pub_bibtex', 'tp_pub_bibtex_feed_func');
+    add_feed('tp_export', 'tp_export_feed_func');
+}
 
 /**********************/
 /* Template functions */
@@ -665,6 +680,7 @@ if ( TEACHPRESS_COURSE_MODULE === true ) {
 if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
     add_action('admin_menu', 'tp_add_menu2');
     add_action('widgets_init', create_function('', 'return register_widget("tp_books_widget");'));
+    add_action('init', 'tp_pub_rss_init');
     add_shortcode('tpcloud', 'tp_cloud_shortcode');
     add_shortcode('tplist', 'tp_list_shortcode');
     add_shortcode('tpsingle', 'tp_single_shortcode');

@@ -531,11 +531,11 @@ class tp_settings_page {
         echo '<tr>';
         echo '<th>' . __('RSS feed addresses','teachpress') . '</th>';
         echo '<td><p><em>' . __('For all publications:','teachpress') . '</em><br />
-            <strong>' . plugins_url() . '/teachpress/feed.php</strong> &raquo; <a href="' . plugins_url() . '/teachpress/feed.php" target="_blank">' . __('Show','teachpress') . '</a></p>
+            <strong>' . home_url() . '?feed=tp_pub_rss</strong> &raquo; <a href="' . home_url() . '?feed=tp_pub_rss" target="_blank">' . __('Show','teachpress') . '</a></p>
             <p><em>' . __('Example for publications of a single user (id = WordPress user-ID):','teachpress') . '</em><br />
-            <strong>' . plugins_url() . '/teachpress/feed.php?id=1</strong> &raquo; <a href="' . plugins_url() . '/teachpress/feed.php?id=1" target="_blank">' . __('Show','teachpress') . '</a></p>
+            <strong>' . home_url() . '?feed=tp_pub_rss&amp;id=1</strong> &raquo; <a href="' . home_url() . '?feed=tp_pub_rss&amp;id=1" target="_blank">' . __('Show','teachpress') . '</a></p>
             <p><em>' . __('Example for publications of a single tag (tag = tag-id):','teachpress') . '</em><br />
-            <strong>' . plugins_url() . '/teachpress/feed.php?tag=1</strong> &raquo; <a href="' . plugins_url() . '/teachpress/feed.php?tag=1" target="_blank">' . __('Show','teachpress') . '</a></p>
+            <strong>' . home_url() . '?feed=tp_pub_rss&amp;tag=1</strong> &raquo; <a href="' . home_url() . '?feed=tp_pub_rss&amp;tag=1" target="_blank">' . __('Show','teachpress') . '</a></p>
                   </td>';  
         echo '</tr>';
 		

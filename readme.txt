@@ -3,7 +3,7 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: 5.1alpha
 
 Manage your courses and publications with teachPress 
@@ -126,9 +126,6 @@ define ('TEACHPRESS_COURSE_MODULE', false);
 // For deactivating the publication module:  
 define ('TEACHPRESS_PUBLICATION_MODULE', false);`
 
-= I see only error messages if I use the RSS-Feed for publications or the xls/csv export for enrollments. What's wrong? =
-If you save plugins outside the normal path (/wp-content/plugins/), the plugin can't load required WordPress files in some cases. Solution: Change the path in the following plugin files: export.php (line 9) / feed.php (line 13).
-
 == Upgrade Notice ==
 
 = 5.0.0 =
@@ -141,6 +138,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * New: Cite function for publications in the backend (#22)
 * New: Optional dynamic author/editor format detection for bibtex imports
 * New: Enroll multiple students at one time (#23)
+* New: RSS feeds, bibtex feeds and export streams now generated via WordPress API (#35)
 * New: [tpenrollments]: New parameter "order_signups" added
 * New: [tpcloud, tplist, tpsearch]: New parameter "template" added
 * New: [tpcloud, tplist, tpsearch]: New parameter "image_link" added (#8)
@@ -155,7 +153,8 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * Bugfix: Prevent a deletion of line breaks by bibtexParse in the import (#21)
 * Bugfix: Fixed a variable initialization bug in core/widgets.php (#24)
 * Bugfix: Hide document manager in tinyMCE plugin for users who have no capabilities to use teachPress (#3)
-* Bugfix: Fix possible security issues in enrollments.php
+* Bugfix: CSV export of enrollments has problems with the visibilty options of meta data fields (#36)
+* Bugfix: Fixed a possible security issues in enrollments.php
 
 = 5.0.17 - (15.10.2015) =
 * New: [tpenrollments]: New parameters "order_parent" and "order_child" added
