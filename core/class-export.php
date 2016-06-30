@@ -154,7 +154,9 @@ class tp_export {
         $extra_headlines = '';
         foreach ( $fields as $field ) {
             $data = tp_db_helpers::extract_column_data($field->value);
-            $extra_headlines .= '"' . stripslashes( utf8_decode( $data['title'] ) ) . '";';
+            if ( $data['visibility'] === 'admin') {
+                $extra_headlines .= '"' . stripslashes( utf8_decode( $data['title'] ) ) . '";';
+            }
         }
 
         $headline = '"' . __('Last name','teachpress') . '";"' . __('First name','teachpress') . '";"' . __('User account','teachpress') . '";"' . __('E-Mail') . '";' . $extra_headlines . '"' . __('Registered at','teachpress') . '";"' . __('Record-ID','teachpress') . '";"' . __('Waiting list','teachpress') . '"' . "\r\n";
@@ -166,7 +168,10 @@ class tp_export {
             
             $values = '';
             foreach ( $fields as $field ) {
-                $values .= '"' . stripslashes( utf8_decode( tp_export::decode($row[$field->variable]) ) ) . '";';
+                $data = tp_db_helpers::extract_column_data($field->value);
+                if ( $data['visibility'] === 'admin') {
+                    $values .= '"' . stripslashes( utf8_decode( tp_export::decode($row[$field->variable]) ) ) . '";';
+                }
             }
 
             echo '"' . stripslashes(utf8_decode($row['lastname'])) . '";"' . stripslashes(utf8_decode($row['firstname'])) . '";"' . stripslashes(utf8_decode($row['userlogin'])) . '";"' . $row['email'] . '";' . $values . '"' . $row['date'] . '";"' . $row['con_id'] . '";"' . $row['waitinglist'] . '"' . "\r\n";
