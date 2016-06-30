@@ -97,9 +97,8 @@ function tp_pub_bibtex_feed_func () {
  */
 function tp_export_feed_func() {
     $key = isset ( $_GET['key'] ) ? $_GET['key'] : '';
-
     // Export single publication
-    if ($key != '') {
+    if ( $key != '' ) {
         header('Content-Type: text/plain; charset=utf-8' );
         $filename = preg_replace('/[^a-zA-Z0-9]/', '_', $key);
         header("Content-Disposition: attachment; filename=" . $filename . ".bib");
@@ -108,23 +107,24 @@ function tp_export_feed_func() {
     elseif ( is_user_logged_in() && current_user_can('use_teachpress') ) {
         $type = isset ( $_GET['type'] ) ? htmlspecialchars($_GET['type']) : '';
         $course_id = isset ( $_GET['course_id'] ) ? intval($_GET['course_id']) : 0;
-        $user_id = isset ( $_POST['tp_user'] ) ? intval($_POST['tp_user']) : 0;
-        $format = isset ( $_POST['tp_format'] ) ?  htmlspecialchars($_POST['tp_format']) : '';
-        $sel = isset ( $_POST['tp_sel'] ) ?  htmlspecialchars($_POST['tp_sel']) : '';
+        $user_id = isset ( $_GET['tp_user'] ) ? intval($_GET['tp_user']) : 0;
+        $format = isset ( $_GET['tp_format'] ) ?  htmlspecialchars($_GET['tp_format']) : '';
+        $sel = isset ( $_GET['tp_sel'] ) ?  htmlspecialchars($_GET['tp_sel']) : '';
         $filename = 'teachpress_course_' . $course_id . '_' . date('dmY');
 
         // Export courses
-        if ($type === "xls" && $course_id != 0) {
+        if ( $type === "xls" && $course_id != 0 ) {
             header("Content-type: application/vnd-ms-excel; charset=utf-8");
             header("Content-Disposition: attachment; filename=" . $filename . ".xls");
             tp_export::get_course_xls($course_id);
         }
 
-        if ($type === 'csv' && $course_id != 0) {
+        if ( $type === 'csv' && $course_id != 0 ) {
             header('Content-Type: text/x-csv');
             header("Content-Disposition: attachment; filename=" . $filename . ".csv");
             tp_export::get_course_csv($course_id);
         }
+        
         // Export publication lists
         if ( $type === 'pub' ) {
             $filename = 'teachpress_pub_' . date('dmY');
@@ -161,6 +161,11 @@ function tp_export_feed_func() {
                     exit;
                 }
             }
+        }
+        else {
+             // return a plain text with nothing
+            header('Content-Type: text/plain; charset=utf-8' );
+            return;
         }
     }
     else {

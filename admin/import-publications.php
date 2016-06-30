@@ -253,7 +253,9 @@ class tp_import_publication_page {
      */
     public static function export_tab () {
         ?>
-        <form id="tp_export" name="tp_export" action="<?php echo home_url(); ?>?feed=tp_pub_bibtex" method="post">
+        <form id="tp_export" name="tp_export" action="<?php echo home_url(); ?>" method="get">
+            <input name="feed" type="hidden" value="tp_export"/>
+            <input name="type" type="hidden" value="pub"/>
         <table class="form-table">
             <tr>
                 <th style="width: 150px;">

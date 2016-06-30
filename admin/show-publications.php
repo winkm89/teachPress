@@ -185,9 +185,11 @@ class tp_publications_page {
                document.form1.bibtex_area.select();
                </script>';
         if ( $sel != '' ) {
-            echo '<form id="tp_export" method="post" action="' . home_url() . '?feed=tp_pub_bibtex">';
+            echo '<form id="tp_export" method="get" action="' . home_url() . '">';
             echo '<input type="hidden" name="tp_sel" value="' . $sel . '"/>';
             echo '<input type="hidden" name="tp_format" value="bib"/>';
+            echo '<input type="hidden" name="type" value="pub"/>';
+            echo '<input type="hidden" name="feed" value="tp_export"/>';
             echo '<input type="submit" name="tp_submit" class="button-primary" value="' . __('Export','teachpress') . ' (.bibtex)"/>';
             echo '</form>';
         }
