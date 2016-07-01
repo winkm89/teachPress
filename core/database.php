@@ -1398,11 +1398,15 @@ class tp_documents {
         // prevent possible double escapes
         $name = stripslashes($name);
         
+        // ask for max sort
+        $max = $wpdb->get_var( "SELECT MAX(sort) FROM " . TEACHPRESS_COURSE_DOCUMENTS . " WHERE `course_id` = '" . intval($course_id) . "'" );
+        $sort = intval($max) + 1;
+        
         $wpdb->insert( TEACHPRESS_COURSE_DOCUMENTS, array( 'name' => $name, 
                                                            'path' => $path, 
                                                            'added' => $time,
                                                            'size' => $size,
-                                                           'sort' => 0, 
+                                                           'sort' => $sort, 
                                                            'course_id' => intval($course_id) ), 
                                                            array( '%s', '%s', '%s', '%d', '%d', '%d') );
         return $wpdb->insert_id;
