@@ -150,7 +150,7 @@ class tp_document_manager {
                     // file size error?
                 } 
                 else {
-                    $.get("<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>?mimetype_input=" + file.name, 
+                    $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&mimetype_input=" + file.name, 
                     function(text){
                         <?php if ( $mode === 'tinyMCE' ) { ?>
                         $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '" style="background-image: url(' + text + ');"><input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' + file.id + '" disabled="disabled" class="tp_file_checkbox" data_1="' + file.name + '" data_2="" value=""/><label class="tp_file_label" for="tp_file_checkbox_' + file.id + '"><span class="tp_file_name">' +
@@ -199,12 +199,8 @@ class tp_document_manager {
                 $('#tp_file_checkbox_' + file.id).attr("id","tp_file_checkbox_" + response_splitted[0]);
                 
                 // Save new sort order
-                var data = $('#tp_sortable').sortable('serialize');
-                $.ajax({
-                    data: data,
-                    type: 'POST',
-                    url: '<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>'
-                });
+                var data = $(this).sortable('serialize')+ '&action=teachpress';
+                $.post( "<?php echo admin_url( 'admin-ajax.php' ) ;?>", data );
                 
             });
 
@@ -219,12 +215,8 @@ class tp_document_manager {
                 placeholder: "ui-state-highlight",
                 opacity:.5,
                 update: function (event, ui) {
-                    var data = $(this).sortable('serialize');
-                    $.ajax({
-                        data: data,
-                        type: 'POST',
-                        url: '<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>'
-                    });
+                    var data = $(this).sortable('serialize')+ '&action=teachpress';
+                    $.post( "<?php echo admin_url( 'admin-ajax.php' ) ;?>", data );
                 } 
             });
             $( "#tp_sortable" ).disableSelection();
@@ -233,7 +225,7 @@ class tp_document_manager {
             $("#tp_add_headline_button").live("click", function() {
                 var value = $("#tp_add_headline_name").val();
                 if ( value !== '' ) {
-                    $.get("<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>?add_document=" + value + "&course_id=<?php echo $course_id; ?>", 
+                    $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&add_document=" + value + "&course_id=<?php echo $course_id; ?>", 
                     function(new_doc_id){
                         new_doc_id = parseInt(new_doc_id);
                         $('.tp_filelist').append('<li class="tp_file tp_file_headline" id="tp_file_' + new_doc_id + '" document_id="' + new_doc_id + '"><span class="tp_file_name">' + value + '</span> ' + '</li>');
@@ -241,12 +233,8 @@ class tp_document_manager {
                         $("#tp_add_headline_name").val('');
                         
                         // Save new sort order
-                        var data = $('#tp_sortable').sortable('serialize');
-                        $.ajax({
-                            data: data,
-                            type: 'POST',
-                            url: '<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>'
-                        });
+                        var data = $(this).sortable('serialize')+ '&action=teachpress';
+                        $.post( "<?php echo admin_url( 'admin-ajax.php' ) ;?>", data );
                     });
                 }
             });
@@ -287,7 +275,7 @@ class tp_document_manager {
             $(".tp_file_edit").live( "click", function() {
                 var document_id = $(this).attr("document_id");
                 
-                $.get("<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>?get_document_name=" + document_id, 
+                $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&get_document_name=" + document_id, 
                 function(text){
                     $("#tp_file_" + document_id).append('<div id="tp_file_edit_' + document_id + '"><input id="tp_file_edit_text_' + document_id + '" type="text" value="' + text + '" style="width:75%;" /><p><a class="button-primary tp_file_edit_save" document_id="' + document_id + '"><?php _e('Save'); ?></a> <a class="button-secondary tp_file_edit_cancel" document_id="' + document_id + '"><?php _e('Cancel'); ?></a></p></div>');
                 });
@@ -304,7 +292,7 @@ class tp_document_manager {
                 var document_id = $(this).attr("document_id");
                 var value = $("#tp_file_edit_text_" + document_id).val();
                 
-                $.post( "<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>", { change_document: document_id, new_document_name: value });
+                $.post( "<?php echo admin_url( 'admin-ajax.php' ) ;?>", { change_document: document_id, new_document_name: value, action: 'teachpress' });
                 $("#tp_file_" + document_id + " .tp_file_name").text(value);
                 $('#tp_file_checkbox_' + document_id).attr("data_1",value);
                 $("#tp_file_edit_" + document_id).remove();
@@ -315,7 +303,7 @@ class tp_document_manager {
             $(".tp_file_delete").live( "click", function() {
                 var document_id = $(this).attr("document_id");
                 $("#tp_file_" + document_id).remove().hide();
-                $.get("<?php echo WP_PLUGIN_URL . '/teachpress/ajax.php' ;?>?del_document=" + document_id, 
+                $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&del_document=" + document_id, 
                 function(text){
                     if ( text.search('true') !== -1 ) {
                         $('<div class="teachpress_message teachpress_message_green"><strong><?php _e('Removing successful','teachpress'); ?></strong></div>').prependTo(".wrap");
@@ -331,4 +319,131 @@ class tp_document_manager {
         </script>
         <?php
     }
+    
+    /**
+     * Returns the html header for the document manager window (tinyMCE)
+     * @since 5.1.0
+     * @access private
+     */
+    private static function get_window_header() {
+        ?>
+        <!DOCTYPE html>
+        <!--[if IE 8]>
+        <html xmlns="http://www.w3.org/1999/xhtml" class="ie8 wp-toolbar"  lang="de-DE">
+        <![endif]-->
+        <!--[if !(IE 8) ]><!-->
+        <html xmlns="http://www.w3.org/1999/xhtml" lang="de-DE" style="overflow: hidden;">
+        <!--<![endif]-->
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title>teachPress Document Manager</title>
+            <script type="text/javascript">
+            addLoadEvent = function(func){if(typeof jQuery!="undefined")jQuery(document).ready(func);else if(typeof wpOnload!='function'){wpOnload=func;}else{var oldonload=wpOnload;wpOnload=function(){oldonload();func();}}};
+            var pagenow = 'toplevel_page_teachpress/teachpress',
+                typenow = '',
+                adminpage = 'toplevel_page_teachpress-teachpress',
+                thousandsSeparator = '.',
+                decimalPoint = ',',
+                isRtl = 0;
+            </script>
+            <link rel="stylesheet" id="teachpress-document-manager-css"  href="<?php echo plugins_url(); ?>/teachpress/styles/teachpress_document_manager.css?ver=<?php echo get_tp_version(); ?>" type="text/css" media="all" />
+        </head>
+        <?php
+    }
+    
+    /**
+     * Returns the course selector for the document manager window (tinyMCE)
+     * @param int $course_id
+     * @since 5.1.0
+     * @access private
+     */
+    private static function get_course_selector ($course_id) {
+        echo '<div id="tp_select_course">';
+        echo '<select name="sel_course_id">';
+        echo '<option value="">- ' . __('Select Course','teachpress') . ' -</option>';
+        
+        // List of courses
+        $semester = get_tp_options('semester', '`setting_id` DESC');
+        foreach ( $semester as $row ) {
+            $courses = tp_courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
+            if ( count($courses) !== 0 ) {
+                echo '<optgroup label="' . $row->value . '">';
+            }
+            foreach ($courses as $course) {
+                $selected = ( $course_id == $course->course_id ) ? 'selected="selected"' : '';
+                echo '<option value="' . $course->course_id . '" ' . $selected . '>' . $course->name . ' (' . $course->semester . ')</option>/r/n';
+            }
+            if ( count($courses) > 0 ) {
+                echo '</optgroup>';
+            }
+        }
+        echo '</select>';   
+        echo '<input type="submit" name="sel_course_submit" class="button-secondary" value="' . __('Select','teachpress') . '"/>';
+        echo '</div>';
+    }
+
+    /**
+     * Returns the window content of the document manager for the tinyMCE plugin
+     * @global type $current_user
+     * @since 5.1
+     * @access public
+     */
+    public static function get_window () {
+        
+        if ( is_user_logged_in() && current_user_can('use_teachpress') ) {
+            self::get_window_header();
+        
+            // Load scripts and styles
+            wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
+            wp_enqueue_script('media-upload');
+            add_thickbox();
+    
+            wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
+            wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css');
+            wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
+            wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
+
+            do_action( 'admin_print_scripts' );
+            do_action( 'admin_print_styles' );
+
+            global $current_user;
+    
+            // Define post_id and course_id
+            $post_id = ( isset($_GET['post_id']) ) ? intval($_GET['post_id']) : 0;
+            $course_id = ( isset($_POST['sel_course_id']) ) ? intval($_POST['sel_course_id']) : 0;
+
+            // default
+            if ( $post_id !== 0 && $course_id === 0 ) {
+                $course_id = intval (tp_courses::is_used_as_related_content($post_id) );
+            }
+            // For user's selection
+            else if ( $course_id !== 0 ) {
+                $post_id = tp_courses::get_course_data($course_id, 'rel_page');
+            }
+            
+            echo '<body>';
+            echo '<div class="wrap">';
+            echo '<form method="post">';
+            // course selector
+            self::get_course_selector($course_id);
+            
+            if ( $course_id !== 0 ) { 
+                $capability = tp_courses::get_capability($course_id, $current_user->ID);
+                // check capabilities
+                if ( $capability !== 'owner' && $capability !== 'approved' ) {
+                    get_tp_message(__('You have no capabilites to use this course','teachpress'), 'red');
+                }
+                else {
+                    tp_document_manager::init($course_id, 'tinyMCE');
+                }
+            } 
+            
+            echo '</form>';
+            echo '</div>';
+            wp_footer();
+        } 
+        echo '</body>';
+        echo '</html>';
+    }
+    
 }

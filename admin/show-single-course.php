@@ -684,13 +684,11 @@ class tp_single_course_page {
                 $passed_icon = '&#10007';
             }
             
-            // if there is a commt for the assessment
             // if there is a comment for the assessment
             if ( $single_assessment['comment'] != '' ) {
                 $class .= ' tp_assessment_comment';
             }
             
-            echo '<a href="' . plugins_url() . '/teachpress/ajax.php?assessment_id=' . $single_assessment['assessment_id'] . '" title="' . __('Edit Assessment','teachpress') . '" class="tp_assessment ' . $class . '" id="tp_assessment_' . $single_assessment['assessment_id'] . '">' . $single_assessment['value'] . '</a>' . $passed_icon;
             echo '<span class="tp_assessment_container"><a href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&assessment_id=' . $single_assessment['assessment_id'] . '" title="' . __('Edit Assessment','teachpress') . '" class="tp_assessment ' . $class . '" id="tp_assessment_' . $single_assessment['assessment_id'] . '">' . $single_assessment['value'] . '</a>' . $passed_icon . '</span>';
         }
         echo '</td>';
@@ -760,7 +758,7 @@ class tp_single_course_page {
         echo '<th>' . __('First name','teachpress') . '</th>';
         $artefacts = tp_artefacts::get_artefacts($course_id, 0);
         foreach ( $artefacts as $row ) {
-            echo '<th><a href="' . plugins_url() . '/teachpress/ajax.php?artefact_id=' . $row['artefact_id'] . '" class="tp_edit_artefact" title="' . __('Edit Artefact','teachpress') . '">' . stripslashes($row['title']) . '</a></th>';
+            echo '<th><a href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&artefact_id=' . $row['artefact_id'] . '" class="tp_edit_artefact" title="' . __('Edit Artefact','teachpress') . '">' . stripslashes($row['title']) . '</a></th>';
         }
         echo '<th>' . __('Course','teachpress') . '</th>';
         echo '</tr>';

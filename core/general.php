@@ -7,6 +7,196 @@
  * @since 5.0.0
  */
 
+/*************************/
+/* AJAX request function */
+/*************************/
+
+/**
+ * AJAX callback function
+ * @since 5.1.0
+ */
+function tp_ajax_callback () {
+    
+    // Check permissions
+    if ( is_user_logged_in() && current_user_can('use_teachpress') ) {
+        
+        /**
+         * Getting author's publications (for show_authors.php)
+         * Works if $_GET['author_id'] is given
+         */
+        $author_id = ( isset( $_GET['author_id'] ) ) ? intval( $_GET['author_id'] ) : 0;
+        if ( $author_id !== 0 ) {
+            tp_ajax::get_author_publications($author_id);
+        }
+        
+        /**
+         * Getting assessment screen (for show_single_course.php)
+         * Works if $_GET['assessment_id'] is given
+         */
+        $assessment_id = ( isset( $_GET['assessment_id'] ) ) ? intval( $_GET['assessment_id'] ) : 0;
+        if ( $assessment_id !== 0 ) {
+            tp_ajax::get_assessment_screen($assessment_id);
+        }
+        
+        /**
+         * Getting artefact screen (for show_single_course.php)
+         * Works if $_GET['artefact_id'] is given
+         */
+        $artefact_id = ( isset( $_GET['artefact_id'] ) ) ? intval( $_GET['artefact_id'] ) : 0;
+        if ( $artefact_id !== 0 ) {
+            tp_ajax::get_artefact_screen($artefact_id);
+        }
+        
+        /**
+         * Removing documents
+         * Works if $_GET['del_document'] is given
+         */
+        $del_document = ( isset( $_GET['del_document'] ) ) ? intval( $_GET['del_document'] ) : 0;
+        if ( $del_document !== 0 ) {
+            tp_ajax::delete_document($del_document);
+        }
+
+        /**
+         * Adding document headlines
+         * Works if $_GET['add_document'] and $_GET['course_id'] are given
+         */
+        $add_document = ( isset( $_GET['add_document'] ) ) ? htmlspecialchars( $_GET['add_document'] ) : '';
+        $course_id = ( isset( $_GET['course_id'] ) ) ? intval($_GET['course_id']) : 0;
+        if ( $add_document !== '' && $course_id !== 0 ) {
+            tp_ajax::add_document_headline($add_document, $course_id);
+        }
+
+        /**
+         * Getting a document name
+         * Works if $_GET['get_document_name'] is given
+         */
+        $get_document_name = ( isset( $_GET['get_document_name'] ) ) ? intval( $_GET['get_document_name'] ) : 0;
+        if ( $get_document_name !== 0 ) {
+            tp_ajax::get_document_name($get_document_name);
+        }
+
+        /**
+         * Changing a document name
+         * Works if $_POST['change_document'] and $_POST['new_document_name'] are given
+         */
+        $change_document = ( isset( $_POST['change_document'] ) ) ? intval( $_POST['change_document'] ) : 0;
+        $new_document_name = ( isset( $_POST['new_document_name'] ) ) ? htmlspecialchars( $_POST['new_document_name'] ) : '';
+        if ( $change_document !== 0 && $new_document_name !== '' ) {
+            tp_ajax::change_document_name($change_document, $new_document_name);
+        }
+
+        /**
+         * Saving sort order of documents
+         * Works if $_POST['tp_file'] is given
+         */
+        if ( isset( $_POST['tp_file'] ) ) {
+            tp_ajax::set_sort_order($_POST['tp_file']);
+        }
+
+        /**
+         * Getting image url for mimetype
+         * Works if $_GET['mimetype_input'] is given
+         */
+        if ( isset( $_GET['mimetype_input'] ) ) {
+            tp_ajax::get_mimetype_image($_GET['mimetype_input']);
+        }
+
+        /**
+         * Getting the cite dialog
+         * @since 5.1.0
+         */
+        if ( isset( $_GET['cite_id'] ) ) {
+            tp_ajax::get_cite_screen($_GET['cite_id']);
+        }
+
+        /**
+         * Getting the cite text for a cite dialog
+         * @since 5.1.0
+         */
+        if ( isset( $_GET['cite_pub'] ) && isset( $_GET['cite_type'] )  ) {
+            tp_ajax::get_cite_text($_GET['cite_pub'], $_GET['cite_type']);
+        }
+
+    }
+
+    // this is required to terminate immediately and return a proper response
+    wp_die();
+}
+
+/**
+ * AJAX callback function for the document manager
+ * @since 5.1.0
+ */
+function tp_ajax_doc_manager_callback () {
+    tp_document_manager::get_window();
+    wp_die();
+}
+
+/**********************/
+/* Template functions */
+/**********************/
+
+/**
+ * Detects template files and returns an array with available templates
+ * @return array
+ * @since 5.1.0
+ */
+function tp_detect_templates() {
+    $folder = TEACHPRESS_TEMPLATE_PATH;
+    $files = scandir($folder);
+    $return = array();
+    foreach ( $files as $file ) {
+        $infos = pathinfo($folder.$file);
+        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
+            $return[$infos['filename']] = $folder.$file;
+        }
+    }
+    return $return;
+}
+
+/**
+ * Returns an array with the data of all available templates
+ * @return array
+ * @since 5.1.0
+ */
+function tp_list_templates () {
+    $folder = TEACHPRESS_TEMPLATE_PATH;
+    $files = scandir($folder);
+    $return = array();
+    foreach ( $files as $file ) {
+        $infos = pathinfo($folder.$file);
+        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
+            $return[] = $infos['filename'];
+        }
+    }
+    return $return;
+}
+
+/**
+ * Loads a template and returns the template object or false, if the template doesn't exist
+ * @param string $slug
+ * @return object|boolean
+ * @since 5.1.0
+ */
+function tp_load_template($slug) {
+    if ( $slug === '' ) {
+        return;
+    }
+    
+    $slug = esc_attr($slug);
+    $templates = tp_detect_templates();
+    
+    // load template file
+    if ( array_key_exists($slug, $templates) ) {
+        include_once $templates[$slug];
+        wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . $slug. '.css');
+        return new $slug();
+    }
+    
+    return false;
+
+}
+
 /** 
  * teachPress Page Menu
  * 
@@ -83,8 +273,7 @@ function tp_page_menu ($atts) {
  * @since 5.0.0
 */ 
 function get_tp_message($message, $color = 'green') {
-    $color = htmlspecialchars($color);
-    echo '<div class="teachpress_message teachpress_message_' . $color . '">';
+    echo '<div class="teachpress_message teachpress_message_' . esc_attr( $color ) . '">';
     echo '<strong>' . $message . '</strong>';
     echo '</div>';
 }
@@ -447,7 +636,7 @@ function tp_write_data_for_tinymce () {
         var teachpress_pub_types = <?php echo json_encode($pub_type_list); ?>;
         var teachpress_pub_tags = <?php echo json_encode($pub_tag_list) ?>;
         var teachpress_pub_templates = <?php echo json_encode($pub_templates_list); ?>;
-        var teachpress_editor_url = '<?php echo plugins_url() . '/teachpress/admin/document-manager.php?post_id=' . $post_id; ?>';
+        var teachpress_editor_url = '<?php echo admin_url( 'admin-ajax.php' ) . '?action=teachpressdocman&post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
         var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
         var teachpress_course_module = <?php if (TEACHPRESS_COURSE_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;

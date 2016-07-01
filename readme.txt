@@ -136,19 +136,21 @@ It's **strongly** recommended to save your teachPress database tables before upg
 = 5.1.xx - (xx.xx.2016) =
 * New: Template system for publication lists added (#26)
 * New: Cite function for publications in the backend (#22)
-* New: Optional dynamic author/editor format detection for bibtex imports
+* New: Option for dynamic author/editor format detection for bibtex imports added
 * New: Enroll multiple students at one time (#23)
-* New: RSS feeds, bibtex feeds and export streams now generated via WordPress API (#35)
 * New: [tpenrollments]: New parameter "order_signups" added
 * New: [tpcloud, tplist, tpsearch]: New parameter "template" added
 * New: [tpcloud, tplist, tpsearch]: New parameter "image_link" added (#8)
 * New: [tpcloud, tplist, tpsearch]: New parameter "title_ref" added (#14)
+* Changed: RSS feeds, bibtex feeds, export streams and ajax requests now generated via WordPress APIs (#35)
 * Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
 * Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
 * Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed
 * Changed: Style improvements for better support for WordPress 4.4+
 * Changed: Replaced get_currentuserinfo() with wp_get_current_user() (#31)
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
+* Bugfix: Fixed a sort order problem in the document manager after uploading files
+* Bugfix: Fixed a optical sort order problem with assessments 
 * Bugfix: HTML output for proceedings shows the edition instead of volume/number (#18)
 * Bugfix: Prevent a deletion of line breaks by bibtexParse in the import (#21)
 * Bugfix: Fixed a variable initialization bug in core/widgets.php (#24)

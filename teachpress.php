@@ -311,17 +311,17 @@ if ( is_admin() ) {
 include_once("core/admin.php");
 include_once("core/class-ajax.php");
 include_once("core/class-bibtex.php");
+include_once("core/class-bibtex-import.php");
 include_once("core/class-cite-object.php");
 include_once("core/class-document-manager.php");
 include_once("core/class-export.php");
-include_once("core/feeds.php");
 include_once("core/class-html.php");
 include_once("core/class-mail.php");
 include_once("core/database.php");
 include_once("core/deprecated.php");
 include_once("core/enrollments.php");
+include_once("core/feeds.php");
 include_once("core/general.php");
-include_once("core/class-bibtex-import.php");
 include_once("core/shortcodes.php");
 include_once("core/templates.php");
 include_once("core/widgets.php");
@@ -386,75 +386,10 @@ function tp_advanced_registration() {
  * Adds publication feeds
  * @since 5.1.0
  */
-function tp_pub_rss_init(){
+function tp_feed_init(){
     add_feed('tp_pub_rss', 'tp_pub_rss_feed_func');
     add_feed('tp_pub_bibtex', 'tp_pub_bibtex_feed_func');
     add_feed('tp_export', 'tp_export_feed_func');
-}
-
-/**********************/
-/* Template functions */
-/**********************/
-
-/**
- * Detects template files and returns an array with available templates
- * @return array
- * @since 5.1.0
- */
-function tp_detect_templates() {
-    $folder = TEACHPRESS_TEMPLATE_PATH;
-    $files = scandir($folder);
-    $return = array();
-    foreach ( $files as $file ) {
-        $infos = pathinfo($folder.$file);
-        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
-            $return[$infos['filename']] = $folder.$file;
-        }
-    }
-    return $return;
-}
-
-/**
- * Returns an array with the data of all available templates
- * @return array
- * @since 5.1.0
- */
-function tp_list_templates () {
-    $folder = TEACHPRESS_TEMPLATE_PATH;
-    $files = scandir($folder);
-    $return = array();
-    foreach ( $files as $file ) {
-        $infos = pathinfo($folder.$file);
-        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
-            $return[] = $infos['filename'];
-        }
-    }
-    return $return;
-}
-
-/**
- * Loads a template and returns the template object or false, if the template doesn't exist
- * @param string $slug
- * @return object|boolean
- * @since 5.1.0
- */
-function tp_load_template($slug) {
-    if ( $slug === '' ) {
-        return;
-    }
-    
-    $slug = esc_attr($slug);
-    $templates = tp_detect_templates();
-    
-    // load template file
-    if ( array_key_exists($slug, $templates) ) {
-        include_once $templates[$slug];
-        wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . $slug. '.css');
-        return new $slug();
-    }
-    
-    return false;
-
 }
 
 /*************************/
@@ -648,6 +583,9 @@ function tp_plugin_link($links, $file){
 // Register WordPress-Hooks
 register_activation_hook( __FILE__, 'tp_activation');
 add_action('init', 'tp_language_support');
+add_action('init', 'tp_feed_init');
+add_action('wp_ajax_teachpress', 'tp_ajax_callback');
+add_action('wp_ajax_teachpressdocman', 'tp_ajax_doc_manager_callback');
 add_action('admin_menu', 'tp_add_menu_settings');
 add_action('wp_head', 'tp_frontend_scripts');
 add_action('admin_init','tp_backend_scripts');
@@ -680,7 +618,6 @@ if ( TEACHPRESS_COURSE_MODULE === true ) {
 if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
     add_action('admin_menu', 'tp_add_menu2');
     add_action('widgets_init', create_function('', 'return register_widget("tp_books_widget");'));
-    add_action('init', 'tp_pub_rss_init');
     add_shortcode('tpcloud', 'tp_cloud_shortcode');
     add_shortcode('tplist', 'tp_list_shortcode');
     add_shortcode('tpsingle', 'tp_single_shortcode');
