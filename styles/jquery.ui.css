@@ -5,6 +5,7 @@
 .ui-icon {width: 16px;height: 16px;}
 .ui-icon-circle-triangle-w {background-position: -80px -192px;}
 .ui-icon-circle-triangle-e {background-position: -48px -192px;}
+.ui-icon-closethick {display: none !important;}
 /* jquery UI resizable */
 .ui-wrapper .ui-resizable { position: relative !important;}
 .ui-wrapper .ui-resizable-handle { position: absolute !important;font-size: 0.1px !important;z-index: 0 !important; display: block !important; }

@@ -20,6 +20,7 @@ function tp_add_student_page($fields) {
     // actions
     if (isset( $_POST['insert'] ) && $wp_id != __('WordPress User-ID','teachpress') && $wp_id != '') {
         tp_enrollments::add_student($wp_id, $data['userlogin'], $data['email'], $fields, filter_input_array(INPUT_POST, $_POST));
+        get_tp_message( __('Student added','teachPress') );
     }
     ?>
     <div class="wrap" >

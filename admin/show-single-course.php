@@ -685,11 +685,13 @@ class tp_single_course_page {
             }
             
             // if there is a commt for the assessment
+            // if there is a comment for the assessment
             if ( $single_assessment['comment'] != '' ) {
                 $class .= ' tp_assessment_comment';
             }
             
             echo '<a href="' . plugins_url() . '/teachpress/ajax.php?assessment_id=' . $single_assessment['assessment_id'] . '" title="' . __('Edit Assessment','teachpress') . '" class="tp_assessment ' . $class . '" id="tp_assessment_' . $single_assessment['assessment_id'] . '">' . $single_assessment['value'] . '</a>' . $passed_icon;
+            echo '<span class="tp_assessment_container"><a href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&assessment_id=' . $single_assessment['assessment_id'] . '" title="' . __('Edit Assessment','teachpress') . '" class="tp_assessment ' . $class . '" id="tp_assessment_' . $single_assessment['assessment_id'] . '">' . $single_assessment['value'] . '</a>' . $passed_icon . '</span>';
         }
         echo '</td>';
     }

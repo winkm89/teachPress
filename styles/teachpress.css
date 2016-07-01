@@ -56,6 +56,7 @@ a.tp_row_delete:hover, a.tp_file_delete:hover {color:red;}
 .tp_assessment_delete {visibility: hidden;}
 .tp_assessment_selected {background-color: #0074a2; color: #fff;}
 .tp_assessment:hover .tp_assessment_delete {visibility: visible;}
+.tp_assessment_container {display: inline-block;}
 .tp_description {display: none;}
 
 /* filelists */
@@ -71,7 +72,7 @@ a.tp_row_delete:hover, a.tp_file_delete:hover {color:red;}
 .tp_file a:hover {color: #ff6600;}
 a.tp_file_view {text-decoration: none;}
 
-/* jQuery UI Sortable */
+/* jQuery UI */
 #tp_sortable>li {cursor: move; min-height: 20px; background-color: #fff;}
 .ui-state-highlight { height: 20px; padding: 8px 8px 8px 8px; border:1px dotted #ccc; }
 
