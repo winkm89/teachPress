@@ -49,8 +49,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 = Licence information of external resources =
+* bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
+* OSBib by Mark Grimshaw (Licence: GPL)
 * Graphics for mimetypes, user-new-3.png, folder-new-7.png and document-new-6.png by Oxygen Icons 4.3.1 http://www.oxygen-icons.org/ (Licence: LPGL)
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
 * view-refresh-3.png by GNOME Icon Theme 2.26.0 http://art.gnome.org (License: GPLv2)
 * bookmark-new-4.png by Tango Icon Library (License: Public Domain)
-* bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
