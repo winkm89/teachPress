@@ -60,11 +60,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 = Licence information of external resources =
+* bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
+* OSBib by Mark Grimshaw (Licence: GPL)
 * Graphics for mimetypes, user-new-3.png, folder-new-7.png and document-new-6.png by Oxygen Icons 4.3.1 http://www.oxygen-icons.org/ (Licence: LPGL)
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
 * view-refresh-3.png by GNOME Icon Theme 2.26.0 http://art.gnome.org (License: GPLv2)
 * bookmark-new-4.png by Tango Icon Library (License: Public Domain)
-* bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
 
 = Thanks =
 I would like to thank the team of [CBIS, Chemnitz University of Technology](http://www.tu-chemnitz.de/wirtschaft/wi2/wp/en/) for the support and the collaboration during the last years.
@@ -135,6 +136,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 
 = 5.1.xx - (xx.xx.2016) =
 * New: Template system for publication lists added (#26)
+* New: Support for different citation styles (based on OSBib)
 * New: Cite function for publications in the backend (#22)
 * New: Option for dynamic author/editor format detection for bibtex imports added
 * New: Enroll multiple students at one time (#23)
