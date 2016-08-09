@@ -16,7 +16,8 @@ class tp_template_2016 implements tp_publication_template {
                       'description' => 'A new 4 line style template for publication lists.',
                       'author' => 'Michael Winkler',
                       'version'=> '1.0',
-                      'button_separator' => ' | '
+                      'button_separator' => ' | ',
+                      'citation_style' => 'teachPress'
         );
     }
     
@@ -60,6 +61,20 @@ class tp_template_2016 implements tp_publication_template {
     
     /**
      * Returns the single entry of a publication list
+     * 
+     * Contents of the interface object:
+     *   'row'               => The publication array
+     *   'title'             => The title of the publication
+     *   'images'            => The images array (HTML code for left, bottom, right)
+     *   'tag_line'          => The tag string
+     *   'settings'          => The settings array (shortcode options)
+     *   'counter'           => The publication counter (int)
+     *   'all_authors'       => The authors string
+     *   'keywords'          => The keywords string
+     *   'container_id'      => The ID of the HTML container
+     *   'template_settings' => The template settings array (name, description, author, citation_style)
+     *   'osbib_object'      => The generated string of OSBib or false
+     * 
      * @param object $interface     The interface object
      * @return string
      */

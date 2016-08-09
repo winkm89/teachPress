@@ -6,15 +6,18 @@
  * @since 5.1
  */
 
-class tp_template_orig implements tp_publication_template {
-    
+class tp_template_apa implements tp_publication_template {
+    /**
+     * Returns the settings of the template
+     * @return array
+     */
     public function get_settings() {
-        return array ('name'                => 'teachPress original',
-                      'description'         => 'the original 4-line style template for publication lists.',
-                      'author'              => 'Michael Winkler',
-                      'version'             => '1.0',
-                      'button_separator'    => ' | ',
-                      'citation_style'      => 'teachPress'
+        return array ('name' => 'teachPress APA style',
+                      'description' => 'A simple template which uses the APA style output',
+                      'author' => 'Michael Winkler',
+                      'version'=> '1.0',
+                      'button_separator' => ' | ',
+                      'citation_style' => 'APA'
         );
     }
     
@@ -62,14 +65,13 @@ class tp_template_orig implements tp_publication_template {
      * @return string
      */
     public function get_entry ($interface) {
+        $data = $interface->get_data();
         $s = '<tr class="tp_publication">';
         $s .= $interface->get_number('<td class="tp_pub_number">', '.</td>');
         $s .= $interface->get_images('left');
         $s .= '<td class="tp_pub_info">';
-        $s .= $interface->get_author('<p class="tp_pub_author">', '</p>');
-        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . '</p>';
-        $s .= '<p class="tp_pub_additional">' . $interface->get_meta() . '</p>';
-        $s .= '<p class="tp_pub_tags">' . $interface->get_tag_line('(', ')') . '</p>';
+        $s .= '<p class="tp_pub_additional">' . $data['osbib_object'] . '</p>';
+        $s .= '<p class="tp_pub_tags">' . __('Type','teachpress') . ': ' . $interface->get_type() . ' | ' . $interface->get_tag_line() . '</p>';
         $s .= $interface->get_infocontainer();
         $s .= $interface->get_images('bottom');
         $s .= '</td>';
@@ -77,6 +79,6 @@ class tp_template_orig implements tp_publication_template {
         $s .= '</tr>';
         return $s;
     }
-    
 }
+
 
