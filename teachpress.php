@@ -211,6 +211,13 @@ if ( !defined('TEACHPRESS_TEMPLATE_PATH') ) {
      * @since 5.1.0
     */
     define('TEACHPRESS_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');} 
+    
+if ( !defined('TEACHPRESS_OSBIB_TEMPLATE_PATH') ) {
+    /**
+     * This value defines the template path
+     * @since 5.1.0
+    */
+    define('TEACHPRESS_OSBIB_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'includes/osbib_new/styles/');} 
 
 if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
     /**
@@ -335,6 +342,14 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
 /*****************/
 /* Mainfunctions */
 /*****************/
+
+/**
+ * Load OSBiB core
+ * @since 5.1.0
+ */
+function tp_load_osbib() {
+    include_once 'includes/osbib_new/core.php';
+}
 
 /** 
  * Returns the current teachPress version

@@ -1438,19 +1438,37 @@ function tp_list_shortcode($atts){
         $template = tp_load_template('tp_template_orig');
     }
     
+    // Load OSBiB if needed
+    $template_settings = $template->get_settings();
+    if ( $template_settings['citation_style'] != 'teachPress' ) {
+        tp_load_osbib();
+        $new_bibformat = new osbib_bibformat(true);
+        list($info, $citation, $footnote, $common, $types) = $new_bibformat->loadStyle( $template_settings['citation_style'], TEACHPRESS_OSBIB_TEMPLATE_PATH );
+        $new_bibformat->getStyle($common, $types, $footnote);
+    }
+    
     // get publications
     $args = array('tag' => $tag, 'year' => $year, 'type' => $type, 'author_id' => $author, 'user' => $user, 'order' => $order, 'exclude' => $exclude, 'include' => $include, 'output_type' => ARRAY_A, 'limit' => $pagination_limits['limit']);
     $row = tp_publications::get_publications( $args );
     $number_entries = ( $pagination === 1 ) ? tp_publications::get_publications($args, true) : 0;
     $count = count($row);
     foreach ($row as $row) {
-       $number = ( $style === 'numbered_desc' || $style === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
-       $tparray[$tpz][0] = $row['year'];
-       $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number);
-       if ( 2 <= $headline && $headline <= 4 ) {
-           $tparray[$tpz][2] = $row['type'];
-       }
-       $tpz++;
+        $tparray[$tpz][0] = $row['year'];
+        $number = ( $style === 'numbered_desc' || $style === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
+        // teachPress style
+        if ( $template_settings['citation_style'] === 'teachPress' ) {
+            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number, false);
+        }
+        // OSBiB styles (APA, CHICAGO, ...)
+        else {
+            $new_bibformat->preProcess( tp_map_pubtype_to_osbib($row['type']) , $row);
+            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number, $new_bibformat);
+        }
+        
+        if ( 2 <= $headline && $headline <= 4 ) {
+                $tparray[$tpz][2] = $row['type'];
+        }
+        $tpz++;
     }
     
     // menu

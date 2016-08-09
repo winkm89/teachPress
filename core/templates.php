@@ -240,10 +240,11 @@ class tp_html_publication_template {
      * @param array $settings   Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
      * @param object $template  The template object
      * @param int $pub_count    The counter for numbered publications (default: 0)
+     * @param object $osbib     Ths optional OSBiB object (default: false)
      * @return string
      * @since 5.1.0
     */
-    public static function get_single ($row, $all_tags, $settings, $template, $pub_count = 0) {
+    public static function get_single ($row, $all_tags, $settings, $template, $pub_count = 0, $osbib = false) {
         $container_id = ( $settings['container_suffix'] != '' ) ? $row['pub_id'] . '_' . $settings['container_suffix'] : $row['pub_id'];
         $template_settings = $template->get_settings();
         $separator = $template_settings['button_separator'];
@@ -255,6 +256,7 @@ class tp_html_publication_template {
         $settings['use_span'] = true;
         $tag_string = '';
         $keywords = '';
+        $all_authors = '';
         $is_button = false;
         
         // show tags
@@ -264,12 +266,14 @@ class tp_html_publication_template {
             $tag_string = __('Tags') . ': ' . $generated['tags'];
         }
         
-        // parse author names 
-        if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
-        }
-        else {
-            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_name'] );
+        // parse author names for teachPress style
+        if ( $osbib === false ) {
+            if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
+                $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            }
+            else {
+                $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_name'] );
+            }
         }
 
         // if is an abstract
@@ -314,7 +318,8 @@ class tp_html_publication_template {
             'all_authors' => $all_authors,
             'keywords' => $keywords,
             'container_id' => $container_id,
-            'template_settings' => $template_settings
+            'template_settings' => $template_settings,
+            'osbib_object' => ($osbib !== false) ? $osbib->map() : ''
         );
         
         $interface = new tp_publication_interface();

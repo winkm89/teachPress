@@ -332,6 +332,44 @@ function get_tp_publication_types() {
 }
 
 /**
+ * Maps a teachPress publication type to the OSBiB type
+ * @param string $string    The teachPress publication type
+ * @return string           The OSBiB publication type
+ * @since 5.1.0
+ */
+function tp_map_pubtype_to_osbib ($string) {
+    $types = array(
+        'article' => 'journal_article',
+        'book' => 'book',
+        'booklet' => 'genericBook',
+        'collection' => 'genericBook',
+        'conference' => 'genericMisc',
+        'inbook' => 'book_article',
+        'incollection' => 'conference_paper',
+        'inproceedings' => 'proceedings_article',
+        'manual' => 'genericBook',
+        'mastersthesis' => 'thesis',
+        'misc' => 'miscellaneous',
+        'online' => 'web_article',
+        'periodical' => 'genericBook',
+        'phdthesis' => 'thesis',
+        'presentation' => 'miscellaneous',
+        'proceedings' => 'proceedings',
+        'techreport' => 'report',
+        'unpublished' => 'miscellaneous'
+    );
+    
+    if ( !array_key_exists($string, $types) ) {
+        return 'genericMisc';
+    }
+    if ( $types[$string] === '' ) {
+        return 'genericMisc';
+    }
+    return $types[$string];
+    
+}
+
+/**
  * get the path to a mimetype image
  * @param string $url   --> the URL of a file
  * @return string 
