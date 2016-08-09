@@ -529,8 +529,8 @@
                                         var type = filterData.tp_filter_type;
                                         var headline = designData.tp_headline;
                                         var image = imageData.tp_image;
-                                        var image_size = imageData.tp_size;
-                                        var image_link = imageData.tp_link;
+                                        var image_size = imageData.tp_image_size;
+                                        var image_link = imageData.tp_image_link;
                                         var template = designData.tp_template;
                                         var author_name = designData.tp_author_name;
                                         var editor_name = designData.tp_editor_name;
@@ -544,7 +544,7 @@
                                         headline = (headline === '1') ? '' : 'headline="' + headline + '"';
                                         image = (image === 'none') ? '' : 'image="' + image + '"';
                                         image_size = (image_size === '0') ? '' : 'image_size="' + image_size + '"';
-                                        image_link = (image_size === 'none') ? '' : 'image_link="' + image_link + '"';
+                                        image_link = (image_link === 'none') ? '' : 'image_link="' + image_link + '"';
                                         template = 'template="' + template + '"';
                                         author_name = (author_name === 'last') ? '' : 'author_name="' + author_name + '"';
                                         editor_name = (editor_name === 'last') ? '' : 'editor_name="' + editor_name + '"';
