@@ -136,7 +136,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 
 = 5.1.xx - (xx.xx.2016) =
 * New: Template system for publication lists added (#26)
-* New: Support for different citation styles (based on OSBib)
+* New: Support for different citation styles (based on OSBib) (#37)
 * New: Cite function for publications in the backend (#22)
 * New: Option for dynamic author/editor format detection for bibtex imports added
 * New: Enroll multiple students at one time (#23)
@@ -148,6 +148,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
 * Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
 * Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed
+* Changed: Publication search now includes the abstract
 * Changed: Style improvements for better support for WordPress 4.4+
 * Changed: Replaced get_currentuserinfo() with wp_get_current_user() (#31)
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
