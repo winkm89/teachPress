@@ -933,7 +933,7 @@ function tp_single_shortcode ($atts) {
 }
 
 /** 
- * Shorcode for the BibTeX of a single publication
+ * Shortcode for displaying the BibTeX code of a single publication
  * 
  * possible values of $atts:
  *      id (INT)        id of a publication
@@ -961,7 +961,7 @@ function tp_bibtex_shortcode ($atts) {
 }
 
 /** 
- * Shorcode for the abstract of a single publication
+ * Shortcode for displaying the abstract of a single publication
  * 
  * possible values of $atts:
  *      id (INT)        id of a publication
@@ -989,7 +989,7 @@ function tp_abstract_shortcode ($atts) {
 }
 
 /**
- * Shortcode for the related websites (url) of a publication 
+ * Shortcode for displaying the related websites (url) of a publication 
  * 
  * possible values of $atts:
  *      id (INT)        id of a publication
@@ -1018,7 +1018,7 @@ function tp_links_shortcode ($atts) {
 }
 
 /** 
- * Publication list with tag cloud
+ * Shortcode for displaying a publication list with tag cloud
  * 
  * Parameters for the array $atts:
  *      user (STRING)               the id of on or more users (separated by comma)
@@ -1271,11 +1271,30 @@ function tp_cloud_shortcode($atts) {
         $template = tp_load_template('tp_template_orig');
     }
     
+    // Load OSBiB if needed
+    $template_settings = $template->get_settings();
+    if ( $template_settings['citation_style'] != 'teachPress' ) {
+        tp_load_osbib();
+        $new_bibformat = new osbib_bibformat(true);
+        list($info, $citation, $footnote, $common, $types) = $new_bibformat->loadStyle( $template_settings['citation_style'], TEACHPRESS_OSBIB_TEMPLATE_PATH );
+        $new_bibformat->getStyle($common, $types, $footnote);
+    }
+    
     // Create array of publications
     foreach ($row as $row) {
         $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
         $tparray[$tpz][0] = $row['year'] ;
-        $tparray[$tpz][1] = tp_html_publication_template::get_single($row, $all_tags, $settings, $template, $number);
+        
+        // teachPress style
+        if ( $template_settings['citation_style'] === 'teachPress' ) {
+            $tparray[$tpz][1] = tp_html_publication_template::get_single($row, $all_tags, $settings, $template, $number);
+        }
+        // OSBiB styles (APA, CHICAGO, ...)
+        else {
+            $new_bibformat->preProcess( tp_map_pubtype_to_osbib($row['type']) , $row);
+            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,$all_tags, $settings, $template, $number, $new_bibformat);
+        }
+        
         if ( 2 <= $settings['headline'] && $settings['headline'] <= 4 ) {
             $tparray[$tpz][2] = $row['type'] ;
         }
@@ -1324,7 +1343,7 @@ function tp_cloud_shortcode($atts) {
 }
 
 /** 
- * Publication list without tag cloud
+ * Shortcode for displaying apublication list without filters
  * 
  * possible values for $atts:
  *      user (STRING)               user_ids (separated by comma)
@@ -1455,6 +1474,7 @@ function tp_list_shortcode($atts){
     foreach ($row as $row) {
         $tparray[$tpz][0] = $row['year'];
         $number = ( $style === 'numbered_desc' || $style === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
+        
         // teachPress style
         if ( $template_settings['citation_style'] === 'teachPress' ) {
             $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number, false);
@@ -1526,7 +1546,7 @@ function tp_list_shortcode($atts){
  * @since 4.0.0
  */
 function tp_search_shortcode ($atts) {
-    extract(shortcode_atts(array(
+    $atts = shortcode_atts(array(
        'user' => '',
        'tag' => '',
        'entries_per_page' => 20,
@@ -1544,28 +1564,27 @@ function tp_search_shortcode ($atts) {
        'order' => 'date DESC',
        'show_bibtex' => 1,
        'container_suffix' => ''
-    ), $atts)); 
+    ), $atts); 
     
     $tparray = '';
-    $tpz = 0;
     $colspan = '';
-    $image_size = intval($image_size);
-    $entries_per_page = intval($entries_per_page);
-    $order = esc_sql($order);
+    $image_size = intval($atts['image_size']);
+    $entries_per_page = intval($atts['entries_per_page']);
+    $order = esc_sql($atts['order']);
     $settings = array(
-        'author_name' => htmlspecialchars($author_name),
-        'editor_name' => htmlspecialchars($editor_name),
-        'style' => htmlspecialchars($style),
-        'template' => htmlspecialchars($template),
-        'image' => htmlspecialchars($image),
-        'image_link' => htmlspecialchars($image_link),
+        'author_name' => htmlspecialchars($atts['author_name']),
+        'editor_name' => htmlspecialchars($atts['editor_name']),
+        'style' => htmlspecialchars($atts['style']),
+        'template' => htmlspecialchars($atts['template']),
+        'image' => htmlspecialchars($atts['image']),
+        'image_link' => htmlspecialchars($atts['image_link']),
         'with_tags' => 0,
-        'link_style' => htmlspecialchars($link_style),
-        'title_ref' => htmlspecialchars($title_ref),
-        'date_format' => htmlspecialchars($date_format),
+        'link_style' => htmlspecialchars($atts['link_style']),
+        'title_ref' => htmlspecialchars($atts['title_ref']),
+        'date_format' => htmlspecialchars($atts['date_format']),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
-        'show_bibtex' => $show_bibtex == '1' ? true : false,
-        'container_suffix' => htmlspecialchars($container_suffix)
+        'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
+        'container_suffix' => htmlspecialchars($atts['container_suffix'])
     );
     if ($settings['image']== 'left' || $settings['image']== 'right') {
        $settings['pad_size'] = $image_size + 5;
@@ -1608,65 +1627,84 @@ function tp_search_shortcode ($atts) {
     $r .= '<input name="tps_button" class="tp_search_button" type="submit" value="' . __('Search', 'teachpress') . '"/>';
     
     $r .= '</div>';
-    if ( $search != "" || $as_filter != 'false' ) {
-        // get results
-        $tpz = 0;
-        $args = array ('user' => $user,
-                       'tag' => $tag,
-                       'search' => $search, 
-                       'limit' => $entry_limit . ',' .  $entries_per_page,
-                       'order' => $order,
-                       'output_type' => ARRAY_A);
-        $results = tp_publications::get_publications( $args );
-        $number_entries = tp_publications::get_publications($args, true);
-        
-        // menu
-        
-        $menu = tp_page_menu(array('number_entries' => $number_entries,
-                                   'entries_per_page' => $entries_per_page,
-                                   'current_page' => $current_page,
-                                   'entry_limit' => $entry_limit,
-                                   'page_link' => $page_link,
-                                   'link_attributes' => $link_attributes,
-                                   'mode' => 'bottom',
-                                   'before' => '<div class="tablenav">',
-                                   'after' => '</div>'));
-        if ( $search != "" ) {
-            $r .= '<h3 class="tp_search_result">' . __('Results for','teachpress') . ' "' . stripslashes($search) . '":</h3>';
-        }
-        $r .= $menu;
-        
-        // Load template
-        $template = tp_load_template($settings['template']);
-        if ( $template === false ) {
-            $template = tp_load_template('tp_template_orig_s');
-        }
-        
-        // If there are no results
-        if ( count($results) === 0 ) {
-            $r .= '<div class="teachpress_message_error">' . __('Sorry, no entries matched your criteria.','teachpress') . '</div>';
-        }
-        // Show results
-        else {
-            foreach ($results as $row) {
-                $count = ( $entry_limit == 0 ) ? ( $tpz + 1 ) : ( $entry_limit + $tpz + 1 );
-                $tparray[$tpz][0] = $row['year'];
-                $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count);
-                $tpz++;
-            }
-            $r .= tp_shortcodes::generate_pub_table(
-                        $tparray, 
-                        $template, 
-                        array( 'number_publications' => $tpz, 
-                               'colspan' => $colspan,
-                               'headline' => 0,
-                               'user' => '') );
-        }
-        $r .= $menu;
+    
+    // If there is nothing to show
+    if ( $search == "" && $atts['as_filter'] == 'false' ) {
+        $r .= '</form>';
+        return $r;
     }
+    
+    // get results
+    $tpz = 0;
+    $args = array ('user' => $atts['user'],
+                   'tag' => $atts['tag'],
+                   'search' => $search, 
+                   'limit' => $entry_limit . ',' .  $entries_per_page,
+                   'order' => $order,
+                   'output_type' => ARRAY_A);
+    $results = tp_publications::get_publications( $args );
+    $number_entries = tp_publications::get_publications($args, true);
+
+    // menu
+    $menu = tp_page_menu(array('number_entries' => $number_entries,
+                               'entries_per_page' => $entries_per_page,
+                               'current_page' => $current_page,
+                               'entry_limit' => $entry_limit,
+                               'page_link' => $page_link,
+                               'link_attributes' => $link_attributes,
+                               'mode' => 'bottom',
+                               'before' => '<div class="tablenav">',
+                               'after' => '</div>'));
+    if ( $search != "" ) {
+        $r .= '<h3 class="tp_search_result">' . __('Results for','teachpress') . ' "' . stripslashes($search) . '":</h3>';
+    }
+    $r .= $menu;
+
+    // Load template
+    $template = tp_load_template($settings['template']);
+    if ( $template === false ) {
+        $template = tp_load_template('tp_template_orig_s');
+    }
+
+    // Load OSBiB if needed
+    $template_settings = $template->get_settings();
+    if ( $template_settings['citation_style'] != 'teachPress' ) {
+        tp_load_osbib();
+        $new_bibformat = new osbib_bibformat(true);
+        list($info, $citation, $footnote, $common, $types) = $new_bibformat->loadStyle( $template_settings['citation_style'], TEACHPRESS_OSBIB_TEMPLATE_PATH );
+        $new_bibformat->getStyle($common, $types, $footnote);
+    }
+
+    // If there are no results
+    if ( count($results) === 0 ) {
+        $r .= '<div class="teachpress_message_error">' . __('Sorry, no entries matched your criteria.','teachpress') . '</div>';
+    }
+    // Show results
     else {
-        $r . '<div class="teachpress_message_error">' . __('Sorry, no entries matched your criteria.','teachpress') . '</div>';
+        foreach ($results as $row) {
+            $count = ( $entry_limit == 0 ) ? ( $tpz + 1 ) : ( $entry_limit + $tpz + 1 );
+            $tparray[$tpz][0] = $row['year'];
+            // teachPress style
+            if ( $template_settings['citation_style'] === 'teachPress' ) {
+                $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count, false);
+            }
+            // OSBiB styles (APA, CHICAGO, ...)
+            else {
+                $new_bibformat->preProcess( tp_map_pubtype_to_osbib($row['type']) , $row);
+                $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count, $new_bibformat);
+            }
+            $tpz++;
+        }
+        $r .= tp_shortcodes::generate_pub_table(
+                    $tparray, 
+                    $template, 
+                    array( 'number_publications' => $tpz, 
+                           'colspan' => $colspan,
+                           'headline' => 0,
+                           'user' => '') );
     }
+    $r .= $menu;
+    
     $r .= '</form>';
     return $r;
 }
