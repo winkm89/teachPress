@@ -161,10 +161,11 @@ class tp_settings_page {
     private static function get_about_dialog () {
         echo '<div id="dialog" title="About">
                 <div style="text-align: center;">
+                <p><img src="' . plugins_url() . '/teachpress/images/misc/about.jpg" style="border-radius: 130px; width: 250px; height: 250px;" title="Image by Ashwin Vaswani" /></p>
                 <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
                 <p style="font-size: 20px; font-weight: bold; color: #ffcc00;">' . get_tp_option('db-version') . ' "Banana Cream Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="http://mtrv.wordpress.com/teachpress/changelog/">Changelog</a> | <a href="http://mtrv.wordpress.com/teachpress/shortcode-reference/">Shortcode Reference</a> | <a href="http://mtrv.wordpress.com/teachpress/function-reference/">Function Reference</a></p>
-                <p>&copy; 2008-2016 by Michael Winkler | License: GPLv2 or later<br/></p>
+                <p>&copy;2008-2016 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
               </div>';
     }
