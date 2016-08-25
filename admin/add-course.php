@@ -150,7 +150,7 @@ function tp_add_course_page() {
                <div id="titlediv" style="padding-bottom: 15px;">
                    <div id="titlewrap">
                       <label class="hide-if-no-js" style="display:none;" id="title-prompt-text" for="title"><?php _e('Course name','teachpress'); ?></label>
-                      <input type="text" name="post_title" title="<?php _e('Course name','teachpress'); ?>" size="30" tabindex="1" value="<?php echo stripslashes($course_data["name"]); ?>" id="title" autocomplete="off" />
+                      <input type="text" name="post_title" title="<?php _e('Course name','teachpress'); ?>" size="30" tabindex="1" placeholder="<?php _e('Course name','teachpress'); ?>" value="<?php echo stripslashes($course_data["name"]); ?>" id="title" autocomplete="off" />
                    </div>
                </div>
                 <?php

@@ -120,9 +120,9 @@ class tp_show_authors_page {
         // actions
         self::actions($action, $checkbox, $page, $search, $curr_page);
 
-        echo '<div id="searchbox" style="float:right; padding-bottom:10px;">';
+        echo '<div id="tp_searchbox">';
         if ($search != "") {
-            echo '<a href="admin.php?page=teachpress/authors.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="' . __('Cancel the search','teachpress') . '">X</a>';
+            echo '<a href="admin.php?page=teachpress/authors.php" class="tp_search_cancel" title="' . __('Cancel the search','teachpress') . '">X</a>';
         }
         echo '<input type="search" name="search" id="pub_search_field" value="' . stripslashes($search) . '"/>';
         echo '<input type="submit" name="button" id="button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';

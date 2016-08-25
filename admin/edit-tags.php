@@ -126,8 +126,8 @@ class tp_tags_page {
                   'page_link' => "admin.php?page=$page&amp;",
                   'link_attributes' => "search=$search");
         ?>
-        <div id="searchbox" style="float:right; padding-bottom:10px;">
-                <?php if ($search != "") { ?><a href="admin.php?page=teachpress/tags.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="<?php _e('Cancel the search','teachpress'); ?>">X</a><?php } ?>
+        <div id="tp_searchbox">
+                <?php if ($search != "") { ?><a href="admin.php?page=teachpress/tags.php" class="tp_search_cancel" title="<?php _e('Cancel the search','teachpress'); ?>">X</a><?php } ?>
             <input type="search" name="search" id="pub_search_field" value="<?php echo stripslashes($search); ?>"/>
             <input type="submit" name="button" id="button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
         </div>

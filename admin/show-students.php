@@ -169,9 +169,9 @@ class tp_students_page {
                                                      'limit' => $page_settings['entry_limit'] . ',' . $page_settings['entries_per_page'], 
                                                      'output_type' => ARRAY_A ) );
         ?>
-        <div id="searchbox" style="float:right; padding-bottom:5px;">  
+        <div id="tp_searchbox">  
             <?php if ($search != "") { ?>
-            <a href="admin.php?page=teachpress/students.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="<?php _e('Cancel the search','teachpress'); ?>">X</a>
+            <a href="admin.php?page=teachpress/students.php" class="tp_search_cancel" title="<?php _e('Cancel the search','teachpress'); ?>">X</a>
             <?php } ?>
             <input name="search" type="search" value="<?php echo stripslashes($search); ?>"/></td>
             <input name="go" type="submit" value="<?php _e('Search','teachpress'); ?>" id="teachpress_search_senden" class="button-secondary"/>

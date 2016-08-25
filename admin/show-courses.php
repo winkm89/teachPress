@@ -138,29 +138,33 @@ class tp_courses_page {
                 get_tp_message($message);
            }
            ?>
-            <div id="searchbox" style="float:right; padding-bottom:10px;"> 
+            <div id="tp_searchbox"> 
                 <?php if ($search != '') { ?>
-                <a href="admin.php?page=teachpress/teachpress.php" style="font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;" title="<?php _e('Cancel the search','teachpress'); ?>">X</a>
+                <a href="admin.php?page=teachpress/teachpress.php" class="tp_search_cancel" title="<?php _e('Cancel the search','teachpress'); ?>">X</a>
                 <?php } ?>
                 <input type="search" name="search" id="pub_search_field" value="<?php echo stripslashes($search); ?>"/></td>
                 <input type="submit" name="pub_search_button" id="pub_search_button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
             </div>
-            <div id="filterbox" style="padding-bottom:10px;">    
-                 <select name="bulk" id="bulk">
-                      <option>- <?php _e('Bulk actions','teachpress'); ?> -</option>
-                      <option value="copy"><?php _e('copy','teachpress'); ?></option>
-                      <option value="delete"><?php _e('Delete','teachpress'); ?></option>
-                 </select>
-                 <input type="submit" name="teachpress_submit" id="doaction" value="<?php _e('OK','teachpress'); ?>" class="button-secondary"/>
-                 <select name="sem" id="sem">
-                      <option value=""><?php _e('All terms','teachpress'); ?></option>
-                      <?php
-                      foreach ($terms as $row) { 
-                           $current = ( $row->value == $sem ) ? 'selected="selected"' : '';
-                           echo '<option value="' . $row->value . '" ' . $current . '>' . stripslashes($row->value) . '</option>';
-                      } ?> 
-                 </select>
-                <input type="submit" name="start" value="<?php _e('Show','teachpress'); ?>" id="teachpress_submit" class="button-secondary"/>
+            <div class="tablenav" style="padding-bottom:5px;">
+                <div class="alignleft actions">
+                    <select name="bulk" id="bulk">
+                         <option>- <?php _e('Bulk actions','teachpress'); ?> -</option>
+                         <option value="copy"><?php _e('copy','teachpress'); ?></option>
+                         <option value="delete"><?php _e('Delete','teachpress'); ?></option>
+                    </select>
+                    <input type="submit" name="teachpress_submit" id="doaction" value="<?php _e('OK','teachpress'); ?>" class="button-secondary"/>
+                </div>
+                <div class="alignleft actions">
+                    <select name="sem" id="sem">
+                         <option value=""><?php _e('All terms','teachpress'); ?></option>
+                         <?php
+                         foreach ($terms as $row) { 
+                              $current = ( $row->value == $sem ) ? 'selected="selected"' : '';
+                              echo '<option value="' . $row->value . '" ' . $current . '>' . stripslashes($row->value) . '</option>';
+                         } ?> 
+                    </select>
+                   <input type="submit" name="start" value="<?php _e('Show','teachpress'); ?>" id="teachpress_submit" class="button-secondary"/>
+                </div>
              </div>
             <table class="widefat">
                <thead>
@@ -267,6 +271,7 @@ class tp_courses_page {
             }
             // table design for searches
             else {
+                $static['tr_class'] = '';
                 $parent_name = ( $courses[$i]['parent'] != 0 ) ? tp_courses::get_course_data($courses[$i]['parent'], 'name') : '';
                 echo tp_courses_page::get_single_table_row($courses[$i], $user_ID, $checkbox, $static, $parent_name, 'search');
             }

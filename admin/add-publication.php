@@ -170,7 +170,7 @@ function tp_add_publication_page() {
     echo '<div id="titlediv" style="padding-bottom: 15px;">';
     echo '<div id="titlewrap">';
     echo '<label class="hide-if-no-js" style="display:none;" id="title-prompt-text" for="title">' . __('Title','teachpress') . '</label>';
-    echo '<input type="text" name="post_title" size="30" title="' . __('Title','teachpress') . '" tabindex="1" value="' . stripslashes($pub_data["title"]) . '" id="title" autocomplete="off" />';
+    echo '<input type="text" name="post_title" size="30" title="' . __('Title','teachpress') . '" tabindex="1" value="' . stripslashes($pub_data["title"]) . '" id="title" placeholder="' . __('Title','teachpress') . '" autocomplete="off" />';
     echo '</div>';
     echo '</div>';
     
