@@ -127,6 +127,20 @@ if ( !defined('TEACHPRESS_PUB_META') ) {
      * @since 5.0.0
     */
     define('TEACHPRESS_PUB_META', $wpdb->prefix . 'teachpress_pub_meta');}
+    
+if ( !defined('TEACHPRESS_PUB_CAPABILITES') ) {
+    /**
+     * This constant defines the table name for teachpress_course_cababilites.
+     * @since 6.0.0
+    */
+    define('TEACHPRESS_PUB_CAPABILITES', $wpdb->prefix . 'teachpress_pub_capabilites');}
+
+if ( !defined('TEACHPRESS_PUB_DOCUMENTS') ) {
+    /**
+     * This constant defines the table name for teachpress_course_documents.
+     * @since 6.0.0
+    */
+    define('TEACHPRESS_PUB_DOCUMENTS', $wpdb->prefix . 'teachpress_pub_documents');}
 
 if ( !defined('TEACHPRESS_TAGS') ) {
     /**

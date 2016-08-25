@@ -46,6 +46,8 @@ class tp_tables {
         // Publications
         self::add_table_pub($charset_collate);
         self::add_table_pub_meta($charset_collate);
+        self::add_table_pub_capabilites($charset_collate);
+        self::add_table_pub_documents($charset_collate);
         self::add_table_tags($charset_collate);
         self::add_table_relation($charset_collate);
         self::add_table_user($charset_collate);
@@ -491,6 +493,7 @@ class tp_tables {
                     `status` VARCHAR (100) DEFAULT 'published',
                     `added` DATETIME,
                     `modified` DATETIME,
+                    `use_capabilites` INT(1),
                     PRIMARY KEY (pub_id)
                 ) $charset_collate;");
         
@@ -523,6 +526,61 @@ class tp_tables {
         
         // test engine
         self::change_engine(TEACHPRESS_PUB_META);
+    }
+    
+        /**
+     * Create table pub_capabilites
+     * @param string $charset_collate
+     * @since 6.0.0
+     */
+    public static function add_table_pub_capabilites($charset_collate) {
+        global $wpdb;
+        
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_PUB_CAPABILITES . "'") == TEACHPRESS_PUB_CAPABILITES ) {
+            return;
+        }
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        
+        dbDelta("CREATE TABLE " . TEACHPRESS_PUB_CAPABILITES . " (
+                    `cap_id` INT UNSIGNED AUTO_INCREMENT,
+                    `wp_id` INT UNSIGNED,
+                    `pub_id` INT UNSIGNED,
+                    `capability` VARCHAR(100),
+                    PRIMARY KEY (`cap_id`)
+                ) $charset_collate;");
+        
+        // test engine
+        self::change_engine(TEACHPRESS_PUB_CAPABILITES);
+    }
+    
+    /**
+     * Create table pub_documents
+     * @param string $charset_collate
+     * @since 6.0.0
+     */
+    public static function add_table_pub_documents($charset_collate) {
+        global $wpdb;
+        
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_PUB_DOCUMENTS . "'") == TEACHPRESS_PUB_DOCUMENTS ) {
+            return;
+        }
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        
+        dbDelta("CREATE TABLE " . TEACHPRESS_PUB_DOCUMENTS . " (
+                    `doc_id` INT UNSIGNED AUTO_INCREMENT,
+                    `name` VARCHAR(500),
+                    `path` VARCHAR(500),
+                    `added` DATETIME,
+                    `size` BIGINT,
+                    `sort` INT,
+                    `pub_id` INT UNSIGNED,
+                    PRIMARY KEY (doc_id)
+                ) $charset_collate;");
+         
+        // test engine
+        self::change_engine(TEACHPRESS_PUB_DOCUMENTS);
     }
     
     /**

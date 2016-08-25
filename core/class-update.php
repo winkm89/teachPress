@@ -94,6 +94,12 @@ class tp_update_db {
         // force updates to reach structure of teachPress 5.0.0
         if ( $db_version[0] === '5' || $update_level === '5' ) {
             tp_update_db::upgrade_to_50($charset_collate);
+            $update_level = '6';
+        }
+        
+        // force updates to reach structure of teachPress 6.0.0
+        if ( $db_version[0] === '6' || $update_level === '6' ) {
+            tp_update_db::upgrade_to_60();
         }
         
         // Add teachPress options
@@ -538,7 +544,7 @@ class tp_update_db {
         tp_tables::add_table_artefacts($charset);
         tp_tables::add_table_assessments($charset);
         tp_tables::add_table_course_capabilites($charset);
-        tp_tables::add_table_course_documents($charset_collate);
+        tp_tables::add_table_course_documents($charset);
         tp_tables::add_table_course_meta($charset);
         tp_tables::add_table_authors($charset);
         tp_tables::add_table_rel_pub_auth($charset);
@@ -603,6 +609,26 @@ class tp_update_db {
         // expand char limit for tp_publications::organization
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'organization'") == '1') {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `organization` `organization` VARCHAR (500) $charset_collate NULL DEFAULT NULL");
+        }
+        
+    }
+    
+    /**
+     * Database upgrade to teachPress 6.0.0 structure
+     * @since 6.0.0
+     */
+    private static function upgrade_to_60 (){
+        global $wpdb;
+        $charset = tp_tables::get_charset();
+        // add new tables
+
+        tp_tables::add_table_pub_meta($charset);
+        tp_tables::add_table_pub_capabilites($charset);
+        tp_tables::add_table_pub_documents($charset);
+        
+        // add column use_capabilites to table teachpress_courses
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'use_capabilites'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `use_capabilites` INT( 1 ) NULL DEFAULT NULL AFTER `modified`");
         }
         
     }
