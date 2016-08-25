@@ -142,7 +142,7 @@ function tp_add_publication_page() {
     }
 
     /*
-     * Disabled since tp 5.1
+     * Disabled since tp 6.0
     if ( $pub_id != 0 && !isset($_POST['create_pub']) ) {
         echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
     }

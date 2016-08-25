@@ -110,12 +110,12 @@ class tp_bibtex {
      * @param int $tpz          the counter for numbered publications (default: 0)
      * @return string
      * @since 3.0.0
-     * @deprecated since version 5.1.0
+     * @deprecated since version 6.0.0
      * @todo Delete this function with a later major release
     */
     public static function get_single_publication_html ($row, $all_tags, $settings, $tpz = 0) {
         // Warning
-        trigger_error( __('The function is deprecated since teachpress 5.1 Use tp_html_publication_template::get_single() instead.','teachpress') );
+        trigger_error( __('The function is deprecated since teachpress 6.0 Use tp_html_publication_template::get_single() instead.','teachpress') );
         
         // Define style type
         if ( $settings['style'] === 'simple' || $settings['style'] === 'numbered' || $settings['style'] === 'numbered_desc' ) {

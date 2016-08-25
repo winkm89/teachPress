@@ -8,7 +8,7 @@
 
 /**
  * This class contains all functions for the show/edit student pages in admin menu
- * @since 5.1.0
+ * @since 6.0.0
  */
 class tp_student_page {
     
@@ -16,7 +16,7 @@ class tp_student_page {
      * Prints a signup table
      * @param int $student      The WP user ID
      * @param type $mode        wtl or reg
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private
      */
     private static function get_signups_table ($student, $mode) {
@@ -66,7 +66,7 @@ class tp_student_page {
     /**
      * Prints the rows for the signup tables
      * @param object $row
-     * @since 5.1.0
+     * @since 6.0.0
      */
     private static function get_signups_table_rows ($row) {
         $class_alternate = true;
@@ -102,7 +102,7 @@ class tp_student_page {
      * @param string $search        The search string       (used for back button)
      * @param string $curr_page     The numbero of entries  (used for back button)
      * @param string $url_parameter A string with URL parameter for meta data fields
-     * @since 5.1.0
+     * @since 6.0.0
     */ 
     public static function show_tab ($student, $fields, $search, $curr_page, $url_parameter) {
         $row3 = tp_students::get_student($student);
@@ -185,7 +185,7 @@ class tp_student_page {
      * @param string $search        The search string       (used for back button)
      * @param string $entry_limit   The numbero of entries  (used for back button)
      * @param string $url_parameter A string with URL parameter for meta data fields
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
     */
     public static function edit_tab ($student, $fields, $search, $entry_limit, $url_parameter) {

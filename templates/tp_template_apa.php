@@ -3,7 +3,7 @@
  * teachPress template file
  * @package teachpress\core\templates
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
- * @since 5.1
+ * @since 6.0.0
  */
 
 class tp_template_apa implements tp_publication_template {

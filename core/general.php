@@ -13,7 +13,7 @@
 
 /**
  * AJAX callback function
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_ajax_callback () {
     
@@ -103,7 +103,7 @@ function tp_ajax_callback () {
 
         /**
          * Getting the cite dialog
-         * @since 5.1.0
+         * @since 6.0.0
          */
         if ( isset( $_GET['cite_id'] ) ) {
             tp_ajax::get_cite_screen($_GET['cite_id']);
@@ -111,7 +111,7 @@ function tp_ajax_callback () {
 
         /**
          * Getting the cite text for a cite dialog
-         * @since 5.1.0
+         * @since 6.0.0
          */
         if ( isset( $_GET['cite_pub'] ) && isset( $_GET['cite_type'] )  ) {
             tp_ajax::get_cite_text($_GET['cite_pub'], $_GET['cite_type']);
@@ -125,7 +125,7 @@ function tp_ajax_callback () {
 
 /**
  * AJAX callback function for the document manager
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_ajax_doc_manager_callback () {
     tp_document_manager::get_window();
@@ -139,7 +139,7 @@ function tp_ajax_doc_manager_callback () {
 /**
  * Detects template files and returns an array with available templates
  * @return array
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_detect_templates() {
     $folder = TEACHPRESS_TEMPLATE_PATH;
@@ -157,7 +157,7 @@ function tp_detect_templates() {
 /**
  * Returns an array with the data of all available templates
  * @return array
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_list_templates () {
     $folder = TEACHPRESS_TEMPLATE_PATH;
@@ -176,7 +176,7 @@ function tp_list_templates () {
  * Loads a template and returns the template object or false, if the template doesn't exist
  * @param string $slug
  * @return object|boolean
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_load_template($slug) {
     if ( $slug === '' ) {
@@ -335,7 +335,7 @@ function get_tp_publication_types() {
  * Maps a teachPress publication type to the OSBiB type
  * @param string $string    The teachPress publication type
  * @return string           The OSBiB publication type
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_map_pubtype_to_osbib ($string) {
     $types = array(

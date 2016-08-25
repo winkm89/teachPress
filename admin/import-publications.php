@@ -22,7 +22,7 @@ function tp_import_publication_page_help() {
 
 /**
  * The controller for the import page of teachPress
- * @since 5.1.0
+ * @since 6.0.0
 */ 
 function tp_show_import_publication_page() {
     $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
@@ -52,7 +52,7 @@ function tp_show_import_publication_page() {
 
 /**
  * This class contains function for generating the import_publication_page
- * @since 5.1.0
+ * @since 6.0.0
  */
 class tp_import_publication_page {
     
@@ -60,7 +60,7 @@ class tp_import_publication_page {
      * This function executes all import action calls
      * @global object $current_user
      * @param array $post                   The $_POST array
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public static function import_actions ($post) {
@@ -133,7 +133,7 @@ class tp_import_publication_page {
     /**
      * Shows the import form
      * @param string $tab
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
     */
     public static function import_tab () {
@@ -193,7 +193,7 @@ class tp_import_publication_page {
     /**
      * Shows the import results
      * @param array $entries
-     * @since 5.1.0
+     * @since 6.0.0
     */
     public static function show_results($entries) {
 
@@ -248,7 +248,7 @@ class tp_import_publication_page {
     
     /**
      * Displays the export tab of the import page
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public static function export_tab () {

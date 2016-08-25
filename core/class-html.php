@@ -18,7 +18,7 @@ class tp_html {
      * @param array $row            The data array of a single publication
      * @param array $settings       The settings array
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
     */
     public static function get_publication_meta_row($row, $settings) {
         $use_span = $settings['use_span']; 
@@ -149,7 +149,7 @@ class tp_html {
      * @param string $after
      * @param string $use_span 
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function prepare_line($element, $content, $before = '', $after = '', $use_span = false) {
         if ( $content === '' ) {
@@ -235,7 +235,7 @@ class tp_html {
      * Converts some HTML special chars with the UTF-8 versions
      * @param string $input
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
     */
     public static function convert_special_chars ($input) {
         $array_1 = array('&Uuml;','&uuml;',

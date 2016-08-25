@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.5.3
-Stable tag: 5.1alpha
+Tested up to: 4.6.1
+Stable tag: 6.0alpha
 
 Manage your courses and publications with teachPress 
 
@@ -134,7 +134,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 
 == Changelog ==
 
-= 5.1.xx - (xx.xx.2016) =
+= 6.0.0 - (xx.xx.2016) =
 * New: Template system for publication lists added (#26)
 * New: Support for different citation styles (based on OSBib) (#37)
 * New: Cite function for publications in the backend (#22)

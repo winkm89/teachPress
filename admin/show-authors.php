@@ -49,7 +49,7 @@ function tp_show_authors_page () {
 
 /**
  * This class contains all functions for the show authors page
- * @since 5.1.0
+ * @since 6.0.0
  */
 class tp_show_authors_page {
     
@@ -60,7 +60,7 @@ class tp_show_authors_page {
      * @param string $page          The current page 
      * @param string $search        The search string
      * @param int $curr_page        The current page in the page menu
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private
      */
     private static function actions ($action, $checkbox, $page, $search, $curr_page) {
@@ -82,7 +82,7 @@ class tp_show_authors_page {
     /**
      * This function prints the page
      * @param string $action
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function get_page ($action) {
         $search = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
@@ -205,7 +205,7 @@ class tp_show_authors_page {
      * @param type $curr_page
      * @param type $entry_limit
      * @param type $number_messages
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private 
      */
     private static function get_table ($action, $checkbox, $page, $search, $curr_page, $entry_limit, $number_messages) {
@@ -241,7 +241,7 @@ class tp_show_authors_page {
     
     /**
      * Prints the js for the page
-     * @since 5.1.0
+     * @since 6.0.0
      */
     private static function print_scripts () {
         ?>

@@ -3,11 +3,11 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 5.1alpha
+Version: 6.0alpha
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
-Max WP Version: 4.5.3
+Max WP Version: 4.6.1
 Text Domain: teachpress
 Domain Path: /languages
 GitHub Plugin URI: https://github.com/winkm89/teachPress
@@ -208,21 +208,21 @@ if ( !defined('TEACHPRESS_FOREIGN_KEY_CHECKS') ) {
 if ( !defined('TEACHPRESS_TEMPLATE_PATH') ) {
     /**
      * This value defines the template path
-     * @since 5.1.0
+     * @since 6.0.0
     */
     define('TEACHPRESS_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');} 
     
 if ( !defined('TEACHPRESS_OSBIB_TEMPLATE_PATH') ) {
     /**
      * This value defines the template path
-     * @since 5.1.0
+     * @since 6.0.0
     */
     define('TEACHPRESS_OSBIB_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'includes/osbib_new/styles/');} 
 
 if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
     /**
      * This value defines the template url
-     * @since 5.1.0
+     * @since 6.0.0
     */
     define('TEACHPRESS_TEMPLATE_URL', plugins_url() . '/teachpress/templates/');}     
     
@@ -234,7 +234,7 @@ if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
 /**
  * Add menu for courses and students
  * @since 0.1.0
- * @todo Remove support for WordPress <3.9 with teachPress 5.1 or later
+ * @todo Remove support for WordPress < 3.9
  */
 function tp_add_menu() {
     global $wp_version;
@@ -254,7 +254,7 @@ function tp_add_menu() {
 /**
  * Add menu for publications
  * @since 0.9.0
- * @todo Remove support for WordPress <3.9 with teachPress 5.1 or later
+ * @todo Remove support for WordPress <3.9
  */
 function tp_add_menu2() {
     global $wp_version;
@@ -345,7 +345,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
 
 /**
  * Load OSBiB core
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_load_osbib() {
     include_once 'includes/osbib_new/core.php';
@@ -356,7 +356,7 @@ function tp_load_osbib() {
  * @return string
 */
 function get_tp_version() {
-    return '5.1alpha';
+    return '6.0alpha';
 }
 
 /**
@@ -399,7 +399,7 @@ function tp_advanced_registration() {
 
 /**
  * Adds publication feeds
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_feed_init(){
     add_feed('tp_pub_rss', 'tp_pub_rss_feed_func');

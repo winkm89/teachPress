@@ -282,7 +282,7 @@ class tp_export {
      * Returns a single line for a utf8 encoded text
      * @param array $row        The publication array
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
     */
     public static function text_row ($row) {

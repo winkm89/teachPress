@@ -190,7 +190,7 @@ class tp_ajax {
     /**
      * Gets the cite screen for a single publication.
      * @param int $cite_id       The publication ID
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public static function get_cite_screen ($cite_id) {
@@ -220,7 +220,7 @@ class tp_ajax {
      * @param int $cite_id      the publication ID
      * @param string $mode      text or bibtex
      * @access public
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function get_cite_text ($cite_id, $mode) {
         if ( $mode === 'bibtex' ) {

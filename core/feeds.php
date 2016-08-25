@@ -7,7 +7,7 @@
 
 /**
  * Generate RSS feed for publications
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_pub_rss_feed_func () {
     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -77,7 +77,7 @@ function tp_pub_rss_feed_func () {
 
 /**
  * Generates the BibTeX publication feed
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_pub_bibtex_feed_func () {
     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -93,7 +93,7 @@ function tp_pub_bibtex_feed_func () {
 
 /**
  * Generates the export stream
- * @since 5.1.0
+ * @since 6.0.0
  */
 function tp_export_feed_func() {
     $key = isset ( $_GET['key'] ) ? $_GET['key'] : '';

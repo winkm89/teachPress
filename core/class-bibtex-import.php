@@ -3,13 +3,13 @@
  * This file contains all functions which are used for a bibtex import
  * @package teachpress\core\bibtex
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
- * @since 5.1.0
+ * @since 6.0.0
  */
 
 /**
  * This class contains functions which are used for a bibtex import
  * @package teachpress\core\bibtex
- * @since 5.1.0
+ * @since 6.0.0
  */
 class tp_bibtex_import {
    /**
@@ -136,7 +136,7 @@ class tp_bibtex_import {
      * This function parses a month name into his numeric expression
      * @param string $input
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public static function parse_month ($input) {
@@ -201,7 +201,7 @@ class tp_bibtex_import {
 /**
  * This class contains functions which are used for a author name manipulation in bibtex imports
  * @package teachpress\core\bibtex
- * @since 5.1.0
+ * @since 6.0.0
  */
 class tp_bibtex_import_author {
     
@@ -230,7 +230,7 @@ class tp_bibtex_import_author {
      * @param array $entry
      * @param string $key
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private
      */
     private static function dynamic_mode ($entry, $key) {
@@ -252,7 +252,7 @@ class tp_bibtex_import_author {
      * @param array $entry
      * @param string $key
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private
      */
     private static function lastname_first($entry, $key) {

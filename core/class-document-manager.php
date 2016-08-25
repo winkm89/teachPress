@@ -322,7 +322,7 @@ class tp_document_manager {
     
     /**
      * Returns the html header for the document manager window (tinyMCE)
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private
      */
     private static function get_window_header() {
@@ -354,7 +354,7 @@ class tp_document_manager {
     /**
      * Returns the course selector for the document manager window (tinyMCE)
      * @param int $course_id
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private
      */
     private static function get_course_selector ($course_id) {
@@ -385,7 +385,7 @@ class tp_document_manager {
     /**
      * Returns the window content of the document manager for the tinyMCE plugin
      * @global type $current_user
-     * @since 5.1
+     * @since 6.0.0
      * @access public
      */
     public static function get_window () {

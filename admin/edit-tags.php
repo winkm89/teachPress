@@ -113,7 +113,7 @@ class tp_tags_page {
      * @param string $action
      * @param int $page
      * @param int $curr_page
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function get_page ($search, $entry_limit, $number_messages, $checkbox, $action, $page, $curr_page) {
         // Page Menu
@@ -204,7 +204,7 @@ class tp_tags_page {
      * @param type $curr_page
      * @param type $entry_limit
      * @param type $number_messages
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function get_table ($checkbox, $action, $search, $page, $curr_page, $entry_limit, $number_messages) {
         $class_alternate = true;

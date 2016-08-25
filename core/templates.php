@@ -3,18 +3,18 @@
  * Template functions for displaying publications in HTML
  * @package teachpress\core\templates
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
- * @since 5.1
+ * @since 6.0.0
  */
 
 /**
  * Interface for the template classes
- * @since 5.1.0
+ * @since 6.0.0
  */
 interface tp_publication_template {
     /**
      * Returns the settings of the template
      * @return array
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public function get_settings();
     
@@ -23,7 +23,7 @@ interface tp_publication_template {
      * @param string $content   The content of the publication list itself
      * @param array $args       An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public function get_body($content, $args);
     
@@ -32,7 +32,7 @@ interface tp_publication_template {
      * @param type $content     The content of the headline
      * @param type $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
      * @return string
-     * @scine 5.1.0
+     * @since 6.0.0
      */
     public function get_headline($content, $args);
     
@@ -41,7 +41,7 @@ interface tp_publication_template {
      * @param type $content     The content of the headline
      * @param type $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public function get_headline_sl($content, $args);
     
@@ -49,14 +49,14 @@ interface tp_publication_template {
      * Returns the single entry of a publication list
      * @param object $interface     The interface object
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public function get_entry($interface);
 }
 
 /**
  * Contains all interface functions for publication templates
- * @since 5.1.0
+ * @since 6.0.0
  */
 class tp_publication_interface {
     protected $data;
@@ -64,7 +64,7 @@ class tp_publication_interface {
     /**
      * Returns the data for a publication row
      * @return array
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_data() {
@@ -74,7 +74,7 @@ class tp_publication_interface {
     /**
      * Sets the data for a publication row
      * @param array $data
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function set_data($data) {
@@ -86,7 +86,7 @@ class tp_publication_interface {
      * @param string $before
      * @param string $after
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_number ($before = '', $after = '') {
@@ -102,7 +102,7 @@ class tp_publication_interface {
     /**
      * Returns the title
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_title () {
@@ -112,7 +112,7 @@ class tp_publication_interface {
     /**
      * Returns the type of a publication
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_type() {
@@ -125,7 +125,7 @@ class tp_publication_interface {
      * @param string $before
      * @param string $after
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_author ($before = '', $after = '') {
@@ -138,7 +138,7 @@ class tp_publication_interface {
     /**
      * Returns the meta row
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_meta () {
@@ -150,7 +150,7 @@ class tp_publication_interface {
      * @param string $before
      * @param string $after
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_tag_line ($before = '', $after = '') {
@@ -170,7 +170,7 @@ class tp_publication_interface {
     /**
      * Returns the year
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_year () {
@@ -181,7 +181,7 @@ class tp_publication_interface {
      * Returns the images
      * @param string $position
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_images ($position) {
@@ -199,7 +199,7 @@ class tp_publication_interface {
     /**
      * Returns an info container
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public function get_infocontainer () {
@@ -229,7 +229,7 @@ class tp_publication_interface {
 
 /**
  * This class contains all functions related to the HTML publication template generator
- * @since 5.1.0
+ * @since 6.0.0
  */
 class tp_html_publication_template {
     
@@ -242,7 +242,7 @@ class tp_html_publication_template {
      * @param int $pub_count    The counter for numbered publications (default: 0)
      * @param object $osbib     Ths optional OSBiB object (default: false)
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
     */
     public static function get_single ($row, $all_tags, $settings, $template, $pub_count = 0, $osbib = false) {
         $container_id = ( $settings['container_suffix'] != '' ) ? $row['pub_id'] . '_' . $settings['container_suffix'] : $row['pub_id'];
@@ -338,7 +338,7 @@ class tp_html_publication_template {
      * @param string $type          bibtex, links, abstract
      * @param string $container_id  The suffix for the container ID
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function get_info_button ($name, $title, $type, $container_id) {
         $class = ( $type === 'links' ) ? 'resource' : $type;
@@ -352,7 +352,7 @@ class tp_html_publication_template {
      * @param string $type          bibtex, links, abstract
      * @param string $container_id  The suffix for the container ID
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function get_info_container ($content, $type, $container_id) {
         $s = '<div class="tp_' . $type . '" id="tp_' . $type . '_' . $container_id . '" style="display:none;">';
@@ -368,7 +368,7 @@ class tp_html_publication_template {
      * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, title_ref, date_format, convert_bibtex, container_suffix)
      * @param string $container_id      The basic ID for div container
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function prepare_publication_title ($row, $settings, $container_id) {
         
@@ -405,7 +405,7 @@ class tp_html_publication_template {
      * @param array $row                The publication array
      * @param string $container_id      The basic ID for div container
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      * @access private
      */
     private static function prepare_title_link_to_abstracts($row, $container_id) {
@@ -479,7 +479,7 @@ class tp_html_publication_template {
      * @param array $all_tags   An array of all tags
      * @param type $settings    The settings array
      * @return array Returns an array with tags and keywords
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function get_tags ($row, $all_tags, $settings) {
         $tag_string = '';
@@ -499,7 +499,7 @@ class tp_html_publication_template {
      * @param array $row        The publication array
      * @param array $settings   The settings array
      * @return string
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function handle_images ($row, $settings) {
         $return = array('bottom' => '',

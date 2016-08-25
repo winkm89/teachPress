@@ -272,7 +272,7 @@ class tp_shortcodes {
      * @param int $entries_per_page     Number of entries per page
      * @param int $form_limit           Current position in the list, which is set by a form 
      * @return array
-     * @since 5.1
+     * @since 6.0.0
      */
     public static function generate_pagination_limits($pagination, $entries_per_page, $form_limit) {
         
@@ -552,7 +552,7 @@ class tp_shortcodes {
      * @param array $param
      * @param array $tp_single_publication
      * @return array
-     * @since 5.1.0
+     * @since 6.0.0
      * @access public
      */
     public static function set_publication ($param, $tp_single_publication) {

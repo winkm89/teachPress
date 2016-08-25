@@ -652,7 +652,7 @@ class tp_settings_page {
     /**
      * Shows the templates tab
      * @access private
-     * @since 5.1.0 
+     * @since 6.0.0 
      */
     private static function get_template_tab () {
         echo '<h3>' . __('Available templates for publication lists','teachpress') . '</h3>';
@@ -672,7 +672,7 @@ class tp_settings_page {
      * Creates the list of publication templates
      * @return string
      * @access private
-     * @since 5.1.0
+     * @since 6.0.0
      */
     private static function list_templates () {
         $templates = tp_detect_templates();

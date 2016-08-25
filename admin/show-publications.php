@@ -581,7 +581,7 @@ class tp_publications_page {
     
     /**
      * Prints the js scripts
-     * @since 5.1.0
+     * @since 6.0.0
      */
     public static function print_scripts () {
         ?>
