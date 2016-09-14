@@ -965,6 +965,8 @@ class tp_courses {
         $sub_data['parent'] = $course_id;
         $sub_data['places'] = $sub['places'];
         $sub_data['type'] = $sub['type'];
+        $sub_data['rel_page'] = 0;
+        $sub_data['rel_page_alter'] = 0;
         $options = array('number' => 0);
         for ( $i = 1; $i <= $sub['number']; $i++ ) {
             $sub_data['name'] = $sub['type'] . ' ' . $i;

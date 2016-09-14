@@ -160,6 +160,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * Bugfix: Hide document manager in tinyMCE plugin for users who have no capabilities to use teachPress (#3)
 * Bugfix: CSV export of enrollments has problems with the visibilty options of meta data fields (#36)
 * Bugfix: Fixed a possible security issues in enrollments.php
+* Bugfix: Fixed a bug which leads to creation of releated content (e.g. pages) for sub courses
 
 = 5.0.17 - (15.10.2015) =
 * New: [tpenrollments]: New parameters "order_parent" and "order_child" added
