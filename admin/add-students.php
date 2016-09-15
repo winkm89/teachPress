@@ -67,7 +67,7 @@ function tp_add_student_page($fields) {
                 $required = ( $data['required'] === 'true' ) ? true : false;
                 $value = '';
                 if ( $data['type'] === 'SELECT' ) {
-                    echo tp_enrollments::get_form_select_field($row['variable'], $data['title'], $value);
+                    echo tp_enrollments::get_form_select_field($row['variable'], $data['title'], $value, false, $required);
                 }
                 elseif ( $data['type'] === 'TEXTAREA' ) {
                     echo tp_enrollments::get_form_textarea_field($row['variable'], $data['title'], $value, $required);

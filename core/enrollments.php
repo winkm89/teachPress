@@ -352,15 +352,19 @@ class tp_enrollments {
      * @param string $field_name    name/id of the field
      * @param string $label         label for the field
      * @param string $value         value for the field
+     * @param boolean $disabled     true or false, default is false
+     * @param boolean $required     true or false, default is false
      * @return string
      * @since 5.0.0
      */
-    public static function get_form_select_field ($field_name, $label, $value) {
+    public static function get_form_select_field ($field_name, $label, $value, $disabled = false, $required = false) {
         global $wpdb;
+        $disabled = ( $disabled === true ) ? 'disabled ' : '' ;
+        $required = ( $required === true ) ? 'required' : '';
         $return = '';
         $return .= '<tr>';
         $return .= '<td><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></td>';
-        $return .= '<td><select name="' . $field_name . '" id="' . $field_name . '">';
+        $return .= '<td><select name="' . $field_name . '" id="' . $field_name . '" ' . $disabled . ' ' . $required . '>';
         $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
         if ( $value == '' ) {
             $return .= '<option value="">- ' . __('Please select','teachpress') . ' -</option>';
@@ -929,7 +933,7 @@ function tp_registration_form ($user_input, $mode = 'register') {
             $rtn .= tp_enrollments::get_form_hidden_field($row['variable'], $value);
         }
         else if ( $data['type'] === 'SELECT' ) {
-            $rtn .= tp_enrollments::get_form_select_field($row['variable'], $data['title'], $value);
+            $rtn .= tp_enrollments::get_form_select_field($row['variable'], $data['title'], $value, false, $required);
         }
         elseif ( $data['type'] === 'TEXTAREA' ) {
             $rtn .= tp_enrollments::get_form_textarea_field($row['variable'], $data['title'], $value, $required);
