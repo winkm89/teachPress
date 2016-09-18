@@ -50,7 +50,7 @@ function teachpress_pub_showhide(id, button) {
         document.getElementById(currSh).setAttribute("class", "tp_show");
     }
     else {
-        container = new Array("tp_abstract_", "tp_bibtex_", "tp_links_");
+        container = new Array("tp_altmetric_", "tp_abstract_", "tp_bibtex_", "tp_links_");
         for ( i=0; i < (container.length); i++ ) {
             if ( document.getElementById(container[i] + id) ) {
                 if ( (container[i] + id) === curr ) {

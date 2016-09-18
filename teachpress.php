@@ -585,6 +585,9 @@ function tp_frontend_scripts() {
     if ($value == '1') {
         echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . chr(13) . chr(10);
     }
+
+    echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/altmetric.js"></script>' . chr(13) . chr(10);
+
     echo '<!-- END teachPress -->' . chr(13) . chr(10);
 }
 

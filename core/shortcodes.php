@@ -1095,7 +1095,9 @@ function tp_cloud_shortcode($atts) {
         'sort_list' => '',
         'show_tags_as' => 'cloud',
         'show_bibtex' => 1,
-        'container_suffix' => ''
+        'container_suffix' => '',
+        'show_altmetric_donut' => 0,
+        'show_altmetric_entry' => 0
     ), $atts);
    
     $settings = array(
@@ -1117,9 +1119,11 @@ function tp_cloud_shortcode($atts) {
         'sort_list' => htmlspecialchars($atts['sort_list']),
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
         'with_tags' => 1,
-        'container_suffix' => htmlspecialchars($atts['container_suffix'])
+        'container_suffix' => htmlspecialchars($atts['container_suffix']),
+        'show_altmetric_entry' => ($atts['show_altmetric_entry'] == '1') ? true : false,
+        'show_altmetric_donut' => ($atts['show_altmetric_donut'] == '1') ? true : false
     );
-    
+
     $cloud_settings = array (
         'show_tags_as' => htmlspecialchars($atts['show_tags_as']),
         'tag_limit' => intval($atts['tag_limit']),
@@ -1260,7 +1264,7 @@ function tp_cloud_shortcode($atts) {
     $count = count($row);
     $colspan = '';
     $tparray = '';
-    if ($settings['image'] == 'left' || $settings['image'] == 'right') {
+    if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut']) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
         $colspan = ' colspan="2"';
     }
@@ -1400,7 +1404,9 @@ function tp_list_shortcode($atts){
        'entries_per_page' => 50,
        'sort_list' => '',
        'show_bibtex' => 1,
-       'container_suffix' => ''
+       'container_suffix' => '',
+       'show_altmetric_donut' => 0,
+       'show_altmetric_entry' => 0
     ), $atts));
 
     $tparray = '';
@@ -1426,7 +1432,9 @@ function tp_list_shortcode($atts){
         'date_format' => htmlspecialchars($date_format),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
         'show_bibtex' => $show_bibtex == '1' ? true : false,
-        'container_suffix' => htmlspecialchars($container_suffix)
+        'container_suffix' => htmlspecialchars($container_suffix),
+        'show_altmetric_entry' => $show_altmetric_entry == '1' ? true : false,
+        'show_altmetric_donut' => $show_altmetric_donut == '1' ? true : false
     );
     
     // Handle limits for pagination
