@@ -399,6 +399,7 @@ class tp_document_manager {
             add_thickbox();
     
             wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
+
             wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css');
             wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
             wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');

@@ -209,6 +209,12 @@ class tp_publication_interface {
         $settings = $this->data['settings'];
         $container_id = $this->data['container_id'];
         
+
+        // div altmetric
+        if ( $settings['show_altmetric_entry']  && $row['doi'] != '' ) {
+            $content .= tp_html_publication_template::get_info_container( tp_html_publication_template::prepare_altmetric($row['doi']), 'altmetric', $container_id );
+        }
+
         // div bibtex
         $content .= tp_html_publication_template::get_info_container( nl2br( tp_bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ), 'bibtex', $container_id );
         
@@ -222,10 +228,15 @@ class tp_publication_interface {
             $content .= tp_html_publication_template::get_info_container( tp_html_publication_template::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
         }
         
+        
+
         return $content;
+
+        
     }                      
                         
 }
+
 
 /**
  * This class contains all functions related to the HTML publication template generator
@@ -258,7 +269,8 @@ class tp_html_publication_template {
         $keywords = '';
         $all_authors = '';
         $is_button = false;
-        
+        $altmetric = '';
+
         // show tags
         if ( $settings['with_tags'] == 1 ) {
             $generated = self::get_tags($row, $all_tags, $settings);
@@ -276,6 +288,13 @@ class tp_html_publication_template {
             }
         }
 
+        // if has a doi -> altmetric
+        if ( $settings['show_altmetric_entry']  &&  $row['doi'] != '' ) {
+          $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
+          $is_button = true;
+        }
+
+        
         // if is an abstract
         if ( $row['abstract'] != '' ) {
             $abstract = self::get_info_button(__('Abstract','teachpress'), __('Show abstract','teachpress'), 'abstract', $container_id) . $separator;
@@ -298,13 +317,17 @@ class tp_html_publication_template {
             $bibtex = self::get_info_button(__('BibTeX','teachpress'), __('Show BibTeX entry','teachpress'), 'bibtex', $container_id) . $separator;
             $is_button = true;
         }
+
+
+
+
         
         // link style
         if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
-            $tag_string = $abstract . $url . $bibtex . $tag_string;
+            $tag_string = $abstract . $url . $bibtex . $altmetric . $tag_string ;
         }
         else {
-            $tag_string = $abstract . $bibtex . $tag_string . $url;
+          $tag_string = $abstract . $bibtex . $altmetric . $tag_string . $url ;
         }
         
         // load template interface
@@ -473,6 +496,36 @@ class tp_html_publication_template {
         return $end;
     }
 
+
+
+
+    /**
+     * Prepares an altmetric info block 
+     * @param string $doi       The DOI number
+     * @return string
+     * @since 3.0.0
+     * @version 2
+     * @access public
+     */
+    public static function prepare_altmetric($doi = '') {
+        $end = '';
+         /**
+         * Add DOI-URL
+         * @since 5.0.0
+         */
+        if ( $doi != '' ) {
+            $doi_url = 'http://dx.doi.org/' . $doi;
+
+            $end .= '<div data-badge-details="right" data-badge-type="large-donut" data-doi="'.$doi .'" data-condensed="true" class="altmetric-embed"></div>';
+        }
+        
+        
+        return $end;
+    }
+
+    
+
+    
     /**
      * Generates the tag string for a single publication
      * @param array $row        The publication array
@@ -507,11 +560,14 @@ class tp_html_publication_template {
                          'right' => '');
         
         $image = '';
-        
+
+
         // return if no images is set
         if ( $settings['image'] === 'none' ) {
-            return $return;
+          return $return;
         }
+
+   
         
         // define the width of the image
         $width = ( $settings['image'] === 'bottom' ) ? 'style="max-width:' . ($settings['pad_size']  - 5) .'px;"' : 'width="' . ( $settings['pad_size'] - 5 ) .'"';
@@ -529,19 +585,23 @@ class tp_html_publication_template {
             $image = '<a href="' . get_permalink($row['rel_page']) . '" title="' . stripslashes($row['title']) . '">' . $image . '</a>';
         }
 
+        $altmetric = '';
+        if( $settings['show_altmetric_donut']) {
+          $altmetric = '<div class="tp_pub_image_bottom"><div data-badge-type="medium-donut" data-doi="' . $row['doi']  . '" data-condensed="true" data-hide-no-mentions="true" class="altmetric-embed"></div></div>';
+        }
         // left position
         if ( $settings['image'] === 'left' ) {
-            $return['left'] = '<td class="tp_pub_image_left" width="' . $settings['pad_size'] . '">' . $image . '</td>';
+            $return['left'] = '<td class="tp_pub_image_left" width="' . $settings['pad_size'] . '">' . $image . $altmetric . '</td>';
         }
         
         // right position
         if ( $settings['image'] === 'right' ) {
-            $return['right'] = '<td class="tp_pub_image_right" width="' . $settings['pad_size']  . '">' . $image . '</td>';
+            $return['right'] = '<td class="tp_pub_image_right" width="' . $settings['pad_size']  . '">' . $image . $altmetric . '</td>';
         }
         
         // bottom position
         if ( $settings['image'] === 'bottom' ) {
-            $return['bottom'] = '<div class="tp_pub_image_bottom">' . $image . '</div>';
+          $return['bottom'] = '<div class="tp_pub_image_bottom">' . $image . '</div>'. $altmetric;
         }
         
         return $return;
