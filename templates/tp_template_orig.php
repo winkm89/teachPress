@@ -67,7 +67,7 @@ class tp_template_orig implements tp_publication_template {
         $s .= $interface->get_images('left');
         $s .= '<td class="tp_pub_info">';
         $s .= $interface->get_author('<p class="tp_pub_author">', '</p>');
-        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . '</p>';
+        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' (' . $interface->get_type() . ')</p>';
         $s .= '<p class="tp_pub_additional">' . $interface->get_meta() . '</p>';
         $s .= '<p class="tp_pub_tags">' . $interface->get_tag_line('(', ')') . '</p>';
         $s .= $interface->get_infocontainer();

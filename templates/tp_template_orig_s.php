@@ -70,7 +70,7 @@ class tp_template_orig_s implements tp_publication_template {
         $s .= '<span class="tp_pub_year_simple"> (' . $interface->get_year() . ')</span>: ';
         $s .= '<span class="tp_pub_title_simple">' . $interface->get_title() . ' </span>. ';
         $s .= '<span class="tp_pub_additional_simple">' . $interface->get_meta() . '</span> ';
-        $s .= '<span class="tp_pub_tags">(' . __('Type','teachpress') . ': ' . $interface->get_type() . ' ' . $interface->get_tag_line() . ')</span>';
+        $s .= '<span class="tp_pub_tags_simple">(' . __('Type','teachpress') . ': ' . $interface->get_type() . ' | ' . $interface->get_tag_line() . ')</span>';
         $s .= $interface->get_infocontainer();
         $s .= $interface->get_images('bottom');
         $s .= '</td>';
