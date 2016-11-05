@@ -3,7 +3,7 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 6.0alpha
+Version: 6.0beta
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
@@ -238,7 +238,14 @@ if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
      * This value defines the template url
      * @since 6.0.0
     */
-    define('TEACHPRESS_TEMPLATE_URL', plugins_url() . '/teachpress/templates/');}     
+    define('TEACHPRESS_TEMPLATE_URL', plugins_url() . '/teachpress/templates/');}
+    
+if ( !defined('TEACHPRESS_ALTMETRIC_SUPPORT') ) {
+    /**
+     * This value defines the template url
+     * @since 6.0.0
+    */
+    define('TEACHPRESS_ALTMETRIC_SUPPORT', false);}  
     
     
 /*********/
@@ -333,6 +340,7 @@ include_once("core/admin.php");
 include_once("core/class-ajax.php");
 include_once("core/class-bibtex.php");
 include_once("core/class-bibtex-import.php");
+include_once("core/class-bibtex-macros.php");
 include_once("core/class-cite-object.php");
 include_once("core/class-document-manager.php");
 include_once("core/class-export.php");
@@ -370,7 +378,7 @@ function tp_load_osbib() {
  * @return string
 */
 function get_tp_version() {
-    return '6.0alpha';
+    return '6.0beta';
 }
 
 /**
@@ -585,8 +593,10 @@ function tp_frontend_scripts() {
     if ($value == '1') {
         echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . chr(13) . chr(10);
     }
-
-    echo '<script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>' . chr(13) . chr(10);
+    
+    if ( TEACHPRESS_ALTMETRIC_SUPPORT === true ) {
+        echo '<script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>' . chr(13) . chr(10);
+    }
 
     echo '<!-- END teachPress -->' . chr(13) . chr(10);
 }

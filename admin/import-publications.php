@@ -157,7 +157,7 @@ class tp_import_publication_page {
                         <?php echo tp_admin::get_checkbox('overwrite', __('Overwrite existing publications with a similar BibTeX key','teachpress'), ''); ?>
                     </div>
                     <?php } ?>
-                    <div id="major-publishing-actions">
+                    <div id="major-publishing-actions" style="text-align: center;">
                         <input name="tp_submit" type="submit" class="button-primary" value="<?php _e('Import'); ?>"/>
                     </div>
                 </div>

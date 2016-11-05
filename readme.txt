@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.6.1
-Stable tag: 6.0alpha
+Stable tag: 6.0beta
 
 Manage your courses and publications with teachPress 
 
@@ -71,6 +71,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 I would like to thank the team of [CBIS, Chemnitz University of Technology](http://www.tu-chemnitz.de/wirtschaft/wi2/wp/en/) for the support and the collaboration during the last years.
 
 = Translators who did a great job in translating the plugin into other languages. Thank you! =
+* Alexandre Touzet (French)
 * Alfonso Montejo Ráez (Spanish)
 * Marcus Tavares (Portuguese-Brazil)
 * [Jozef Dobos] (http://xn--dobo-j6a.eu/) (Slovak)
@@ -139,28 +140,40 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * New: Support for different citation styles (based on OSBib) (#37)
 * New: Cite function for publications in the backend (#22)
 * New: Option for dynamic author/editor format detection for bibtex imports added
-* New: Enroll multiple students at one time (#23)
 * New: [tpenrollments]: New parameter "order_signups" added
 * New: [tpcloud, tplist, tpsearch]: New parameter "template" added
 * New: [tpcloud, tplist, tpsearch]: New parameter "image_link" added (#8)
 * New: [tpcloud, tplist, tpsearch]: New parameter "title_ref" added (#14)
+* New: [tpcloud, tplist, tpsearch]: New parameter "show_bibtex" added 
 * Changed: RSS feeds, bibtex feeds, export streams and ajax requests now generated via WordPress APIs (#35)
 * Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
 * Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
 * Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed
-* Changed: Publication search now includes the abstract
 * Changed: Style improvements for better support for WordPress 4.4+
-* Changed: Replaced get_currentuserinfo() with wp_get_current_user() (#31)
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
-* Bugfix: Fixed a sort order problem in the document manager after uploading files
 * Bugfix: Fixed a optical sort order problem with assessments 
+
+= 5.0.20 - (05.11.2016) =
+* New: French translation added (Thanks to Alexandre Touzet)
+
+= 5.0.19 - (01.10.2016) =
+* Bugfix: Delete of publications fails if custom publication meta fields were used (#45)
+
+= 5.0.18 - (16.09.2016) =
+* New: Enroll multiple students at one time (#23)
+* Changed: Calls of get_currentuserinfo() replaced with wp_get_current_user() calls (#31)
+* Changed: Added class for tp_allbooks_link
+* Changed: Publication search now includes the abstract (#39)
+* Changed: Style improvements for better support for WordPress 4.4+
+* Bugfix: Hide document manager in tinyMCE plugin for users who have no capabilities to use teachPress (#3)
 * Bugfix: HTML output for proceedings shows the edition instead of volume/number (#18)
 * Bugfix: Prevent a deletion of line breaks by bibtexParse in the import (#21)
 * Bugfix: Fixed a variable initialization bug in core/widgets.php (#24)
-* Bugfix: Hide document manager in tinyMCE plugin for users who have no capabilities to use teachPress (#3)
 * Bugfix: CSV export of enrollments has problems with the visibilty options of meta data fields (#36)
+* Bugfix: Fixed a bug which leads to creation of related content (e.g. pages) for sub courses (#40)
+* Bugfix: [student meta fields]: The "required" attribute could not be set for select boxes (#41)
+* Bugfix: Fixed a sort order problem in the document manager after uploading files (#42)
 * Bugfix: Fixed a possible security issues in enrollments.php
-* Bugfix: Fixed a bug which leads to creation of releated content (e.g. pages) for sub courses
 
 = 5.0.17 - (15.10.2015) =
 * New: [tpenrollments]: New parameters "order_parent" and "order_child" added
