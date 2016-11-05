@@ -44,12 +44,18 @@ class tp_bibtex_import {
             $entries[$i]['issn'] = array_key_exists('issn', $entries[$i]) === true ? $entries[$i]['issn'] : '';
             $entries[$i]['tppubtype'] = array_key_exists('tppubtype', $entries[$i]) === true ? $entries[$i]['tppubtype'] : '';
             $entries[$i]['pubstate'] = array_key_exists('pubstate', $entries[$i]) === true ? $entries[$i]['pubstate'] : '';
+            $entries[$i]['journal'] = array_key_exists('journal', $entries[$i]) === true ? $entries[$i]['journal'] : '';
             
             // for the date of publishing
             $entries[$i]['date'] = self::set_date_of_publishing($entries[$i]);
             
             // for tags
             $tags = self::set_tags($entries[$i], $settings);
+            
+            // replace journal macros
+            if ( $entries[$i]['journal'] != '' ) {
+                $entries[$i]['journal'] = self::replace_journal_macros($entries[$i]['journal']);
+            }
             
             // correct name | title bug of old teachPress versions
             if ($entries[$i]['name'] != '') {
@@ -89,7 +95,7 @@ class tp_bibtex_import {
             foreach ($entries[$i] as $key => $value) {
                 /**
                  * Leads to problems with char replacement in old teachPress versions,
-                 * reanabled for correct importing of control chars in names
+                 * reenabled for correct importing of control chars in names
                  */
                 if ( $key == 'author' || $key == 'editor' ) {
                     continue;
@@ -195,6 +201,20 @@ class tp_bibtex_import {
             $tags = '';
         }
         return $tags;
+    }
+    
+    /**
+     * Replaces macro codes for journals with the full name of the journal
+     * @param string $entry
+     * @return string
+     * @since 6.0.0
+     */
+    private static function replace_journal_macros ($entry) {
+        $macro_list = tp_bibtex_macros::journals();
+        if ( array_key_exists($entry, $macro_list) ) {
+            return $macro_list[$entry];
+        }
+        return $entry;
     }
 }
 
