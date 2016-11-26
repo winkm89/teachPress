@@ -63,14 +63,14 @@ class tp_template_2016 implements tp_publication_template {
      * Returns the single entry of a publication list
      * 
      * Contents of the interface object:
-     *   'row'               => The publication array
-     *   'title'             => The title of the publication
+     *   'row'               => An array of the related publication data
+     *   'title'             => The title of the publication (completely prepared for HTML output)
      *   'images'            => The images array (HTML code for left, bottom, right)
-     *   'tag_line'          => The tag string
+     *   'tag_line'          => The HTML tag string
      *   'settings'          => The settings array (shortcode options)
-     *   'counter'           => The publication counter (int)
-     *   'all_authors'       => The authors string
-     *   'keywords'          => The keywords string
+     *   'counter'           => The publication counter (integer)
+     *   'all_authors'       => The prepared author string
+     *   'keywords'          => An array of related keywords
      *   'container_id'      => The ID of the HTML container
      *   'template_settings' => The template settings array (name, description, author, citation_style)
      *   'osbib_object'      => The generated string of OSBib or false
@@ -84,7 +84,7 @@ class tp_template_2016 implements tp_publication_template {
         $s .= $interface->get_images('left');
         $s .= '<td class="tp_pub_info">';
         $s .= $interface->get_author('<p class="tp_pub_author">', '</p>');
-        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . '</p>';
+        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . ' ' . $interface->get_label('status', array('forthcoming') ) . '</p>';
         $s .= '<p class="tp_pub_additional">' . $interface->get_meta() . '</p>';
         $s .= '<p class="tp_pub_tags">' . $interface->get_tag_line() . '</p>';
         $s .= $interface->get_infocontainer();
