@@ -82,6 +82,26 @@ class tp_publication_interface {
     }
     
     /**
+     * Generates a span element for the selected publication data field
+     * @param string $element   The data field (for example: status, journal, type )
+     * @param array $values     An array of values of the data field, which should be considered as labels
+     * @return string
+     * @since 6.0.0
+     * @access public
+     */
+    public function get_label ($element, $values = array()) {
+        $data = ( isset ($this->data['row'][$element]) ) ? $this->data['row'][$element] : '' ;
+        if ( $data === '' ) {
+            return '';
+        }
+
+        if ( in_array($data, $values) ) {
+            $title = ( $element === 'status' ) ? __($data,'teachpress') : $data;
+            return '<span class="tp_pub_label_' . $element . ' ' . esc_attr($data) . '">' . $title . '</span>';
+        }
+    }
+    
+    /**
      * Returns the number for a numbered publication list
      * @param string $before
      * @param string $after

@@ -15,7 +15,7 @@ function tp_add_publication_page_help () {
         'id'        => 'tp_add_publication_help',
         'title'     => __('Create a new publication','teachpress'),
         'content'   => '<p><strong>' . __('Required fields','teachpress') . '</strong></p>
-                        <p>' . __('The required fields for a new publication: title, author, bibtex key, tags','teachpress') . '</p>
+                        <p>' . __('The required fields for a new publication:','teachpress') . ' <b>' .  __('title, author, bibtex key, tags','teachpress') . '</b></p>
                         <p><strong>' . __('URL/Files','teachpress') . '</strong></p>
                         <p>' . __('You can add one URL or file per line. Insert the name of the URL/file behind the address and separate it by a comma and a space. Example:', 'teachpress') . '<br />http://mywebsite.com/docs/readme.pdf, Basic Instructions</p>'
     ) );
@@ -50,6 +50,7 @@ function tp_add_publication_page() {
     $data['isbn'] = isset( $_POST['isbn'] ) ? htmlspecialchars($_POST['isbn']) : '';
     $data['url'] = isset( $_POST['url'] ) ? htmlspecialchars($_POST['url']) : '';
     $data['date'] = isset( $_POST['date'] ) ? htmlspecialchars($_POST['date']) : '';
+    $data['status'] = isset( $_POST['forthcoming'] ) ? 'forthcoming' : 'published';
     $data['urldate'] = isset( $_POST['urldate'] ) ? htmlspecialchars($_POST['urldate']) : '';
     $data['booktitle'] = isset( $_POST['booktitle'] ) ? htmlspecialchars($_POST['booktitle']) : '';
     $data['issuetitle'] = isset( $_POST['issuetitle'] ) ? htmlspecialchars($_POST['issuetitle']) : '';
@@ -336,6 +337,8 @@ class tp_publication_page {
           
              <p><label for="date"><strong><?php _e('date of publishing','teachpress'); ?></strong></label></p>
              <input type="text" name="date" id="date" title="<?php _e('date of publishing','teachpress'); ?>" value="<?php if ($pub_id != 0) { echo $pub_data["date"]; } else {_e('JJJJ-MM-TT','teachpress'); } ?>" onblur="if(this.value==='') this.value='<?php _e('JJJJ-MM-TT','teachpress'); ?>';" onfocus="if(this.value==='<?php _e('JJJJ-MM-TT','teachpress'); ?>') this.value='';" tabindex="6"/>
+             <input type="checkbox" name="forthcoming" id="forthcoming" value="true" <?php if ( $pub_data['status'] === 'forthcoming' ) { echo 'checked="checked"'; } ?>/>
+             <label for="forthcoming"><?php _e('Forthcoming','teachpress'); ?></label>
             </div>
           </div>
         <?php

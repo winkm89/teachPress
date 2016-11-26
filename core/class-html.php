@@ -44,10 +44,17 @@ class tp_html {
             $urldate = tp_html::prepare_line('urldate', $row['urldate'],', ' . __('visited','teachpress') . ': ', '', $use_span); 
         }
         
+        // for forthcoming publications
+        if ( $row['status'] === 'forthcoming' ) {
+            $year = __('Forthcoming','teachpress');
+        }
+        else {
+             $year = isset( $row['year'] ) ? tp_html::prepare_line('year', $row['year'],'','',$use_span) : '';
+        }
+        
         // isset() doesn't work for $editor
         $editor = $row['editor'] != '' ? tp_bibtex::parse_author($row['editor'], $settings['editor_name']) . ' (' . __('Ed.','teachpress') . '): ' : '';
         $pages = isset( $row['pages'] ) ? tp_html::prepare_line('pages', tp_bibtex::prepare_page_number($row['pages']) , __('pp.','teachpress') . ' ',', ', $use_span) : '';
-        $year = isset( $row['year'] ) ? tp_html::prepare_line('year', $row['year'],'','',$use_span) : '';
         $booktitle = isset( $row['booktitle'] ) ? tp_html::prepare_line('booktitle', $row['booktitle'],'',', ',$use_span) : '';
         $issuetitle = isset( $row['issuetitle'] ) ? tp_html::prepare_line('issuetitle', $row['issuetitle'],'',', ',$use_span) : '';
         $journal = isset( $row['journal'] ) ? tp_html::prepare_line('journal', $row['journal'],'',', ',$use_span) : '';
