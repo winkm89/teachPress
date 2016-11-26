@@ -66,8 +66,7 @@ class tp_artefacts {
      */
     public static function get_artefact ($artefact_id, $output_type = ARRAY_A) {
         global $wpdb;
-        $artefact_id = intval($artefact_id);
-        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_ARTEFACTS . " WHERE `artefact_id` = '$artefact_id'", $output_type);
+        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_ARTEFACTS . " WHERE `artefact_id` = '" . intval($artefact_id ) . "'", $output_type);
     }
     
     /**
@@ -80,9 +79,7 @@ class tp_artefacts {
      */
     public static function get_artefacts ($course_id, $parent_id, $output_type = ARRAY_A) {
         global $wpdb;
-        $course_id = intval($course_id);
-        $parent_id = intval($parent_id);
-        return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_ARTEFACTS . " WHERE `course_id` = '$course_id' AND `parent_id` = '$parent_id'", $output_type);
+        return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_ARTEFACTS . " WHERE `course_id` = '" . intval($course_id) . "' AND `parent_id` = '" . intval($parent_id) . "'", $output_type);
     }
     
     /**
@@ -95,9 +92,7 @@ class tp_artefacts {
      */
     public static function get_artefact_ids ($course_id, $parent_id, $output_type = ARRAY_A) {
         global $wpdb;
-        $course_id = intval($course_id);
-        $parent_id = intval($parent_id);
-        return $wpdb->get_results("SELECT artefact_id FROM " . TEACHPRESS_ARTEFACTS . " WHERE `course_id` = '$course_id' AND `parent_id` = '$parent_id'", $output_type);
+        return $wpdb->get_results("SELECT artefact_id FROM " . TEACHPRESS_ARTEFACTS . " WHERE `course_id` = '" . intval($course_id) . "' AND `parent_id` = '" . intval($parent_id) . "'", $output_type);
     }
     
     /**
@@ -123,8 +118,7 @@ class tp_artefacts {
      */
     public static function delete_artefact ($artefact_id) {
         global $wpdb;
-        $artefact_id = intval($artefact_id);
-        $wpdb->query("DELETE FROM " . TEACHPRESS_ARTEFACTS . " WHERE `artefact_id` = '$artefact_id'");
+        $wpdb->query("DELETE FROM " . TEACHPRESS_ARTEFACTS . " WHERE `artefact_id` = '" . intval($artefact_id) . "'");
     }
     
     /**
@@ -151,8 +145,7 @@ class tp_artefacts {
      */
     public static function has_assessments($artefact_id) {
         global $wpdb;
-        $artefact_id = intval($artefact_id);
-        $test = $wpdb->query("SELECT assessment_id FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `artefact_id` = '$artefact_id'");
+        $test = $wpdb->query("SELECT assessment_id FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `artefact_id` = '" . intval($artefact_id) . "'");
         if ( $test === 0 ) {
             return false;
         }
@@ -177,8 +170,7 @@ class tp_assessments {
      */
     public static function get_assessment ($assessment_id, $output_type = ARRAY_A) {
         global $wpdb;
-        $assessment_id = intval($assessment_id);
-        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `assessment_id` = '$assessment_id'", $output_type);
+        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `assessment_id` = '" . intval($assessment_id) . "'", $output_type);
     }
     
     /**
@@ -192,14 +184,13 @@ class tp_assessments {
      */
     public static function get_assessments ($wp_id, $artefact_id, $course_id, $output_type = ARRAY_A) {
         global $wpdb;
-        $wp_id = intval($wp_id);
         if ( $artefact_id === '' ) {
             $artefacts = "course_id = '" . intval($course_id) . "'"; 
         }
         else {
             $artefacts = tp_db_helpers::generate_where_clause($artefact_id, "artefact_id", "OR", "=");
         }
-        return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `wp_id` = '$wp_id' AND $artefacts", $output_type);
+        return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `wp_id` = '" . intval($wp_id) . "' AND $artefacts", $output_type);
     }
     
     /**
@@ -255,8 +246,7 @@ class tp_assessments {
     */
    public static function delete_assessment ($assessment_id) {
        global $wpdb;
-       $assessment_id = intval($assessment_id);
-       $wpdb->query("DELETE FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `assessment_id` = '$assessment_id'");
+       $wpdb->query("DELETE FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `assessment_id` = '" . intval($assessment_id) . "'");
    }
     
 }
@@ -442,8 +432,7 @@ class tp_authors  {
      */
     public static function delete_author_relations ($pub_id) {
         global $wpdb;
-        $pub_id = intval($pub_id);
-        $wpdb->query("DELETE FROM " . TEACHPRESS_REL_PUB_AUTH . " WHERE `pub_id` = '$pub_id'");
+        $wpdb->query("DELETE FROM " . TEACHPRESS_REL_PUB_AUTH . " WHERE `pub_id` = '" . intval($pub_id) . "'");
     }
     
     /**
@@ -468,8 +457,7 @@ class tp_authors  {
     */
    public static function get_related_publications($author_id, $output_type = ARRAY_A){
        global $wpdb;
-       $author_id = intval($author_id);
-       return $wpdb->get_results("SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.rel_page, r.is_author, r.is_editor FROM " . TEACHPRESS_PUB .  " p INNER JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON p.pub_id = r.pub_id WHERE r.author_id = '$author_id' ORDER BY year DESC", $output_type);
+       return $wpdb->get_results("SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.rel_page, r.is_author, r.is_editor FROM " . TEACHPRESS_PUB .  " p INNER JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON p.pub_id = r.pub_id WHERE r.author_id = '" . intval($author_id) . "' ORDER BY year DESC", $output_type);
        
    }
     
@@ -530,8 +518,7 @@ class tp_bookmarks {
     */
     public static function delete_bookmark($del_id) {
         global $wpdb;
-        $del_id = intval($del_id);
-        $wpdb->query( "DELETE FROM " . TEACHPRESS_USER . " WHERE `bookmark_id` = '$del_id'" );
+        $wpdb->query( "DELETE FROM " . TEACHPRESS_USER . " WHERE `bookmark_id` = '" . intval($del_id) . "'" );
     }
     
     /**
@@ -543,9 +530,7 @@ class tp_bookmarks {
      */
     public static function bookmark_exists($pub_id, $user_id) {
         global $wpdb;
-        $pub_id = intval($pub_id);
-        $user_id = intval($user_id);
-        $test = $wpdb->query("SELECT `pub_id` FROM " . TEACHPRESS_USER . " WHERE `pub_id`='$pub_id' AND `user` = '$user_id'");
+        $test = $wpdb->query("SELECT `pub_id` FROM " . TEACHPRESS_USER . " WHERE `pub_id`='" . intval($pub_id) . "' AND `user` = '" . intval($user_id) . "'");
         if ($test != 0) {
             return true;
         }
@@ -571,11 +556,9 @@ class tp_courses {
      */
     public static function get_capability ($course_id, $wp_id){
         global $wpdb;
-        $course_id = intval($course_id);
-        $wp_id = intval($wp_id);
-        $test = $wpdb->get_var("SELECT `use_capabilites` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '$course_id'");
+        $test = $wpdb->get_var("SELECT `use_capabilites` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($course_id) . "'");
         if ( intval($test) === 1 ){
-            return $wpdb->get_var("SELECT `capability` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '$course_id' AND `wp_id` = '$wp_id'");
+            return $wpdb->get_var("SELECT `capability` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "'");
         }
         // Return owner if the course has no capabilities
         return 'owner';
@@ -590,8 +573,7 @@ class tp_courses {
     */
    public static function get_capabilities ($course_id, $output_type = ARRAY_A) {
        global $wpdb;
-       $course_id = intval($course_id);
-       return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '$course_id'",$output_type);
+       return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "'",$output_type);
    }
    
    /**
@@ -621,8 +603,7 @@ class tp_courses {
     */
    public static function delete_capability ($cap_id) {
        global $wpdb;
-       $cap_id = intval($cap_id);
-       $wpdb->query("DELETE FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `cap_id` = '$cap_id'");
+       $wpdb->query("DELETE FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `cap_id` = '" . intval($cap_id) . "'");
    }
    
    /**
@@ -635,14 +616,11 @@ class tp_courses {
     */
    public static function has_capability ($course_id, $wp_id, $capability) {
        global $wpdb;
-       $wp_id = intval($wp_id);
-       $course_id = intval($course_id);
-       $capability = esc_sql($capability);
        $where = '';
        if ( $capability !== '' ) {
-           $where = "AND `capability` = '$capability'";
+           $where = "AND `capability` = '" . esc_sql($capability). "'";
        }
-       $test = $wpdb->query("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '$course_id' AND `wp_id` = '$wp_id' $where");
+       $test = $wpdb->query("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "' $where");
        if ( $test === 1 ) {
            return true;
        }
@@ -657,8 +635,7 @@ class tp_courses {
     */
    public static function is_owner ($course_id) {
        global $wpdb;
-       $course_id = intval($course_id);
-       $test = $wpdb->get_var("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '$course_id' AND `capability` = 'owner'");
+       $test = $wpdb->get_var("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `capability` = 'owner'");
        if ( $test === NULL ){
            return false;
        }
@@ -683,15 +660,14 @@ class tp_courses {
 
     /**
      * Returns all data of a single course
-     * @param int $id               The course ID
-     * @param string $output_type   OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
+     * @param int $course_id            The course ID
+     * @param string $output_type       OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
      * @return mixed
      * @since 5.0.0
      */
-    public static function get_course ($id, $output_type = OBJECT) {
+    public static function get_course ($course_id, $output_type = OBJECT) {
         global $wpdb;
-        $id = intval($id);
-        $result = $wpdb->get_row("SELECT * FROM `" . TEACHPRESS_COURSES . "` WHERE `course_id` = '$id'", $output_type);
+        $result = $wpdb->get_row("SELECT * FROM `" . TEACHPRESS_COURSES . "` WHERE `course_id` = '" . intval($course_id) . "'", $output_type);
         return $result;
     }
     
@@ -787,9 +763,7 @@ class tp_courses {
     */  
     public static function get_course_data ($course_id, $col) {
         global $wpdb;
-        $course_id = intval($course_id);
-        $col = esc_sql($col);
-        $result = $wpdb->get_var("SELECT `$col` FROM `" . TEACHPRESS_COURSES . "` WHERE `course_id` = '$course_id'");
+        $result = $wpdb->get_var("SELECT `" . esc_sql($col) . "` FROM `" . TEACHPRESS_COURSES . "` WHERE `course_id` = '" . intval($course_id) . "'");
         return $result;
     }
     
@@ -801,8 +775,7 @@ class tp_courses {
      */
     public static function get_course_name ($course_id) {
         global $wpdb;
-        $course_id = intval($course_id);
-        $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . $course_id . "'");
+        $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($course_id) . "'");
         if ($row->parent != '0') {
             $parent = tp_courses::get_course_data($row->parent, 'name');
             $row->name = ( $row->name != $parent ) ? $parent . ' ' . $row->name : $row->name;
@@ -819,13 +792,11 @@ class tp_courses {
      */
     public static function get_course_meta($course_id, $meta_key = ''){
         global $wpdb;
-        $course_id = intval($course_id);
-        $meta_key = esc_sql($meta_key);
         $where = '';
         if ( $meta_key !== '' ) {
-            $where = "AND `meta_key` = '$meta_key'";
+            $where = "AND `meta_key` = '" . esc_sql($meta_key) . "'";
         }
-        $sql = "SELECT * FROM " . TEACHPRESS_COURSE_META . " WHERE `course_id` = '$course_id' $where";
+        $sql = "SELECT * FROM " . TEACHPRESS_COURSE_META . " WHERE `course_id` = '" . intval($course_id) . "' $where";
         return $wpdb->get_results($sql, ARRAY_A);
     }
     
@@ -849,13 +820,11 @@ class tp_courses {
      */
     public static function delete_course_meta ($course_id, $meta_key = '') {
         global $wpdb;
-        $course_id = intval($course_id);
-        $meta_key = esc_sql($meta_key);
         $where = '';
         if ( $meta_key !== '' ) {
-            $where = "AND `meta_key` = '$meta_key'";
+            $where = "AND `meta_key` = '" . esc_sql($meta_key) . "'";
         }
-        $wpdb->query("DELETE FROM " . TEACHPRESS_COURSE_META . " WHERE `course_id` = '$course_id' $where");
+        $wpdb->query("DELETE FROM " . TEACHPRESS_COURSE_META . " WHERE `course_id` = '" . intval($course_id) . "' $where");
     }
     
     /**
@@ -867,9 +836,8 @@ class tp_courses {
      */
     public static function get_free_places($course_id, $places) {
         global $wpdb;
-        $course_id = intval($course_id);
         $places = intval($places);
-        $used_places = $wpdb->get_var("SELECT COUNT(`course_id`) FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '$course_id' AND `waitinglist` = 0");
+        $used_places = $wpdb->get_var("SELECT COUNT(`course_id`) FROM " . TEACHPRESS_SIGNUP . " WHERE `course_id` = '" . intval($course_id) . "' AND `waitinglist` = 0");
         return ($places - $used_places);
     }
     
@@ -1367,8 +1335,7 @@ class tp_documents {
      */
     public static function get_document($doc_id, $output_type = ARRAY_A) {
         global $wpdb;
-        $doc_id = intval($doc_id);
-        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_COURSE_DOCUMENTS . " WHERE `doc_id` = '$doc_id'",$output_type);
+        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_COURSE_DOCUMENTS . " WHERE `doc_id` = '" . intval($doc_id) . "'",$output_type);
     }
     
     /**
@@ -1380,8 +1347,7 @@ class tp_documents {
      */
     public static function get_documents($course_id, $output_type = ARRAY_A) {
         global $wpdb;
-        $course_id = intval($course_id);
-        return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSE_DOCUMENTS . " WHERE `course_id` = '$course_id' ORDER BY `sort` ASC, `added` ASC",$output_type);
+        return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSE_DOCUMENTS . " WHERE `course_id` = '" . intval($course_id) . "' ORDER BY `sort` ASC, `added` ASC",$output_type);
     }
     
     /**
@@ -1471,8 +1437,7 @@ class tp_options {
      */
     public static function get_option_by_id ($id){
         global $wpdb;
-        $id = intval($id);
-        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `setting_id` = '$id'", ARRAY_A);
+        return $wpdb->get_row("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `setting_id` = '" . intval($id) . "'", ARRAY_A);
     }
 
     /** 
@@ -1515,9 +1480,8 @@ class tp_options {
      * @since 5.0.0
     */
     public static function delete_option($delete) {
-        global $wpdb;
-        $delete = intval($delete);		
-        $wpdb->query( "DELETE FROM " . TEACHPRESS_SETTINGS . " WHERE `setting_id` = '$delete'" );
+        global $wpdb;	
+        $wpdb->query( "DELETE FROM " . TEACHPRESS_SETTINGS . " WHERE `setting_id` = '" . intval($delete) . "'" );
     }
     
 }
@@ -1539,8 +1503,7 @@ class tp_publications {
      */
     public static function get_publication($id, $output_type = OBJECT) {
         global $wpdb;
-        $id = intval($id);
-        $result = $wpdb->get_row("SELECT *, DATE_FORMAT(date, '%Y') AS year FROM " . TEACHPRESS_PUB . " WHERE `pub_id` = '$id'", $output_type);
+        $result = $wpdb->get_row("SELECT *, DATE_FORMAT(date, '%Y') AS year FROM " . TEACHPRESS_PUB . " WHERE `pub_id` = '" . intval($id) . "'", $output_type);
         return $result;
     }
     
@@ -1735,13 +1698,11 @@ class tp_publications {
      */
     public static function get_pub_meta($pub_id, $meta_key = ''){
         global $wpdb;
-        $pub_id = intval($pub_id);
-        $meta_key = esc_sql($meta_key);
         $where = '';
         if ( $meta_key !== '' ) {
-            $where = "AND `meta_key` = '$meta_key'";
+            $where = "AND `meta_key` = '" . esc_sql($meta_key) . "'";
         }
-        $sql = "SELECT * FROM " . TEACHPRESS_PUB_META . " WHERE `pub_id` = '$pub_id' $where";
+        $sql = "SELECT * FROM " . TEACHPRESS_PUB_META . " WHERE `pub_id` = '" . intval($pub_id) . "' $where";
         return $wpdb->get_results($sql, ARRAY_A);
     }
     
@@ -1906,7 +1867,8 @@ class tp_publications {
             'image_url' => '',
             'doi' => '',
             'is_isbn' => '',
-            'rel_page' => ''
+            'rel_page' => '',
+            'status' => 'published' 
         );
         $post_time = current_time('mysql',0);
         $data = wp_parse_args( $data, $defaults );
@@ -1960,8 +1922,9 @@ class tp_publications {
         $abstract = stripslashes($abstract);
         $comment = stripslashes($comment);
         $note =  stripslashes($note);
+        $status = stripslashes($status);
 
-        $wpdb->insert( TEACHPRESS_PUB, array( 'title' => $title, 'type' => $type, 'bibtex' => $bibtex, 'author' => $author, 'editor' => $editor, 'isbn' => $isbn, 'url' => $url, 'date' => $date, 'urldate' => $urldate, 'booktitle' => $booktitle, 'issuetitle' => $issuetitle, 'journal' => $journal, 'volume' => $volume, 'number' => $number, 'pages' => $pages , 'publisher' => $publisher, 'address' => $address, 'edition' => $edition, 'chapter' => $chapter, 'institution' => $institution, 'organization' => $organization, 'school' => $school, 'series' => $series, 'crossref' => $crossref, 'abstract' => $abstract, 'howpublished' => $howpublished, 'key' => $key, 'techtype' => $techtype, 'comment' => $comment, 'note' => $note, 'image_url' => $image_url, 'doi' => $doi, 'is_isbn' => $is_isbn, 'rel_page' => $rel_page, 'status' => 'published', 'added' => $post_time, 'modified' => $post_time ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s' ) );
+        $wpdb->insert( TEACHPRESS_PUB, array( 'title' => $title, 'type' => $type, 'bibtex' => $bibtex, 'author' => $author, 'editor' => $editor, 'isbn' => $isbn, 'url' => $url, 'date' => $date, 'urldate' => $urldate, 'booktitle' => $booktitle, 'issuetitle' => $issuetitle, 'journal' => $journal, 'volume' => $volume, 'number' => $number, 'pages' => $pages , 'publisher' => $publisher, 'address' => $address, 'edition' => $edition, 'chapter' => $chapter, 'institution' => $institution, 'organization' => $organization, 'school' => $school, 'series' => $series, 'crossref' => $crossref, 'abstract' => $abstract, 'howpublished' => $howpublished, 'key' => $key, 'techtype' => $techtype, 'comment' => $comment, 'note' => $note, 'image_url' => $image_url, 'doi' => $doi, 'is_isbn' => $is_isbn, 'rel_page' => $rel_page, 'status' => $status, 'added' => $post_time, 'modified' => $post_time ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s' ) );
          $pub_id = $wpdb->insert_id;
 
         // Bookmarks
@@ -2045,9 +2008,10 @@ class tp_publications {
         $data['abstract'] = stripslashes($data['abstract']);
         $data['comment'] = stripslashes($data['comment']);
         $data['note'] =  stripslashes($data['note']);
+        $data['status'] =  stripslashes($data['status']);
         
         // update row
-        $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => 'published', 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
+        $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => $data['status'], 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
         
         // get_tp_message($wpdb->last_query);
         
@@ -2116,9 +2080,10 @@ class tp_publications {
         $data['abstract'] = stripslashes($data['abstract']);
         $data['comment'] = stripslashes($data['comment']);
         $data['note'] =  stripslashes($data['note']);
+        $data['status'] =  stripslashes($data['status']);
         
         // update row
-        $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => 'published', 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
+        $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => $data['status'], 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
         
         
         // Delete existing tags
@@ -2167,13 +2132,11 @@ class tp_publications {
      */
     public static function delete_pub_meta ($pub_id, $meta_key = '') {
         global $wpdb;
-        $pub_id = intval($pub_id);
-        $meta_key = esc_sql($meta_key);
         $where = '';
         if ( $meta_key !== '' ) {
-            $where = "AND `meta_key` = '$meta_key'";
+            $where = "AND `meta_key` = '" . esc_sql($meta_key) . "'";
         }
-        $wpdb->query("DELETE FROM " . TEACHPRESS_PUB_META . " WHERE `pub_id` = '$pub_id' $where");
+        $wpdb->query("DELETE FROM " . TEACHPRESS_PUB_META . " WHERE `pub_id` = '" . intval($pub_id) . "' $where");
     }
     
     /**
@@ -2249,8 +2212,7 @@ class tp_students {
      */
     public static function get_student ($id, $output_type = ARRAY_A) {
         global $wpdb;
-        $id = intval($id);
-        $result = $wpdb->get_row("Select * FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '$id'", $output_type);
+        $result = $wpdb->get_row("Select * FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '" . intval($id) . "'", $output_type);
         return $result;
     }
     
@@ -2348,13 +2310,11 @@ class tp_students {
      */
     public static function get_student_meta($wp_id, $meta_key = ''){
         global $wpdb;
-        $wp_id = intval($wp_id);
-        $meta_key = esc_sql($meta_key);
         $where = '';
         if ( $meta_key !== '' ) {
-            $where = "AND `meta_key` = '$meta_key'";
+            $where = "AND `meta_key` = '" . esc_sql($meta_key) . "'";
         }
-        $sql = "SELECT * FROM " . TEACHPRESS_STUD_META . " WHERE `wp_id` = '$wp_id' $where";
+        $sql = "SELECT * FROM " . TEACHPRESS_STUD_META . " WHERE `wp_id` = '" . intval($wp_id) . "' $where";
         return $wpdb->get_results($sql, ARRAY_A);
     }
     
@@ -2468,13 +2428,11 @@ class tp_students {
      */
     public static function delete_student_meta ($wp_id, $meta_key = '') {
         global $wpdb;
-        $wp_id = intval($wp_id);
-        $meta_key = esc_sql($meta_key);
         $where = '';
         if ( $meta_key !== '' ) {
-            $where = "AND `meta_key` = '$meta_key'";
+            $where = "AND `meta_key` = '" . esc_sql($meta_key) . "'";
         }
-        $wpdb->query("DELETE FROM " . TEACHPRESS_STUD_META . " WHERE `wp_id` = '$wp_id' $where");
+        $wpdb->query("DELETE FROM " . TEACHPRESS_STUD_META . " WHERE `wp_id` = '" . intval($wp_id) . "' $where");
     }
     
     /**
@@ -2536,8 +2494,7 @@ class tp_students {
      */
     public static function is_student($wp_id) {
         global $wpdb;
-        $wp_id = intval($wp_id);
-        $test = $wpdb->get_var("SELECT `wp_id` FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '$wp_id'");
+        $test = $wpdb->get_var("SELECT `wp_id` FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '" . intval($wp_id) . "'");
         if ( $test === NULL ) {
             return false;
         }
@@ -2555,8 +2512,6 @@ class tp_students {
     */
     public static function has_assessment ($wp_id, $course_id) {
         global $wpdb;
-        $wp_id = intval($wp_id);
-        $course_id = intval($course_id);
         $artefacts = tp_artefacts::get_artefact_ids($course_id, 0);
 
         // Define where clause
@@ -2567,7 +2522,7 @@ class tp_students {
             }
         }
 
-        $test = $wpdb->query("SELECT assessment_id FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `wp_id` = '$wp_id' AND ( `course_id` = '$course_id' $where)");
+        $test = $wpdb->query("SELECT assessment_id FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `wp_id` = '" . intval($wp_id) . "' AND ( `course_id` = '" . intval($course_id) . "' $where)");
         if ( $test === 0 ) {
             return false;
         }
