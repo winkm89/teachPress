@@ -1021,9 +1021,9 @@ function tp_links_shortcode ($atts) {
  * Shortcode for displaying a publication list with tag cloud
  * 
  * Parameters for the array $atts:
- *      user (STRING)               the id of on or more users (separated by comma)
+ *      user (STRING)               the ID of on or more users (separated by comma)
  *      type (STRING)               the publication types you want to show (separated by comma)
- *      author (STRING)             author ids (separated by comma)
+ *      author (STRING)             author IDs (separated by comma)
  *      year (STRING)               one or more years (separated by comma)
  *      exclude (INT)               one or more IDs of publications you don't want to show (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
@@ -1350,13 +1350,14 @@ function tp_cloud_shortcode($atts) {
  * Shortcode for displaying apublication list without filters
  * 
  * possible values for $atts:
- *      user (STRING)               user_ids (separated by comma)
- *      tag (STRING)                tag_ids (separated by comma)
+ *      user (STRING)               wp user IDs (separated by comma)
+ *      tag (STRING)                tag IDs (separated by comma)
  *      type (STRING)               publication types (separated by comma)
- *      author (STRING)             author ids (separated by comma)
+ *      author (STRING)             author IDs (separated by comma)
  *      exclude (STRING)            a string with one or more IDs of publication you don't want to display
  *      include (STRING)            a string with one or more IDs of publication you want to display
  *      year (STRING)               the publication years (separated by comma)
+ *      exclude_tags (STRING)       excludes all publications with the given tag IDs (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
  *      image (STRING)              none, left, right or bottom, default: none 
@@ -1380,7 +1381,7 @@ function tp_cloud_shortcode($atts) {
  * @since 0.12.0
 */
 function tp_list_shortcode($atts){
-    extract(shortcode_atts(array(
+    $atts = shortcode_atts(array(
        'user' => '',
        'tag' => '',
        'type' => '',
@@ -1388,6 +1389,7 @@ function tp_list_shortcode($atts){
        'exclude' => '',
        'include' => '',
        'year' => '',
+       'exclude_tags' => '',
        'order' => 'date DESC',
        'headline' => 1,
        'image' => 'none',
@@ -1407,34 +1409,34 @@ function tp_list_shortcode($atts){
        'container_suffix' => '',
        'show_altmetric_donut' => 0,
        'show_altmetric_entry' => 0
-    ), $atts));
+    ), $atts);
 
     $tparray = '';
     $tpz = 0;
     $colspan = '';
-    $headline = intval($headline);
-    $image_size = intval($image_size);
-    $pagination = intval($pagination);
-    $entries_per_page = intval($entries_per_page);
-    $sort_list = htmlspecialchars($sort_list);
+    $headline = intval($atts['headline']);
+    $image_size = intval($atts['image_size']);
+    $pagination = intval($atts['pagination']);
+    $entries_per_page = intval($atts['entries_per_page']);
+    $sort_list = htmlspecialchars($atts['sort_list']);
     $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
 
     $settings = array(
-        'author_name' => htmlspecialchars($author_name),
-        'editor_name' => htmlspecialchars($editor_name),
-        'style' => htmlspecialchars($style),
-        'template' => htmlspecialchars($template),
-        'image' => htmlspecialchars($image),
-        'image_link' => htmlspecialchars($image_link),
+        'author_name' => htmlspecialchars($atts['author_name']),
+        'editor_name' => htmlspecialchars($atts['editor_name']),
+        'style' => htmlspecialchars($atts['style']),
+        'template' => htmlspecialchars($atts['template']),
+        'image' => htmlspecialchars($atts['image']),
+        'image_link' => htmlspecialchars($atts['image_link']),
         'with_tags' => 0,
-        'title_ref' => htmlspecialchars($title_ref),
-        'link_style' => htmlspecialchars($link_style),
-        'date_format' => htmlspecialchars($date_format),
+        'title_ref' => htmlspecialchars($atts['title_ref']),
+        'link_style' => htmlspecialchars($atts['link_style']),
+        'date_format' => htmlspecialchars($atts['date_format']),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
-        'show_bibtex' => $show_bibtex == '1' ? true : false,
-        'container_suffix' => htmlspecialchars($container_suffix),
-        'show_altmetric_entry' => $show_altmetric_entry == '1' ? true : false,
-        'show_altmetric_donut' => $show_altmetric_donut == '1' ? true : false
+        'show_bibtex' => $atts['show_bibtex'] == '1' ? true : false,
+        'container_suffix' => htmlspecialchars($atts['container_suffix']),
+        'show_altmetric_entry' => $atts['show_altmetric_entry'] == '1' ? true : false,
+        'show_altmetric_donut' => $atts['show_altmetric_donut'] == '1' ? true : false
     );
     
     // Handle limits for pagination
@@ -1443,8 +1445,8 @@ function tp_list_shortcode($atts){
     $page_link = ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;";
 
     // Handle headline/order settings
-    if ( $headline === 1 && strpos($order, 'year') === false && strpos($order, 'date') === false ) {
-         $order = 'date DESC, ' . $order;
+    if ( $headline === 1 && strpos($atts['order'], 'year') === false && strpos($atts['order'], 'date') === false ) {
+        $order = 'date DESC, ' . $atts['order'];
     }
     if ( $headline === 2 ) {
         $order = "type ASC, date DESC";
@@ -1454,7 +1456,7 @@ function tp_list_shortcode($atts){
     }
 
     // Image settings
-    if ($settings['image']== 'left' || $settings['image']== 'right') {
+    if ( $settings['image']== 'left' || $settings['image']== 'right' ) {
        $settings['pad_size'] = $image_size + 5;
        $colspan = ' colspan="2"';
     }
@@ -1475,13 +1477,26 @@ function tp_list_shortcode($atts){
     }
     
     // get publications
-    $args = array('tag' => $tag, 'year' => $year, 'type' => $type, 'author_id' => $author, 'user' => $user, 'order' => $order, 'exclude' => $exclude, 'include' => $include, 'output_type' => ARRAY_A, 'limit' => $pagination_limits['limit']);
+    $args = array(
+        'tag' => $atts['tag'], 
+        'year' => $atts['year'], 
+        'type' => $atts['type'], 
+        'author_id' => $atts['author'], 
+        'user' => $atts['user'], 
+        'order' => $atts['order'], 
+        'exclude' => $atts['exclude'],
+        'exclude_tags' => $atts['exclude_tags'],
+        'include' => $atts['include'], 
+        'output_type' => ARRAY_A, 
+        'limit' => $pagination_limits['limit']
+    );
     $row = tp_publications::get_publications( $args );
+    
     $number_entries = ( $pagination === 1 ) ? tp_publications::get_publications($args, true) : 0;
     $count = count($row);
     foreach ($row as $row) {
         $tparray[$tpz][0] = $row['year'];
-        $number = ( $style === 'numbered_desc' || $style === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
+        $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
         
         // teachPress style
         if ( $template_settings['citation_style'] === 'teachPress' ) {
@@ -1521,7 +1536,7 @@ function tp_list_shortcode($atts){
                        'headline' => $headline,
                        'years' => $row_year,
                        'colspan' => $colspan,
-                       'user' => $user,
+                       'user' => $atts['user'],
                        'sort_list' => $sort_list ) );
     $r .= $menu;
     return $r;
