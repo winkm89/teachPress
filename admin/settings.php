@@ -82,7 +82,7 @@ class tp_settings_page {
             tp_settings_page::add_course_options();
         }
 
-        // add student options
+        // add meta field options
         if ( isset($_POST['add_field']) ) {
             if ( $tab === 'course_data' ) {
                 $table = 'teachpress_courses';
@@ -168,88 +168,6 @@ class tp_settings_page {
                 <p>&copy;2008-2016 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
               </div>';
-    }
-
-    /**
-     * Gets the add meta field form
-     * @param string $tab   student_data, publication_data or course_data       
-     * @since 5.0.0
-     * @access private
-     */
-    private static function get_add_meta_field_form ($tab) {
-        echo '<h4>' . __('Add new field','teachpress') . '</h4>';
-        echo '<table class="form-table">';
-        
-        // field name
-        echo '<tr>';
-        echo '<td><label for="field_name">' . __('Field name','teachpress') . '</label></td>';
-        echo '<td><input name="field_name" type="text" id="field_name" size="30" title="' . __('Allowed chars','teachpress') . ': A-Z,a-z,0-9,_"/></td>';
-        echo '</tr>';
-        
-        // label
-        echo '<tr>';
-        echo '<td><label for="field_label">' . __('Label','teachpress') . '</label></td>';
-        echo '<td><input name="field_label" type="text" id="field_label" size="30" title="' . __('The visible name of the field','teachpress') . '" /></td>';
-        echo '</tr>';
-        
-        // field typetype
-        echo '<tr>';
-        echo '<td><label for="field_type">' . __('Field type','teachpress') . '</label></td>';
-        echo '<td>';
-        echo '<select name="field_type" id="field_type">';
-        echo '<option value="TEXT">TEXT</option>';
-        echo '<option value="TEXTAREA">TEXTAREA</option>';
-        echo '<option value="INT">NUMBER</option>';
-        echo '<option value="DATE">DATE</option>';
-        echo '<option value="SELECT">SELECT</option>';
-        echo '<option value="CHECKBOX">CHECKBOX</option>';
-        echo '<option value="RADIO">RADIO</option>';
-        echo '</select>';
-        echo '</td>';
-        echo '</tr>';
-        
-        // min
-        echo '<tr class="options_for_number">';
-        echo '<td><label for="number_min">' . __('Min','teachpress') . '</label></td>';
-        echo '<td><input name="number_min" id="number_min" type="number" size="10"/></td>';
-        echo '</tr>';
-        
-        // max
-        echo '<tr class="options_for_number">';
-        echo '<td><label for="number_max">' . __('Max','teachpress') . '</label></td>';
-        echo '<td><input name="number_max" id="number_max" type="number" size="10"/></td>';
-        echo '</tr>';
-        
-        // step
-        echo '<tr class="options_for_number">';
-        echo '<td><label for="number_step">' . __('Step','teachpress') . '</label></td>';
-        echo '<td><input name="number_step" id="number_step" type="text" size="10"/></td>';
-        echo '</tr>';
-        
-        // visibility
-        echo '<tr>';
-        echo '<td><label for="visibility">' . __('Visibility','teachpress') . '</label></td>';
-        echo '<td>';
-        echo '<select name="visibility" id="visibility">';
-        echo '<option value="normal">' . __('Normal','teachpress') . '</option>';
-        if ( $tab === 'student_data' ) {
-            echo '<option value="admin">' . __('Admin','teachpress') . '</option>';
-        }
-        echo '<option value="hidden">' . __('Hidden','teachpress') . '</option>';
-        echo '</select>';
-        echo '</td>';
-        echo '</tr>';
-        
-        // required
-        if ( $tab === 'student_data' ) {
-        echo '<tr>';
-        echo '<td colspan="2"><input type="checkbox" name="is_required" id="is_required" value="true"/> <label for="is_required">' . __('Required field','teachpress') . '</label></td>';
-        echo '</tr>';
-        }
-           
-        echo '</table>';
-        echo '<p><input type="submit" name="add_field" class="button-secondary" value="' . __('Create','teachpress') . '"/></p>';
-        echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/admin_settings.js"></script>';
     }
 
     /**
@@ -494,6 +412,10 @@ class tp_settings_page {
         echo '<thead>';
         
         echo '<tr>';
+        echo '<th colspan="2"><h3>' . __('Import / Export','teachpress') . '</h3></th>';
+        echo '</tr>';
+        
+        echo '<tr>';
         echo '<th width="160">' . __('BibTeX special chars','teachpress') . '</th>';
         echo '<td>' . tp_admin::get_checkbox('convert_bibtex', __('Try to convert utf-8 chars into BibTeX compatible ASCII strings','teachpress'), get_tp_option('convert_bibtex')) . '</td>';
         echo '</tr>';
@@ -571,19 +493,21 @@ class tp_settings_page {
         echo '<h3>' . __('Meta data fields','teachpress') . '</h3>';
 
         echo '<table class="widefat">';
+        
+        // Table Head
         echo '<thead>';
-
         echo '<tr>';
-        echo '<th></th>';
         echo '<th>' . __('Field name','teachpress') . '</th>';
         echo '<th>' . __('Properties','teachpress') . '</th>';
         echo '</tr>';
-
         echo '</thead>';
+        
+        // Table Body
+        echo '<tbody>';
 
         // Default fields
         $class_alternate = true;
-        $fields = get_tp_options($table,'`setting_id` ASC');
+        $fields = get_tp_options($table,'`variable` ASC');
         foreach ($fields as $field) {
             $data = tp_db_helpers::extract_column_data($field->value);
             if ( $data['type'] === 'SELECT' || $data['type'] === 'CHECKBOX' || $data['type'] === 'RADIO' ) {
@@ -602,8 +526,11 @@ class tp_settings_page {
                 $class_alternate = true;
             }
             echo '<tr ' . $tr_class . '>
-                <td><a class="teachpress_delete" href="options-general.php?page=teachpress/settings.php&amp;delete_field=' . $field->setting_id . '&amp;tab=' . $tab . '">X</a></td>
-                <td>' . $field->variable . '</td>
+                <td>' . $field->variable . '
+                    <div class="tp_row_actions">
+                    <a class="tp_edit_meta_field" title="' . __('Click to edit','teachpress') . '" href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&meta_field_id=' . $field->setting_id . '">' . __('Edit','teachpress') . '</a> | <a class="tp_row_delete" title="' . __('Delete','teachpress') . '" href="options-general.php?page=teachpress/settings.php&amp;delete_field=' . $field->setting_id . '&amp;tab=' . $tab . '">' . __('Delete','teachpress') . '</a>
+                    </div>
+                </td>
                 <td>';
             if ( isset( $data['title'] ) ) {
                 echo 'Label: <b>' . stripslashes($data['title']) . '</b><br/>'; }
@@ -622,14 +549,15 @@ class tp_settings_page {
             echo '</td>';
             echo '</tr>';
         }
-
+        // Table Footer
+        echo '</tbody>';
+        echo '<tfoot>';
         echo '<tr>';
-        echo '<td></td>';
         echo '<td colspan="2">';
-        self::get_add_meta_field_form($tab);
+        echo '<a class="tp_edit_meta_field button-primary" title="' . __('Add new','teachpress') . '" href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&meta_field_id=0">' . __('Add new','teachpress') . '</a>';
         echo '</td>';
         echo '</tr>';
-
+        echo '</tfoot>';
         echo '</table>';
 
         echo '</div>';
@@ -647,6 +575,27 @@ class tp_settings_page {
         }
 
         echo '</div>';
+        ?>
+        <script type="text/javascript" charset="utf-8">
+            jQuery(document).ready(function($){
+                $(".tp_edit_meta_field").each(function() {
+                    var $link = $(this);
+                    var $dialog = $('<div></div>')
+                        .load($link.attr('href') + ' #content')
+                        .dialog({
+                                autoOpen: false,
+                                title: '<?php _e('Meta Field Settings','teachpress'); ?>',
+                                width: 600
+                        });
+
+                    $link.click(function() {
+                        $dialog.dialog('open');
+                        return false;
+                    });
+                });
+            });
+        </script>
+        <?php
     }
     
     /**
@@ -744,16 +693,10 @@ class tp_settings_page {
             return;
         }
         
-        // Generate an array of forbidden field names
-        $forbidden_names = array('system', 'course_type', 'semester', __('Field name','teachpress'));
-        $options = get_tp_options($table);
-        foreach ( $options as $row) {
-            array_push( $forbidden_names, $row->variable );
-        }
-        
         // Generate field name
         $field_name = self::generate_meta_field_name($_POST['field_name'], $table);
         
+        // Field values
         $data['title'] = isset( $_POST['field_label'] ) ? htmlspecialchars($_POST['field_label']) : '';
         $data['type'] = isset( $_POST['field_type'] ) ? htmlspecialchars($_POST['field_type']) : '';
         $data['visibility'] = isset( $_POST['visibility'] ) ? htmlspecialchars($_POST['visibility']) : '';
@@ -761,7 +704,24 @@ class tp_settings_page {
         $data['max'] = isset( $_POST['number_max'] ) ? intval($_POST['number_max']) : 'false';
         $data['step'] = isset( $_POST['number_step'] ) ? intval($_POST['number_step']) : 'false';
         $data['required'] = isset( $_POST['is_required'] ) ? 'true' : 'false';
+        $data['field_edit'] = isset( $_POST['field_edit'] ) ? intval($_POST['field_edit']) : 0 ;
+        
+        // Generate an array of forbidden field names
+        $forbidden_names = array('system', 'course_type', 'semester', __('Field name','teachpress'));
+        $options = get_tp_options($table);
+        foreach ( $options as $row) {
+            if ( $data['field_edit'] !== intval($row->setting_id) ) {
+                array_push( $forbidden_names, $row->variable );
+            }
+        }
+        
         if ( !in_array($field_name, $forbidden_names) && $data['title'] != __('Label', 'teachpress') && preg_match("#^[_A-Za-z0-9]+$#", $field_name) ) {
+            
+            // Delete old settings if needed
+            if ( $data['field_edit'] > 0 ) {
+                tp_options::delete_option($data['field_edit']);
+            }
+            
             tp_db_helpers::register_column($table, $field_name, $data);
             get_tp_message(  __('Field added','teachpress') );
         }
@@ -793,7 +753,12 @@ class tp_settings_page {
             $prefix = 'tp_meta_';
         }
         
-        return $prefix . htmlspecialchars($name);
+        // Check if the prefix is already part of the field name
+        if ( stristr($fieldname, $prefix) === false ) {
+            return $prefix . esc_attr($name);
+        }
+        
+        return esc_attr($name);
     }
     
     /**

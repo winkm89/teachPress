@@ -247,6 +247,130 @@ class tp_ajax {
     }
     
     /**
+     * Gets the meta field screen for the settings panel
+     * @param int $meta_field_id        The meta field ID
+     * @since 6.0.0
+     * @access public
+     */
+    public static function get_meta_field_screen ( $meta_field_id ) {
+        if ( $meta_field_id === 0 ) {
+            $data = array(
+                'name' => '',
+                'title' => '',
+                'type' => '',
+                'min' => '',
+                'max' => '',
+                'step' => '',
+                'visibility' => '',
+                'required'
+            );
+        }
+        else {
+            $field = tp_options::get_option_by_id($meta_field_id);
+            $data = tp_db_helpers::extract_column_data($field['value']);
+        }
+        
+        echo '<!doctype html>';
+        echo '<html>';
+        echo '<head>';
+        echo '<meta charset="utf-8">';
+	echo '<title>teachPress - Meta Field Screen</title>';
+        echo '</head>';
+        echo '<body>';
+        echo '<div id="content">';
+        echo '<form method="post">';
+        echo '<input name="field_edit" type="hidden" value="' . $meta_field_id . '">';
+        echo '<table class="form-table">';
+        
+        // field name
+        if ( $meta_field_id === 0 ) {
+            echo '<tr>';
+            echo '<td><label for="field_name">' . __('Field name','teachpress') . '</label></td>';
+            echo '<td><input name="field_name" type="text" id="field_name" size="30" title="' . __('Allowed chars','teachpress') . ': A-Z,a-z,0-9,_" value="' . $data['name'] . '"/></td>';
+            echo '</tr>';
+        }
+        else {
+            echo '<input name="field_name" id="field_name" type="hidden" value="' . $data['name'] . '">';
+        }
+        
+        // label
+        echo '<tr>';
+        echo '<td><label for="field_label">' . __('Label','teachpress') . '</label></td>';
+        echo '<td><input name="field_label" type="text" id="field_label" size="30" title="' . __('The visible name of the field','teachpress') . '" value="' . $data['title'] . '" /></td>';
+        echo '</tr>';
+        
+        // field type
+        $field_types = array('TEXT', 'TEXTAREA', 'INT', 'DATE', 'SELECT', 'CHECKBOX', 'RADIO');
+        echo '<tr>';
+        echo '<td><label for="field_type">' . __('Field type','teachpress') . '</label></td>';
+        echo '<td>';
+        echo '<select name="field_type" id="field_type">';
+        foreach ( $field_types as $type ) {
+            $selected = ( $data['type'] === $type ) ? 'selected="selected"' : '';
+            echo '<option value="' . $type . '" ' . $selected . '>' . $type . '</option>';
+        }
+        echo '</select>';
+        echo '</td>';
+        echo '</tr>';
+        
+        // min
+        $min = ( $data['min'] === 'false' ) ? '' : intval($min);
+        echo '<tr>';
+        echo '<td><label for="number_min">' . __('Min','teachpress') . ' (' . __('Only for INT fields','teachpress') . ')</label></td>';
+        echo '<td><input name="number_min" id="number_min" type="number" size="10" value="' . $min . '"/></td>';
+        echo '</tr>';
+        
+        // max
+        $max = ( $data['max'] === 'false' ) ? '' : intval($max);
+        echo '<tr>';
+        echo '<td><label for="number_max">' . __('Max','teachpress') . ' (' . __('Only for INT fields','teachpress') . ')</label></td>';
+        echo '<td><input name="number_max" id="number_max" type="number" size="10" value="' . $max . '"/></td>';
+        echo '</tr>';
+        
+        // step
+        $step = ( $data['step'] === 'false' ) ? '' : intval($step);
+        echo '<tr>';
+        echo '<td><label for="number_step">' . __('Step','teachpress') . ' (' . __('Only for INT fields','teachpress') . ')</label></td>';
+        echo '<td><input name="number_step" id="number_step" type="text" size="10" value="' . $step . '"/></td>';
+        echo '</tr>';
+        
+        // visibility
+        echo '<tr>';
+        echo '<td><label for="visibility">' . __('Visibility','teachpress') . '</label></td>';
+        echo '<td>';
+        echo '<select name="visibility" id="visibility">';
+        
+        // normal
+        $vis_normal = ( $data['visibility'] === 'normal' ) ? 'selected="selected"' : '';
+        echo '<option value="normal" ' . $vis_normal . '>' . __('Normal','teachpress') . '</option>';
+
+        // admin
+        $vis_admin = ( $data['visibility'] === 'admin' ) ? 'selected="selected"' : '';
+        echo '<option value="admin" ' . $vis_admin . '>' . __('Admin','teachpress') . '</option>';
+
+        // hidden
+        $vis_hidden = ( $data['visibility'] === 'hidden' ) ? 'selected="selected"' : '';
+        echo '<option value="hidden" ' . $vis_hidden . '>' . __('Hidden','teachpress') . '</option>';
+        
+        echo '</select>';
+        echo '</td>';
+        echo '</tr>'; 
+        
+        // required
+        $req = ( $data['required'] === 'true' ) ? 'checked="checked"' : '';
+        echo '<tr>';
+        echo '<td colspan="2"><input type="checkbox" name="is_required" id="is_required" ' . $req . '/> <label for="is_required">' . __('Required field','teachpress') . '</label></td>';
+        echo '</tr>';
+           
+        echo '</table>';
+        echo '<p><input type="submit" name="add_field" class="button-primary" value="' . __('Save','teachpress') . '"/></p>';
+        echo '</form>';
+        echo '</div>';
+        echo '</body>';
+        echo '</html>';
+    }
+    
+    /**
      * Gets the url of a mimetype image
      * @param string $filename      The filename or the url
      * @since 5.0.0

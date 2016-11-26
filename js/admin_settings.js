@@ -26,14 +26,5 @@ jQuery(document).ready(function($){
       $( "#dialog" ).dialog( "open" );
     });
     
-    // For add meta field form
-    $('#field_type').click(function() {
-        var type = $(this);
-        if ( type.val() === 'INT' ) {
-            $('.options_for_number').css( "display", "table-row" );
-        }
-        else {
-            $('.options_for_number').css( "display", "none" );
-        }
-    });
+    
   });

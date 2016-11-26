@@ -116,6 +116,15 @@ function tp_ajax_callback () {
         if ( isset( $_GET['cite_pub'] ) && isset( $_GET['cite_type'] )  ) {
             tp_ajax::get_cite_text($_GET['cite_pub'], $_GET['cite_type']);
         }
+        
+        /**
+         * Getting the edit meta field dialog
+         * @since 6.0.0
+         */
+        if ( isset( $_GET['meta_field_id'] ) ) {
+            $meta_field_id = intval( $_GET['meta_field_id'] );
+            tp_ajax::get_meta_field_screen($meta_field_id);
+        } 
 
     }
 
@@ -472,67 +481,69 @@ function get_tp_publication_type_options ($selected, $mode = 'sng') {
  * @return array 
  */
 function get_tp_var_types($type) {
-     if ($type == 'course_array') {
-          $ret = array( 'course_id' => '',
-                        'name' => '',
-                        'type' => '',
-                        'room' => '',
-                        'lecturer' => '',
-                        'date' => '',
-                        'places' => '',
-                        'start' => '',
-                        'end' => '',
-                        'semester' => '',
-                        'comment' => '',
-                        'rel_page' => '',
-                        'parent' => '',
-                        'visible' => '',
-                        'waitinglist' => '',
-                        'image_url' => '',
-                        'strict_signup' => '',
-                        'use_capabilites' => '');
-     }
-     if ($type == 'publication_array') {
-          $ret = array( 'pub_id' => '',
-                        'title' => '',
-                        'type' => '',
-                        'bibtex' => '',
-                        'author' => '',
-                        'editor' => '',
-                        'isbn' => '',
-                        'url' => '',
-                        'date' => '',
-                        'urldate' => '',
-                        'booktitle' => '',
-                        'issuetitle' => '',
-                        'journal' => '',
-                        'volume' => '',
-                        'number' => '',
-                        'pages' => '',
-                        'publisher' => '',
-                        'address' => '',
-                        'edition' => '',
-                        'chapter' => '',
-                        'institution' => '',
-                        'organization' => '',
-                        'school' => '',
-                        'series' => '',
-                        'crossref' => '',
-                        'abstract' => '',
-                        'howpublished' => '',
-                        'key' => '',
-                        'techtype' => '',
-                        'comment' => '',
-                        'note' => '',
-                        'image_url' => '',
-                        'doi' => '',
-                        'is_isbn' => '',
-                        'rel_page' => '',
-                        'status' => '',
-                        'added' => '',
-                        'modified' => '');
-     }
-     return $ret;
+    if ($type == 'course_array') {
+        $ret = array( 
+            'course_id' => '',
+            'name' => '',
+            'type' => '',
+            'room' => '',
+            'lecturer' => '',
+            'date' => '',
+            'places' => '',
+            'start' => '',
+            'end' => '',
+            'semester' => '',
+            'comment' => '',
+            'rel_page' => '',
+            'parent' => '',
+            'visible' => '',
+            'waitinglist' => '',
+            'image_url' => '',
+            'strict_signup' => '',
+            'use_capabilites' => '');
+    }
+    if ($type == 'publication_array') {
+        $ret = array( 
+            'pub_id' => '',
+            'title' => '',
+            'type' => '',
+            'bibtex' => '',
+            'author' => '',
+            'editor' => '',
+            'isbn' => '',
+            'url' => '',
+            'date' => '',
+            'urldate' => '',
+            'booktitle' => '',
+            'issuetitle' => '',
+            'journal' => '',
+            'volume' => '',
+            'number' => '',
+            'pages' => '',
+            'publisher' => '',
+            'address' => '',
+            'edition' => '',
+            'chapter' => '',
+            'institution' => '',
+            'organization' => '',
+            'school' => '',
+            'series' => '',
+            'crossref' => '',
+            'abstract' => '',
+            'howpublished' => '',
+            'key' => '',
+            'techtype' => '',
+            'comment' => '',
+            'note' => '',
+            'image_url' => '',
+            'doi' => '',
+            'is_isbn' => '',
+            'rel_page' => '',
+            'status' => '',
+            'added' => '',
+            'modified' => '');
+    }
+    return $ret;
 }
 
 /** 
