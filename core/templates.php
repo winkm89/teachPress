@@ -179,6 +179,8 @@ class tp_publication_interface {
         
         // meta line formatting
         if ( $tag_string !== '' ) {
+            // Hack fix: Replace empty sections in tag string
+            $tag_string = str_replace('| <span class="tp_resource_link"> |', ' | ', $tag_string);
             $length = mb_strlen($separator);
             $last_chars = mb_substr($tag_string, -$length);
             $tag_string = ( $last_chars === $separator ) ? mb_substr($tag_string, 0, -$length) : $tag_string;
