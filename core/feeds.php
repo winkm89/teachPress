@@ -91,7 +91,7 @@ function tp_pub_bibtex_feed_func () {
         $result .= tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
     }
     $trimmed = trim(preg_replace('/\s+/', ' ', $result));
-    passthru('echo ' . escapeshellarg($trimmed) . ' | bibtool -q -k ');
+    passthru('echo ' . escapeshellarg($trimmed) . ' | bibtool -f "%-2n(author)_%-3T(title)_%2d(year)" -q ');
 }
 
 /**
