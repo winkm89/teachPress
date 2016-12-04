@@ -16,7 +16,7 @@ GitHub Branch: master
 
 /*
    LICENCE
- 
+
     Copyright 2008-2016 Michael Winkler
 
     This program is free software; you can redistribute it and/or modify
@@ -106,7 +106,7 @@ if ( !defined('TEACHPRESS_SIGNUP') ) {
      * @since 5.0.0
     */
     define('TEACHPRESS_SIGNUP', $wpdb->prefix . 'teachpress_signup');}
-    
+
 if ( !defined('TEACHPRESS_SETTINGS') ) {
     /**
      * This constant defines the table name for teachpress_settings.
@@ -127,7 +127,7 @@ if ( !defined('TEACHPRESS_PUB_META') ) {
      * @since 5.0.0
     */
     define('TEACHPRESS_PUB_META', $wpdb->prefix . 'teachpress_pub_meta');}
-    
+
 if ( !defined('TEACHPRESS_PUB_CAPABILITES') ) {
     /**
      * This constant defines the table name for teachpress_course_cababilites.
@@ -183,21 +183,21 @@ if ( !defined('TEACHPRESS_TIME_LIMIT') ) {
      * @since 5.0.0
     */
     define('TEACHPRESS_TIME_LIMIT', 240);}
-    
+
 if ( !defined('TEACHPRESS_FILE_LINK_CSS_CLASS') ) {
     /**
      * This value defines the CSS classes for file links which are inserted via the tinyMCE plugin
      * @since 5.0.0
     */
     define('TEACHPRESS_FILE_LINK_CSS_CLASS', 'linksecure tp_file_link');}
-    
+
 if ( !defined('TEACHPRESS_COURSE_MODULE') ) {
     /**
      * This value defines if the course module of teachPress is active
      * @since 5.0.0
     */
     define('TEACHPRESS_COURSE_MODULE', true);}
-    
+
 if ( !defined('TEACHPRESS_PUBLICATION_MODULE') ) {
     /**
      * This value defines if the publication module of teachPress is active
@@ -211,27 +211,27 @@ if ( !defined('TEACHPRESS_ERROR_REPORTING') ) {
      * @since 5.0.13
     */
     define('TEACHPRESS_ERROR_REPORTING', false);}
-    
+
 if ( !defined('TEACHPRESS_FOREIGN_KEY_CHECKS') ) {
     /**
      * This value defines if foreign key checks are enabled or disabled, while adding database tables
      * @since 5.0.16
     */
-    define('TEACHPRESS_FOREIGN_KEY_CHECKS', true);}  
-    
+    define('TEACHPRESS_FOREIGN_KEY_CHECKS', true);}
+
 if ( !defined('TEACHPRESS_TEMPLATE_PATH') ) {
     /**
      * This value defines the template path
      * @since 6.0.0
     */
-    define('TEACHPRESS_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');} 
-    
+    define('TEACHPRESS_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');}
+
 if ( !defined('TEACHPRESS_OSBIB_TEMPLATE_PATH') ) {
     /**
      * This value defines the template path
      * @since 6.0.0
     */
-    define('TEACHPRESS_OSBIB_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'includes/osbib_new/styles/');} 
+    define('TEACHPRESS_OSBIB_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'includes/osbib_new/styles/');}
 
 if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
     /**
@@ -239,15 +239,15 @@ if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
      * @since 6.0.0
     */
     define('TEACHPRESS_TEMPLATE_URL', plugins_url() . '/teachpress/templates/');}
-    
+
 if ( !defined('TEACHPRESS_ALTMETRIC_SUPPORT') ) {
     /**
      * This value defines the template url
      * @since 6.0.0
     */
-    define('TEACHPRESS_ALTMETRIC_SUPPORT', false);}  
-    
-    
+    define('TEACHPRESS_ALTMETRIC_SUPPORT', false);}
+
+
 /*********/
 /* Menus */
 /*********/
@@ -261,9 +261,9 @@ function tp_add_menu() {
     global $wp_version;
     global $tp_admin_show_courses_page;
     global $tp_admin_add_course_page;
-    
+
     $logo = (version_compare($wp_version, '3.8', '>=')) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
-    
+
     $tp_admin_show_courses_page = add_menu_page(__('Course','teachpress'), __('Course','teachpress'),'use_teachpress_courses', __FILE__, 'tp_show_courses_page', $logo);
     $tp_admin_add_course_page = add_submenu_page('teachpress/teachpress.php',__('Add new','teachpress'), __('Add new', 'teachpress'),'use_teachpress_courses','teachpress/add_course.php','tp_add_course_page');
     add_submenu_page('teachpress/teachpress.php',__('Students','teachpress'), __('Students','teachpress'),'use_teachpress_courses', 'teachpress/students.php', 'tp_students_page');
@@ -285,16 +285,16 @@ function tp_add_menu2() {
     global $tp_admin_import_page;
     global $tp_admin_show_authors_page;
     global $tp_admin_edit_tags_page;
-    
+
     $logo = ( version_compare($wp_version, '3.8', '>=') ) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
-    
+
     $tp_admin_all_pub_page = add_menu_page (__('Publications','teachpress'), __('Publications','teachpress'), 'use_teachpress', 'publications.php', 'tp_show_publications_page', $logo);
     $tp_admin_your_pub_page = add_submenu_page('publications.php',__('Your publications','teachpress'), __('Your publications','teachpress'),'use_teachpress','teachpress/publications.php','tp_show_publications_page');
     $tp_admin_add_pub_page = add_submenu_page('publications.php',__('Add new', 'teachpress'), __('Add new','teachpress'),'use_teachpress','teachpress/addpublications.php','tp_add_publication_page');
     $tp_admin_import_page = add_submenu_page('publications.php',__('Import/Export'), __('Import/Export'), 'use_teachpress', 'teachpress/import.php','tp_show_import_publication_page');
     $tp_admin_show_authors_page = add_submenu_page('publications.php',__('Authors', 'teachpress'),__('Authors', 'teachpress'),'use_teachpress','teachpress/authors.php','tp_show_authors_page');
     $tp_admin_edit_tags_page = add_submenu_page('publications.php',__('Tags'),__('Tags'),'use_teachpress','teachpress/tags.php','tp_tags_page');
-    
+
     add_action("load-$tp_admin_all_pub_page", 'tp_show_publications_page_help');
     add_action("load-$tp_admin_all_pub_page", 'tp_show_publications_page_screen_options');
     add_action("load-$tp_admin_your_pub_page", 'tp_show_publications_page_help');
@@ -373,7 +373,7 @@ function tp_load_osbib() {
     include_once 'includes/osbib_new/core.php';
 }
 
-/** 
+/**
  * Returns the current teachPress version
  * @return string
 */
@@ -392,7 +392,7 @@ function tp_get_wp_version () {
     return $wp_version;
 }
 
-/** 
+/**
  * Function for the integrated registration mode
  * @since 1.0.0
  */
@@ -413,7 +413,7 @@ function tp_advanced_registration() {
         );
         tp_students::add_student($user->ID, $data );
     }
-} 
+}
 
 /**********************/
 /* RSS feed functions */
@@ -477,7 +477,7 @@ function tp_activation ( $network_wide ) {
         }
         switch_to_blog($old_blog);
         return;
-    } 
+    }
     // it's a normal activation
     else {
         tp_install();
@@ -521,12 +521,12 @@ function tp_add_tinymce_button() {
     if ( !current_user_can( 'edit_posts' ) ) {
         return;
     }
-    
+
     // the user need at least one of the teachpress capabilites
     if ( !current_user_can( 'use_teachpress' ) || !current_user_can( 'use_teachpress_courses' ) ) {
         return;
     }
-    
+
     add_filter('mce_buttons', 'tp_register_tinymce_buttons');
     add_filter('mce_external_plugins', 'tp_register_tinymce_js');
 }
@@ -593,7 +593,7 @@ function tp_frontend_scripts() {
     if ($value == '1') {
         echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . chr(13) . chr(10);
     }
-    
+
     if ( TEACHPRESS_ALTMETRIC_SUPPORT === true ) {
         echo '<script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>' . chr(13) . chr(10);
     }
@@ -639,10 +639,10 @@ if ( version_compare( tp_get_wp_version() , '3.9', '>=') ) {
     add_action('admin_head', 'tp_add_tinymce_button');
     add_action('admin_head', 'tp_write_data_for_tinymce' );
  }
- 
+
 // Activation Error Reporting
 if ( TEACHPRESS_ERROR_REPORTING === true ) {
-    register_activation_hook( __FILE__, 'tp_activation_error_reporting' ); 
+    register_activation_hook( __FILE__, 'tp_activation_error_reporting' );
 }
 
 // Register course module
