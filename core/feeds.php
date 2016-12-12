@@ -80,18 +80,28 @@ function tp_pub_rss_feed_func () {
  * @since 6.0.0
  */
 function tp_pub_bibtex_feed_func () {
-    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    $tag = isset($_GET['tag']) ? intval($_GET['tag']) : 0;
+    $id = isset( $_GET['id'] ) ? intval($_GET['id']) : 0;
+    $tag = isset( $_GET['tag'] ) ? intval($_GET['tag']) : 0;
+    $use_bibtool = isset( $_GET['use_bibtool'] ) ? true : false;
     header('Content-Type: text/plain; charset=utf-8;');
     $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
     $row = tp_publications::get_publications(array('user' => $id, 'tag' => $tag, 'output_type' => ARRAY_A));
     $result = '';
     foreach ($row as $row) {
         $tags = tp_tags::get_tags(array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A));
-        $result .= tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+        // if you want to use bibtool
+        if ( $use_bibtool === true ) {
+            $result .= tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+        }
+        // the general way
+        else {
+            echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+        }
     }
-    $trimmed = trim(preg_replace('/\s+/', ' ', $result));
-    passthru('echo ' . escapeshellarg($trimmed) . ' | bibtool -f "%-2n(author)_%-3T(title)_%2d(year)" -q ');
+    if ( $use_bibtool === true ) {
+        $trimmed = trim(preg_replace('/\s+/', ' ', $result));
+        passthru('echo ' . escapeshellarg($trimmed) . ' | bibtool -f "%-2n(author)_%-3T(title)_%2d(year)" -q ');
+    }
 }
 
 /**
