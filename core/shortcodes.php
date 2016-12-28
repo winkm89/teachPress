@@ -1275,29 +1275,13 @@ function tp_cloud_shortcode($atts) {
         $template = tp_load_template('tp_template_orig');
     }
     
-    // Load OSBiB if needed
-    $template_settings = $template->get_settings();
-    if ( $template_settings['citation_style'] != 'teachPress' ) {
-        tp_load_osbib();
-        $new_bibformat = new osbib_bibformat(true);
-        list($info, $citation, $footnote, $common, $types) = $new_bibformat->loadStyle( $template_settings['citation_style'], TEACHPRESS_OSBIB_TEMPLATE_PATH );
-        $new_bibformat->getStyle($common, $types, $footnote);
-    }
-    
     // Create array of publications
     foreach ($row as $row) {
         $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
         $tparray[$tpz][0] = $row['year'] ;
         
         // teachPress style
-        if ( $template_settings['citation_style'] === 'teachPress' ) {
-            $tparray[$tpz][1] = tp_html_publication_template::get_single($row, $all_tags, $settings, $template, $number);
-        }
-        // OSBiB styles (APA, CHICAGO, ...)
-        else {
-            $new_bibformat->preProcess( tp_map_pubtype_to_osbib($row['type']) , $row);
-            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,$all_tags, $settings, $template, $number, $new_bibformat);
-        }
+        $tparray[$tpz][1] = tp_html_publication_template::get_single($row, $all_tags, $settings, $template, $number);
         
         if ( 2 <= $settings['headline'] && $settings['headline'] <= 4 ) {
             $tparray[$tpz][2] = $row['type'] ;
@@ -1467,15 +1451,6 @@ function tp_list_shortcode($atts){
         $template = tp_load_template('tp_template_orig');
     }
     
-    // Load OSBiB if needed
-    $template_settings = $template->get_settings();
-    if ( $template_settings['citation_style'] != 'teachPress' ) {
-        tp_load_osbib();
-        $new_bibformat = new osbib_bibformat(true);
-        list($info, $citation, $footnote, $common, $types) = $new_bibformat->loadStyle( $template_settings['citation_style'], TEACHPRESS_OSBIB_TEMPLATE_PATH );
-        $new_bibformat->getStyle($common, $types, $footnote);
-    }
-    
     // get publications
     $args = array(
         'tag' => $atts['tag'], 
@@ -1499,14 +1474,7 @@ function tp_list_shortcode($atts){
         $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
         
         // teachPress style
-        if ( $template_settings['citation_style'] === 'teachPress' ) {
-            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number, false);
-        }
-        // OSBiB styles (APA, CHICAGO, ...)
-        else {
-            $new_bibformat->preProcess( tp_map_pubtype_to_osbib($row['type']) , $row);
-            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number, $new_bibformat);
-        }
+        $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number, false);
         
         if ( 2 <= $headline && $headline <= 4 ) {
                 $tparray[$tpz][2] = $row['type'];
@@ -1689,15 +1657,6 @@ function tp_search_shortcode ($atts) {
         $template = tp_load_template('tp_template_orig_s');
     }
 
-    // Load OSBiB if needed
-    $template_settings = $template->get_settings();
-    if ( $template_settings['citation_style'] != 'teachPress' ) {
-        tp_load_osbib();
-        $new_bibformat = new osbib_bibformat(true);
-        list($info, $citation, $footnote, $common, $types) = $new_bibformat->loadStyle( $template_settings['citation_style'], TEACHPRESS_OSBIB_TEMPLATE_PATH );
-        $new_bibformat->getStyle($common, $types, $footnote);
-    }
-
     // If there are no results
     if ( count($results) === 0 ) {
         $r .= '<div class="teachpress_message_error">' . __('Sorry, no entries matched your criteria.','teachpress') . '</div>';
@@ -1707,15 +1666,7 @@ function tp_search_shortcode ($atts) {
         foreach ($results as $row) {
             $count = ( $entry_limit == 0 ) ? ( $tpz + 1 ) : ( $entry_limit + $tpz + 1 );
             $tparray[$tpz][0] = $row['year'];
-            // teachPress style
-            if ( $template_settings['citation_style'] === 'teachPress' ) {
-                $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count, false);
-            }
-            // OSBiB styles (APA, CHICAGO, ...)
-            else {
-                $new_bibformat->preProcess( tp_map_pubtype_to_osbib($row['type']) , $row);
-                $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count, $new_bibformat);
-            }
+            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count, false);
             $tpz++;
         }
         $r .= tp_shortcodes::generate_pub_table(

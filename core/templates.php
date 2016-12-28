@@ -310,20 +310,20 @@ class tp_html_publication_template {
             }
         }
 
-        // if has a doi -> altmetric
+        // if the publication has a doi -> altmetric
         if ( $settings['show_altmetric_entry']  &&  $row['doi'] != '' ) {
           $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
           $is_button = true;
         }
 
         
-        // if is an abstract
+        // if there is an abstract
         if ( $row['abstract'] != '' ) {
             $abstract = self::get_info_button(__('Abstract','teachpress'), __('Show abstract','teachpress'), 'abstract', $container_id) . $separator;
             $is_button = true;
         }
         
-        // if are links
+        // if there are links
         if ( $row['url'] != '' || $row['doi'] != '' ) {
             if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
                 $url = self::get_info_button(__('Links','teachpress'), __('Show links and resources','teachpress'), 'links', $container_id) . $separator;
@@ -340,10 +340,6 @@ class tp_html_publication_template {
             $is_button = true;
         }
 
-
-
-
-        
         // link style
         if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
             $tag_string = $abstract . $url . $bibtex . $altmetric . $tag_string ;
@@ -363,8 +359,7 @@ class tp_html_publication_template {
             'all_authors' => $all_authors,
             'keywords' => $keywords,
             'container_id' => $container_id,
-            'template_settings' => $template_settings,
-            'osbib_object' => ($osbib !== false) ? $osbib->map() : ''
+            'template_settings' => $template_settings
         );
         
         $interface = new tp_publication_interface();

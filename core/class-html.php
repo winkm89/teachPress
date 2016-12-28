@@ -53,7 +53,7 @@ class tp_html {
         }
         
         // isset() doesn't work for $editor
-        $editor = $row['editor'] != '' ? tp_bibtex::parse_author($row['editor'], $settings['editor_name']) . ' (' . __('Ed.','teachpress') . '): ' : '';
+        $editor = ( $row['editor'] != '' ) ? tp_bibtex::parse_author($row['editor'], $settings['editor_name']) . ' (' . __('Ed.','teachpress') . '): ' : '';
         $pages = isset( $row['pages'] ) ? tp_html::prepare_line('pages', tp_bibtex::prepare_page_number($row['pages']) , __('pp.','teachpress') . ' ',', ', $use_span) : '';
         $booktitle = isset( $row['booktitle'] ) ? tp_html::prepare_line('booktitle', $row['booktitle'],'',', ',$use_span) : '';
         $issuetitle = isset( $row['issuetitle'] ) ? tp_html::prepare_line('issuetitle', $row['issuetitle'],'',', ',$use_span) : '';
@@ -79,7 +79,7 @@ class tp_html {
         
         // special cases for article/incollection/inbook/inproceedings
         $in = '';
-        if ($settings['style'] === 'simple' || $settings['style'] === 'numbered' ) {
+        if ( $settings['style'] === 'simple' || $settings['style'] === 'numbered' ) {
             if ( $row['type'] === 'article' || $row['type'] === 'inbook' || $row['type'] === 'incollection' || $row['type'] === 'inproceedings') {
                 $in = __('In','teachpress') . ': ';
             }
