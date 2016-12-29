@@ -149,7 +149,8 @@ The plugin saves course documents in your WordPress upload directory under /teac
 * Changed: Style improvements for better support for WordPress 4.4+
 * Bugfix: Fixed the problem with including wp-load.php for generating feeds and exports (#35)
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
-* Bugfix: Fixed a optical sort order problem with assessments 
+* Bugfix: Fixed a optical sort order problem with assessments
+* Bugfix: Inproceeding renamed to Inproceedings because the singular form doesn't exist
 
 = 5.0.20 - (05.11.2016) =
 * New: French translation added (Thanks to Alexandre Touzet)
