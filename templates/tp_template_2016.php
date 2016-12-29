@@ -17,7 +17,7 @@ class tp_template_2016 implements tp_publication_template {
                       'author' => 'Michael Winkler',
                       'version'=> '1.0',
                       'button_separator' => ' | ',
-                      'citation_style' => 'teachPress'
+                      'citation_style'      => 'teachPress'
         );
     }
     
@@ -34,7 +34,7 @@ class tp_template_2016 implements tp_publication_template {
     /**
      * Returns the headline for a publication list or a part of that
      * @param type $content     The content of the headline
-     * @param type $args        An array with some basic settings for the publication list
+     * @param type $args        An array with some basic settings for the publication list (source: shortcode settings)
      * @return string
      */
     public function get_headline ($content, $args = array()) {
@@ -48,7 +48,7 @@ class tp_template_2016 implements tp_publication_template {
     /**
      * Returns the headline (second level) for a publication list or a part of that
      * @param type $content     The content of the headline
-     * @param type $args        An array with some basic settings for the publication list
+     * @param type $args        An array with some basic settings for the publication list (source: shortcode settings)
      * @return string
      */
     public function get_headline_sl ($content, $args = array()) {
@@ -73,7 +73,6 @@ class tp_template_2016 implements tp_publication_template {
      *   'keywords'          => An array of related keywords
      *   'container_id'      => The ID of the HTML container
      *   'template_settings' => The template settings array (name, description, author, citation_style)
-     *   'osbib_object'      => The generated string of OSBib or false
      * 
      * @param object $interface     The interface object
      * @return string
