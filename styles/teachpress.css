@@ -23,7 +23,7 @@ td.tp_course_child {padding-left:25px; background: url(../images/child.png) no-r
 .tp_actions {padding: 0 0 10px 0;}
 .tp_bookmarks_checked {color:#bbb;}
 .teachpress_cloud a {text-decoration: none; padding-left: 2px;}
-.tp_open_readme{cursor: pointer; color: #444;}
+.tp_open_readme{cursor: pointer; font-weight: bold;}
 .options_for_number{display: none;}
 #tp_searchbox {float:right; padding-bottom: 5px;}
 a.tp_search_cancel {font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;}

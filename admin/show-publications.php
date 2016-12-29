@@ -40,7 +40,7 @@ function tp_show_publications_page_help () {
                         <p>' . __('For a publication list with tag cloud:','teachpress') . ' <strong>[tpcloud]</strong></p>
                         <p>' . __('For normal publication lists:','teachpress') . ' <strong>[tplist]</strong></p>
                         <p><strong>' . __('More information','teachpress') . '</strong></p>
-                        <p><a href="http://mtrv.wordpress.com/teachpress/shortcode-reference/" target="_blank" title="teachPress Shortcode Reference (engl.)">teachPress Shortcode Reference (engl.)</a></p>',
+                        <p><a href="https://github.com/winkm89/teachPress/wiki#shortcodes" target="_blank" title="teachPress Shortcode Reference (engl.)">teachPress Shortcode Reference (engl.)</a></p>',
     ) );
 }
 

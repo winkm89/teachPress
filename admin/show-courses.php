@@ -21,7 +21,7 @@ function tp_show_course_page_help () {
                         <p>' . __('For the course list','teachpress') . ': <strong>[tpcourselist]</strong></p>
                         <p>' . __('For the enrollment system','teachpress') . ': <strong>[tpenrollments]</strong></p>
                         <p><strong>' . __('More information','teachpress') . '</strong></p>
-                        <p><a href="http://mtrv.wordpress.com/teachpress/shortcode-reference/" target="_blank" title="teachPress Shortcode Reference (engl.)">teachPress Shortcode Reference (engl.)</a></p>',
+                        <p><a href="https://github.com/winkm89/teachPress/wiki#shortcodes" target="_blank" title="teachPress Shortcode Reference (engl.)">teachPress Shortcode Reference (engl.)</a></p>',
     ) );
 }
 

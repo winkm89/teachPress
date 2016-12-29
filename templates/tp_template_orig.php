@@ -10,7 +10,7 @@ class tp_template_orig implements tp_publication_template {
     
     public function get_settings() {
         return array ('name'                => 'teachPress original',
-                      'description'         => 'the original 4-line style template for publication lists.',
+                      'description'         => 'The original 4-line style template for publication lists.',
                       'author'              => 'Michael Winkler',
                       'version'             => '1.0',
                       'button_separator'    => ' | ',

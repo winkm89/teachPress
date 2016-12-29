@@ -128,7 +128,7 @@ The plugin saves course documents in your WordPress upload directory under /teac
 
 == Changelog ==
 
-= 6.0.0 - (xx.xx.2016) =
+= 6.0.0 - (30.12.2016) =
 * New: Template system for publication lists added (#26)
 * New: Cite function for publications in the backend (#22)
 * New: Option for dynamic author/editor format detection for bibtex imports added (#15)
