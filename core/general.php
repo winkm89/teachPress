@@ -153,6 +153,11 @@ function tp_ajax_doc_manager_callback () {
 function tp_detect_templates() {
     $folder = TEACHPRESS_TEMPLATE_PATH;
     $files = scandir($folder);
+    
+    if ( $files === false ) {
+        return array();
+    }
+    
     $return = array();
     foreach ( $files as $file ) {
         $infos = pathinfo($folder.$file);
