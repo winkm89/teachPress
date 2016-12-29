@@ -781,18 +781,16 @@ function tp_courseinfo_shortcode($atts) {
  * possible values of $atts:
  *      id (INT)            - ID of the publication
  *      key (STRING)        - BibTeX key of a publication
- *      ref_style (STRING)  - Reference style
  * 
  * @param array $atts
  * @return string
- * @since 5.2.0
+ * @since 6.0.0
  */
 function tp_cite_shortcode ($atts) {
     global $tp_cite_object;
     $param = shortcode_atts(array(
        'id' => 0,
-       'key' => '',
-       'ref_style' => ''
+       'key' => ''
     ), $atts);
     
     // Load cite object
@@ -827,7 +825,7 @@ function tp_cite_shortcode ($atts) {
  *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y * 
  * @param array $atts
  * @return string
- * @since 5.2.0
+ * @since 6.0.0
  */
 function tp_ref_shortcode($atts) {
     global $tp_cite_object;
@@ -1050,6 +1048,8 @@ function tp_links_shortcode ($atts) {
  *      show_tags_as (STRING)       cloud, pulldown or none, default: cloud
  *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
  *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
+ *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
+ *      show_altmetric_entry (INT)  0 (false) or 1 (true), default: 0
  * 
  * WARNINGS: 
  *      "id" has been removed with teachPress 4.0.0, please use "user" instead!
@@ -1359,6 +1359,8 @@ function tp_cloud_shortcode($atts) {
  *      sort_list (STRING)          a list of publication types (separated by comma) which overwrites the default sort order for headline = 2 
  *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
  *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
+ *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
+ *      show_altmetric_entry (INT)  0 (false) or 1 (true), default: 0
  * 
  * @param array $atts
  * @return string
@@ -1474,7 +1476,7 @@ function tp_list_shortcode($atts){
         $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
         
         // teachPress style
-        $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number, false);
+        $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number);
         
         if ( 2 <= $headline && $headline <= 4 ) {
                 $tparray[$tpz][2] = $row['type'];
@@ -1666,7 +1668,7 @@ function tp_search_shortcode ($atts) {
         foreach ($results as $row) {
             $count = ( $entry_limit == 0 ) ? ( $tpz + 1 ) : ( $entry_limit + $tpz + 1 );
             $tparray[$tpz][0] = $row['year'];
-            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count, false);
+            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count);
             $tpz++;
         }
         $r .= tp_shortcodes::generate_pub_table(

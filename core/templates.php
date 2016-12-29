@@ -230,7 +230,6 @@ class tp_publication_interface {
         $keywords = $this->data['keywords'];
         $settings = $this->data['settings'];
         $container_id = $this->data['container_id'];
-        
 
         // div altmetric
         if ( $settings['show_altmetric_entry']  && $row['doi'] != '' ) {
@@ -249,8 +248,6 @@ class tp_publication_interface {
         if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
             $content .= tp_html_publication_template::get_info_container( tp_html_publication_template::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
         }
-        
-        
 
         return $content;
 
@@ -273,11 +270,10 @@ class tp_html_publication_template {
      * @param array $settings   Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
      * @param object $template  The template object
      * @param int $pub_count    The counter for numbered publications (default: 0)
-     * @param object $osbib     Ths optional OSBiB object (default: false)
      * @return string
      * @since 6.0.0
     */
-    public static function get_single ($row, $all_tags, $settings, $template, $pub_count = 0, $osbib = false) {
+    public static function get_single ($row, $all_tags, $settings, $template, $pub_count = 0) {
         $container_id = ( $settings['container_suffix'] != '' ) ? $row['pub_id'] . '_' . $settings['container_suffix'] : $row['pub_id'];
         $template_settings = $template->get_settings();
         $separator = $template_settings['button_separator'];
@@ -301,19 +297,17 @@ class tp_html_publication_template {
         }
         
         // parse author names for teachPress style
-        if ( $osbib === false ) {
-            if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-                $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
-            }
-            else {
-                $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_name'] );
-            }
+        if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
+            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+        }
+        else {
+            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_name'] );
         }
 
         // if the publication has a doi -> altmetric
         if ( $settings['show_altmetric_entry']  &&  $row['doi'] != '' ) {
-          $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
-          $is_button = true;
+            $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
+            $is_button = true;
         }
 
         
@@ -345,7 +339,7 @@ class tp_html_publication_template {
             $tag_string = $abstract . $url . $bibtex . $altmetric . $tag_string ;
         }
         else {
-          $tag_string = $abstract . $bibtex . $altmetric . $tag_string . $url ;
+            $tag_string = $abstract . $bibtex . $altmetric . $tag_string . $url ;
         }
         
         // load template interface
@@ -573,18 +567,15 @@ class tp_html_publication_template {
      */
     public static function handle_images ($row, $settings) {
         $return = array('bottom' => '',
-                         'left' => '',
-                         'right' => '');
+                        'left' => '',
+                        'right' => '');
         
         $image = '';
 
-
         // return if no images is set
         if ( $settings['image'] === 'none' ) {
-          return $return;
+            return $return;
         }
-
-   
         
         // define the width of the image
         $width = ( $settings['image'] === 'bottom' ) ? 'style="max-width:' . ($settings['pad_size']  - 5) .'px;"' : 'width="' . ( $settings['pad_size'] - 5 ) .'"';
@@ -601,10 +592,11 @@ class tp_html_publication_template {
         if ( $settings['image_link'] === 'post' && $row['rel_page'] != 0 ) {
             $image = '<a href="' . get_permalink($row['rel_page']) . '" title="' . stripslashes($row['title']) . '">' . $image . '</a>';
         }
-
+        
+        // Altmetric donut
         $altmetric = '';
         if( $settings['show_altmetric_donut']) {
-          $altmetric = '<div class="tp_pub_image_bottom"><div data-badge-type="medium-donut" data-doi="' . $row['doi']  . '" data-condensed="true" data-hide-no-mentions="true" class="altmetric-embed"></div></div>';
+           $altmetric = '<div class="tp_pub_image_bottom"><div data-badge-type="medium-donut" data-doi="' . $row['doi']  . '" data-condensed="true" data-hide-no-mentions="true" class="altmetric-embed"></div></div>';
         }
         // left position
         if ( $settings['image'] === 'left' ) {

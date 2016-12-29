@@ -44,9 +44,9 @@ h3.tp_enrollments {color:#005A46;}
 .teachpress_filter {text-align:center; padding-top:5px;}
 .teachpress_cloud {text-align:center;}
 /* active tags */
-.teachpress_cloud a.teachpress_cloud_active {color:#418f7c; font-weight:bold;}
-.teachpress_cloud a.teachpress_cloud_active:hover {color:#418f7c; font-weight:bold; text-decoration:underline;}
-.teachpress_cloud a {color:#AAAAAA; text-decoration:none;}
+.teachpress_cloud a.teachpress_cloud_active {color:#008bd2; font-weight:bold;}
+.teachpress_cloud a.teachpress_cloud_active:hover {color:#008bd2; font-weight:bold; text-decoration:underline;}
+.teachpress_cloud a {color:#AAAAAA; text-decoration:none; box-shadow: none;}
 .teachpress_cloud a:hover {color:#AAAAAA; text-decoration:underline;}
 
 /*************************/
