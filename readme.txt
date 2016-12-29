@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.6.1
-Stable tag: 6.0beta
+Tested up to: 4.7
+Stable tag: 6.0
 
 Manage your courses and publications with teachPress 
 
@@ -34,8 +34,7 @@ This plugin unites a course management system (with modules for enrollments, doc
 
 = Further information = 
 * [Developer blog](https://mtrv.wordpress.com/teachpress/) 
-* [Upgrade information](https://mtrv.wordpress.com/2015/03/12/teachpress-5-0-upgrade-information/)
-* [teachPress Shortcode Reference](https://mtrv.wordpress.com/teachpress/shortcode-reference/) 
+* [Documentation](https://github.com/winkm89/teachPress/wiki) 
 * [teachPress on GitHub](https://github.com/winkm89/teachPress)  
 
 = Disclaimer =  
@@ -61,7 +60,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 = Licence information of external resources =
 * bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
-* OSBib by Mark Grimshaw (Licence: GPL)
 * Graphics for mimetypes, user-new-3.png, folder-new-7.png and document-new-6.png by Oxygen Icons 4.3.1 http://www.oxygen-icons.org/ (Licence: LPGL)
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
 * view-refresh-3.png by GNOME Icon Theme 2.26.0 http://art.gnome.org (License: GPLv2)
@@ -100,14 +98,17 @@ I would like to thank the team of [CBIS, Chemnitz University of Technology](http
 
 == Frequently Asked Questions ==
 
-= How I can use the shortcodes? =
-[See teachPress shortcode reference](http://mtrv.wordpress.com/teachpress/shortcode-reference/)
+= How can I add a publication list in a page or post? = 
+If you writing a post or page use the following string: [tpcloud] or [tplist]
 
 = How can I add a course list in a page or post? = 
-If you writing a post or page use the following tag: [tpcourselist]
+If you writing a post or page use the following string: [tpcourselist]
 
 = How can I add the enrollment system in my blog? =
-Create a new page or post and use the following tag: [tpenrollments]
+Create a new page or post and use the following string: [tpenrollments]
+
+= How can I change thing on the shortcodes? =
+[See teachPress shortcode reference](https://github.com/winkm89/teachPress/wiki#shortcodes)
 
 = How can I add longer course desciptions? =
 Write a long course desciption as normal WordPress pages and add this page as related content to the course.
@@ -121,35 +122,32 @@ An example: [tpcloud pagination="1" entries_per_page="50"]. This works also for 
 = How can I protect course documents? =
 The plugin saves course documents in your WordPress upload directory under /teachpress/*course_id*. You can add a protection for this directory with a .htaccess file without influence to your normal media files.
 
-= How can I deactivate parts of the plugin? =
-If you want to use only one part of the plugin, so write the following in the wp-config.php of your WordPress installation
-`// For deactivating the course module:  
-define ('TEACHPRESS_COURSE_MODULE', false);  
-// For deactivating the publication module:  
-define ('TEACHPRESS_PUBLICATION_MODULE', false);`
+[More FAQs are available on GitHub](https://github.com/winkm89/teachPress/wiki/FAQ)
 
 == Upgrade Notice ==
-
-= 5.0.0 =
-It's **strongly** recommended to save your teachPress database tables before upgrading!
 
 == Changelog ==
 
 = 6.0.0 - (xx.xx.2016) =
 * New: Template system for publication lists added (#26)
-* New: Support for different citation styles (based on OSBib) (#37)
 * New: Cite function for publications in the backend (#22)
-* New: Option for dynamic author/editor format detection for bibtex imports added
+* New: Option for dynamic author/editor format detection for bibtex imports added (#15)
+* New: System for replacing BibTeX journal macros added (#46)
 * New: [tpenrollments]: New parameter "order_signups" added
-* New: [tpcloud, tplist, tpsearch]: New parameter "template" added
+* New: [tpcloud]: New parameter "year" added (#34)
+* New: [tpcloud, tplist, tpsearch]: New parameter "template" added (#26)
 * New: [tpcloud, tplist, tpsearch]: New parameter "image_link" added (#8)
 * New: [tpcloud, tplist, tpsearch]: New parameter "title_ref" added (#14)
-* New: [tpcloud, tplist, tpsearch]: New parameter "show_bibtex" added 
+* New: [tpcloud, tplist, tpsearch]: New parameter "show_bibtex" added (#12)
+* New: [tpcloud, tplist]: Altmetric support added (#44)
+* New: Colored labels for publication types added (with the new template) (#13)
 * Changed: RSS feeds, bibtex feeds, export streams and ajax requests now generated via WordPress APIs (#35)
 * Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
 * Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
-* Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed
+* Changed: [tplist, tpcloud, tpsearch]: Usage of parameter "style" changed (#26)
+* Changed: [tpcloud]: Show filters (year, type, authors, user) if more than one value is given via parameters (#33)
 * Changed: Style improvements for better support for WordPress 4.4+
+* Bugfix: Fixed the problem with including wp-load.php for generating feeds and exports (#35)
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong default parameters for [tplist]
 * Bugfix: Fixed a optical sort order problem with assessments 
 
@@ -182,7 +180,7 @@ It's **strongly** recommended to save your teachPress database tables before upg
 * New: Foreign key checks can be disabled for installs and updates (parameter TEACHPRESS_FOREIGN_KEY_CHECKS added).
 
 = 5.0.15 - (28.09.2015) =
-* New: [tpcloud]: New parameter "author" added
+* New: [tpcloud]: New parameter "author" added (#16)
 * Bugfix: Fixed a wrong definition of where clauses in some database functions under some conditions (Thanks for reporting to David Lahm)
 * Bugfix: Fixed a bug in the tinyMCE plugin which leads to wrong parameter names in shortcodes
 * Bugfix: Fixed several bugs in the copy course function

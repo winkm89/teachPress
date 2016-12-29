@@ -970,7 +970,7 @@ function tp_registration_form ($user_input, $mode = 'register') {
  * Show the enrollment system
  * @param array $atts
  *      @type string term           The term you want to show
- *      @type string date_format    Default: d.m.Y
+ *      @type string date_format    Default: d.m.Y H:i
  *      @type string order_parent   Default: type DESC, name
  *      @type string order_child    Default: name
  *      @type string order_signups  For the "your enrollments" and the "results" tab. Default: con_id DESC 
