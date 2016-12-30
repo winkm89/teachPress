@@ -8,6 +8,6 @@ td.tp_pub_info_simple {border-bottom:1px solid silver; vertical-align:top; paddi
 .tp_pub_title_simple, #content span.tp_pub_title_simple {font-weight:bold;}
 .tp_pub_additional_simple, #content span.tp_pub_additional_simple {}
 .tp_pub_tags_simple, #content span.tp_pub_tags_simple  {color:#AAAAAA;}
-.tp_pub_tags_simple a {color:#AAAAAA; text-decoration:underline;}
+.tp_pub_tags_simple a {color:#AAAAAA; text-decoration:underline; box-shadow: none;}
 .tp_pub_tags_simple a:hover {color:#AAAAAA; text-decoration:none;}
 .tp_pub_type_simple {}

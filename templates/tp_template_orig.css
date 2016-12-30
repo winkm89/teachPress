@@ -8,6 +8,6 @@ td.tp_pub_info {border-bottom:1px solid silver; vertical-align:top; padding:8px;
 .tp_pub_title, #content p.tp_pub_title {font-size:small; font-weight:bold; margin-top:1px; margin-bottom:1px;}
 .tp_pub_additional, #content p.tp_pub_additional {font-size:small; margin-top:1px; margin-bottom:1px;}
 .tp_pub_tags, #content p.tp_pub_tags  {font-size:small; margin-top:1px; margin-bottom:1px; color:#AAAAAA;}
-.tp_pub_tags a {color:#AAAAAA; text-decoration:underline;}
+.tp_pub_tags a {color:#AAAAAA; text-decoration:underline; box-shadow: none;}
 .tp_pub_tags a:hover {color:#AAAAAA; text-decoration:none;}
 .tp_pub_type {font-weight:bold;}

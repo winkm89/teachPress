@@ -96,7 +96,7 @@ class tp_publication_interface {
         }
 
         if ( in_array($data, $values) ) {
-            $title = ( $element === 'status' ) ? __($data,'teachpress') : $data;
+            $title = ( $element === 'status' && $data === 'forthcoming' ) ? __('Forthcoming','teachpress') : $data;
             return '<span class="tp_pub_label_' . $element . ' ' . esc_attr($data) . '">' . $title . '</span>';
         }
     }

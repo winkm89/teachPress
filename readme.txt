@@ -90,10 +90,11 @@ I would like to thank the team of [CBIS, Chemnitz University of Technology](http
 4. Go in the backend to Courses->Settings and click on "Update to ....".
 
 == Screenshots ==
-1. Add course menu
-2. Add publication menu
-3. Single course menu
-4. Example for a publication list created with [tpcloud]
+1. Publication overview screen
+2. Add publication screen
+3. Add course screen
+4. Single course menu
+5. Example for a publication list created with [tpcloud]
  
 
 == Frequently Asked Questions ==
@@ -126,6 +127,9 @@ The plugin saves course documents in your WordPress upload directory under /teac
 
 == Upgrade Notice ==
 
+= 6.0.0 =
+Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
+
 == Changelog ==
 
 = 6.0.0 - (30.12.2016) =
@@ -139,8 +143,10 @@ The plugin saves course documents in your WordPress upload directory under /teac
 * New: [tpcloud, tplist, tpsearch]: New parameter "image_link" added (#8)
 * New: [tpcloud, tplist, tpsearch]: New parameter "title_ref" added (#14)
 * New: [tpcloud, tplist, tpsearch]: New parameter "show_bibtex" added (#12)
-* New: [tpcloud, tplist]: Altmetric support added (#44)
+* New: [tpcloud, tplist]: Altmetric support added; New parameters: "show_altmetric_donut", "show_altmetric_entry" (#44)
 * New: Colored labels for publication types added (with the new template) (#13)
+* New: Option to mark publications as "forthcoming"
+* New: Altmetric support added (not avaiable by default)
 * Changed: RSS feeds, bibtex feeds, export streams and ajax requests now generated via WordPress APIs (#35)
 * Changed: [tplist, tpcloud]: Parameter "entries_per_page" works now if pagination is disabled (#20)
 * Changed: [tplist, tpcloud, tpsearch]: Default settings for author/editor name parsing changed to initials (#19)
