@@ -25,25 +25,25 @@ interface tp_publication_template {
      * @return string
      * @since 6.0.0
      */
-    public function get_body($content, $args);
+    public function get_body($content, $args = array());
     
     /**
      * Returns the headline for a publication list or a part of that
-     * @param type $content     The content of the headline
-     * @param type $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
+     * @param string $content     The content of the headline
+     * @param array $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
      * @return string
      * @since 6.0.0
      */
-    public function get_headline($content, $args);
+    public function get_headline($content, $args = array());
     
     /**
      * Returns the headline (second level) for a publication list or a part of that
-     * @param type $content     The content of the headline
-     * @param type $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
+     * @param string $content     The content of the headline
+     * @param array $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
      * @return string
      * @since 6.0.0
      */
-    public function get_headline_sl($content, $args);
+    public function get_headline_sl($content, $args = array());
     
     /**
      * Returns the single entry of a publication list
