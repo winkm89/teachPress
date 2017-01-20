@@ -1529,6 +1529,7 @@ class tp_publications {
      *      type (STRING)            Type name (separated by comma)
      *      tag (STRING)             Tag IDs (separated by comma)
      *      author_id (STRING)       Author IDs (separated by comma)
+     *      import_id (STRING)       Import IDs (separated by comma)
      *      year (STRING)            Years (separated by comma)
      *      author (STRING)          Author name (separated by comma)
      *      editor (STRING)          Editor name (separated by comma)
@@ -1551,6 +1552,7 @@ class tp_publications {
             'type' => '',
             'tag' => '',
             'author_id' => '',
+            'import_id' => '',
             'year' => '',
             'author' => '',
             'editor' => '',
@@ -1570,7 +1572,7 @@ class tp_publications {
         global $wpdb;
 
         // define basics
-        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.doi, p.rel_page, p.status, p.added, p.modified FROM " . TEACHPRESS_PUB .  " p ";
+        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.doi, p.rel_page, p.status, p.added, p.modified, p.import_id FROM " . TEACHPRESS_PUB .  " p ";
         $join = '';
         $where = '';
         $order = '';
@@ -1597,6 +1599,7 @@ class tp_publications {
         $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
         $tag = tp_db_helpers::generate_where_clause($tag, "b.tag_id", "OR", "=");
         $author_id = tp_db_helpers::generate_where_clause($author_id, "r.author_id", "OR", "=");
+        $import_id = tp_db_helpers::generate_where_clause($import_id, "p.import_id", "OR", "=");
         $year = tp_db_helpers::generate_where_clause($year, "year", "OR", "=");
         $author = tp_db_helpers::generate_where_clause($author, "p.author", "OR", "LIKE", '%');
         $editor = tp_db_helpers::generate_where_clause($editor, "p.editor", "OR", "LIKE", '%');
@@ -1652,6 +1655,9 @@ class tp_publications {
         }
         if ( $author_id != '') {
             $where = ( $where != '' ) ? $where . " AND ( $author_id ) " : " ( $author_id ) ";
+        }
+        if ( $import_id != '') {
+            $where = ( $where != '' ) ? $where . " AND ( $import_id ) " : " ( $import_id ) ";
         }
         if ( $author != '') {
             $where = ( $where != '' ) ? $where . " AND ( $author ) " : " ( $author ) ";
@@ -1868,7 +1874,8 @@ class tp_publications {
             'doi' => '',
             'is_isbn' => '',
             'rel_page' => '',
-            'status' => 'published' 
+            'status' => 'published',
+            'import_id' => 0
         );
         $post_time = current_time('mysql',0);
         $data = wp_parse_args( $data, $defaults );
@@ -1924,7 +1931,7 @@ class tp_publications {
         $note =  stripslashes($note);
         $status = stripslashes($status);
 
-        $wpdb->insert( TEACHPRESS_PUB, array( 'title' => $title, 'type' => $type, 'bibtex' => $bibtex, 'author' => $author, 'editor' => $editor, 'isbn' => $isbn, 'url' => $url, 'date' => $date, 'urldate' => $urldate, 'booktitle' => $booktitle, 'issuetitle' => $issuetitle, 'journal' => $journal, 'volume' => $volume, 'number' => $number, 'pages' => $pages , 'publisher' => $publisher, 'address' => $address, 'edition' => $edition, 'chapter' => $chapter, 'institution' => $institution, 'organization' => $organization, 'school' => $school, 'series' => $series, 'crossref' => $crossref, 'abstract' => $abstract, 'howpublished' => $howpublished, 'key' => $key, 'techtype' => $techtype, 'comment' => $comment, 'note' => $note, 'image_url' => $image_url, 'doi' => $doi, 'is_isbn' => $is_isbn, 'rel_page' => $rel_page, 'status' => $status, 'added' => $post_time, 'modified' => $post_time ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s' ) );
+        $wpdb->insert( TEACHPRESS_PUB, array( 'title' => $title, 'type' => $type, 'bibtex' => $bibtex, 'author' => $author, 'editor' => $editor, 'isbn' => $isbn, 'url' => $url, 'date' => $date, 'urldate' => $urldate, 'booktitle' => $booktitle, 'issuetitle' => $issuetitle, 'journal' => $journal, 'volume' => $volume, 'number' => $number, 'pages' => $pages , 'publisher' => $publisher, 'address' => $address, 'edition' => $edition, 'chapter' => $chapter, 'institution' => $institution, 'organization' => $organization, 'school' => $school, 'series' => $series, 'crossref' => $crossref, 'abstract' => $abstract, 'howpublished' => $howpublished, 'key' => $key, 'techtype' => $techtype, 'comment' => $comment, 'note' => $note, 'image_url' => $image_url, 'doi' => $doi, 'is_isbn' => $is_isbn, 'rel_page' => $rel_page, 'status' => $status, 'added' => $post_time, 'modified' => $post_time, 'import_id' => $import_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
          $pub_id = $wpdb->insert_id;
 
         // Bookmarks
@@ -2196,6 +2203,86 @@ class tp_publications {
 }
 
 /**
+ * Contains functions for getting, adding and deleting publication imports
+ * @package teachpress
+ * @subpackage database
+ * @since 6.1.0
+ */
+class tp_publication_imports {
+    
+    /**
+     * Returns a single row of the import information
+     * @param int $id               ID of the table row
+     * @param string $output_type     The output type, default is: ARRAY_A
+     * @return array|object
+     * @since 6.1
+     */
+    public static function get_import ($id, $output_type = ARRAY_A) {
+        global $wpdb;
+        $result = $wpdb->get_row("SELECT * FROM " . TEACHPRESS_PUB_IMPORTS . " WHERE `id` = '" . intval($id) . "'", $output_type);
+        return $result;
+    }
+    
+    /**
+     * Returns the imports
+     * @param int $wp_id            The WordPress user ID, default is: 0
+     * @param string $output_type   The output type, default is: ARRAY_A
+     * @return array|object
+     * @since 6.1
+     */
+    public static function get_imports ($wp_id = 0, $output_type = ARRAY_A) {
+        global $wpdb;
+        
+        // search only for a single user
+        $where = '';
+        if ( $wp_id !== 0 ) {
+            $where = " WHERE `wp_id` = '" . intval($wp_id) . "'";
+        }
+        
+        $result = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_PUB_IMPORTS . $where . " ORDER BY date DESC", $output_type);
+        return $result;
+    }
+    
+    /**
+     * Adds the import information
+     * return int
+     * @since 6.1
+     */
+    public static function add_import () {
+        global $wpdb;
+        $time = current_time('mysql',0);
+        $id = get_current_user_id();
+        $wpdb->insert( TEACHPRESS_PUB_IMPORTS, array( 'wp_id' => $id, 
+                                                      'date' => $time ), 
+                                               array( '%d', '%s') );
+        return $wpdb->insert_id;
+    }
+    
+    /**
+     * Deletes the selected import information
+     * @param array $checkbox       The IDs of the table rows
+     * @since 6.1
+     */
+    public static function delete_import($checkbox) {
+        global $wpdb;
+        for( $i = 0; $i < count( $checkbox ); $i++ ) {
+            $checkbox[$i] = intval($checkbox[$i]);
+            $wpdb->query( "DELETE FROM " . TEACHPRESS_PUB_IMPORTS . " WHERE `id` = '$checkbox[$i]'" );
+        }
+    }
+    
+    /**
+     * Returns an array with the number of publications for each import
+     * @return array
+     * @since 6.1
+     */
+    public static function count_publications () {
+        global $wpdb;
+        return $wpdb->get_results("SELECT COUNT(`pub_id`) AS number, import_id FROM " . TEACHPRESS_PUB . " WHERE import_ID > 0 GROUP BY import_id ORDER BY import_id ASC", ARRAY_A);
+    }
+}
+
+/**
  * Contains functions for getting, adding and deleting students
  * @package teachpress
  * @subpackage database
@@ -2212,7 +2299,7 @@ class tp_students {
      */
     public static function get_student ($id, $output_type = ARRAY_A) {
         global $wpdb;
-        $result = $wpdb->get_row("Select * FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '" . intval($id) . "'", $output_type);
+        $result = $wpdb->get_row("SELECT * FROM " . TEACHPRESS_STUD . " WHERE `wp_id` = '" . intval($id) . "'", $output_type);
         return $result;
     }
     

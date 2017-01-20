@@ -486,7 +486,7 @@ function get_tp_publication_type_options ($selected, $mode = 'sng') {
  * @return array 
  */
 function get_tp_var_types($type) {
-    if ($type == 'course_array') {
+    if ( $type == 'course_array' ) {
         $ret = array( 
             'course_id' => '',
             'name' => '',
@@ -507,7 +507,7 @@ function get_tp_var_types($type) {
             'strict_signup' => '',
             'use_capabilites' => '');
     }
-    if ($type == 'publication_array') {
+    if ( $type == 'publication_array' ) {
         $ret = array( 
             'pub_id' => '',
             'title' => '',
@@ -546,7 +546,8 @@ function get_tp_var_types($type) {
             'rel_page' => '',
             'status' => '',
             'added' => '',
-            'modified' => '');
+            'modified' => '',
+            'import_id' => 0);
     }
     return $ret;
 }

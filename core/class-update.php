@@ -620,15 +620,20 @@ class tp_update_db {
     private static function upgrade_to_60 (){
         global $wpdb;
         $charset = tp_tables::get_charset();
+        
         // add new tables
-
-        tp_tables::add_table_pub_meta($charset);
         tp_tables::add_table_pub_capabilites($charset);
         tp_tables::add_table_pub_documents($charset);
+        tp_tables::add_table_pub_imports($charset);
         
         // add column use_capabilites to table teachpress_courses
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'use_capabilites'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `use_capabilites` INT( 1 ) NULL DEFAULT NULL AFTER `modified`");
+        }
+        
+        // add column import_id to table teachpress_courses
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'import_id'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `import_id` INT NULL DEFAULT NULL AFTER `use_capabilites`");
         }
         
     }

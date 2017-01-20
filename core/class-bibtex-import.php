@@ -21,8 +21,14 @@ class tp_bibtex_import {
     * @since 3.0.0
     */
     public static function init ($input, $settings, $test = false) {
+        
         // Try to set the time limit for the script
         set_time_limit(TEACHPRESS_TIME_LIMIT);
+        
+        // create import info
+        $import_id = tp_publication_imports::add_import();
+        
+        // Init bibtexParse
         global $PARSEENTRIES;
         $input = tp_bibtex::convert_bibtex_to_utf8($input);
         $parse = NEW PARSEENTRIES();
@@ -45,6 +51,7 @@ class tp_bibtex_import {
             $entries[$i]['tppubtype'] = array_key_exists('tppubtype', $entries[$i]) === true ? $entries[$i]['tppubtype'] : '';
             $entries[$i]['pubstate'] = array_key_exists('pubstate', $entries[$i]) === true ? $entries[$i]['pubstate'] : '';
             $entries[$i]['journal'] = array_key_exists('journal', $entries[$i]) === true ? $entries[$i]['journal'] : '';
+            $entries[$i]['import_id'] = $import_id;
             
             // for the date of publishing
             $entries[$i]['date'] = self::set_date_of_publishing($entries[$i]);
