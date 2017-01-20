@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-29 18:34+0000\n"
+"POT-Creation-Date: 2017-01-20 09:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -571,7 +571,7 @@ msgstr ""
 msgid "date of publishing"
 msgstr ""
 
-#: admin/add-publication.php:341 core/class-html.php:49
+#: admin/add-publication.php:341 core/class-html.php:49 core/templates.php:99
 msgid "Forthcoming"
 msgstr ""
 
@@ -2093,14 +2093,6 @@ msgstr ""
 msgid "Step 2: Insert data"
 msgstr ""
 
-#: core/database.php:893
-msgid "Error while adding new related content."
-msgstr ""
-
-#: core/database.php:2393
-msgid "Changes in your profile successful."
-msgstr ""
-
 #: core/deprecated.php:19
 msgid ""
 "The shortcode [tpdate] is deprecated since teachpress 5.0.0. Use "
@@ -2383,7 +2375,12 @@ msgstr ""
 msgid "Incollections"
 msgstr ""
 
-#: core/general.php:334 core/general.php:334
+#: core/general.php:334
+msgctxt "Singular form of inproceedings, if it exists"
+msgid "Inproceedings"
+msgstr ""
+
+#: core/general.php:334
 msgid "Inproceedings"
 msgstr ""
 

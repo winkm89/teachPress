@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: teachPress v5.0.13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-29 18:35+0000\n"
-"PO-Revision-Date: 2016-12-29 18:35+0000\n"
-"Last-Translator: admin <michael.mtrv@gmail.com>\n"
+"POT-Creation-Date: 2017-01-20 09:45+0000\n"
+"PO-Revision-Date: 2017-01-20 09:45+0000\n"
+"Last-Translator: winkm <michael.winkler@wirtschaft.tu-chemnitz.de>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +22,10 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "Language: de-DE"
 
-#: admin/settings.php:290
-msgid "You can deactivate parts of the plugin."
-msgstr "Du kannst Teile des Plugins deaktivieren."
+#: core/general.php:334
+msgctxt "Singular form of inproceedings, if it exists"
+msgid "Inproceedings"
+msgstr "Konferenzbeitrag"
 
 #: teachpress.php:260 teachpress.php:260 admin/edit-student.php:47
 #: admin/show-single-course.php:763
@@ -622,7 +623,7 @@ msgstr "Herausgeber"
 msgid "date of publishing"
 msgstr "Veröffentlichungsdatum"
 
-#: admin/add-publication.php:341 core/class-html.php:49
+#: admin/add-publication.php:341 core/class-html.php:49 core/templates.php:99
 msgid "Forthcoming"
 msgstr "Geplante Veröffentlichung"
 
@@ -1277,6 +1278,10 @@ msgstr "inaktiv"
 #: admin/settings.php:283 admin/settings.php:286
 msgid "active"
 msgstr "aktiv"
+
+#: admin/settings.php:290
+msgid "You can deactivate parts of the plugin."
+msgstr "Du kannst Teile des Plugins deaktivieren."
 
 #: admin/settings.php:300
 msgid ""
@@ -2193,14 +2198,6 @@ msgstr "Schritt 1: Daten einlesen und vorbereiten"
 msgid "Step 2: Insert data"
 msgstr "Schritt 2: Daten hinzufügen"
 
-#: core/database.php:893
-msgid "Error while adding new related content."
-msgstr "Fehler beim Hinzufügen von weiterführendem Inhalt."
-
-#: core/database.php:2393
-msgid "Changes in your profile successful."
-msgstr "Änderungen am Nutzerprofil erfolgreich."
-
 #: core/deprecated.php:19
 msgid ""
 "The shortcode [tpdate] is deprecated since teachpress 5.0.0. Use "
@@ -2515,7 +2512,7 @@ msgstr "Buchkapitel mit eigenem Titel"
 msgid "Incollections"
 msgstr "Buchkapitel mit eigenem Titel"
 
-#: core/general.php:334 core/general.php:334
+#: core/general.php:334
 msgid "Inproceedings"
 msgstr "Konferenzbeiträge"
 
