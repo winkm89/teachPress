@@ -331,7 +331,7 @@ function get_tp_publication_types() {
     $pub_types[5] = array (0 => 'conference', 1 => __('Conference','teachpress'), 2 => __('Conferences','teachpress'));
     $pub_types[6] = array (0 => 'inbook', 1 => __('Book Chapter','teachpress'), 2 => __('Book Chapters','teachpress'));
     $pub_types[7] = array (0 => 'incollection', 1 => __('Incollection','teachpress'), 2 => __('Incollections','teachpress'));
-    $pub_types[8] = array (0 => 'inproceedings', 1 => __('Inproceedings','teachpress'), 2 => __('Inproceedings','teachpress'));
+    $pub_types[8] = array (0 => 'inproceedings', 1 => _x('Inproceedings','Singular form of inproceedings, if it exists','teachpress'), 2 => __('Inproceedings','teachpress'));
     $pub_types[9] = array (0 => 'manual', 1 => __('Technical Manual','teachpress'), 2 => __('Technical Manuals','teachpress'));
     $pub_types[10] = array (0 => 'mastersthesis', 1 => __('Masters Thesis','teachpress'), 2 => __('Masters Theses','teachpress'));
     $pub_types[11] = array (0 => 'misc', 1 => __('Miscellaneous','teachpress'), 2 => __('Miscellaneous','teachpress'));
