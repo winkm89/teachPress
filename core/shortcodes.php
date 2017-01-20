@@ -1263,7 +1263,7 @@ function tp_cloud_shortcode($atts) {
     $tpz = 0;
     $count = count($row);
     $colspan = '';
-    $tparray = '';
+    $tparray = array();
     if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut']) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
         $colspan = ' colspan="2"';
@@ -1397,7 +1397,7 @@ function tp_list_shortcode($atts){
        'show_altmetric_entry' => 0
     ), $atts);
 
-    $tparray = '';
+    $tparray = array();
     $tpz = 0;
     $colspan = '';
     $headline = intval($atts['headline']);
@@ -1559,7 +1559,7 @@ function tp_search_shortcode ($atts) {
        'container_suffix' => ''
     ), $atts); 
     
-    $tparray = '';
+    $tparray = array();
     $colspan = '';
     $image_size = intval($atts['image_size']);
     $entries_per_page = intval($atts['entries_per_page']);
