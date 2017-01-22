@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.7.1
-Stable tag: 6.0.1
+Stable tag: 6.0.2
 
 Manage your courses and publications with teachPress 
 
@@ -131,6 +131,11 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.0.2 - (22.01.2017) =
+* Bugfix: UTF-8 to TeX conversion fixed for é/è and É/È (Thanks to Marcel Waldvogel) (#51)
+* Bugfix: Variable initialization fixed for better PHP 7.1 compatibility (Thanks to Marcel Waldvogel) (#50)
+* Bugfix: Enable german translation of "inproceedings" in singular (#49)
 
 = 6.0.1 - (14.01.2017) =
 * Bugfix: [tpcloud, tplist, tpsearch]: Fixed a problem which can lead to PHP fatal errors while generating publication lists (#49)
