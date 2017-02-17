@@ -1577,6 +1577,8 @@ function tp_search_shortcode ($atts) {
         'date_format' => htmlspecialchars($atts['date_format']),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
+        'show_altmetric_entry' => false,
+        'show_altmetric_donut' => false,
         'container_suffix' => htmlspecialchars($atts['container_suffix'])
     );
     if ($settings['image']== 'left' || $settings['image']== 'right') {

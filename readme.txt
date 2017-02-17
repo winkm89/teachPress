@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.7.1
-Stable tag: 6.0.2
+Tested up to: 4.7.2
+Stable tag: 6.0.3
 
 Manage your courses and publications with teachPress 
 
@@ -132,10 +132,13 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 6.0.3 - (17.02.2017) =
+* Bugfix: [tpsearch]: Fixed a PHP warning which occurs if "as_filter" is enabled.
+
 = 6.0.2 - (22.01.2017) =
 * Bugfix: UTF-8 to TeX conversion fixed for é/è and É/È (Thanks to Marcel Waldvogel) (#51)
 * Bugfix: Variable initialization fixed for better PHP 7.1 compatibility (Thanks to Marcel Waldvogel) (#50)
-* Bugfix: Enable german translation of "inproceedings" in singular (#49)
+* Bugfix: Enable german translation of "inproceedings" in singular
 
 = 6.0.1 - (14.01.2017) =
 * Bugfix: [tpcloud, tplist, tpsearch]: Fixed a problem which can lead to PHP fatal errors while generating publication lists (#49)
