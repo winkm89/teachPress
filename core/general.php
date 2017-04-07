@@ -336,12 +336,13 @@ function get_tp_publication_types() {
     $pub_types[10] = array (0 => 'mastersthesis', 1 => __('Masters Thesis','teachpress'), 2 => __('Masters Theses','teachpress'));
     $pub_types[11] = array (0 => 'misc', 1 => __('Miscellaneous','teachpress'), 2 => __('Miscellaneous','teachpress'));
     $pub_types[12] = array (0 => 'online', 1 => __('Online','teachpress'), 2 => __('Online','teachpress'));
-    $pub_types[13] = array (0 => 'periodical', 1 => __('Periodical','teachpress'), 2 => __('Periodicals','teachpress'));
-    $pub_types[14] = array (0 => 'phdthesis', 1 => __('PhD Thesis','teachpress'), 2 => __('PhD Theses','teachpress'));
-    $pub_types[15] = array (0 => 'presentation', 1 => __('Presentation','teachpress'), 2 => __('Presentations','teachpress'));
-    $pub_types[16] = array (0 => 'proceedings', 1 => __('Proceeding','teachpress'), 2 => __('Proceedings','teachpress'));
-    $pub_types[17] = array (0 => 'techreport', 1 => __('Technical Report','teachpress'), 2 => __('Technical Reports','teachpress'));
-    $pub_types[18] = array (0 => 'unpublished', 1 => __('Unpublished','teachpress'), 2 => __('Unpublished','teachpress'));
+    $pub_types[13] = array (0 => 'patent', 1 => __('Patent','teachpress'), 2 => __('Patents','teachpress'));
+    $pub_types[14] = array (0 => 'periodical', 1 => __('Periodical','teachpress'), 2 => __('Periodicals','teachpress'));
+    $pub_types[15] = array (0 => 'phdthesis', 1 => __('PhD Thesis','teachpress'), 2 => __('PhD Theses','teachpress'));
+    $pub_types[16] = array (0 => 'presentation', 1 => __('Presentation','teachpress'), 2 => __('Presentations','teachpress'));
+    $pub_types[17] = array (0 => 'proceedings', 1 => __('Proceeding','teachpress'), 2 => __('Proceedings','teachpress'));
+    $pub_types[18] = array (0 => 'techreport', 1 => __('Technical Report','teachpress'), 2 => __('Technical Reports','teachpress'));
+    $pub_types[19] = array (0 => 'unpublished', 1 => __('Unpublished','teachpress'), 2 => __('Unpublished','teachpress'));
     return $pub_types;
 }
 
@@ -350,6 +351,7 @@ function get_tp_publication_types() {
  * @param string $string    The teachPress publication type
  * @return string           The OSBiB publication type
  * @since 6.0.0
+ * @todo Unused
  */
 function tp_map_pubtype_to_osbib ($string) {
     $types = array(
