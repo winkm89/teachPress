@@ -236,7 +236,7 @@ class tp_shortcodes {
                 $text = tp_translate_pub_type($row['type'], 'pl');
             }
             else if ( $mode === 'author' ) {
-                $text = tp_bibtex::parse_author($row['name'], $settings['author_name']);
+                $text = tp_bibtex::parse_author($row['name'], '', $settings['author_name']);
             }
             else if ( $mode === 'user' ) {
                 $user_info = get_userdata( $row['user'] );
@@ -834,6 +834,7 @@ function tp_ref_shortcode($atts) {
     $param = shortcode_atts(array(
        'author_name' => 'simple',
        'editor_name' => 'last',
+       'author_separator' => ',',
        'date_format' => 'd.m.Y'
     ), $atts);
     
@@ -841,6 +842,8 @@ function tp_ref_shortcode($atts) {
     $settings = array(
        'author_name' => htmlspecialchars($param['author_name']),
        'editor_name' => htmlspecialchars($param['editor_name']),
+       'author_separator' => htmlspecialchars($atts['author_separator']),
+       'editor_separator' => htmlspecialchars($atts['editor_separator']),
        'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => false
@@ -881,6 +884,8 @@ function tp_single_shortcode ($atts) {
        'id' => 0,
        'key' => '',
        'author_name' => 'simple',
+       'author_separator' => ',',
+       'editor_separator' => ';',
        'editor_name' => 'last',
        'date_format' => 'd.m.Y',
        'image' => 'none',
@@ -891,6 +896,8 @@ function tp_single_shortcode ($atts) {
     $settings = array(
        'author_name' => htmlspecialchars($param['author_name']),
        'editor_name' => htmlspecialchars($param['editor_name']),
+       'author_separator' => htmlspecialchars($atts['author_separator']),
+       'editor_separator' => htmlspecialchars($atts['editor_separator']),
        'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => true
@@ -905,7 +912,7 @@ function tp_single_shortcode ($atts) {
     }
     $tp_single_publication = $publication;
     
-    $author = tp_bibtex::parse_author($publication['author'], $settings['author_name']);
+$author = tp_bibtex::parse_author($publication['author'], $settings['author_separator'], $settings['author_name']);
     $image_size = intval($param['image_size']);
     
     $asg = '<div class="tp_single_publication">';
@@ -1085,6 +1092,8 @@ function tp_cloud_shortcode($atts) {
         'anchor' => 1,
         'author_name' => 'initials',
         'editor_name' => 'initials',
+        'author_separator' => ';',
+        'editor_separator' => ';',
         'style' => 'none',
         'template' => 'tp_template_2016',
         'title_ref' => 'links',
@@ -1103,6 +1112,8 @@ function tp_cloud_shortcode($atts) {
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
         'editor_name' => htmlspecialchars($atts['editor_name']),
+        'author_separator' => htmlspecialchars($atts['author_separator']),
+        'editor_separator' => htmlspecialchars($atts['editor_separator']),
         'headline' => intval($atts['headline']),
         'style' => htmlspecialchars($atts['style']),
         'template' => htmlspecialchars($atts['template']),
@@ -1383,6 +1394,8 @@ function tp_list_shortcode($atts){
        'image_link' => 'none',
        'author_name' => 'initials',
        'editor_name' => 'initials',
+       'author_separator' => ';',
+       'editor_separator' => ';',
        'style' => 'none',
        'template' => 'tp_template_2016',
        'title_ref' => 'links',
@@ -1410,6 +1423,8 @@ function tp_list_shortcode($atts){
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
         'editor_name' => htmlspecialchars($atts['editor_name']),
+        'author_separator' => htmlspecialchars($atts['author_separator']),
+        'editor_separator' => htmlspecialchars($atts['editor_separator']),
         'style' => htmlspecialchars($atts['style']),
         'template' => htmlspecialchars($atts['template']),
         'image' => htmlspecialchars($atts['image']),
@@ -1548,6 +1563,7 @@ function tp_search_shortcode ($atts) {
        'image_link' => 'none',
        'author_name' => 'initials',
        'editor_name' => 'initials',
+       'author_separator' => ';',
        'style' => 'numbered',
        'template' => 'tp_template_orig_s',
        'title_ref' => 'links',
@@ -1567,6 +1583,8 @@ function tp_search_shortcode ($atts) {
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
         'editor_name' => htmlspecialchars($atts['editor_name']),
+        'author_separator' => htmlspecialchars($atts['author_separator']),
+        'editor_separator' => htmlspecialchars($atts['editor_separator']),
         'style' => htmlspecialchars($atts['style']),
         'template' => htmlspecialchars($atts['template']),
         'image' => htmlspecialchars($atts['image']),

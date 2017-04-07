@@ -262,14 +262,17 @@ class tp_export {
      * @access public
     */
     public static function rtf_row ($row) {
-        $settings['editor_name'] = 'initials';
-        $settings['style'] = 'simple';
-        $settings['use_span'] = false;
+        $settings = array(
+            'editor_name'       => 'initials',
+            'editor_separator'  => ';',
+            'style'             => 'simple',
+            'use_span'          => false
+        );
         if ( $row['type'] === 'collection' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = tp_bibtex::parse_author($row['editor'], ';', $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = tp_bibtex::parse_author($row['author'], $settings['editor_name'] );
+            $all_authors = tp_bibtex::parse_author($row['author'], ';', $settings['editor_name'] );
         }
         $meta = tp_html::get_publication_meta_row($row, $settings);
         $line = $all_authors . ' (' . $row['year'] . ')' . ': ' . tp_html::prepare_title($row['title'], 'replace') . '. ' . $meta;
@@ -286,14 +289,17 @@ class tp_export {
      * @access public
     */
     public static function text_row ($row) {
-        $settings['editor_name'] = 'initials';
-        $settings['style'] = 'simple';
-        $settings['use_span'] = false;
+        $settings = array(
+            'editor_name'       => 'initials',
+            'editor_separator'  => ';',
+            'style'             => 'simple',
+            'use_span'          => false
+        );
         if ( $row['type'] === 'collection' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = tp_bibtex::parse_author($row['editor'], ';', $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = tp_bibtex::parse_author($row['author'], $settings['editor_name'] );
+            $all_authors = tp_bibtex::parse_author($row['author'], ';', $settings['editor_name'] );
         }
         $meta = tp_html::get_publication_meta_row($row, $settings);
         $line = $all_authors . ' (' . $row['year'] . ')' . ': ' . tp_html::prepare_title($row['title'], 'replace') . '. ' . $meta;

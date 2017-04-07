@@ -58,9 +58,12 @@ function tp_pub_rss_feed_func () {
         $row['title'] = tp_html::convert_special_chars($row['title']);
         $item_link = str_replace( array("\r\n", "\r", "\n"), ',', tp_html::convert_special_chars($item_link) );
         $item_link1 = explode(',', $item_link);
-        $settings['editor_name'] = 'simple';
-        $settings['style'] = 'simple';
-        $settings['use_span'] = false;
+        $settings = array(
+            'editor_name'       => 'simple',
+            'editor_separator'  => ',',
+            'style'             => 'simple',
+            'use_span'          => false
+        );
         echo '
             <item>
                <title><![CDATA[' . tp_html::prepare_title($row['title'], 'replace') . ']]></title>

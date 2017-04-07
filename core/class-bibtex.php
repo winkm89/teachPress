@@ -374,20 +374,21 @@ class tp_bibtex {
     /**
      * Parses author names
      * @global $PARSECREATORS
-     * @param string $input
+     * @param string $input     The input string
+     * @param string $separator The separator between the authors (for the output)
      * @param string $mode       --> values: last, initials, old
      * @return string
      * @since 3.0.0
     */
-    public static function parse_author ($input, $mode = '') {
+    public static function parse_author ($input, $separator, $mode = '') {
         if ( $mode === 'last' || $mode === 'initials' ) {
-            $all_authors = self::parse_author_default($input, $mode);
+            $all_authors = self::parse_author_default($input, $separator, $mode);
         }
         elseif ( $mode === 'old' ) {
-            $all_authors = self::parse_author_deprecated($input);
+            $all_authors = self::parse_author_deprecated($input, $separator);
         }
         else {
-            $all_authors = self::parse_author_simple($input);
+            $all_authors = self::parse_author_simple($input, $separator);
         }
         return $all_authors;
     }
@@ -399,14 +400,15 @@ class tp_bibtex {
      * last:            Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf; van Beethoven, Ludwig
      * initials: 	Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf F; van Beethoven, Ludwig
      * 
-     * @param string $input
-     * @param string $mode
+     * @param string $input     The input string
+     * @param string $separator The separator between the authors (for the output)
+     * @param string $mode      last o initials
      * @return string
      * @since 5.0.0
      * @access public
-     * @uses PARSECREATORS() This class is a part of bibtexParse
+     * @uses PARSECREATORS()    This class is a part of bibtexParse
      */
-    public static function parse_author_default ($input, $mode) {
+    public static function parse_author_default ($input, $separator = ';', $mode = 'initials') {
         global $PARSECREATORS;
         $creator = new PARSECREATORS();
         $creatorArray = $creator->parse($input);
@@ -421,7 +423,9 @@ class tp_bibtex {
                 $one_author .= ' ' .trim($creatorArray[$i][1]);
             }
             $all_authors .= stripslashes($one_author);
-            if ($i < count($creatorArray) -1) {$all_authors = $all_authors . '; ';}
+            if ( $i < count($creatorArray) -1 ) {
+                $all_authors .= $separator . ' ';
+            }
         }
         return $all_authors;
     }
@@ -432,12 +436,13 @@ class tp_bibtex {
      * Some examples for the parsing:
      * Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf F.; van Beethoven, Ludwig
      * 
-     * @param string $input
+     * @param string $input     The input string
+     * @param string $separator The separator between the authors (for the output)
      * @return string
      * @since 5.0.0
      * @access public
      */
-    public static function parse_author_deprecated ($input) {
+    public static function parse_author_deprecated ($input, $separator = ';') {
         $all_authors = '';
         $one_author = '';
         $array = explode(" and ",$input);
@@ -452,7 +457,7 @@ class tp_bibtex {
             $one_author = trim( $names[$lenth2 - 1] ). ', ' . $one_author;
             $all_authors = $all_authors . $one_author;
             if ( $i < $lenth - 1 ) {
-                $all_authors .= '; ';
+                $all_authors .= $separator . ' ';
             }
             $one_author = '';
         }
@@ -465,13 +470,14 @@ class tp_bibtex {
      * Some examples for the parsing:
      * Adolf F. Weinhold and Albert Einstein --> Adolf F. Weinhold, Albert Einstein
      * 
-     * @param string $input
+     * @param string $input     The input string
+     * @param string $separator The separator between the authors (for the output)
      * @return string
      * @since 5.0.0
      * @acces public
      */
-    public static function parse_author_simple ($input) {
-        $all_authors = str_replace( array(' and ', '{', '}'), array(', ', '', ''), $input );
+    public static function parse_author_simple ($input, $separator = ',') {
+        $all_authors = str_replace( array(' and ', '{', '}'), array($separator . ' ', '', ''), $input );
         return stripslashes($all_authors);
     }
 

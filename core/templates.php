@@ -298,10 +298,10 @@ class tp_html_publication_template {
         
         // parse author names for teachPress style
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_separator'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_name'] );
+            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_separator'], $settings['author_name'] );
         }
 
         // if the publication has a doi -> altmetric
@@ -309,7 +309,6 @@ class tp_html_publication_template {
             $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
             $is_button = true;
         }
-
         
         // if there is an abstract
         if ( $row['abstract'] != '' ) {
