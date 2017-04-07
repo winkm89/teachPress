@@ -835,6 +835,7 @@ function tp_ref_shortcode($atts) {
        'author_name' => 'simple',
        'editor_name' => 'last',
        'author_separator' => ',',
+       'editor_separator' => ';',
        'date_format' => 'd.m.Y'
     ), $atts);
     
@@ -1564,6 +1565,7 @@ function tp_search_shortcode ($atts) {
        'author_name' => 'initials',
        'editor_name' => 'initials',
        'author_separator' => ';',
+       'editor_separator' => ';',
        'style' => 'numbered',
        'template' => 'tp_template_orig_s',
        'title_ref' => 'links',
