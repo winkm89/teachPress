@@ -1238,7 +1238,7 @@ function tp_cloud_shortcode($atts) {
     }
     
     // complete the header (tag cloud + filter)
-    $part1 = '<a name="tppubs" id="tppubs"></a><div class="teachpress_cloud">' . $asg . '</div><div class="teachpress_filter">' . $filter . '</div><p align="center">' . $showall . '</p>';
+    $part1 = '<a name="tppubs" id="tppubs"></a><div class="teachpress_cloud">' . $asg . '</div><div class="teachpress_filter">' . $filter . '</div><p style="text-align:center">' . $showall . '</p>';
 
     /************************/
     /* List of publications */
