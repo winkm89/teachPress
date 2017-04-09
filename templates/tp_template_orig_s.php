@@ -14,7 +14,7 @@ class tp_template_orig_s implements tp_publication_template {
                       'author'              => 'Michael Winkler',
                       'version'             => '1.0',
                       'button_separator'    => ' | ',
-                      'citation_style'      => 'teachPress'
+                      'citation_style'      => 'teachPress_small'
         );
     }
     
@@ -66,8 +66,8 @@ class tp_template_orig_s implements tp_publication_template {
         $s .= $interface->get_number('<td class="tp_pub_number_simple">', '.</td>');
         $s .= $interface->get_images('left');
         $s .= '<td class="tp_pub_info_simple">';
-        $s .= $interface->get_author('<span class="tp_pub_author_simple">', '</span>');
-        $s .= '<span class="tp_pub_year_simple"> (' . $interface->get_year() . ')</span>: ';
+        $s .= $interface->get_author('<span class="tp_pub_author_simple">', '</span>: ');
+        // $s .= '<span class="tp_pub_year_simple"> (' . $interface->get_year() . ')</span>: ';
         $s .= '<span class="tp_pub_title_simple">' . $interface->get_title() . '</span>. ';
         $s .= '<span class="tp_pub_additional_simple">' . $interface->get_meta() . '</span> ';
         $s .= '<span class="tp_pub_tags_simple">(' . __('Type','teachpress') . ': ' . $interface->get_type() . ' | ' . $interface->get_tag_line() . ')</span>';
@@ -75,24 +75,6 @@ class tp_template_orig_s implements tp_publication_template {
         $s .= $interface->get_images('bottom');
         $s .= '</td>';
         $s .= $interface->get_images('right');
-        $s .= '</tr>';
-        return $s;
-    }
-    
-    public function get_general_part() {
-        $s = '<tr class="tp_publication_simple">';
-        $s .= '##NUMBER##';
-        $s .= '##IMAGES_LEFT##';
-        $s .= '<td class="tp_pub_info_simple">';
-        $s .= '##AUTHOR##';
-        $s .= '<span class="tp_pub_year_simple"> (##YEAR##)</span>: ';
-        $s .= '<span class="tp_pub_title_simple">##TITLE##</span>. ';
-        $s .= '<span class="tp_pub_additional_simple">##META##</span> ';
-        $s .= '<span class="tp_pub_tags_simple">(##TYPE## | ##TAGS##)</span>';
-        $s .= '##INFO_CONTAINER##';
-        $s .= '##IMAGES_BOTTOM##';
-        $s .= '</td>';
-        $s .= '##IMAGES_RIGHT##';
         $s .= '</tr>';
         return $s;
     }
