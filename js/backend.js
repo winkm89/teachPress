@@ -39,6 +39,7 @@ function teachpress_checkboxes(element_names, checkbox_id) {
  * @param {string} selObj
  * @param {string} restore
  * @since 1.0.0
+ * @deprecated Unused function
  */
 function teachpress_jumpMenu(targ,selObj,restore){
     eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
