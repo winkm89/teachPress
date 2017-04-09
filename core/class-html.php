@@ -44,6 +44,14 @@ class tp_html {
             $urldate = tp_html::prepare_line('urldate', $row['urldate'],', ' . __('visited','teachpress') . ': ', '', $use_span); 
         }
         
+        // for number
+        if ( $row['type'] === 'patent' ) {
+            $number = isset( $row['number'] ) ? tp_html::prepare_line('number', $row['number'],'',', ',$use_span) : '';
+        }
+        else {
+            $number = isset( $row['number'] ) ? tp_html::prepare_line('number', $row['number'],'(','), ',$use_span) : '';
+        }
+        
         // for forthcoming publications
         if ( $row['status'] === 'forthcoming' ) {
             $year = __('Forthcoming','teachpress');
@@ -58,8 +66,7 @@ class tp_html {
         $booktitle = isset( $row['booktitle'] ) ? tp_html::prepare_line('booktitle', $row['booktitle'],'',', ',$use_span) : '';
         $issuetitle = isset( $row['issuetitle'] ) ? tp_html::prepare_line('issuetitle', $row['issuetitle'],'',', ',$use_span) : '';
         $journal = isset( $row['journal'] ) ? tp_html::prepare_line('journal', $row['journal'],'',', ',$use_span) : '';
-        $volume = isset( $row['volume'] ) ? tp_html::prepare_line('volume', $row['volume'],'',' ',$use_span) : '';
-        $number = isset( $row['number'] ) ? tp_html::prepare_line('number', $row['number'],'(','), ',$use_span) : '';
+        $volume = isset( $row['volume'] ) ? tp_html::prepare_line('volume', $row['volume'],'',' ',$use_span) : '';        
         $publisher = isset( $row['publisher'] ) ? tp_html::prepare_line('publisher', $row['publisher'],'',', ',$use_span) : '';
         $address = isset( $row['address'] ) ? tp_html::prepare_line('address', $row['address'],'',', ',$use_span) : '';
         $edition = isset( $row['edition'] ) ? tp_html::prepare_line('edition', $row['edition'],'',', ',$use_span) : '';
@@ -124,6 +131,9 @@ class tp_html {
         }
         elseif ($row['type'] === 'periodical') {
             $end = $issuetitle . $series . $volume . $number . $year . $urldate . $isbn . $note . '.';
+        }
+        elseif ($row['type'] === 'patent') {
+            $end = $number . $year . $note . '.';
         }
         elseif ($row['type'] === 'phdthesis') {
             $end = $school . $year . $isbn . $note . '.';

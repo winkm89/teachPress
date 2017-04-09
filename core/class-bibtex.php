@@ -60,6 +60,10 @@ class tp_bibtex {
             elseif ( $pub_fields[$i] === 'techtype' ) {
                 $string .= 'type = {' . $row[$pub_fields[$i]] . '},' . chr(13) . chr(10);
             }
+            // patent: use address as location
+            elseif ( $pub_fields[$i] === 'address' && $row['type']  === 'patent' ) {
+                $string .= 'location = {' . $row[$pub_fields[$i]] . '},' . chr(13) . chr(10);
+            }
             // abstract
             elseif ( $pub_fields[$i] === 'abstract' || $pub_fields[$i] === 'title' ) {
                 $string .= tp_bibtex::prepare_text($row[$pub_fields[$i]], $pub_fields[$i]);
