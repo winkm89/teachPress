@@ -49,7 +49,7 @@ class tp_html {
             $year = __('Forthcoming','teachpress');
         }
         else {
-             $year = isset( $row['year'] ) ? tp_html::prepare_line('year', $row['year'],'','',$use_span) : '';
+            $year = isset( $row['year'] ) ? tp_html::prepare_line('year', $row['year'],'','',$use_span) : '';
         }
         
         // isset() doesn't work for $editor

@@ -897,8 +897,8 @@ function tp_single_shortcode ($atts) {
     $settings = array(
        'author_name' => htmlspecialchars($param['author_name']),
        'editor_name' => htmlspecialchars($param['editor_name']),
-       'author_separator' => htmlspecialchars($atts['author_separator']),
-       'editor_separator' => htmlspecialchars($atts['editor_separator']),
+       'author_separator' => htmlspecialchars($param['author_separator']),
+       'editor_separator' => htmlspecialchars($param['editor_separator']),
        'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => true
@@ -913,15 +913,24 @@ function tp_single_shortcode ($atts) {
     }
     $tp_single_publication = $publication;
     
-$author = tp_bibtex::parse_author($publication['author'], $settings['author_separator'], $settings['author_name']);
+    // Set author name
+    if ( $publication['type'] === 'collection' || $publication['type'] === 'periodical' || ( $publication['author'] === '' && $publication['editor'] !== '' ) ) {
+        $author = tp_bibtex::parse_author($publication['editor'], $settings['author_separator'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+    }
+    else {
+        $author = tp_bibtex::parse_author($publication['author'], $settings['author_separator'], $settings['author_name'] );
+    }
+    
     $image_size = intval($param['image_size']);
     
     $asg = '<div class="tp_single_publication">';
+    
     // add image
     if ( ( $param['image'] === 'left' || $param['image'] === 'right' ) && $publication['image_url'] != '' ) {
         $class = ( $param['image'] === 'left' ) ? 'tp_single_image_left' : 'tp_single_image_right';
         $asg .= '<div class="' . $class . '"><img name="' . $publication['title'] . '" src="' . $publication['image_url'] . '" width="' . $image_size .'" alt="" /></div>';
     }
+    
     // define title
     if ( $param['link'] !== '' && $publication['url'] !== '' ) {
         // Use the first link in url field without the original title
@@ -933,7 +942,7 @@ $author = tp_bibtex::parse_author($publication['author'], $settings['author_sepa
     else {
         $title = tp_html::prepare_title($publication['title'], 'decode');
     }
-    $asg .= '<span class="tp_single_author">' . stripslashes($author) . '</span><span class="tp_single_year"> (' . $publication['year'] . ')</span>: <span class="tp_single_title">' . $title . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($publication, $settings) . '</span>';
+    $asg .= '<span class="tp_single_author">' . stripslashes($author) . ': </span> <span class="tp_single_title">' . $title . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($publication, $settings) . '</span>';
     $asg .= '</div>';
     return $asg;
 }
