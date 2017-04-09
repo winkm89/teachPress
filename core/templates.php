@@ -550,7 +550,7 @@ class tp_html_publication_template {
         foreach ($all_tags as $tag) {
             if ($tag["pub_id"] == $row['pub_id']) {
                 $keywords[] = array('name' => stripslashes($tag["name"]));
-                $tag_string .= '<a href="' . $settings['permalink'] . 'tgid=' . $tag["tag_id"] . $settings['html_anchor'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($tag["name"]) . '</a>, ';
+                $tag_string .= '<a rel="nofollow" href="' . $settings['permalink'] . 'tgid=' . $tag["tag_id"] . $settings['html_anchor'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($tag["name"]) . '</a>, ';
             }
         }
         return array('tags' => substr($tag_string, 0, -2),

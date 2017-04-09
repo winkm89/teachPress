@@ -5,11 +5,12 @@
  * @param {string} targ
  * @param {string} selObj
  * @param {string} restore
- * @since 0.85
+ * @since 6.0.4
+ * @version 2
  */
-function teachpress_jumpMenu(targ,selObj,restore){
-    eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
-    if (restore) selObj.selectedIndex=0;
+function teachpress_jumpMenu(targ, selObj, base){
+    var url = encodeURI(base+selObj.options[selObj.selectedIndex].value);
+    eval(targ+".location='"+ url +"'");
 }
 
 /**
