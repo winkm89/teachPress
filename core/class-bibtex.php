@@ -146,8 +146,12 @@ class tp_bibtex {
         // return the input if there are no bibtex chars
         if ( strpos( $input,'\\' ) === false && strpos($input,'{') === false ) { return $input; }
         // Step 1: Chars which based on a combination of two chars, delete escapes
-        $array_a = array('\ss','\O','\o','\L','\l','\AE','\ae','\OE','\oe','\t{oo}','\textendash','\textemdash',chr(92));
-        $array_b = array('ß','Ø','ø','Ł','ł','Æ','æ','Œ','œ','o͡o','–','—','');
+        $array_a = array('\"a','\"A','\"o','\"O','\"u','\"U','\ss',
+                         '\O','\o','\L','\l','\AE','\ae','\OE','\oe','\t{oo}',
+                         '\textendash','\textemdash','\glqq','\grqq','\flqq','\frqq','\flq','\frq','\glq','\grq','\dq',chr(92));
+        $array_b = array('ä','Ä','ö','Ö','ü','Ü','ß',
+                         'Ø','ø','Ł','ł','Æ','æ','Œ','œ','o͡o',
+                         '–','—','„','“','«','»','‹','›','‚','‘','','');
         $input = str_replace( $array_a , $array_b ,$input);
         
         // Step 2: All over special chars 
