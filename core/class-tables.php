@@ -67,7 +67,25 @@ class tp_tables {
     public static function remove() {
         global $wpdb;
         $wpdb->query("SET FOREIGN_KEY_CHECKS=0");
-        $wpdb->query("DROP TABLE `" . TEACHPRESS_COURSES . "`, `" . TEACHPRESS_COURSE_META . "`, `" . TEACHPRESS_STUD . "`, `" . TEACHPRESS_STUD_META . "`, `" . TEACHPRESS_SETTINGS ."`, `" . TEACHPRESS_SIGNUP ."`, `" . TEACHPRESS_PUB . "`, `" . TEACHPRESS_PUB_META . "`, `" . TEACHPRESS_TAGS . "`, `" . TEACHPRESS_USER . "`, `" . TEACHPRESS_RELATION ."`, `" . TEACHPRESS_ARTEFACTS . "`, `" . TEACHPRESS_ASSESSMENTS . "`, `" . TEACHPRESS_COURSE_CAPABILITES . "`, `" . TEACHPRESS_AUTHORS . "`, `" . TEACHPRESS_REL_PUB_AUTH . "`");
+        $wpdb->query("DROP TABLE `" . TEACHPRESS_ARTEFACTS . "`, 
+                                `" . TEACHPRESS_ASSESSMENTS . "`, 
+                                `" . TEACHPRESS_AUTHORS . "`, 
+                                `" . TEACHPRESS_COURSES . "`, 
+                                `" . TEACHPRESS_COURSE_CAPABILITES . "`, 
+                                `" . TEACHPRESS_COURSE_DOCUMENTS . "`, 
+                                `" . TEACHPRESS_COURSE_META . "`, 
+                                `" . TEACHPRESS_PUB . "`, 
+                                `" . TEACHPRESS_PUB_CAPABILITES . "`, 
+                                `" . TEACHPRESS_PUB_DOCUMENTS . "`, 
+                                `" . TEACHPRESS_PUB_META . "`, 
+                                `" . TEACHPRESS_RELATION ."`,
+                                `" . TEACHPRESS_REL_PUB_AUTH . "`, 
+                                `" . TEACHPRESS_SETTINGS ."`, 
+                                `" . TEACHPRESS_SIGNUP ."`, 
+                                `" . TEACHPRESS_STUD . "`, 
+                                `" . TEACHPRESS_STUD_META . "`, 
+                                `" . TEACHPRESS_TAGS . "`, 
+                                `" . TEACHPRESS_USER . "`");
         $wpdb->query("SET FOREIGN_KEY_CHECKS=1");
     }
     
