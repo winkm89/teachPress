@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.7.2
-Stable tag: 6.0.3
+Tested up to: 4.7.4
+Stable tag: 6.0.4
 
 Manage your courses and publications with teachPress 
 
@@ -131,6 +131,18 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.0.4 - (14.05.2017) =
+* New: Publication type "patent" added (#59)
+* New: [tpcloud, tplist, tpsearch]: New parameters "author_separator" and "editor_separator" added (#58)
+* Changed: [tpcloud]: nofollow attributes for tag links added
+* Changed: [tpcloud]: URL values in jump menus splitted
+* Changed: Expansion for special chars which will be detected during the import
+* Bugfix: Fix for displaying editors as authors for periodical in RTF and text exports
+* Bugfix: [tpcloud]: Fix align setting for the "show all" button
+* Bugfix: [tpsingle]: Fix for displaying editors as authors for collections and periodical
+* Bugfix: [template: teachPress original small]: Remove annoying extra space in bibliographic template (#54)
+* Bugfix: [template: teachPress original small]: Years were displayed twice in publication lists (#10)
 
 = 6.0.3 - (17.02.2017) =
 * Bugfix: [tpsearch]: Fixed a PHP warning which occurs if "as_filter" is enabled.

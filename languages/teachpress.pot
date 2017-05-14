@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-20 09:45+0000\n"
+"POT-Creation-Date: 2017-05-14 21:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -370,7 +370,7 @@ msgid "Capabilites"
 msgstr ""
 
 #: admin/add-course.php:374 admin/add-publication.php:261
-#: core/shortcodes.php:1614
+#: core/shortcodes.php:1645
 msgid "Reset"
 msgstr ""
 
@@ -571,7 +571,7 @@ msgstr ""
 msgid "date of publishing"
 msgstr ""
 
-#: admin/add-publication.php:341 core/class-html.php:49 core/templates.php:99
+#: admin/add-publication.php:341 core/class-html.php:57 core/templates.php:99
 msgid "Forthcoming"
 msgstr ""
 
@@ -899,7 +899,7 @@ msgstr ""
 #: admin/import-publications.php:222 admin/show-authors.php:156
 #: admin/show-courses.php:216 admin/show-publications.php:532
 #: admin/show-single-course.php:774 admin/show-students.php:265
-#: core/shortcodes.php:649 core/shortcodes.php:1664
+#: core/shortcodes.php:649 core/shortcodes.php:1695
 msgid "Sorry, no entries matched your criteria."
 msgstr ""
 
@@ -972,7 +972,7 @@ msgstr ""
 #: admin/edit-tags.php:132 admin/show-authors.php:128
 #: admin/show-courses.php:146 admin/show-publications.php:478
 #: admin/show-single-course.php:721 admin/show-students.php:177
-#: core/shortcodes.php:1620
+#: core/shortcodes.php:1651
 msgid "Search"
 msgstr ""
 
@@ -1002,7 +1002,7 @@ msgid "Click to edit"
 msgstr ""
 
 #: admin/edit-tags.php:232 admin/show-publications.php:368
-#: core/templates.php:554
+#: core/templates.php:553
 msgid "Show all publications which have a relationship to this tag"
 msgstr ""
 
@@ -1091,8 +1091,8 @@ msgid "Publications by user"
 msgstr ""
 
 #: admin/import-publications.php:266 admin/mail.php:86 admin/mail.php:89
-#: admin/mail.php:92 admin/show-students.php:108 core/general.php:650
-#: core/general.php:661
+#: admin/mail.php:92 admin/show-students.php:108 core/general.php:652
+#: core/general.php:663
 msgid "All"
 msgstr ""
 
@@ -1580,7 +1580,7 @@ msgid "Bulk edit executed"
 msgstr ""
 
 #: admin/show-publications.php:157 core/class-ajax.php:207
-#: core/templates.php:333
+#: core/templates.php:332
 msgid "BibTeX"
 msgstr ""
 
@@ -1604,9 +1604,9 @@ msgstr ""
 msgid "Cite"
 msgstr ""
 
-#: admin/show-publications.php:337 core/class-export.php:269
-#: core/class-export.php:293 core/class-html.php:56 core/feeds.php:52
-#: core/templates.php:301
+#: admin/show-publications.php:337 core/class-export.php:273
+#: core/class-export.php:301 core/class-html.php:64 core/feeds.php:52
+#: core/shortcodes.php:918 core/templates.php:301
 msgid "Ed."
 msgstr ""
 
@@ -2002,7 +2002,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: core/class-bibtex.php:118
+#: core/class-bibtex.php:122
 msgid ""
 "The function is deprecated since teachpress 6.0 Use "
 "tp_html_publication_template::get_single() instead."
@@ -2040,31 +2040,31 @@ msgstr ""
 msgid "visited"
 msgstr ""
 
-#: core/class-html.php:57
+#: core/class-html.php:65
 msgid "pp."
 msgstr ""
 
-#: core/class-html.php:66
+#: core/class-html.php:73
 msgid "Chapter"
 msgstr ""
 
-#: core/class-html.php:84
+#: core/class-html.php:91
 msgid "In"
 msgstr ""
 
-#: core/class-tables.php:429 core/class-update.php:827
+#: core/class-tables.php:447 core/class-update.php:827
 msgid "Course of studies"
 msgstr ""
 
-#: core/class-tables.php:432 core/class-update.php:832
+#: core/class-tables.php:450 core/class-update.php:832
 msgid "Birthday"
 msgstr ""
 
-#: core/class-tables.php:435 core/class-update.php:837
+#: core/class-tables.php:453 core/class-update.php:837
 msgid "Semester number"
 msgstr ""
 
-#: core/class-tables.php:438 core/class-update.php:842
+#: core/class-tables.php:456 core/class-update.php:842
 msgid "Matriculation number"
 msgstr ""
 
@@ -2091,6 +2091,14 @@ msgstr ""
 
 #: core/class-update.php:762
 msgid "Step 2: Insert data"
+msgstr ""
+
+#: core/database.php:893
+msgid "Error while adding new related content."
+msgstr ""
+
+#: core/database.php:2393
+msgid "Changes in your profile successful."
 msgstr ""
 
 #: core/deprecated.php:19
@@ -2409,50 +2417,58 @@ msgid "Online"
 msgstr ""
 
 #: core/general.php:339
-msgid "Periodical"
+msgid "Patent"
 msgstr ""
 
 #: core/general.php:339
+msgid "Patents"
+msgstr ""
+
+#: core/general.php:340
+msgid "Periodical"
+msgstr ""
+
+#: core/general.php:340
 msgid "Periodicals"
 msgstr ""
 
-#: core/general.php:340
+#: core/general.php:341
 msgid "PhD Thesis"
 msgstr ""
 
-#: core/general.php:340
+#: core/general.php:341
 msgid "PhD Theses"
 msgstr ""
 
-#: core/general.php:341
+#: core/general.php:342
 msgid "Presentation"
 msgstr ""
 
-#: core/general.php:341
+#: core/general.php:342
 msgid "Presentations"
 msgstr ""
 
-#: core/general.php:342
+#: core/general.php:343
 msgid "Proceeding"
 msgstr ""
 
-#: core/general.php:342
+#: core/general.php:343
 msgid "Proceedings"
 msgstr ""
 
-#: core/general.php:343
+#: core/general.php:344
 msgid "Technical Report"
 msgstr ""
 
-#: core/general.php:343
+#: core/general.php:344
 msgid "Technical Reports"
 msgstr ""
 
-#: core/general.php:344 core/general.php:344
+#: core/general.php:345 core/general.php:345
 msgid "Unpublished"
 msgstr ""
 
-#: core/general.php:643
+#: core/general.php:645
 msgid "Default"
 msgstr ""
 
@@ -2484,27 +2500,27 @@ msgstr ""
 msgid "Select the term"
 msgstr ""
 
-#: core/shortcodes.php:852
+#: core/shortcodes.php:856
 msgid "References"
 msgstr ""
 
-#: core/shortcodes.php:984 core/templates.php:316
+#: core/shortcodes.php:1001 core/templates.php:315
 msgid "Abstract"
 msgstr ""
 
-#: core/shortcodes.php:1012 core/templates.php:323 core/templates.php:327
+#: core/shortcodes.php:1029 core/templates.php:322 core/templates.php:326
 msgid "Links"
 msgstr ""
 
-#: core/shortcodes.php:1225 core/shortcodes.php:1225
+#: core/shortcodes.php:1246 core/shortcodes.php:1246
 msgid "Show all"
 msgstr ""
 
-#: core/shortcodes.php:1326
+#: core/shortcodes.php:1347
 msgid "Sorry, no publications matched your criteria."
 msgstr ""
 
-#: core/shortcodes.php:1652
+#: core/shortcodes.php:1683
 msgid "Results for"
 msgstr ""
 
@@ -2516,23 +2532,23 @@ msgstr ""
 msgid "Show Altmetric"
 msgstr ""
 
-#: core/templates.php:316
+#: core/templates.php:315
 msgid "Show abstract"
 msgstr ""
 
-#: core/templates.php:323
+#: core/templates.php:322
 msgid "Show links and resources"
 msgstr ""
 
-#: core/templates.php:333
+#: core/templates.php:332
 msgid "Show BibTeX entry"
 msgstr ""
 
-#: core/templates.php:394
+#: core/templates.php:393
 msgid "Close"
 msgstr ""
 
-#: core/templates.php:496 core/templates.php:499
+#: core/templates.php:495 core/templates.php:498
 msgid "Follow DOI:"
 msgstr ""
 

@@ -62,7 +62,7 @@ class tp_template_2016 implements tp_publication_template {
     /**
      * Returns the single entry of a publication list
      * 
-     * Contents of the interface object:
+     * Contents of the interface data array (available over $interface->get_data()):
      *   'row'               => An array of the related publication data
      *   'title'             => The title of the publication (completely prepared for HTML output)
      *   'images'            => The images array (HTML code for left, bottom, right)
