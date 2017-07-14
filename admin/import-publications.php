@@ -166,7 +166,7 @@ class tp_import_publication_page {
                     <div class="inside">
                         <p><strong><label for="author_format_0"><?php _e('Author/Editor Format','teachpress'); ?></label></strong></p>
                         <label>
-                            <input type="radio" name="author_format" value="default" id="author_format_0" checked="checked" />
+                            <input type="radio" name="author_format" value="default" id="author_format_0" />
                             Firstname1 Lastname1 and Firstname2 Lastname2 and ...
                         </label>
                         <br />
@@ -176,7 +176,7 @@ class tp_import_publication_page {
                         </label>
                         <br />
                         <label>
-                            <input type="radio" name="author_format" value="dynamic" id="author_format_1" />
+                            <input type="radio" name="author_format" value="dynamic" id="author_format_1" checked="checked" />
                             <?php _e('Dynamic detection','teachpress');?>
                         </label>
                         <br />
