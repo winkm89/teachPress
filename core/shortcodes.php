@@ -1041,6 +1041,7 @@ function tp_links_shortcode ($atts) {
  *      author (STRING)             author IDs (separated by comma)
  *      year (STRING)               one or more years (separated by comma)
  *      exclude (INT)               one or more IDs of publications you don't want to show (separated by comma)
+ *      include_editor_as_author (INT)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
  *      maxsize (INT)               maximal font size for the tag cloud, default: 35
@@ -1089,6 +1090,7 @@ function tp_cloud_shortcode($atts) {
         'author' => '',
         'year' => '',
         'exclude' => '', 
+        'include_editor_as_author' => 1,
         'order' => 'date DESC',
         'headline' => 1, 
         'maxsize' => 35,
@@ -1275,6 +1277,7 @@ function tp_cloud_shortcode($atts) {
         'order' => $sql_parameter['order'], 
         'exclude' => $sql_parameter['exclude'],
         'exclude_tags' => $sql_parameter['exclude_tags'],
+        'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'limit' => $pagination_limits['limit'],
         'output_type' => ARRAY_A);
 
@@ -1361,6 +1364,7 @@ function tp_cloud_shortcode($atts) {
  *      author (STRING)             author IDs (separated by comma)
  *      exclude (STRING)            a string with one or more IDs of publication you don't want to display
  *      include (STRING)            a string with one or more IDs of publication you want to display
+ *      include_editor_as_author (INT)
  *      year (STRING)               the publication years (separated by comma)
  *      exclude_tags (STRING)       excludes all publications with the given tag IDs (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
@@ -1395,6 +1399,7 @@ function tp_list_shortcode($atts){
        'author' => '',
        'exclude' => '',
        'include' => '',
+       'include_editor_as_author' => 1,
        'year' => '',
        'exclude_tags' => '',
        'order' => 'date DESC',
@@ -1489,6 +1494,7 @@ function tp_list_shortcode($atts){
         'exclude' => $atts['exclude'],
         'exclude_tags' => $atts['exclude_tags'],
         'include' => $atts['include'], 
+        'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'output_type' => ARRAY_A, 
         'limit' => $pagination_limits['limit']
     );

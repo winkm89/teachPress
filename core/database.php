@@ -1525,20 +1525,21 @@ class tp_publications {
      * Returns an array or object of publications
      * 
      * Possible values for the array $args:
-     *      user (STRING)            User IDs (separated by comma)
-     *      type (STRING)            Type name (separated by comma)
-     *      tag (STRING)             Tag IDs (separated by comma)
-     *      author_id (STRING)       Author IDs (separated by comma)
-     *      year (STRING)            Years (separated by comma)
-     *      author (STRING)          Author name (separated by comma)
-     *      editor (STRING)          Editor name (separated by comma)
-     *      exclude (STRING)         The ids of the publications you want to exclude (separated by comma)
-     *      include (STRING)         The ids of the publications you want to include (separated by comma)
-     *      exclude_tags (STRING)    Use it to exclude publications via tag IDs (separated by comma)
-     *      order (STRING)           The order of the list
-     *      limit (STRING)           The sql search limit, ie: 0,30
-     *      search (STRING)          The search string
-     *      output_type (STRING)     OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
+     *  user (STRING)                   User IDs (separated by comma)
+     *  type (STRING)                   Type name (separated by comma)
+     *  tag (STRING)                    Tag IDs (separated by comma)
+     *  author_id (STRING)              Author IDs (separated by comma)
+     *  year (STRING)                   Years (separated by comma)
+     *  author (STRING)                 Author name (separated by comma)
+     *  editor (STRING)                 Editor name (separated by comma)
+     *  exclude (STRING)                The ids of the publications you want to exclude (separated by comma)
+     *  include (STRING)                The ids of the publications you want to include (separated by comma)
+     *  include_editor_as_author (BOOL) True or false
+     *  exclude_tags (STRING)           Use it to exclude publications via tag IDs (separated by comma)
+     *  order (STRING)                  The order of the list
+     *  limit (STRING)                  The sql search limit, ie: 0,30
+     *  search (STRING)                 The search string
+     *  output_type (STRING)            OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
      *
      * @since 5.0.0
      * @param array $args
@@ -1555,6 +1556,7 @@ class tp_publications {
             'author' => '',
             'editor' => '',
             'include' => '',
+            'include_editor_as_author' => true,
             'exclude' => '',
             'exclude_tags' => '',
             'order' => 'date DESC',
@@ -1652,6 +1654,9 @@ class tp_publications {
         }
         if ( $author_id != '') {
             $where = ( $where != '' ) ? $where . " AND ( $author_id ) " : " ( $author_id ) ";
+        }
+        if ( $author_id != '' && $include_editor_as_author === false) {
+            $where .= " AND ( r.is_author = 1 ) ";
         }
         if ( $author != '') {
             $where = ( $where != '' ) ? $where . " AND ( $author ) " : " ( $author ) ";
