@@ -97,6 +97,8 @@ class tp_publication_interface {
 
         if ( in_array($data, $values) ) {
             $title = ( $element === 'status' && $data === 'forthcoming' ) ? __('Forthcoming','teachpress') : $data;
+            // Replace possible chars from the meta data system
+            $title = str_replace(array('{','}'), array('',''), $title);
             return '<span class="tp_pub_label_' . $element . ' ' . esc_attr($data) . '">' . $title . '</span>';
         }
     }
