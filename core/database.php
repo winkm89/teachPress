@@ -1570,9 +1570,23 @@ class tp_publications {
         $order_all = esc_sql($order);
 
         global $wpdb;
+        
+        // define all things for meta data integration
+        $joins = '';
+        $selects = '';
+        $meta_fields = $wpdb->get_results("SELECT variable FROM " . TEACHPRESS_SETTINGS . " WHERE category = 'teachpress_pub'", ARRAY_A);
+        if ( !empty($meta_fields) ) {
+            $i = 1;
+            foreach ($meta_fields as $field) {
+                $table_id = 'm' . $i; 
+                $selects .= ', ' . $table_id .'.meta_value AS ' . $field['variable'];
+                $joins .= ' LEFT JOIN ' . TEACHPRESS_PUB_META . ' ' . $table_id . " ON ( " . $table_id . ".pub_id = p.pub_id AND " . $table_id . ".meta_key = '" . $field['variable'] . "' ) ";
+                $i++;
+            }
+        }
 
         // define basics
-        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.doi, p.rel_page, p.status, p.added, p.modified FROM " . TEACHPRESS_PUB .  " p ";
+        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn, p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.doi, p.rel_page, p.status, p.added, p.modified $selects FROM " . TEACHPRESS_PUB . " p $joins ";
         $join = '';
         $where = '';
         $order = '';
@@ -1587,7 +1601,7 @@ class tp_publications {
             $exclude_tags = tp_db_helpers::generate_where_clause($exclude_tags , "tag_id", "OR", "=");
             $exclude_publications = $wpdb->get_results("SELECT DISTINCT pub_id FROM " . TEACHPRESS_RELATION . " WHERE $exclude_tags ORDER BY pub_id ASC", ARRAY_A);
             foreach ($exclude_publications as $row) {
-                $extend = $extend . $row['pub_id'] . ',';
+                $extend .= $row['pub_id'] . ',';
             }
             $exclude = $extend . $exclude;
         }
