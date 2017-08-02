@@ -48,6 +48,7 @@ class tp_tables {
         self::add_table_pub_meta($charset_collate);
         self::add_table_pub_capabilites($charset_collate);
         self::add_table_pub_documents($charset_collate);
+        self::add_table_pub_imports($charset_collate);
         self::add_table_tags($charset_collate);
         self::add_table_relation($charset_collate);
         self::add_table_user($charset_collate);
@@ -60,7 +61,7 @@ class tp_tables {
         }
     }
     
-    /**
+      /**
      * Remove teachPress database tables
      * @since 5.0.0
      */
@@ -78,6 +79,7 @@ class tp_tables {
                                 `" . TEACHPRESS_PUB_CAPABILITES . "`, 
                                 `" . TEACHPRESS_PUB_DOCUMENTS . "`, 
                                 `" . TEACHPRESS_PUB_META . "`, 
+                                `" . TEACHPRESS_PUB_IMPORTS . "`,
                                 `" . TEACHPRESS_RELATION ."`,
                                 `" . TEACHPRESS_REL_PUB_AUTH . "`, 
                                 `" . TEACHPRESS_SETTINGS ."`, 
@@ -512,6 +514,7 @@ class tp_tables {
                     `added` DATETIME,
                     `modified` DATETIME,
                     `use_capabilites` INT(1),
+                    `import_id` INT,
                     PRIMARY KEY (pub_id)
                 ) $charset_collate;");
         
@@ -595,6 +598,31 @@ class tp_tables {
                     `sort` INT,
                     `pub_id` INT UNSIGNED,
                     PRIMARY KEY (doc_id)
+                ) $charset_collate;");
+         
+        // test engine
+        self::change_engine(TEACHPRESS_PUB_DOCUMENTS);
+    }
+    
+    /**
+     * Create table pub_imports
+     * @param string $charset_collate
+     * @since 6.1.0
+     */
+    public static function add_table_pub_imports($charset_collate) {
+        global $wpdb;
+        
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_PUB_IMPORTS . "'") == TEACHPRESS_PUB_IMPORTS ) {
+            return;
+        }
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        
+        dbDelta("CREATE TABLE " . TEACHPRESS_PUB_IMPORTS . " (
+                    `id` INT UNSIGNED AUTO_INCREMENT,
+                    `wp_id` INT UNSIGNED,
+                    `date` DATETIME,
+                    PRIMARY KEY (id)
                 ) $charset_collate;");
          
         // test engine
