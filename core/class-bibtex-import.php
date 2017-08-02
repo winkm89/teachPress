@@ -76,6 +76,9 @@ class tp_bibtex_import {
             
             // for author / editor
             $entries[$i]['author'] = tp_bibtex_import_author::init($entries[$i], 'author', $settings['author_format']);
+            if ( $entries[$i]['editor'] != '' ) { 
+                $entries[$i]['editor'] = tp_bibtex_import_author::init($entries[$i], 'editor', $settings['author_format']);
+            }
             
             // for isbn/issn detection
             if ( $entries[$i]['issn'] != '' ) {
