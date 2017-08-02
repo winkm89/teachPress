@@ -103,11 +103,10 @@ class tp_bibtex_import {
             
             // replace bibtex chars
             foreach ($entries[$i] as $key => $value) {
-                /**
-                 * Leads to problems with char replacement in old teachPress versions,
-                 * reenabled for correct importing of control chars in names
-                 */
                 if ( $key == 'author' || $key == 'editor' ) {
+                    // replace only a list of special chars and not all {} blocks
+                    // I know it's a bad workaround. Smarter solutions are welcome
+                    $entries[$i][$key] = str_replace(array('{ä}','{Ä}','{ö}','{Ö}','{ü}','{Ü}'), array('ä','Ä','ö','Ö','ü','Ü'), $value);
                     continue;
                 }
                 $entries[$i][$key] = str_replace(array('{','}'), array('',''), $value);
