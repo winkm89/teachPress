@@ -175,7 +175,6 @@ class tp_tables {
                     `wp_id` INT UNSIGNED,
                     `course_id` INT UNSIGNED,
                     `capability` VARCHAR(100),
-                    FOREIGN KEY (`course_id`) REFERENCES " . TEACHPRESS_COURSES . " (`course_id`),
                     PRIMARY KEY (`cap_id`)
                 ) $charset_collate;");
         
@@ -205,7 +204,6 @@ class tp_tables {
                     `size` BIGINT,
                     `sort` INT,
                     `course_id` INT UNSIGNED,
-                    FOREIGN KEY (course_id) REFERENCES " . TEACHPRESS_COURSES . " (course_id),
                     PRIMARY KEY (doc_id)
                 ) $charset_collate;");
          
@@ -232,7 +230,6 @@ class tp_tables {
                     `course_id` INT UNSIGNED,
                     `meta_key` VARCHAR(255),
                     `meta_value` TEXT,
-                    FOREIGN KEY (course_id) REFERENCES " . TEACHPRESS_COURSES . " (course_id),
                     PRIMARY KEY (meta_id)
                 ) $charset_collate;");
         
@@ -286,7 +283,6 @@ class tp_tables {
                     `wp_id` INT UNSIGNED,
                     `meta_key` VARCHAR(255),
                     `meta_value` TEXT,
-                    FOREIGN KEY (wp_id) REFERENCES " . TEACHPRESS_STUD . " (wp_id),
                     PRIMARY KEY (meta_id)
                 ) $charset_collate;");
         
@@ -314,8 +310,6 @@ class tp_tables {
                     `wp_id` INT UNSIGNED,
                     `waitinglist` INT(1) UNSIGNED,
                     `date` DATETIME,
-                    FOREIGN KEY (course_id) REFERENCES " . TEACHPRESS_COURSES . " (course_id),
-                    FOREIGN KEY (wp_id) REFERENCES " . TEACHPRESS_STUD . " (wp_id),
                     PRIMARY KEY (con_id)
                 ) $charset_collate;");
         
@@ -345,7 +339,6 @@ class tp_tables {
                     `scale` TEXT,
                     `passed` INT(1),
                     `max_value` VARCHAR(50),
-                    FOREIGN KEY (course_id) REFERENCES " . TEACHPRESS_COURSES . " (course_id),
                     PRIMARY KEY (artefact_id)
                 ) $charset_collate;");
         
@@ -379,9 +372,6 @@ class tp_tables {
                     `exam_date` DATETIME,
                     `comment` TEXT,
                     `passed` INT(1),
-                    FOREIGN KEY (artefact_id) REFERENCES " . TEACHPRESS_ARTEFACTS . " (artefact_id),
-                    FOREIGN KEY (course_id) REFERENCES " . TEACHPRESS_COURSES . " (course_id),
-                    FOREIGN KEY (wp_id) REFERENCES " . TEACHPRESS_STUD . " (wp_id),
                     PRIMARY KEY (assessment_id)
                 ) $charset_collate;");
         
@@ -541,7 +531,6 @@ class tp_tables {
                     `pub_id` INT UNSIGNED,
                     `meta_key` VARCHAR(255),
                     `meta_value` TEXT,
-                    FOREIGN KEY (pub_id) REFERENCES " . TEACHPRESS_PUB . " (pub_id),
                     PRIMARY KEY (meta_id)
                 ) $charset_collate;");
         
@@ -671,8 +660,6 @@ class tp_tables {
                     `con_id` INT UNSIGNED AUTO_INCREMENT,
                     `pub_id` INT UNSIGNED,
                     `tag_id` INT UNSIGNED,
-                    FOREIGN KEY (pub_id) REFERENCES " . TEACHPRESS_PUB . " (pub_id),
-                    FOREIGN KEY (tag_id) REFERENCES " . TEACHPRESS_TAGS . " (tag_id) ,
                     PRIMARY KEY (con_id)
                 ) $charset_collate;");
         
@@ -698,7 +685,6 @@ class tp_tables {
                     `bookmark_id` INT UNSIGNED AUTO_INCREMENT,
                     `pub_id` INT UNSIGNED,
                     `user` INT UNSIGNED,
-                    FOREIGN KEY (pub_id) REFERENCES " . TEACHPRESS_PUB . " (pub_id),
                     PRIMARY KEY (bookmark_id)
                     ) $charset_collate;");
         
@@ -751,8 +737,6 @@ class tp_tables {
                     `author_id` INT UNSIGNED,
                     `is_author` INT(1),
                     `is_editor` INT(1),
-                    FOREIGN KEY (pub_id) REFERENCES " . TEACHPRESS_PUB . " (pub_id),
-                    FOREIGN KEY (author_id) REFERENCES " . TEACHPRESS_AUTHORS . " (author_id),
                     PRIMARY KEY (con_id)
                 ) $charset_collate;");
         
