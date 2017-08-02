@@ -97,6 +97,8 @@ class tp_publication_interface {
 
         if ( in_array($data, $values) ) {
             $title = ( $element === 'status' && $data === 'forthcoming' ) ? __('Forthcoming','teachpress') : $data;
+            // Replace possible chars from the meta data system
+            $title = str_replace(array('{','}'), array('',''), $title);
             return '<span class="tp_pub_label_' . $element . ' ' . esc_attr($data) . '">' . $title . '</span>';
         }
     }
@@ -298,10 +300,10 @@ class tp_html_publication_template {
         
         // parse author names for teachPress style
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_separator'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_name'] );
+            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_separator'], $settings['author_name'] );
         }
 
         // if the publication has a doi -> altmetric
@@ -309,7 +311,6 @@ class tp_html_publication_template {
             $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
             $is_button = true;
         }
-
         
         // if there is an abstract
         if ( $row['abstract'] != '' ) {
@@ -551,7 +552,7 @@ class tp_html_publication_template {
         foreach ($all_tags as $tag) {
             if ($tag["pub_id"] == $row['pub_id']) {
                 $keywords[] = array('name' => stripslashes($tag["name"]));
-                $tag_string .= '<a href="' . $settings['permalink'] . 'tgid=' . $tag["tag_id"] . $settings['html_anchor'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($tag["name"]) . '</a>, ';
+                $tag_string .= '<a rel="nofollow" href="' . $settings['permalink'] . 'tgid=' . $tag["tag_id"] . $settings['html_anchor'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($tag["name"]) . '</a>, ';
             }
         }
         return array('tags' => substr($tag_string, 0, -2),

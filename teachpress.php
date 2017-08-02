@@ -3,11 +3,11 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 6.0.1
+Version: 6.0.4
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
-Max WP Version: 4.7.1
+Max WP Version: 4.7.4
 Text Domain: teachpress
 Domain Path: /languages
 GitHub Plugin URI: https://github.com/winkm89/teachPress
@@ -130,24 +130,17 @@ if ( !defined('TEACHPRESS_PUB_META') ) {
 
 if ( !defined('TEACHPRESS_PUB_CAPABILITES') ) {
     /**
-     * This constant defines the table name for teachpress_pub_capabilities.
+     * This constant defines the table name for teachpress_course_cababilites.
      * @since 6.0.0
     */
     define('TEACHPRESS_PUB_CAPABILITES', $wpdb->prefix . 'teachpress_pub_capabilites');}
 
 if ( !defined('TEACHPRESS_PUB_DOCUMENTS') ) {
     /**
-     * This constant defines the table name for teachpress_pub_documents.
+     * This constant defines the table name for teachpress_course_documents.
      * @since 6.0.0
     */
     define('TEACHPRESS_PUB_DOCUMENTS', $wpdb->prefix . 'teachpress_pub_documents');}
-
-if ( !defined('TEACHPRESS_PUB_IMPORTS') ) {
-    /**
-     * This constant defines the table name for teachpress_pub_imports.
-     * @since 6.0.0
-    */
-    define('TEACHPRESS_PUB_IMPORTS', $wpdb->prefix . 'teachpress_pub_imports');}
 
 if ( !defined('TEACHPRESS_TAGS') ) {
     /**
@@ -370,7 +363,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '6.1a';
+    return '6.0.4';
 }
 
 /**

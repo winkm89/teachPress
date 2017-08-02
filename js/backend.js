@@ -39,6 +39,7 @@ function teachpress_checkboxes(element_names, checkbox_id) {
  * @param {string} selObj
  * @param {string} restore
  * @since 1.0.0
+ * @deprecated Unused function
  */
 function teachpress_jumpMenu(targ,selObj,restore){
     eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
@@ -285,7 +286,7 @@ function teachpress_publicationFields(mode) {
             document.getElementById("div_volume").style.display = "none";
         }
         // number field
-        if (test === "article" || test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "periodical" || test === "proceedings" || test === "techreport") {
+        if (test === "article" || test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "patent" || test === "periodical" || test === "proceedings" || test === "techreport") {
             document.getElementById("div_number").style.display = "block";
         }
         else {
@@ -299,7 +300,7 @@ function teachpress_publicationFields(mode) {
             document.getElementById("div_pages").style.display = "none";
         }
         // address field
-        if (test === "book" || test === "booklet" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "manual" || test === "mastersthesis" || test === "phdthesis" || test === "proceedings" || test === "techreport") {
+        if (test === "book" || test === "booklet" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "manual" || test === "mastersthesis" || test === "patent" || test === "phdthesis" || test === "proceedings" || test === "techreport") {
             document.getElementById("div_address").style.display = "block";
         }
         else {

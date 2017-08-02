@@ -236,7 +236,7 @@ class tp_shortcodes {
                 $text = tp_translate_pub_type($row['type'], 'pl');
             }
             else if ( $mode === 'author' ) {
-                $text = tp_bibtex::parse_author($row['name'], $settings['author_name']);
+                $text = tp_bibtex::parse_author($row['name'], '', $settings['author_name']);
             }
             else if ( $mode === 'user' ) {
                 $user_info = get_userdata( $row['user'] );
@@ -253,15 +253,15 @@ class tp_shortcodes {
             }
             
             // Write the select option
-            $options .= '<option value = "' . $settings['permalink'] . 'tgid=' . $tag. '&amp;yr=' . $year . '&amp;type=' . $type . '&amp;usr=' . $user . '&amp;auth=' . $author . $settings['html_anchor'] . '" ' . $current . '>' . stripslashes($text) . '</option>';
+            $options .= '<option value = "tgid=' . $tag. '&amp;yr=' . $year . '&amp;type=' . $type . '&amp;usr=' . $user . '&amp;auth=' . $author . $settings['html_anchor'] . '" ' . $current . '>' . stripslashes($text) . '</option>';
         }
 
         // clear filter_parameter[$mode]
         $filter_parameter[$mode] = '';
         
         // return filter menu
-        return '<select name="' . $id . '" id="' . $id . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this,0)">
-                   <option value="' . $settings['permalink'] . 'tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '' . $settings['html_anchor'] . '">' . $title . '</option>
+        return '<select name="' . $id . '" id="' . $id . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this, ' . "'" . $settings['permalink'] . "'" . ')">
+                   <option value="tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '' . $settings['html_anchor'] . '">' . $title . '</option>
                    ' . $options . '
                 </select>';
     }
@@ -387,7 +387,7 @@ class tp_shortcodes {
           // define url
           $link_url .= 'yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . $settings['html_anchor'];
 
-          $tags .= '<span style="font-size:' . $size . 'px;"><a href="' . $link_url . '" title="' . $link_title . '" class="' . $link_class . '">' . stripslashes($tagcloud['name']) . '</a></span> ';
+          $tags .= '<span style="font-size:' . $size . 'px;"><a rel="nofollow" href="' . $link_url . '" title="' . $link_title . '" class="' . $link_class . '">' . stripslashes($tagcloud['name']) . '</a></span> ';
        }
        return $tags;
     }
@@ -834,6 +834,8 @@ function tp_ref_shortcode($atts) {
     $param = shortcode_atts(array(
        'author_name' => 'simple',
        'editor_name' => 'last',
+       'author_separator' => ',',
+       'editor_separator' => ';',
        'date_format' => 'd.m.Y'
     ), $atts);
     
@@ -841,6 +843,8 @@ function tp_ref_shortcode($atts) {
     $settings = array(
        'author_name' => htmlspecialchars($param['author_name']),
        'editor_name' => htmlspecialchars($param['editor_name']),
+       'author_separator' => htmlspecialchars($atts['author_separator']),
+       'editor_separator' => htmlspecialchars($atts['editor_separator']),
        'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => false
@@ -881,6 +885,8 @@ function tp_single_shortcode ($atts) {
        'id' => 0,
        'key' => '',
        'author_name' => 'simple',
+       'author_separator' => ',',
+       'editor_separator' => ';',
        'editor_name' => 'last',
        'date_format' => 'd.m.Y',
        'image' => 'none',
@@ -891,6 +897,8 @@ function tp_single_shortcode ($atts) {
     $settings = array(
        'author_name' => htmlspecialchars($param['author_name']),
        'editor_name' => htmlspecialchars($param['editor_name']),
+       'author_separator' => htmlspecialchars($param['author_separator']),
+       'editor_separator' => htmlspecialchars($param['editor_separator']),
        'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => true
@@ -905,15 +913,24 @@ function tp_single_shortcode ($atts) {
     }
     $tp_single_publication = $publication;
     
-    $author = tp_bibtex::parse_author($publication['author'], $settings['author_name']);
+    // Set author name
+    if ( $publication['type'] === 'collection' || $publication['type'] === 'periodical' || ( $publication['author'] === '' && $publication['editor'] !== '' ) ) {
+        $author = tp_bibtex::parse_author($publication['editor'], $settings['author_separator'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+    }
+    else {
+        $author = tp_bibtex::parse_author($publication['author'], $settings['author_separator'], $settings['author_name'] );
+    }
+    
     $image_size = intval($param['image_size']);
     
     $asg = '<div class="tp_single_publication">';
+    
     // add image
     if ( ( $param['image'] === 'left' || $param['image'] === 'right' ) && $publication['image_url'] != '' ) {
         $class = ( $param['image'] === 'left' ) ? 'tp_single_image_left' : 'tp_single_image_right';
         $asg .= '<div class="' . $class . '"><img name="' . $publication['title'] . '" src="' . $publication['image_url'] . '" width="' . $image_size .'" alt="" /></div>';
     }
+    
     // define title
     if ( $param['link'] !== '' && $publication['url'] !== '' ) {
         // Use the first link in url field without the original title
@@ -925,7 +942,7 @@ function tp_single_shortcode ($atts) {
     else {
         $title = tp_html::prepare_title($publication['title'], 'decode');
     }
-    $asg .= '<span class="tp_single_author">' . stripslashes($author) . '</span><span class="tp_single_year"> (' . $publication['year'] . ')</span>: <span class="tp_single_title">' . $title . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($publication, $settings) . '</span>';
+    $asg .= '<span class="tp_single_author">' . stripslashes($author) . ': </span> <span class="tp_single_title">' . $title . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($publication, $settings) . '</span>';
     $asg .= '</div>';
     return $asg;
 }
@@ -1024,6 +1041,7 @@ function tp_links_shortcode ($atts) {
  *      author (STRING)             author IDs (separated by comma)
  *      year (STRING)               one or more years (separated by comma)
  *      exclude (INT)               one or more IDs of publications you don't want to show (separated by comma)
+ *      include_editor_as_author (INT)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
  *      maxsize (INT)               maximal font size for the tag cloud, default: 35
@@ -1072,6 +1090,7 @@ function tp_cloud_shortcode($atts) {
         'author' => '',
         'year' => '',
         'exclude' => '', 
+        'include_editor_as_author' => 1,
         'order' => 'date DESC',
         'headline' => 1, 
         'maxsize' => 35,
@@ -1085,6 +1104,8 @@ function tp_cloud_shortcode($atts) {
         'anchor' => 1,
         'author_name' => 'initials',
         'editor_name' => 'initials',
+        'author_separator' => ';',
+        'editor_separator' => ';',
         'style' => 'none',
         'template' => 'tp_template_2016',
         'title_ref' => 'links',
@@ -1103,6 +1124,8 @@ function tp_cloud_shortcode($atts) {
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
         'editor_name' => htmlspecialchars($atts['editor_name']),
+        'author_separator' => htmlspecialchars($atts['author_separator']),
+        'editor_separator' => htmlspecialchars($atts['editor_separator']),
         'headline' => intval($atts['headline']),
         'style' => htmlspecialchars($atts['style']),
         'template' => htmlspecialchars($atts['template']),
@@ -1222,11 +1245,11 @@ function tp_cloud_shortcode($atts) {
         $showall = '';
     }
     else {
-        $showall = '<a href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . __('Show all','teachpress') . '">' . __('Show all','teachpress') . '</a>';
+        $showall = '<a rel="nofollow" href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . __('Show all','teachpress') . '">' . __('Show all','teachpress') . '</a>';
     }
     
     // complete the header (tag cloud + filter)
-    $part1 = '<a name="tppubs" id="tppubs"></a><div class="teachpress_cloud">' . $asg . '</div><div class="teachpress_filter">' . $filter . '</div><p align="center">' . $showall . '</p>';
+    $part1 = '<a name="tppubs" id="tppubs"></a><div class="teachpress_cloud">' . $asg . '</div><div class="teachpress_filter">' . $filter . '</div><p style="text-align:center">' . $showall . '</p>';
 
     /************************/
     /* List of publications */
@@ -1254,6 +1277,7 @@ function tp_cloud_shortcode($atts) {
         'order' => $sql_parameter['order'], 
         'exclude' => $sql_parameter['exclude'],
         'exclude_tags' => $sql_parameter['exclude_tags'],
+        'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'limit' => $pagination_limits['limit'],
         'output_type' => ARRAY_A);
 
@@ -1340,6 +1364,7 @@ function tp_cloud_shortcode($atts) {
  *      author (STRING)             author IDs (separated by comma)
  *      exclude (STRING)            a string with one or more IDs of publication you don't want to display
  *      include (STRING)            a string with one or more IDs of publication you want to display
+ *      include_editor_as_author (INT)
  *      year (STRING)               the publication years (separated by comma)
  *      exclude_tags (STRING)       excludes all publications with the given tag IDs (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
@@ -1374,6 +1399,7 @@ function tp_list_shortcode($atts){
        'author' => '',
        'exclude' => '',
        'include' => '',
+       'include_editor_as_author' => 1,
        'year' => '',
        'exclude_tags' => '',
        'order' => 'date DESC',
@@ -1383,6 +1409,8 @@ function tp_list_shortcode($atts){
        'image_link' => 'none',
        'author_name' => 'initials',
        'editor_name' => 'initials',
+       'author_separator' => ';',
+       'editor_separator' => ';',
        'style' => 'none',
        'template' => 'tp_template_2016',
        'title_ref' => 'links',
@@ -1410,6 +1438,8 @@ function tp_list_shortcode($atts){
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
         'editor_name' => htmlspecialchars($atts['editor_name']),
+        'author_separator' => htmlspecialchars($atts['author_separator']),
+        'editor_separator' => htmlspecialchars($atts['editor_separator']),
         'style' => htmlspecialchars($atts['style']),
         'template' => htmlspecialchars($atts['template']),
         'image' => htmlspecialchars($atts['image']),
@@ -1464,6 +1494,7 @@ function tp_list_shortcode($atts){
         'exclude' => $atts['exclude'],
         'exclude_tags' => $atts['exclude_tags'],
         'include' => $atts['include'], 
+        'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'output_type' => ARRAY_A, 
         'limit' => $pagination_limits['limit']
     );
@@ -1548,6 +1579,8 @@ function tp_search_shortcode ($atts) {
        'image_link' => 'none',
        'author_name' => 'initials',
        'editor_name' => 'initials',
+       'author_separator' => ';',
+       'editor_separator' => ';',
        'style' => 'numbered',
        'template' => 'tp_template_orig_s',
        'title_ref' => 'links',
@@ -1567,6 +1600,8 @@ function tp_search_shortcode ($atts) {
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
         'editor_name' => htmlspecialchars($atts['editor_name']),
+        'author_separator' => htmlspecialchars($atts['author_separator']),
+        'editor_separator' => htmlspecialchars($atts['editor_separator']),
         'style' => htmlspecialchars($atts['style']),
         'template' => htmlspecialchars($atts['template']),
         'image' => htmlspecialchars($atts['image']),
@@ -1577,6 +1612,8 @@ function tp_search_shortcode ($atts) {
         'date_format' => htmlspecialchars($atts['date_format']),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
+        'show_altmetric_entry' => false,
+        'show_altmetric_donut' => false,
         'container_suffix' => htmlspecialchars($atts['container_suffix'])
     );
     if ($settings['image']== 'left' || $settings['image']== 'right') {
