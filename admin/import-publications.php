@@ -27,16 +27,17 @@ function tp_import_publication_page_help() {
 function tp_show_import_publication_page() {
     $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
     $import_id = isset( $_GET['import_id'] ) ? intval($_GET['import_id']) : 0;
+    $set_menu_1 = ( $tab === 'import' || $tab === '' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
+    $set_menu_2 = ( $tab === 'export' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
+    $set_menu_3 = ( $tab === 'exist' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
+    echo '<div class="wrap">';
+    echo '<h2>' . __('Publications','teachpress') . '</h2>';
+    echo '<h3 class="nav-tab-wrapper"><a href="admin.php?page=teachpress/import.php&amp;tab=import" class="' . $set_menu_1 .'">' . __('Import') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=export" class="' . $set_menu_2 . '">' . __('Export') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=exist" class="' . $set_menu_3 . '">' . __('List of Imports') . '</a></h3>';
+    // For actions
     if ( isset($_POST['tp_submit']) || isset($_POST['tp_bookmark']) || isset($_POST['tp_delete']) ) {
         tp_import_publication_page::import_actions($_POST);
     }
     else {
-        $set_menu_1 = ( $tab === 'import' || $tab === '' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
-        $set_menu_2 = ( $tab === 'export' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
-        $set_menu_3 = ( $tab === 'exist' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
-        echo '<div class="wrap">';
-        echo '<h2>' . __('Publications','teachpress') . '</h2>';
-        echo '<h3 class="nav-tab-wrapper"><a href="admin.php?page=teachpress/import.php&amp;tab=import" class="' . $set_menu_1 .'">' . __('Import') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=export" class="' . $set_menu_2 . '">' . __('Export') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=exist" class="' . $set_menu_3 . '">' . __('List of Imports') . '</a></h3>';
         
         // Import
         if ( $tab === '' || $tab === 'import' ) {
@@ -174,6 +175,11 @@ class tp_import_publication_page {
                     <div class="inside">
                         <p><strong><label for="author_format_0"><?php _e('Author/Editor Format','teachpress'); ?></label></strong></p>
                         <label>
+                            <input type="radio" name="author_format" value="dynamic" id="author_format_1" checked="checked" />
+                            <?php _e('Dynamic detection','teachpress');?>
+                        </label>
+                        <br />
+                        <label>
                             <input type="radio" name="author_format" value="default" id="author_format_0" />
                             Firstname1 Lastname1 and Firstname2 Lastname2 and ...
                         </label>
@@ -181,11 +187,6 @@ class tp_import_publication_page {
                         <label>
                             <input type="radio" name="author_format" value="lastfirst" id="author_format_1" />
                             Lastname1, Firstname1 and Lastname2, Firstname2 and ...
-                        </label>
-                        <br />
-                        <label>
-                            <input type="radio" name="author_format" value="dynamic" id="author_format_1" checked="checked" />
-                            <?php _e('Dynamic detection','teachpress');?>
                         </label>
                         <br />
                         <p><strong><label for="keyword_option"><?php _e('Keyword Separator','teachpress'); ?></label></strong></p>
@@ -213,7 +214,7 @@ class tp_import_publication_page {
         if ( $mode !== 'history' ) {
             echo '<p><a href="admin.php?page=teachpress/import.php" class="button-secondary">&larr; ' . __('Back','teachpress') . '</a></p>';
         }
-        echo '<h2>' . __('Imported Publications','teachpress') . '</h2>';
+        echo '<h3>' . __('Imported Publications','teachpress') . '</h3>';
         echo '<form id="import_publications" name="import_publications" method="post" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
         echo '<p><input type="submit" class="button-primary" name="tp_bookmark" value="' . __('Add to your own list','teachpress') . '"/> <input type="submit" class="button-secondary" name="tp_delete" value="' . __('Delete','teachpress') . '"</p>';
         echo '<table class="widefat">';
