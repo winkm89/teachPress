@@ -141,6 +141,13 @@ if ( !defined('TEACHPRESS_PUB_DOCUMENTS') ) {
      * @since 6.0.0
     */
     define('TEACHPRESS_PUB_DOCUMENTS', $wpdb->prefix . 'teachpress_pub_documents');}
+    
+if ( !defined('TEACHPRESS_PUB_IMPORTS') ) {
+    /**
+     * This constant defines the table name for teachpress_course_documents.
+     * @since 6.1.0
+    */
+    define('TEACHPRESS_PUB_IMPORTS', $wpdb->prefix . 'teachpress_pub_imports');}
 
 if ( !defined('TEACHPRESS_TAGS') ) {
     /**
