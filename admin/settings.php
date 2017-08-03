@@ -598,7 +598,20 @@ class tp_settings_page {
      * @since 6.0.0 
      */
     private static function get_template_tab () {
+        $tp_upload_dir = wp_upload_dir();
         echo '<h3>' . __('Available templates for publication lists','teachpress') . '</h3>';
+        
+        // Begin change directory message
+        echo '<div class="teachpress_message teachpress_message_orange"><b>' . __('Please note','teachpress') . '</b>: ' . __('Changes in the templates will be overwritten by updates of the plugin.','teachpress') . ' <a onclick="teachpress_showhide(' . "'teachpress_change_directory'" . ')" style="cursor: pointer;">' . __('But you can change the directory for the templates.','teachpress') . '</a></div>';
+        echo '<div id="teachpress_change_directory" class="teachpress_message" style="display:none;">';
+        echo '<p><b>1. Add the following code to your wp-config.php:</b></p>';
+        echo '// For changing the teachPress template directory (moving it to wp-content/uploads/)<br/>';
+        echo "define ('TEACHPRESS_TEMPLATE_PATH', '" . $tp_upload_dir['basedir'] . "/teachpress/templates/');<br/>";
+        echo "define ('TEACHPRESS_TEMPLATE_URL', '". $tp_upload_dir['baseurl'] . "/teachpress/templates/');<br/>";
+        echo '<p><b>2. Move all teachpress template files to wp-content/uploads/teachpress/templates/</b></p>';
+        echo '</div>';
+        // End change directory message
+        
         echo '<table class="widefat">';
         echo '<thead>';
         echo '<tr>';
