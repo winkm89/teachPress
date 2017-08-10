@@ -26,7 +26,7 @@ class tp_bibtex_import {
         set_time_limit(TEACHPRESS_TIME_LIMIT);
         
         // create import info
-        $import_id = tp_publication_imports::add_import();
+        $import_id = ( $test === false ) ? tp_publication_imports::add_import() : 0;
         
         // Init bibtexParse
         global $PARSEENTRIES;
@@ -105,8 +105,7 @@ class tp_bibtex_import {
             foreach ($entries[$i] as $key => $value) {
                 if ( $key == 'author' || $key == 'editor' ) {
                     // replace only a list of special chars and not all {} blocks
-                    // I know it's a bad workaround. Smarter solutions are welcome
-                    $entries[$i][$key] = str_replace(array('{ä}','{Ä}','{ö}','{Ö}','{ü}','{Ü}'), array('ä','Ä','ö','Ö','ü','Ü'), $value);
+                    $entries[$i][$key] = tp_bibtex::clean_author_names($value);
                     continue;
                 }
                 $entries[$i][$key] = str_replace(array('{','}'), array('',''), $value);

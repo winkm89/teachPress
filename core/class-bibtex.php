@@ -146,10 +146,19 @@ class tp_bibtex {
         // return the input if there are no bibtex chars
         if ( strpos( $input,'\\' ) === false && strpos($input,'{') === false ) { return $input; }
         // Step 1: Chars which based on a combination of two chars, delete escapes
-        $array_a = array('\"a','\"A','\"o','\"O','\"u','\"U','\ss',
+        $array_a = array("\'a","\'A",'\"a','\"A',
+                         "\'e","\'E",
+                         "\'i",
+                         "\'o","\'O",'\"o','\"O',
+                         '\"u','\"U','\ss',
                          '\O','\o','\L','\l','\AE','\ae','\OE','\oe','\t{oo}',
                          '\textendash','\textemdash','\glqq','\grqq','\flqq','\frqq','\flq','\frq','\glq','\grq','\dq',chr(92));
-        $array_b = array('ä','Ä','ö','Ö','ü','Ü','ß',
+        $array_b = array('á','Á','ä','Ä',
+                         'é','É',
+                         'í',
+                         'ó','Ó',
+                         'ö','Ö',
+                         'ü','Ü','ß',
                          'Ø','ø','Ł','ł','Æ','æ','Œ','œ','o͡o',
                          '–','—','„','“','«','»','‹','›','‚','‘','','');
         $input = str_replace( $array_a , $array_b ,$input);
@@ -205,6 +214,27 @@ class tp_bibtex {
                          'ź','Ź','ž','Ž','ż','Ż');
         $return = str_replace($array_1, $array_2, $input);
         return htmlspecialchars($return, ENT_NOQUOTES);
+    }
+    
+    /**
+     * Cleans the author names after bibtex to UTF-8 convertion
+     * @param string $input
+     * @return string
+     * @since 6.1.0
+     */
+    public static function clean_author_names ($input) {
+        $array_a = array('{á}','{Á}','{ä}','{Ä}',
+                         '{é}','[É}',
+                         '{í}',
+                         '{ó}','{Ó}','{ö}','{Ö}',
+                         '{ü}','{Ü}','{ß}','{š}');
+        $array_b = array('á','Á','ä','Ä',
+                         'é','É',
+                         'í',
+                         'ó','Ó','ö','Ö',
+                         'ü','Ü','ß','š');
+        $ret = str_replace($array_a, $array_b, $input);
+        return $ret;
     }
     
     /**
