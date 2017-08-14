@@ -27,6 +27,8 @@ function tp_import_publication_page_help() {
 function tp_show_import_publication_page() {
     $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
     $import_id = isset( $_GET['import_id'] ) ? intval($_GET['import_id']) : 0;
+    $delete_import = isset ( $_GET['teachpress_delete_import'] ) ? $_GET['teachpress_delete_import'] : '';
+    $checkbox = isset ( $_GET['checkbox'] ) ? $_GET['checkbox'] : '';
     $set_menu_1 = ( $tab === 'import' || $tab === '' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
     $set_menu_2 = ( $tab === 'export' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
     $set_menu_3 = ( $tab === 'exist' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
@@ -50,8 +52,14 @@ function tp_show_import_publication_page() {
         }
         
         // List of Imports
-        if ( $tab === 'exist' ) {
-            tp_import_publication_page::exist_tab($import_id);
+        if ( $tab === 'exist' && $import_id === 0 ) {
+            tp_import_publication_page::exist_tab($import_id, $delete_import, $checkbox);
+        }
+        
+        // Show the list of publications, which were imported with the selected import
+        if ( $tab === 'exist' && $import_id !== 0 ) {
+            $entries = tp_publications::get_publications( array( 'import_id' => $import_id, 'output_type' => ARRAY_A ) );
+            tp_import_publication_page::show_results($entries, 'history');
         }
         
         echo '</div>';
@@ -202,7 +210,7 @@ class tp_import_publication_page {
     /**
      * Shows the import results
      * @param array $entries
-     * @param string mode
+     * @param string $mode
      * @since 6.0.0
     */
     public static function show_results($entries, $mode = 'history') {
@@ -306,59 +314,97 @@ class tp_import_publication_page {
     }
     
      /**
-     * Displays the exist tab of the import page
-     * @param int $import_id    The ID of the import 
-     * @since 6.1.0
-     * @access public
+      * Displays the exist tab of the import page
+      * @param int      $import_id    The ID of the import 
+      * @param string   $delete_import
+      * @param array    $checkbox
+      * @since 6.1.0
+      * @access public
      */
-    public static function exist_tab ($import_id = 0) {
+    public static function exist_tab ($import_id, $delete_import, $checkbox) {  
         
+        echo '<h3>' . __('List of imports','teachpress') . '</h3>';
+        echo '<form name="search" method="get" action="admin.php">';
+        echo '<input name="page" type="hidden" value="teachpress/import.php" />';
+        echo '<input name="tab" type="hidden" value="exist" />';
+
+        // Delete imports part 2
+        if ( isset($_GET['delete_import_ok']) ) {
+            tp_publication_imports::delete_import($checkbox);
+            $message = __('Removing successful','teachpress');
+            get_tp_message($message);
+        }
+
+        // Delete imports part 1
+        if ( $delete_import !== "" ) {
+            echo '<div class="teachpress_message">
+            <p class="teachpress_message_headline">' . __('Do you want to delete the selected items?','teachpress') . '</p>
+            <p><input name="delete_import_ok" type="submit" class="button-primary" value="' . __('Delete','teachpress') . '"/>
+            <a href="admin.php?page=teachpress/import.php&amp;tab=exist" class="button-secondary"> ' . __('Cancel','teachpress') . '</a></p>
+            </div>';
+        }
+        
+        // Default buttons
+        else {
+            echo '<div class="tablenav" style="padding-bottom:5px;">';
+            echo '<input type="submit" name="teachpress_delete_import" value="' . __('Delete','teachpress') . '" id="doaction" class="button-secondary"/>';
+            echo '</div>';
+        }
+
         // Load data
         $wp_id = get_current_user_id();
         $list = tp_publication_imports::get_imports($wp_id);
         $users = get_users();
         $publications_count = tp_publication_imports::count_publications();
-        
+
+
         // Generate user list
         $user_list = array();
         foreach ( $users as $user ) {
             $user_list[$user->ID] = $user->display_name;
         }
-        
+
         // Generate number list
         $number_list = array();
         foreach ( $publications_count as $row ) {
             $number_list[$row['import_id']] = $row['number'];
         }
+
+        // List of imports
+        echo '<table class="widefat">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<td class="check-column">
+            <input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes(' . "'checkbox[]','tp_check_all'" . ');" />';
+        echo '</td>';
+        echo '<th>' . __('Date') . '</th>';
+        echo '<th>' . __('User') . '</th>';
+        echo '<th>' . __('Number of publications') . '</th>';
+        echo '</tr>';
+        echo '</thead>';
         
-        // Show a list of available imports
-        if ( $import_id === 0 ) {
-            echo '<h3>' . __('List of imports','teachpress') . '</h3>';
-            echo '<table class="widefat">';
-            echo '<thead>';
-            echo '<tr>';
-            echo '<th>' . __('Date') . '</th>';
-            echo '<th>' . __('User') . '</th>';
-            echo '<th>' . __('Number of publications') . '</th>';
-            echo '</tr>';
-            echo '</thead>';
-            //Print rows
-            foreach ( $list as $row ) {
-                $user_name = ( isset( $user_list[$row['wp_id']] ) ) ? $user_list[$row['wp_id']] : '';
-                $number = ( isset( $number_list[$row['id']] ) ) ? $number_list[$row['id']] : 0;
-                echo '<tr>';
-                echo '<td><a href="admin.php?page=teachpress%2Fimport.php&amp;tab=exist&amp;import_id=' . $row['id'] . '">' . $row['date'] . '</a></td>';
-                echo '<td>' . $user_name . '</td>';
-                echo '<td>' . $number . '</td>';
-                echo '</tr>';
+        //Print rows
+        $class_alternate = true;
+        foreach ( $list as $row ) {
+            $tr_class = ( $class_alternate === true ) ? 'class="alternate"' : '';
+            $class_alternate = ( $class_alternate === true ) ? false : true;
+            $user_name = ( isset( $user_list[$row['wp_id']] ) ) ? $user_list[$row['wp_id']] : '';
+            $number = ( isset( $number_list[$row['id']] ) ) ? $number_list[$row['id']] : 0;
+            echo '<tr ' . $tr_class . '>';
+            echo '<th class="check-column">
+                <input type="checkbox" name="checkbox[]" id="checkbox" value="' . $row['id'] . '"';
+            if ( $delete_import !== "") { 
+                for( $i = 0; $i < count( $checkbox ); $i++ ) { 
+                    if ( $row['id'] == $checkbox[$i] ) { echo 'checked="checked"';} 
+                } 
             }
-        } 
-        
-        // Show the list of publications, which were imported with the selected import
-        else {
-            $entries = tp_publications::get_publications( array( 'import_id' => $import_id, 'output_type' => ARRAY_A ) );
-            tp_import_publication_page::show_results($entries, 'history');
+            echo '/></th>';
+            echo '<td><a href="admin.php?page=teachpress%2Fimport.php&amp;tab=exist&amp;import_id=' . $row['id'] . '">' . $row['date'] . '</a></td>';
+            echo '<td>' . $user_name . '</td>';
+            echo '<td>' . $number . '</td>';
+            echo '</tr>';
         }
         echo '</table>';
+        
     }
 }
