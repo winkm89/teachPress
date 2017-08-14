@@ -843,8 +843,8 @@ function tp_ref_shortcode($atts) {
     $settings = array(
        'author_name' => htmlspecialchars($param['author_name']),
        'editor_name' => htmlspecialchars($param['editor_name']),
-       'author_separator' => htmlspecialchars($atts['author_separator']),
-       'editor_separator' => htmlspecialchars($atts['editor_separator']),
+       'author_separator' => htmlspecialchars($param['author_separator']),
+       'editor_separator' => htmlspecialchars($param['editor_separator']),
        'date_format' => htmlspecialchars($param['date_format']),
        'style' => 'simple',
        'use_span' => false
@@ -856,7 +856,7 @@ function tp_ref_shortcode($atts) {
     $ret = '<h3 class="teachpress_ref_headline">' . __('References','teachpress') . '</h3>';
     $ret .= '<ol>';
     foreach ( $references as $row ) {
-        $ret .= '<li id="tp_cite_' . $row['pub_id'] . '"><span class="tp_single_author">' . stripslashes($row['author']) . '</span><span class="tp_single_year"> (' . $row['year'] . ')</span>: <span class="tp_single_title">' . tp_html::prepare_title($row['title'], 'decode') . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($row, $settings) . '</span></li>';
+        $ret .= '<li id="tp_cite_' . $row['pub_id'] . '" class="tp_cite_entry"><span class="tp_single_author">' . stripslashes($row['author']) . '</span><span class="tp_single_year"> (' . $row['year'] . ')</span>: <span class="tp_single_title">' . tp_html::prepare_title($row['title'], 'decode') . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($row, $settings) . '</span></li>';
     }
     $ret .= '</ol>';
     return $ret;

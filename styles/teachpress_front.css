@@ -83,15 +83,16 @@ a.tp_show_block {font-weight: bold; text-decoration: none;}
 td.tp_pub_image_left, td.tp_pub_image_right{vertical-align: top; padding: 8px; border-bottom: 1px solid silver;}
 .tp_pub_image_bottom {text-align:center;}
 
-/*********************************************/
-/* single publication, shortcode: [tpsingle] */
-/*********************************************/
+/*******************************************************/
+/* single publication, shortcode: [tpsingle], [tpcite] */
+/*******************************************************/
 span.tp_single_title {font-size:small;}
 span.tp_single_author {font-size:small;}
 span.tp_single_year {font-size:small;}
 span.tp_single_additional {font-size:small; font-style:italic;}
 div.tp_single_image_left{float:left; padding: 0 5px 5px 0;}
 div.tp_single_image_right{float:right; padding: 0 0 5px 5px;}
+li.tp_cite_entry {font-size:small;}
 
 /**********************************************/
 /* course overview, shortcode: [tpcourselist] */
