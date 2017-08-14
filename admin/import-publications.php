@@ -34,7 +34,7 @@ function tp_show_import_publication_page() {
     $set_menu_3 = ( $tab === 'exist' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
     echo '<div class="wrap">';
     echo '<h2>' . __('Publications','teachpress') . '</h2>';
-    echo '<h3 class="nav-tab-wrapper"><a href="admin.php?page=teachpress/import.php&amp;tab=import" class="' . $set_menu_1 .'">' . __('Import') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=export" class="' . $set_menu_2 . '">' . __('Export') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=exist" class="' . $set_menu_3 . '">' . __('List of Imports') . '</a></h3>';
+    echo '<h3 class="nav-tab-wrapper"><a href="admin.php?page=teachpress/import.php&amp;tab=import" class="' . $set_menu_1 .'">' . __('Import') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=export" class="' . $set_menu_2 . '">' . __('Export') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=exist" class="' . $set_menu_3 . '">' . __('List of imports','teachpress') . '</a></h3>';
     // For actions
     if ( isset($_POST['tp_submit']) || isset($_POST['tp_bookmark']) || isset($_POST['tp_delete']) ) {
         tp_import_publication_page::import_actions($_POST);
@@ -378,8 +378,8 @@ class tp_import_publication_page {
             <input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes(' . "'checkbox[]','tp_check_all'" . ');" />';
         echo '</td>';
         echo '<th>' . __('Date') . '</th>';
-        echo '<th>' . __('User') . '</th>';
-        echo '<th>' . __('Number of publications') . '</th>';
+        echo '<th>' . __('User','teachpress') . '</th>';
+        echo '<th>' . __('Number publications','teachpress') . '</th>';
         echo '</tr>';
         echo '</thead>';
         
