@@ -5,17 +5,17 @@ This is the offical development repository of teachPress, a plugin for WordPress
 
 For downloading offical teachPress versions, please use: https://wordpress.org/plugins/teachpress/
 
-For more information see http://www.mtrv.wordpress.com/teachpress/
+Documentation : https://github.com/winkm89/teachPress/wiki
 
 = Features: =
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
 * RSS feed for publications
-* Course management with an integrated enrollment/assessment system
+* Course management with integrated modules for enrollments, assessments and documents
 * XLS/CSV export for course lists
 * Many shortcodes for an easy using of publication lists, publication searches, enrollments and course overviews
-* NEW: Dymamic adding of new data fields for courses/students and publications
+* Dymamic meta data system for courses, students and publications
 
 = Supported Languages =
 * English
@@ -32,7 +32,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 == Credits ==
 
-Copyright 2008-2016 by Michael Winkler
+Copyright 2008-2017 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

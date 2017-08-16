@@ -137,8 +137,8 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * New: [tplist, tpcloud]: New parameter "include_editor_as_author" added (#62)
 * Changed: "Dynamic detection" is now the default option for author/editor detection in the publication import
 * Changed: Foreign key constraints for new installations removed
-* Bugfix: Fix editor parsing in the publication import
-* Bugfix: Fix problems with some special chars in the publication import for author/editor names
+* Bugfix: Fixed editor parsing in the publication import
+* Bugfix: Fixed problems with some special chars in the publication import for author/editor names
 
 = 6.0.4 - (14.05.2017) =
 * New: Publication type "patent" added (#59)
@@ -151,7 +151,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Bugfix: [tpsingle]: Fix for displaying editors as authors for collections and periodical
 * Bugfix: [template: teachPress original small]: Remove annoying extra space in bibliographic template (#54)
 * Bugfix: [template: teachPress original small]: Years were displayed twice in publication lists (#10)
-* Bugfix: Fix missing tables in tp_tables::remove()
+* Bugfix: Fixed missing tables in tp_tables::remove()
 
 = 6.0.3 - (17.02.2017) =
 * Bugfix: [tpsearch]: Fixed a PHP warning which occurs if "as_filter" is enabled.
