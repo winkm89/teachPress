@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: teachPress v5.0.13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-14 09:39+0000\n"
-"PO-Revision-Date: 2017-08-14 09:39+0000\n"
+"POT-Creation-Date: 2017-08-14 17:09+0000\n"
+"PO-Revision-Date: 2017-08-14 17:11+0000\n"
 "Last-Translator: admin <michael.mtrv@gmail.com>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -22,9 +22,18 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "Language: de-DE"
 
-#: admin/import-publications.php:381
-msgid "User"
-msgstr "Nutzer"
+#: admin/settings.php:605
+msgid "Please note"
+msgstr "Bitte beachte"
+
+#: admin/settings.php:605
+msgid "Changes in the templates will be overwritten by updates of the plugin."
+msgstr "Änderungen in den Templates werden durch Plugin-Updates überschrieben."
+
+#: admin/settings.php:605
+msgid "But you can change the directory for the templates."
+msgstr ""
+"Du kannst allerdings das Verzeichnis, in dem die Templates liegen, ändern."
 
 #: teachpress.php:267 teachpress.php:267 admin/edit-student.php:47
 #: admin/show-single-course.php:763
@@ -1166,6 +1175,10 @@ msgstr "Publikationen von Nutzern"
 msgid "All"
 msgstr "Alle"
 
+#: admin/import-publications.php:381
+msgid "User"
+msgstr "Nutzer"
+
 #: admin/import-publications.php:382 admin/show-authors.php:152
 msgid "Number publications"
 msgstr "Anzahl Publikationen"
@@ -1258,7 +1271,7 @@ msgstr "Anzahl Veranstaltungen"
 msgid "Delete term"
 msgstr "Semester löschen"
 
-#: admin/settings.php:243 admin/settings.php:675
+#: admin/settings.php:243 admin/settings.php:686
 msgid "Add term"
 msgstr "Semester hinzufügen"
 
@@ -1266,7 +1279,7 @@ msgstr "Semester hinzufügen"
 msgid "Delete type"
 msgstr "Typ löschen"
 
-#: admin/settings.php:255 admin/settings.php:671
+#: admin/settings.php:255 admin/settings.php:682
 msgid "Add type"
 msgstr "Typ hinzufügen"
 
@@ -1483,7 +1496,7 @@ msgstr "Beispiel für Publikationen mit einem bestimmten Tag (tag = tag-id):"
 msgid "Meta data fields"
 msgstr "Metadatenfelder"
 
-#: admin/settings.php:494 admin/settings.php:706 core/class-ajax.php:288
+#: admin/settings.php:494 admin/settings.php:717 core/class-ajax.php:288
 msgid "Field name"
 msgstr "Feldname"
 
@@ -1507,39 +1520,39 @@ msgstr "Element gelöscht"
 msgid "Meta Field Settings"
 msgstr "Einstellungen für Metadaten-Felder"
 
-#: admin/settings.php:601
+#: admin/settings.php:602
 msgid "Available templates for publication lists"
 msgstr "Verfügbare Templates für Publikationslisten"
 
-#: admin/settings.php:653
+#: admin/settings.php:664
 msgid "Version"
 msgstr "Version"
 
-#: admin/settings.php:653
+#: admin/settings.php:664
 msgid "by"
 msgstr "von"
 
-#: admin/settings.php:714 core/class-ajax.php:298
+#: admin/settings.php:725 core/class-ajax.php:298
 msgid "Label"
 msgstr "Label"
 
-#: admin/settings.php:722
+#: admin/settings.php:733
 msgid "Field added"
 msgstr "Feld hinzugefügt"
 
-#: admin/settings.php:725
+#: admin/settings.php:736
 msgid "Warning: This field name is not possible."
 msgstr "Warnung: Dieser Feldname ist nicht möglich."
 
-#: admin/settings.php:768
+#: admin/settings.php:779
 msgid "Do you really want to delete the selected meta field?"
 msgstr "Möchtest du wirklich das ausgewählte Metadatenfeld löschen?"
 
-#: admin/settings.php:778
+#: admin/settings.php:789
 msgid "Field deleted"
 msgstr "Feld gelöscht"
 
-#: admin/settings.php:806
+#: admin/settings.php:817
 msgid ""
 "Settings are changed. Please note that access changes are visible, until you "
 "have reloaded this page a second time."
@@ -1547,21 +1560,21 @@ msgstr ""
 "Einstellungen wurden geändert. Bitte beachte, dass Änderungen in den "
 "Zugriffsrechten erst sichtbar sind, wenn die Seite neu geladen wurde."
 
-#: admin/settings.php:845
+#: admin/settings.php:856
 msgid "teachPress wants to fill up the new database. This can take some time."
 msgstr ""
 "teachPress wird nun die neuen Datenbanken befüllen. Dies kann einige Zeit in "
 "Anspruch nehmen."
 
-#: admin/settings.php:845
+#: admin/settings.php:856
 msgid "Continue"
 msgstr "Weiter"
 
-#: admin/settings.php:856
+#: admin/settings.php:867
 msgid "Do you really want to delete all teachpress database tables?"
 msgstr "Möchtest du wirklich alle Daten des Plugins aus der Datenbank löschen?"
 
-#: admin/settings.php:861
+#: admin/settings.php:872
 msgid "Database uninstalled"
 msgstr "Datenbank deinstalliert"
 
