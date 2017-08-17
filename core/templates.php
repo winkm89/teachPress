@@ -407,12 +407,12 @@ class tp_html_publication_template {
      */
     public static function prepare_publication_title ($row, $settings, $container_id) {
         
-        // open abstracts instead of links
+        // open abstracts instead of links (ignores the rest of the method)
         if ( $settings['title_ref'] === 'abstract' ) {
             return self::prepare_title_link_to_abstracts($row, $container_id);
         }
         
-        // transform URL into full HTML link
+        // Use a related page as link
         if ( $row['rel_page'] != 0 ) {
             return '<a href="' . get_permalink($row['rel_page']) . '">' . stripslashes($row['title']) . '</a>';
         }
@@ -422,7 +422,14 @@ class tp_html_publication_template {
             return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
         }
         
-        // for direct style 
+        // for direct style (if a DOI numer exists)
+        elseif ( $row['doi'] != '' && $settings['link_style'] === 'direct' ) {
+            $doi_url = 'http://dx.doi.org/' . $row['doi'];
+            $title = tp_html::prepare_title($row['title'], 'decode');
+            return '<a class="tp_title_link" href="' . $doi_url . '" title="' . $title . '" target="blank">' . $title . '</a>'; 
+        }
+        
+        // for direct style (use the first available URL)
         elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) { 
             $parts = tp_bibtex::explode_url($row['url']); 
             return '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . tp_html::prepare_title($row['title'], 'decode') . '</a>'; 
