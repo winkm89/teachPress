@@ -400,7 +400,7 @@ class tp_html_publication_template {
     /**
      * This function prepares the publication title for html publication lists.
      * @param array $row                The publication array
-     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, title_ref, date_format, convert_bibtex, container_suffix)
+     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, title_ref, date_format, convert_bibtex, container_suffix,...)
      * @param string $container_id      The basic ID for div container
      * @return string
      * @since 6.0.0

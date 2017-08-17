@@ -821,8 +821,11 @@ function tp_cite_shortcode ($atts) {
  * 
  * possible values of $atts:
  *      author_name (STRING)    last, initials or old, default: simple
- *      author_name (STRING)    last, initials or old, default: last
- *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y * 
+ *      author_name (STRING)    last, initials or old, default: initials
+ *      author_separator (STRING)   The separator for author names, default: ;
+ *      editor_separator (STRING)   The separator for editor names, default: ;
+ *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y
+ *      show_links (INT)        0 (false) or 1 (true), default: 0
  * @param array $atts
  * @return string
  * @since 6.0.0
@@ -873,6 +876,8 @@ function tp_ref_shortcode($atts) {
  *      key (STRING)            bibtex key of a publication 
  *      author_name (STRING)    last, initials or old, default: simple
  *      author_name (STRING)    last, initials or old, default: last
+ *      author_separator (STRING)   The separator for author names, default: ;
+ *      editor_separator (STRING)   The separator for editor names, default: ;
  *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y
  *      image (STRING)          none, left or right; default: none
  *      image_size (STRING)     image width in px; default: 0
@@ -1058,6 +1063,8 @@ function tp_links_shortcode ($atts) {
  *      anchor (INT)                0 (false) or 1 (true), default: 1
  *      author_name (STRING)        simple, last, initials or old, default: last
  *      editor_name (STRING)        simple, last, initials or old, default: last
+ *      author_separator (STRING)   The separator for author names
+ *      editor_separator (STRING)   The separator for editor names
  *      style (STRING)              numbered, numbered_desc or none, default: none
  *      template (STRING)           the key of the template, default: tp_template_2016
  *      title_ref (STRING)          links or abstract, default: links
@@ -1377,6 +1384,8 @@ function tp_cloud_shortcode($atts) {
  *      image_link (STRING)         none, self or post (defalt: none)
  *      author_name (STRING)        last, initials or old, default: last
  *      editor_name (STRING)        last, initials or old, default: last
+ *      author_separator (STRING)   The separator for author names
+ *      editor_separator (STRING)   The separator for editor names
  *      style (STRING)              numbered, numbered_desc or none, default: none
  *      template (STRING)           the key of the template, default: tp_template_2016
  *      title_ref (STRING)          links or abstract, default: links
@@ -1556,8 +1565,10 @@ function tp_list_shortcode($atts){
  *      image (STRING)              none, left, right or bottom, default: none 
  *      image_size (INT)            max. Image size, default: 0
  *      image_link (STRING)         none, self or post (defalt: none)
- *      author_name (STRING)        last, initials or old, default: last
- *      editor_name (STRING)        last, initials or old, default: last
+ *      author_name (STRING)        last, initials or old, default: initials
+ *      editor_name (STRING)        last, initials or old, default: initials
+ *      author_separator (STRING)   The separator for author names, default: ;
+ *      editor_separator (STRING)   The separator for editor names, default: ;
  *      style (STRING)              numbered, numbered_desc or none, default: none
  *      template (STRING)           the key of the template, default: tp_template_2016
  *      title_ref (STRING)          links or abstract, default: links
