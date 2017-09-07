@@ -418,6 +418,17 @@ class tp_settings_page {
         echo '<th width="160">' . __('Overwrite publications','teachpress') . '</th>';
         echo '<td>' . tp_admin::get_checkbox('import_overwrite', __('Allow optional overwriting for publication import','teachpress'), get_tp_option('import_overwrite')) . ' <b>(EXPERIMENTAL)</b></td>';
         echo '</tr>';
+		
+		echo '<tr>';
+        echo '<th colspan="2"><h3>' . __('DOI Resolver','teachpress') . '</h3></th>';
+        echo '</tr>';
+		
+		echo '<tr>';
+        echo '<th>' . __('Custom Url Template','teachpress') . '</th>';
+        echo '<td><input type="text" name="doi_resolver_url_template_custom" id="doi_resolver_url_template_custom" style="width:90%;" value="' . get_tp_option('doi_resolver_url_template_custom') . '" />';
+		echo '<p>' . __('Define a custom doi resolver template which overrides the default one: ','teachpress') . '<code>' . get_tp_option('doi_resolver_url_template_default') . '</code></p>';
+		echo '</td>';
+		echo '</tr>';
         
         echo '<tr>';
         echo '<th colspan="2"><h3>' . __('Related content','teachpress') . '</h3></th>';
@@ -825,9 +836,11 @@ class tp_settings_page {
     private static function change_publication_options () {
         $checkbox_convert_bibtex = isset( $_POST['convert_bibtex'] ) ? 1 : '';
         $checkbox_import_overwrite = isset( $_POST['import_overwrite'] ) ? 1 : '';
+		$doi_resolver_url_template_custom = isset( $_POST['doi_resolver_url_template_custom'] ) ? esc_url_raw( $_POST['doi_resolver_url_template_custom'] ) : '';
         $checkbox_rel_content_auto = isset( $_POST['rel_content_auto'] ) ? 1 : '';
         tp_options::change_option('convert_bibtex', $checkbox_convert_bibtex, 'checkbox');
         tp_options::change_option('import_overwrite', $checkbox_import_overwrite, 'checkbox');
+		tp_options::change_option('doi_resolver_url_template_custom', $doi_resolver_url_template_custom);
         tp_options::change_option('rel_content_auto', $checkbox_rel_content_auto, 'checkbox');
         tp_options::change_option('rel_content_template', $_POST['rel_content_template']);
         tp_options::change_option('rel_content_category', $_POST['rel_content_category']);

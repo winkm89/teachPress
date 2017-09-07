@@ -424,8 +424,8 @@ class tp_html_publication_template {
         
         // for direct style (if a DOI numer exists)
         elseif ( $row['doi'] != '' && $settings['link_style'] === 'direct' ) {
-            $doi_url = 'http://dx.doi.org/' . $row['doi'];
-            $title = tp_html::prepare_title($row['title'], 'decode');
+			$title = tp_html::prepare_title($row['title'], 'decode');
+			$doi_url = tp_html_publication_template::prepare_doi_url($row['doi']);
             return '<a class="tp_title_link" href="' . $doi_url . '" title="' . $title . '" target="blank">' . $title . '</a>'; 
         }
         
@@ -498,14 +498,16 @@ class tp_html_publication_template {
          * Add DOI-URL
          * @since 5.0.0
          */
-        if ( $doi != '' ) {
-            $doi_url = 'http://dx.doi.org/' . $doi;
-            if ( $mode === 'list' ) {
-                $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
-            }
-            else {
-                $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( 'html' ) . '"/></a>';
-            }
+		if ($doi != '') {
+			
+			$doi_url = tp_html_publication_template::prepare_doi_url($doi);
+			
+			if ( $mode === 'list' ) {
+				$end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
+			}
+			else {
+				$end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( 'html' ) . '"/></a>';
+			}
         }
         
         if ( $mode === 'list' ) {
@@ -514,9 +516,27 @@ class tp_html_publication_template {
         
         return $end;
     }
-
-
-
+	
+	/**
+     * Prepares a doi url
+     * @param string $doi	The DOI number
+     * @return string
+     * @since 6.x.x
+     * @version 1
+     * @access public
+     */
+	public static function prepare_doi_url($doi) {
+		$doi_resolver_url_template = '';
+		
+		if ( get_tp_option('doi_resolver_url_template_custom') != '' ) {
+			$doi_resolver_url_template = get_tp_option('doi_resolver_url_template_custom');
+		} 
+		else {
+			$doi_resolver_url_template = get_tp_option('doi_resolver_url_template_default');
+		}
+		
+		return str_replace('%doi%', $doi, $doi_resolver_url_template);
+	}
 
     /**
      * Prepares an altmetric info block 
