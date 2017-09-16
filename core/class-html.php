@@ -151,6 +151,9 @@ class tp_html {
         elseif ($row['type'] === 'unpublished') {
             $end = $year . $isbn . $note . '.';
         }
+        elseif ($row['type'] === 'workshop') {
+            $end = $booktitle . $volume . $number . $series . $organization . $publisher . $address . $year . $isbn . $note . '.';
+        }
         else {
             $end = $year . $note . '.';
         }
