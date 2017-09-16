@@ -324,7 +324,7 @@ class tp_publication_page {
                 </td>
                 <td style="border:none; padding:0 0 0 0; margin: 0 0 0 0;">
                     <p><label for="bibtex" title="<?php _e('A simple unique key without spaces','teachpress'); ?>"><strong><?php _e('BibTeX Key','teachpress'); ?></strong></label></p>
-                    <input name="bibtex" id="bibtex" type="text" title="<?php _e('A simple unique key without spaces','teachpress'); ?>" value="<?php echo stripslashes($pub_data["bibtex"]); ?>" tabindex="3" /> <a href="javascript:teachpress_generate_bibtex_key();" style="border:none;" title="<?php _e('Generate BibTeX key','teachpress') ?>"><img src="<?php echo plugins_url() . '/teachpress/images/view-refresh-3.png'; ?>" alt=""/></a>
+                    <input name="bibtex" id="bibtex" type="text" title="<?php _e('A simple unique key without spaces','teachpress'); ?>" value="<?php echo stripslashes($pub_data["bibtex"]); ?>" tabindex="3" /> <a id="bibtex_key_gen" style="cursor: pointer;" title="<?php _e('Generate BibTeX key','teachpress') ?>"><img src="<?php echo plugins_url() . '/teachpress/images/view-refresh-3.png'; ?>" alt=""/></a>
                 </td>
                 </tr>
               </table>
@@ -528,6 +528,54 @@ class tp_publication_page {
      */
     public static function print_scripts () {
         ?>
+        <script type="text/javascript" charset="utf-8">
+            jQuery(document).ready(function($){
+            $( "#bibtex_key_gen" ).click(function() {
+                var author = $("#author").val();
+                var editor = $("#editor").val();
+                var year = $("#date").val().substr(0,4);
+                if ( author === '' ) {
+                    if ( editor === '' ) {
+                        alert('<?php _e('Please enter an author before!','teachpress') ?>');
+                        return;
+                    }
+                    else {
+                        author = editor;
+                    }
+                }
+                if ( isNaN(year) ) {
+                    alert('<?php _e('Please enter the date before!','teachpress') ?>');
+                    return;
+                }
+                // split author string
+                author = author.split(" and ");
+
+                // split name of first author
+                var name = author[0].split(",");
+                name[0] = teachpress_trim(name[0]);
+                name = name[0].split(" ");
+
+                var count = name.length;
+                var prefix = "";
+                var first_char = "";
+                // Search surname titles like 'van der', 'von den', 'del la',...
+                for ( i = 0; i < count; i++ ) {
+                    name[i] = teachpress_trim(name[i]);
+                    first_char = name[i].charCodeAt(0);
+                    if ( first_char >= 97 && first_char <= 122 ) {
+                        prefix = prefix + name[i];
+                    }
+                }
+                var last_name = prefix + name[count - 1];
+                
+                $.get(ajaxurl + "?action=teachpress&bibtex_key_check=" + last_name + year, 
+                    function(text){
+                        document.getElementById("bibtex").value = text;
+                    });
+            });
+
+        });
+        </script>
         <script type="text/javascript" charset="utf-8">
         jQuery(document).ready(function($) {
             $('#date').datepicker({showWeek: true, changeMonth: true, changeYear: true, showOtherMonths: true, firstDay: 1, renderer: $.extend({}, $.datepicker.weekOfYearRenderer), onShow: $.datepicker.showStatus, dateFormat: 'yy-mm-dd', yearRange: '1950:c+5'});

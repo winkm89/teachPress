@@ -125,6 +125,14 @@ function tp_ajax_callback () {
             $meta_field_id = intval( $_GET['meta_field_id'] );
             tp_ajax::get_meta_field_screen($meta_field_id);
         } 
+        
+        /**
+         * Getting the unique version of the bibtex string
+         * @since 6.1.1
+         */
+        if ( isset ( $_GET['bibtex_key_check'] ) ) {
+            tp_ajax::get_generated_bibtex_key($_GET['bibtex_key_check']);
+        }
 
     }
 
@@ -344,45 +352,6 @@ function get_tp_publication_types() {
     $pub_types[18] = array (0 => 'techreport', 1 => __('Technical Report','teachpress'), 2 => __('Technical Reports','teachpress'));
     $pub_types[19] = array (0 => 'unpublished', 1 => __('Unpublished','teachpress'), 2 => __('Unpublished','teachpress'));
     return $pub_types;
-}
-
-/**
- * Maps a teachPress publication type to the OSBiB type
- * @param string $string    The teachPress publication type
- * @return string           The OSBiB publication type
- * @since 6.0.0
- * @todo Unused
- */
-function tp_map_pubtype_to_osbib ($string) {
-    $types = array(
-        'article' => 'journal_article',
-        'book' => 'book',
-        'booklet' => 'genericBook',
-        'collection' => 'genericBook',
-        'conference' => 'genericMisc',
-        'inbook' => 'book_article',
-        'incollection' => 'conference_paper',
-        'inproceedings' => 'proceedings_article',
-        'manual' => 'genericBook',
-        'mastersthesis' => 'thesis',
-        'misc' => 'miscellaneous',
-        'online' => 'web_article',
-        'periodical' => 'genericBook',
-        'phdthesis' => 'thesis',
-        'presentation' => 'miscellaneous',
-        'proceedings' => 'proceedings',
-        'techreport' => 'report',
-        'unpublished' => 'miscellaneous'
-    );
-    
-    if ( !array_key_exists($string, $types) ) {
-        return 'genericMisc';
-    }
-    if ( $types[$string] === '' ) {
-        return 'genericMisc';
-    }
-    return $types[$string];
-    
 }
 
 /**

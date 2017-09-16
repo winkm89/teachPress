@@ -1899,26 +1899,13 @@ class tp_publications {
         $post_time = current_time('mysql',0);
         $data = wp_parse_args( $data, $defaults );
         extract( $data, EXTR_SKIP );
+        
         // intercept wrong values for dates
         $urldate = ( $urldate == 'JJJJ-MM-TT' ) ? '0000-00-00' : $urldate;
         $date = ( $date == 'JJJJ-MM-TT' ) ? '0000-00-00' : $date;
-
-        // check if bibtex_key is unique; if not make him unique
-        $check = $wpdb->get_var("SELECT COUNT('pub_id') FROM " . TEACHPRESS_PUB . " WHERE `bibtex` = '" . esc_sql($bibtex) . "'");
-        if ( intval($check) > 0 ) {
-            $alphabet = range('a', 'z');
-            if ( $check <= 25 ) {
-                $bibtex .= $alphabet[$check];
-            }
-            else {
-                $bibtex .= '_' . $check;
-            }
-        }
         
-        // check if bibtex key has no spaces
-        if ( strpos($bibtex, ' ') !== false ) {
-            $bibtex = str_replace(' ', '', $bibtex);
-        }
+        // generate bibtex key
+        $bibtex = tp_publications::generate_unique_bibtex_key($bibtex);
         
         // check last chars of author/editor fields
         if ( substr($author, -5) === ' and ' ) {
@@ -2218,6 +2205,40 @@ class tp_publications {
                 }
             }
         }
+    }
+    
+    /**
+     * Generates a unique bibtex_key from a given bibtex key
+     * @param string $bibtex_key
+     * @return string
+     * @since 6.1.1
+     */
+    public static function generate_unique_bibtex_key ($bibtex_key) {
+        global $wpdb;
+        
+        if ( $bibtex_key == '' ) {
+            return '';
+        }
+        
+        // check if bibtex key has no spaces
+        if ( strpos($bibtex_key, ' ') !== false ) {
+            $bibtex_key = str_replace(' ', '', $bibtex_key);
+        }
+        
+        // Check if the key is unique
+        $check = $wpdb->get_var("SELECT COUNT('pub_id') FROM " . TEACHPRESS_PUB . " WHERE `bibtex` LIKE '%" . esc_sql($bibtex_key) . "%'");
+        if ( intval($check) > 0 ) {
+            $alphabet = range('a', 'z');
+            if ( $check <= 25 ) {
+                $bibtex_key .= $alphabet[$check];
+            }
+            else {
+                $bibtex_key .= '_' . $check;
+            }
+        }
+        
+        return $bibtex_key;
+        
     }
 }
 

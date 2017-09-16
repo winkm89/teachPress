@@ -188,6 +188,16 @@ class tp_ajax {
     }
     
     /**
+     * Gets a unique bibtex key from a given string
+     * @param string $string
+     * @since 6.1.1
+     * @access public
+     */
+    public static function get_generated_bibtex_key ($string) {
+        echo tp_publications::generate_unique_bibtex_key($string);
+    }
+
+    /**
      * Gets the cite screen for a single publication.
      * @param int $cite_id       The publication ID
      * @since 6.0.0

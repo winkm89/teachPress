@@ -92,50 +92,6 @@ function teachpress_change_label_color(id) {
 }
 
 /**
- * Generates a simple bibtex key
- * @since 4.2.0
- */
-function teachpress_generate_bibtex_key() {
-    var author = document.getElementById("author").value;
-    var editor = document.getElementById("editor").value;
-    var year = document.getElementById("date").value.substr(0,4);
-    if ( author === '' ) {
-        if ( editor === '' ) {
-            alert('Please enter an author before!');
-            return;
-        }
-        else {
-            author = editor;
-        }
-    }
-    if ( isNaN(year) ) {
-        alert('Please enter the date before!');
-        return;
-    }
-    // split author string
-    author = author.split(" and ");
-    
-    // split name of first author
-    var name = author[0].split(",");
-    name[0] = teachpress_trim(name[0]);
-    name = name[0].split(" ");
-    
-    var count = name.length;
-    var prefix = "";
-    var first_char = "";
-    // Search surname titles like 'van der', 'von den', 'del la',...
-    for ( i = 0; i < count; i++ ) {
-        name[i] = teachpress_trim(name[i]);
-        first_char = name[i].charCodeAt(0);
-        if ( first_char >= 97 && first_char <= 122 ) {
-            prefix = prefix + name[i];
-        }
-    }
-    var last_name = prefix + name[count - 1];
-    document.getElementById("bibtex").value = last_name + year;
-}
-
-/**
  * for show/hide buttons
  * @param {string} where
  * @since 1.0.0
