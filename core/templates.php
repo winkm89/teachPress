@@ -424,7 +424,7 @@ class tp_html_publication_template {
         
         // for direct style (if a DOI numer exists)
         elseif ( $row['doi'] != '' && $settings['link_style'] === 'direct' ) {
-            $doi_url = 'http://dx.doi.org/' . $row['doi'];
+            $doi_url = TEACHPRESS_DOI_RESOLVER . $row['doi'];
             $title = tp_html::prepare_title($row['title'], 'decode');
             return '<a class="tp_title_link" href="' . $doi_url . '" title="' . $title . '" target="blank">' . $title . '</a>'; 
         }
@@ -499,7 +499,7 @@ class tp_html_publication_template {
          * @since 5.0.0
          */
         if ( $doi != '' ) {
-            $doi_url = 'http://dx.doi.org/' . $doi;
+            $doi_url = TEACHPRESS_DOI_RESOLVER . $doi;
             if ( $mode === 'list' ) {
                 $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
             }
@@ -533,7 +533,7 @@ class tp_html_publication_template {
          * @since 5.0.0
          */
         if ( $doi != '' ) {
-            $doi_url = 'http://dx.doi.org/' . $doi;
+            $doi_url = TEACHPRESS_DOI_RESOLVER . $doi;
 
             $end .= '<div data-badge-details="right" data-badge-type="large-donut" data-doi="'.$doi .'" data-condensed="true" class="altmetric-embed"></div>';
         }

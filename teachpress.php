@@ -246,6 +246,13 @@ if ( !defined('TEACHPRESS_ALTMETRIC_SUPPORT') ) {
      * @since 6.0.0
     */
     define('TEACHPRESS_ALTMETRIC_SUPPORT', false);}
+    
+if ( !defined('TEACHPRESS_DOI_RESOLVER') ) {
+    /**
+     * This value defines if the URL for the DOI resolve service
+     * @since 6.1.1
+    */
+    define('TEACHPRESS_DOI_RESOLVER', 'https://dx.doi.org/');}
 
 
 /*********/
