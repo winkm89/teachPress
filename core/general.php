@@ -351,6 +351,7 @@ function get_tp_publication_types() {
     $pub_types[17] = array (0 => 'proceedings', 1 => __('Proceeding','teachpress'), 2 => __('Proceedings','teachpress'));
     $pub_types[18] = array (0 => 'techreport', 1 => __('Technical Report','teachpress'), 2 => __('Technical Reports','teachpress'));
     $pub_types[19] = array (0 => 'unpublished', 1 => __('Unpublished','teachpress'), 2 => __('Unpublished','teachpress'));
+    $pub_types[20] = array (0 => 'workshop', 1 => __('Workshop','teachpress'), 2 => __('Workshops','teachpress'));
     return $pub_types;
 }
 

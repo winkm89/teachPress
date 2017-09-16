@@ -235,28 +235,28 @@ function teachpress_publicationFields(mode) {
             document.getElementById("div_journal").style.display = "none";
         }
         // volume field
-        if (test === "article" || test === "book" || test === "booklet" || test === "collection" || test === "conference" || test === "inbook" || test ==="incollection" || test === "inproceedings" || test === "periodical" || test === "proceedings") {
+        if (test === "article" || test === "book" || test === "booklet" || test === "collection" || test === "conference" || test === "inbook" || test ==="incollection" || test === "inproceedings" || test === "periodical" || test === "proceedings" || test === "workshop") {
             document.getElementById("div_volume").style.display = "block";
         }
         else {
             document.getElementById("div_volume").style.display = "none";
         }
         // number field
-        if (test === "article" || test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "patent" || test === "periodical" || test === "proceedings" || test === "techreport") {
+        if (test === "article" || test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "patent" || test === "periodical" || test === "proceedings" || test === "techreport" || test === "workshop") {
             document.getElementById("div_number").style.display = "block";
         }
         else {
             document.getElementById("div_number").style.display = "none";
         }
         // pages field
-        if (test === "article" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings") {
+        if (test === "article" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "workshop") {
             document.getElementById("div_pages").style.display = "block";
         }
         else {
             document.getElementById("div_pages").style.display = "none";
         }
         // address field
-        if (test === "book" || test === "booklet" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "manual" || test === "mastersthesis" || test === "patent" || test === "phdthesis" || test === "proceedings" || test === "techreport") {
+        if (test === "book" || test === "booklet" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "manual" || test === "mastersthesis" || test === "patent" || test === "phdthesis" || test === "proceedings" || test === "techreport" || test === "workshop") {
             document.getElementById("div_address").style.display = "block";
         }
         else {
@@ -284,7 +284,7 @@ function teachpress_publicationFields(mode) {
             document.getElementById("div_school").style.display = "none";
         }
         // series field
-        if (test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "periodical" || test === "proceedings") {
+        if (test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "periodical" || test === "proceedings" || test === "workshop") {
             document.getElementById("div_series").style.display = "block";
         }
         else {
@@ -305,7 +305,7 @@ function teachpress_publicationFields(mode) {
             document.getElementById("div_edition").style.display = "none";
         }
         // organization field
-        if (test === "conference" || test === "inproceedings" || test === "manual" || test === "proceedings" || test === "online") {
+        if (test === "conference" || test === "inproceedings" || test === "manual" || test === "proceedings" || test === "online" || test === "workshop") {
             document.getElementById("div_organization").style.display = "block";
         }
         else {
@@ -319,7 +319,7 @@ function teachpress_publicationFields(mode) {
             document.getElementById("div_techtype").style.display = "none";
         }
         // booktitle field
-        if (test === "conference" || test === "incollection" || test === "inproceedings") {
+        if (test === "conference" || test === "incollection" || test === "inproceedings" || test === "workshop") {
             document.getElementById("div_booktitle").style.display = "block";
         }
         else {
@@ -333,7 +333,7 @@ function teachpress_publicationFields(mode) {
             document.getElementById("div_issuetitle").style.display = "none";
         }
         // publisher field
-        if (test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "proceedings") {
+        if (test === "book" || test === "collection" || test === "conference" || test === "inbook" || test === "incollection" || test === "inproceedings" || test === "proceedings" || test === "workshop") {
             document.getElementById("div_publisher").style.display = "block";
         }
         else {
