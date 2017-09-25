@@ -1,7 +1,7 @@
 <?php
 /**
  * This file contains all functions for displaying the settings page in admin menu
- * 
+ *
  * @package teachpress\admin\settings
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
  */
@@ -11,7 +11,7 @@
  * @since 5.0.0
  */
 function tp_show_admin_settings() {
-    tp_settings_page::load_page();   
+    tp_settings_page::load_page();
 }
 
 /**
@@ -19,7 +19,7 @@ function tp_show_admin_settings() {
  * @since 5.0.0
  */
 class tp_settings_page {
-    
+
     /**
      * Generates the settings page
      * @since 5.0.0
@@ -51,7 +51,7 @@ class tp_settings_page {
         if ( isset($_GET['ins']) ) {
             tp_install();
         }
-        
+
         // delete database
         if ( isset( $_GET['drop_tp'] ) || isset( $_GET['drop_tp_ok'] ) ) {
             tp_settings_page::delete_database();
@@ -71,7 +71,7 @@ class tp_settings_page {
         if ( isset( $_GET['delete'] ) ) {
             tp_options::delete_option($_GET['delete']);
         }
-        
+
         // Delete data field
         if ( isset( $_GET['delete_field'] ) || isset( $_GET['delete_field_ok'] ) ) {
             tp_settings_page::delete_meta_fields($tab);
@@ -110,7 +110,7 @@ class tp_settings_page {
         $set_menu_6 = ( $tab === 'publication_data' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
         $set_menu_7 = ( $tab === 'publication_templates' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
 
-        echo '<h3 class="nav-tab-wrapper">'; 
+        echo '<h3 class="nav-tab-wrapper">';
         echo '<a href="' . $site . '&amp;tab=general" class="' . $set_menu_1 . '">' . __('General','teachpress') . '</a>';
         if ( TEACHPRESS_COURSE_MODULE === true ) {
             echo '<a href="' . $site . '&amp;tab=courses" class="' . $set_menu_2 . '">' . __('Courses','teachpress') . '</a>';
@@ -118,7 +118,7 @@ class tp_settings_page {
             echo '<a href="' . $site . '&amp;tab=student_data" class="' . $set_menu_4 . '">' . __('Meta','teachpress') . ': ' . __('Students','teachpress') . '</a>';
         }
         if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
-            echo '<a href="' . $site . '&amp;tab=publication_data" class="' . $set_menu_6 . '">' . __('Meta','teachpress') . ': ' . __('Publications','teachpress') . '</a>'; 
+            echo '<a href="' . $site . '&amp;tab=publication_data" class="' . $set_menu_6 . '">' . __('Meta','teachpress') . ': ' . __('Publications','teachpress') . '</a>';
             echo '<a href="' . $site . '&amp;tab=publications" class="' . $set_menu_5 . '">' . __('Publications','teachpress') . '</a>';
             echo '<a href="' . $site . '&amp;tab=publication_templates" class="' . $set_menu_7 . '">' . __('Templates','teachpress') . '</a>';
         }
@@ -133,7 +133,7 @@ class tp_settings_page {
             self::get_general_tab();
         }
         /* Courses */
-        if ( $tab === 'courses' ) { 
+        if ( $tab === 'courses' ) {
             self::get_course_tab();
         }
         /* Meta data */
@@ -152,7 +152,7 @@ class tp_settings_page {
         echo '</form>';
         echo '</div>';
     }
-    
+
     /**
      * Gets the about dialog for the general tab
      * @since 5.0.0
@@ -180,16 +180,16 @@ class tp_settings_page {
         $title = ( $type === 'rel_page_publications' ) ? __('for publications','teachpress') : __('for courses','teachpress');
         $value = get_tp_option($type);
         echo '<p><select name="' . $type . '" id="' . $type . '" title="' . $title . '">';
-        
+
         echo '<option value="page" ';
         if ($value == 'page') { echo 'selected="selected"'; }
         echo '>' . __('Pages') . '</option>';
-        
+
         echo '<option value="post" ';
         if ($value == 'post') { echo 'selected="selected"'; }
         echo '>' . __('Posts') . '</option>';
 
-        $post_types = get_post_types( array('public' => true, '_builtin' => false ), 'objects' ); 
+        $post_types = get_post_types( array('public' => true, '_builtin' => false ), 'objects' );
         foreach ($post_types as $post_type ) {
             $current = ($post_type->name == $value) ? 'selected="selected"' : '';
             echo '<option value="'. $post_type->name . '" ' . $current . '>'. $post_type->label. '</option>';
@@ -197,7 +197,7 @@ class tp_settings_page {
         echo '</select> ';
         echo '<label for="' . $type . '">' . $title. '</label></p>';
     }
-    
+
     /**
      * Returns the select for for user role field
      * @param string $type
@@ -207,25 +207,25 @@ class tp_settings_page {
     private static function get_user_role_form ($type){
         $title = ( $type === 'userrole_publications' ) ? __('Backend access for publication module','teachpress') : __('Backend access for course module','teachpress');
         $cap = ( $type === 'userrole_publications' ) ? 'use_teachpress' : 'use_teachpress_courses';
-        
+
         echo '<tr>';
         echo '<th><label for="' . $type . '">' . $title . '</label></th>';
         echo '<td style="vertical-align: top;">';
         echo '<select name="' . $type . '[]" id="' . $type . '" multiple="multiple" style="height:120px; width: 220px;" title="' . $title . '">';
-        
+
         global $wp_roles;
         foreach ($wp_roles->role_names as $roledex => $rolename){
            $role = $wp_roles->get_role($roledex);
            $select = $role->has_cap($cap) ? 'selected="selected"' : '';
            echo '<option value="'.$roledex.'" '.$select.'>'.$rolename.'</option>';
         }
-        
+
         echo '</select>';
         echo '</td>';
-        echo '<td style="vertical-align: top;">' . __('Select which userrole your users must have to use the teachPress backend.','teachpress') . '<br />' . __('use &lt;Ctrl&gt; key to select multiple roles','teachpress') . '</td>';        
+        echo '<td style="vertical-align: top;">' . __('Select which userrole your users must have to use the teachPress backend.','teachpress') . '<br />' . __('use &lt;Ctrl&gt; key to select multiple roles','teachpress') . '</td>';
         echo '</tr>';
     }
-    
+
     /**
      * Shows the course settings tab
      * @access private
@@ -236,7 +236,7 @@ class tp_settings_page {
         echo '<div style="min-width:780px; width:100%;">';
         echo '<div style="width:48%; float:left; padding-right:2%;">';
 
-        $args2 = array ( 
+        $args2 = array (
             'element_title' => __('Term','teachpress'),
             'count_title' => __('Number of courses','teachpress'),
             'delete_title' => __('Delete term','teachpress'),
@@ -248,7 +248,7 @@ class tp_settings_page {
         echo '</div>';
         echo '<div style="width:48%; float:left; padding-left:2%;">';
 
-        $args3 = array ( 
+        $args3 = array (
             'element_title' => __('Type'),
             'count_title' => __('Number of courses','teachpress'),
             'delete_title' => __('Delete type','teachpress'),
@@ -260,7 +260,7 @@ class tp_settings_page {
         echo '</div>';
         echo '</div>';
     }
-    
+
     /**
      * Shows the tab for general options
      * @access private
@@ -321,24 +321,24 @@ class tp_settings_page {
 
         tp_settings_page::get_user_role_form('userrole_publications');
         tp_settings_page::get_user_role_form('userrole_courses');
-        
+
         echo '<tr>';
         echo '<th colspan="3"><h3>' . __('Enrollment system','teachpress') . '</h3></th>';
         echo '</tr>';
 
         echo '<tr>';
         echo '<th><label for="semester">' . __('Current term','teachpress') . '</label></th>';
-        echo '<td><select name="semester" id="semester" title="' . __('Current term','teachpress') . '">'; 
+        echo '<td><select name="semester" id="semester" title="' . __('Current term','teachpress') . '">';
         $value = get_tp_option('sem');
         $sem = get_tp_options('semester');
-        
+
         // Test if the current semester is in the semester list
         $sem_test = ( get_tp_option($value, 'semester') === NULL ) ? false : true;
         if ( $sem_test === false ) {
             echo '<option selected="selected">- ' . __('Select','teachpress') . ' -</option>';
         }
-        
-        foreach ($sem as $sem) { 
+
+        foreach ($sem as $sem) {
             $current = ($sem->value == $value) ? 'selected="selected"' : '';
             echo '<option value="' . $sem->value . '" ' . $current . '>' . stripslashes($sem->value) . '</option>';
         }
@@ -378,7 +378,7 @@ class tp_settings_page {
         else {
             echo '<option value="1">' . __('yes','teachpress') . '</option>';
             echo '<option value="0" selected="selected">' . __('no','teachpress') . '</option>';
-        } 
+        }
         echo '</select>';
         echo '</td>';
         echo '<td>' . __('Prevent sign out for your users','teachpress') . '</td>';
@@ -390,72 +390,79 @@ class tp_settings_page {
         echo '<h3>' . __('Uninstalling','teachpress') . '</h3> ';
         echo '<a href="options-general.php?page=teachpress/settings.php&amp;tab=general&amp;drop_tp=1">' . __('Remove teachPress from database','teachpress') . '</a>';
         echo '<p><input name="einstellungen" type="submit" id="teachpress_settings" value="' . __('Save') . '" class="button-primary" /></p>';
-        
+
         echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/admin_settings.js"></script>';
         self::get_about_dialog();
     }
-    
+
     /**
      * Shows the publication settings tab
      * @access private
      * @since 5.0.0
      */
     private static function get_publication_tab() {
-        
+
         echo '<table class="form-table">';
         echo '<thead>';
-        
+
         echo '<tr>';
         echo '<th colspan="2"><h3>' . __('Import / Export','teachpress') . '</h3></th>';
         echo '</tr>';
-        
+
         echo '<tr>';
         echo '<th width="160">' . __('BibTeX special chars','teachpress') . '</th>';
         echo '<td>' . tp_admin::get_checkbox('convert_bibtex', __('Try to convert utf-8 chars into BibTeX compatible ASCII strings','teachpress'), get_tp_option('convert_bibtex')) . '</td>';
         echo '</tr>';
-        
+
         echo '<tr>';
         echo '<th width="160">' . __('Overwrite publications','teachpress') . '</th>';
         echo '<td>' . tp_admin::get_checkbox('import_overwrite', __('Allow optional overwriting for publication import','teachpress'), get_tp_option('import_overwrite')) . ' <b>(EXPERIMENTAL)</b></td>';
         echo '</tr>';
-		
-		echo '<tr>';
+
+        echo '<tr>';
         echo '<th colspan="2"><h3>' . __('DOI Resolver','teachpress') . '</h3></th>';
         echo '</tr>';
-		
-		echo '<tr>';
+
+        echo '<tr>';
         echo '<th>' . __('Custom Url Template','teachpress') . '</th>';
         echo '<td><input type="text" name="doi_resolver_url_template_custom" id="doi_resolver_url_template_custom" style="width:90%;" value="' . get_tp_option('doi_resolver_url_template_custom') . '" />';
-		echo '<p>' . __('Define a custom doi resolver template which overrides the default one: ','teachpress') . '<code>' . get_tp_option('doi_resolver_url_template_default') . '</code></p>';
-		echo '</td>';
-		echo '</tr>';
-        
+        echo '<p>' . __('Define a custom doi resolver template which overrides the default one: ','teachpress') . '<code>' . get_tp_option('doi_resolver_url_template_default') . '</code></p>';
+        echo '</td>';
+        echo '</tr>';
+
+        echo '<tr>';
+        echo '<th>' . __('Custom Link Label','teachpress') . '</th>';
+        echo '<td><input type="text" name="doi_resolver_href_label_custom" id="doi_resolver_href_label_custom" style="width:90%;" value="' . get_tp_option('doi_resolver_href_label_custom') . '" />';
+        echo '<p>' . __('Define a custom human-readable label for the DOI link.','teachpress') . '</p>';
+        echo '</td>';
+        echo '</tr>';
+
         echo '<tr>';
         echo '<th colspan="2"><h3>' . __('Related content','teachpress') . '</h3></th>';
         echo '</tr>';
-        
+
         echo '<tr>';
         echo '<th>' . __('Automatic related content','teachpress') . '</th>';
         echo '<td>' . tp_admin::get_checkbox('rel_content_auto', __('Create an automatic related content with every new publication','teachpress'), get_tp_option('rel_content_auto')) . '</td>';
         echo '</tr>';
-		
+
         echo '<tr>';
         echo '<th>' . __('Template for related content','teachpress') . '</th>';
         echo '<td><textarea name="rel_content_template" id="rel_content_template" style="width:90%;" rows="10">' . get_tp_option('rel_content_template') . '</textarea></td>';
         echo '</tr>';
-		
+
         echo '<tr>';
         echo '<th>' . __('Default category for related content','teachpress') . '</th>';
         echo '<td>';
-        wp_dropdown_categories(array('hide_empty' => 0, 'name' => 'rel_content_category', 'orderby' => 'name', 'selected' => get_tp_option('rel_content_category'), 'hierarchical' => true, 'show_option_none' => __('none','teachpress'))); 
+        wp_dropdown_categories(array('hide_empty' => 0, 'name' => 'rel_content_category', 'orderby' => 'name', 'selected' => get_tp_option('rel_content_category'), 'hierarchical' => true, 'show_option_none' => __('none','teachpress')));
         echo '<em>' . __('Used if the related content type for publicaitons is set on "Posts"','teachpress') . '</em>
              </td>';
         echo '</tr>';
-        
+
         echo '<tr>';
         echo '<th colspan="2"><h3>' . __('RSS','teachpress') . '</h3></th>';
         echo '</tr>';
-		
+
         echo '<tr>';
         echo '<th>' . __('RSS feed addresses','teachpress') . '</th>';
         echo '<td><p><em>' . __('For all publications:','teachpress') . '</em><br />
@@ -464,15 +471,15 @@ class tp_settings_page {
             <strong>' . home_url() . '?feed=tp_pub_rss&amp;id=1</strong> &raquo; <a href="' . home_url() . '?feed=tp_pub_rss&amp;id=1" target="_blank">' . __('Show','teachpress') . '</a></p>
             <p><em>' . __('Example for publications of a single tag (tag = tag-id):','teachpress') . '</em><br />
             <strong>' . home_url() . '?feed=tp_pub_rss&amp;tag=1</strong> &raquo; <a href="' . home_url() . '?feed=tp_pub_rss&amp;tag=1" target="_blank">' . __('Show','teachpress') . '</a></p>
-                  </td>';  
+                  </td>';
         echo '</tr>';
-		
+
         echo '</thead>';
         echo '</table>';
 
         echo '<input type="submit" class="button-primary" name="save_pub" value="' . __('Save') . '"/>';
     }
-    
+
     /**
      * Shows the student settings tab
      * @param string $tab   student_data, publication_data or course_data
@@ -498,7 +505,7 @@ class tp_settings_page {
         echo '<h3>' . __('Meta data fields','teachpress') . '</h3>';
 
         echo '<table class="widefat">';
-        
+
         // Table Head
         echo '<thead>';
         echo '<tr>';
@@ -506,7 +513,7 @@ class tp_settings_page {
         echo '<th>' . __('Properties','teachpress') . '</th>';
         echo '</tr>';
         echo '</thead>';
-        
+
         // Table Body
         echo '<tbody>';
 
@@ -569,7 +576,7 @@ class tp_settings_page {
         echo '<div style="width:48%; float:left; padding-left:2%;">';
 
         foreach ( $select_fields as $elem ) {
-            $args1 = array ( 
+            $args1 = array (
                  'element_title' => __('Name','teachpress'),
                  'count_title' => __('Number of students','teachpress'),
                  'delete_title' => __('Delete elemtent','teachpress'),
@@ -602,16 +609,16 @@ class tp_settings_page {
         </script>
         <?php
     }
-    
+
     /**
      * Shows the templates tab
      * @access private
-     * @since 6.0.0 
+     * @since 6.0.0
      */
     private static function get_template_tab () {
         $tp_upload_dir = wp_upload_dir();
         echo '<h3>' . __('Available templates for publication lists','teachpress') . '</h3>';
-        
+
         // Begin change directory message
         echo '<div class="teachpress_message teachpress_message_orange"><b>' . __('Please note','teachpress') . '</b>: ' . __('Changes in the templates will be overwritten by updates of the plugin.','teachpress') . ' <a onclick="teachpress_showhide(' . "'teachpress_change_directory'" . ')" style="cursor: pointer;">' . __('But you can change the directory for the templates.','teachpress') . '</a></div>';
         echo '<div id="teachpress_change_directory" class="teachpress_message" style="display:none;">';
@@ -622,7 +629,7 @@ class tp_settings_page {
         echo '<p><b>2. Move all teachpress template files to wp-content/uploads/teachpress/templates/</b></p>';
         echo '</div>';
         // End change directory message
-        
+
         echo '<table class="widefat">';
         echo '<thead>';
         echo '<tr>';
@@ -634,7 +641,7 @@ class tp_settings_page {
         echo self::list_templates();
         echo '</table>';
     }
-    
+
     /**
      * Creates the list of publication templates
      * @return string
@@ -655,19 +662,19 @@ class tp_settings_page {
                 $tr_class = '';
                 $class_alternate = true;
             }
-            
+
             // load template
             include_once $templates[$key];
             $template = new $key();
-            
+
             // default values
             $settings = array('name' => '', 'description' => '', 'author' => '', 'version' => '0.0');
-            
+
             // overwrite defaults
             if ( method_exists($template, 'get_settings') ) {
                 $settings = shortcode_atts( $settings, $template->get_settings() );
             }
-            
+
             $s .= '<tr ' . $tr_class . '>';
             $s .= '<td>' . esc_html($settings['name']) . '</td>';
             $s .= '<td>' . esc_html($key) . '</td>';
@@ -676,18 +683,18 @@ class tp_settings_page {
                   </td>';
             $s .= '</tr>';
         }
-        
+
         $s .= '</table>';
         return $s;
     }
-    
+
     /**
      * Adds new term and new types for courses
      * @access private
      * @since 5.0.0
      */
     private static function add_course_options () {
-        $new_term = isset( $_POST['new_term'] ) ? htmlspecialchars($_POST['new_term']) : ''; 
+        $new_term = isset( $_POST['new_term'] ) ? htmlspecialchars($_POST['new_term']) : '';
         $new_type = isset( $_POST['new_type'] ) ? htmlspecialchars($_POST['new_type']) : '';
 
         if (isset( $_POST['add_type'] ) && $new_type != __('Add type','teachpress')) {
@@ -699,7 +706,7 @@ class tp_settings_page {
            get_tp_message(__('Saved'));
         }
     }
-    
+
     /**
      * Handles adding of new meta data fields
      * @param string $table         The table name (teachpress_stud, teachpress_courses or teachpress_pub)
@@ -710,10 +717,10 @@ class tp_settings_page {
         if ( !isset( $_POST['field_name'] ) ) {
             return;
         }
-        
+
         // Generate field name
         $field_name = self::generate_meta_field_name($_POST['field_name'], $table);
-        
+
         // Field values
         $data['title'] = isset( $_POST['field_label'] ) ? htmlspecialchars($_POST['field_label']) : '';
         $data['type'] = isset( $_POST['field_type'] ) ? htmlspecialchars($_POST['field_type']) : '';
@@ -723,7 +730,7 @@ class tp_settings_page {
         $data['step'] = isset( $_POST['number_step'] ) ? intval($_POST['number_step']) : 'false';
         $data['required'] = isset( $_POST['is_required'] ) ? 'true' : 'false';
         $data['field_edit'] = isset( $_POST['field_edit'] ) ? intval($_POST['field_edit']) : 0 ;
-        
+
         // Generate an array of forbidden field names
         $forbidden_names = array('system', 'course_type', 'semester', __('Field name','teachpress'));
         $options = get_tp_options($table);
@@ -732,14 +739,14 @@ class tp_settings_page {
                 array_push( $forbidden_names, $row->variable );
             }
         }
-        
+
         if ( !in_array($field_name, $forbidden_names) && $data['title'] != __('Label', 'teachpress') && preg_match("#^[_A-Za-z0-9]+$#", $field_name) ) {
-            
+
             // Delete old settings if needed
             if ( $data['field_edit'] > 0 ) {
                 tp_options::delete_option($data['field_edit']);
             }
-            
+
             tp_db_helpers::register_column($table, $field_name, $data);
             get_tp_message(  __('Field added','teachpress') );
         }
@@ -747,7 +754,7 @@ class tp_settings_page {
             get_tp_message(  __('Warning: This field name is not possible.','teachpress'), 'red' );
         }
     }
-    
+
     /**
      * Generates and returns a name for meta data fields
      * @param string $fieldname     The field name
@@ -757,7 +764,7 @@ class tp_settings_page {
      */
     private static function generate_meta_field_name($fieldname, $table) {
         $name = str_replace( array("'", '"', ' '), array("", "", '_'), $fieldname);
-        
+
         if ( $table === 'teachpress_courses' ) {
             $prefix = 'tp_meta_courses_';
         }
@@ -770,15 +777,15 @@ class tp_settings_page {
         else {
             $prefix = 'tp_meta_';
         }
-        
+
         // Check if the prefix is already part of the field name
         if ( stristr($fieldname, $prefix) === false ) {
             return $prefix . esc_attr($name);
         }
-        
+
         return esc_attr($name);
     }
-    
+
     /**
      * Deletes student data fields
      * @param string $tab   The name of the tab (used for return link)
@@ -815,7 +822,7 @@ class tp_settings_page {
         $option_login = isset( $_POST['login'] ) ? htmlspecialchars($_POST['login']) : '';
         $option_userrole_publications = isset( $_POST['userrole_publications'] ) ? $_POST['userrole_publications'] : '';
         $option_userrole_courses = isset( $_POST['userrole_courses'] ) ? $_POST['userrole_courses'] : '';
-    
+
         tp_options::change_option('sem', $option_semester);
         tp_options::change_option('rel_page_courses', $option_rel_page_courses);
         tp_options::change_option('rel_page_publications', $option_rel_page_publications);
@@ -836,18 +843,19 @@ class tp_settings_page {
     private static function change_publication_options () {
         $checkbox_convert_bibtex = isset( $_POST['convert_bibtex'] ) ? 1 : '';
         $checkbox_import_overwrite = isset( $_POST['import_overwrite'] ) ? 1 : '';
-		$doi_resolver_url_template_custom = isset( $_POST['doi_resolver_url_template_custom'] ) ? esc_url_raw( $_POST['doi_resolver_url_template_custom'] ) : '';
+        $doi_resolver_url_template_custom = isset( $_POST['doi_resolver_url_template_custom'] ) ? esc_url_raw( $_POST['doi_resolver_url_template_custom'] ) : '';
+        $doi_resolver_href_label_custom = isset( $_POST['doi_resolver_href_label_custom'] ) ? $_POST['doi_resolver_href_label_custom'] : '';
         $checkbox_rel_content_auto = isset( $_POST['rel_content_auto'] ) ? 1 : '';
         tp_options::change_option('convert_bibtex', $checkbox_convert_bibtex, 'checkbox');
         tp_options::change_option('import_overwrite', $checkbox_import_overwrite, 'checkbox');
-		tp_options::change_option('doi_resolver_url_template_custom', $doi_resolver_url_template_custom);
+        tp_options::change_option('doi_resolver_url_template_custom', $doi_resolver_url_template_custom);
+        tp_options::change_option('doi_resolver_href_label_custom', $doi_resolver_href_label_custom);
         tp_options::change_option('rel_content_auto', $checkbox_rel_content_auto, 'checkbox');
         tp_options::change_option('rel_content_template', $_POST['rel_content_template']);
         tp_options::change_option('rel_content_category', $_POST['rel_content_category']);
         get_tp_message(__('Saved'));
-        
     }
-    
+
     /**
      * Handles start of database updates
      * @param string $site                      The current URL
@@ -869,7 +877,7 @@ class tp_settings_page {
         $message = 'TABLE ' . $table . ': ' .  __('teachPress wants to fill up the new database. This can take some time.','teachpress') . ' <a href="' . $site . '&amp;sync=' . $sync . '" class="button-primary">' . __('Continue','teachpress') . '</a>';
         get_tp_message($message, 'orange');
     }
-    
+
     /**
      * Hanldes start of database deletion
      * @access private
