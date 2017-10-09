@@ -472,6 +472,7 @@ class tp_html_publication_template {
     public static function prepare_url($url, $doi = '', $mode = 'list') {
         $end = '';
         $url = explode(chr(13) . chr(10), $url);
+        $url_displayed = [];
         foreach ($url as $url) {
             if ( $url == '' ) {
                 continue;
@@ -479,6 +480,7 @@ class tp_html_publication_template {
             $parts = explode(', ',$url);
             $parts[0] = trim( $parts[0] );
             $parts[1] = isset( $parts[1] ) ? $parts[1] : $parts[0];
+            array_push($url_displayed, $parts[0]);
             // list mode 
             if ( $mode === 'list' ) {
                 $length = strlen($parts[1]);
@@ -500,11 +502,13 @@ class tp_html_publication_template {
          */
         if ( $doi != '' ) {
             $doi_url = TEACHPRESS_DOI_RESOLVER . $doi;
-            if ( $mode === 'list' ) {
-                $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
-            }
-            else {
-                $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( 'html' ) . '"/></a>';
+            if (in_array($doi_url, $url_displayed) == False){
+                if ( $mode === 'list' ) {
+                    $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
+                }
+                else {
+                    $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( 'html' ) . '"/></a>';
+                }
             }
         }
         
