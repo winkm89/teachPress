@@ -416,7 +416,7 @@ class tp_shortcodes {
         }
         // with headlines grouped by type then by year
         else if ($args['headline'] === 4) {
-            $publications = tp_shortcodes::sort_pub_by_type_year($tparray, $tpz, $args);
+            $publications = tp_shortcodes::sort_pub_by_type_year($tparray, $template, $tpz, $args);
         }
         // without headlines
         else {
