@@ -475,7 +475,7 @@ class tp_tables {
                     `url` TEXT,
                     `date` DATE,
                     `urldate` DATE,
-                    `booktitle` VARCHAR (200),
+                    `booktitle` VARCHAR (1000),
                     `issuetitle` VARCHAR (200),
                     `journal` VARCHAR(200),
                     `volume` VARCHAR(40),
