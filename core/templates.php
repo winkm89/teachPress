@@ -418,7 +418,7 @@ class tp_html_publication_template {
         }
         
         // for inline style
-        elseif ( $row['url'] != '' && $settings['link_style'] === 'inline' ) {
+        elseif ( ($row['url'] != '' || $row['doi'] != '') && $settings['link_style'] === 'inline' ) {
             return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
         }
         
