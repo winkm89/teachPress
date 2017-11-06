@@ -1552,7 +1552,7 @@ class tp_publications {
             'user' => '',
             'type' => '',
             'tag' => '',
-            'author_id' => '',
+            'author_id' => '', 
             'import_id' => '',
             'year' => '',
             'author' => '',
@@ -1561,6 +1561,7 @@ class tp_publications {
             'include_editor_as_author' => true,
             'exclude' => '',
             'exclude_tags' => '',
+            'exclude_types' => '',
             'order' => 'date DESC',
             'limit' => '',
             'search' => '',
@@ -1610,6 +1611,7 @@ class tp_publications {
 
         // define where, having and limit clause
         $exclude = tp_db_helpers::generate_where_clause($exclude, "p.pub_id", "AND", "!=");
+        $exclude_types = tp_db_helpers::generate_where_clause($exclude_types , "p.type", "OR", "!=");
         $include = tp_db_helpers::generate_where_clause($include, "p.pub_id", "OR", "=");
         $type = tp_db_helpers::generate_where_clause($type, "p.type", "OR", "=");
         $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
@@ -1656,6 +1658,9 @@ class tp_publications {
 
         if ( $exclude != '' ) {
             $where = ( $where != '' ) ? $where . " AND ( $exclude ) " : " ( $exclude ) ";
+        }
+        if ( $exclude_types != '' ) {
+            $where = ( $where != '' ) ? $where . " AND ( $exclude_types ) " : " ( $exclude_types) ";
         }
         if ( $include != '' ) {
             $where = ( $where != '' ) ? $where . " AND ( $include ) " : " ( $include ) ";
@@ -1761,8 +1766,9 @@ class tp_publications {
      * 
      * Possible values for the array $args:
      *       user (STRING)            User IDs (separated by comma)
+     *       include (STRING)         Publication types (separated by comma)
+     *       exclude (STRING)         Publication types (separated by comma)
      *       output type (STRING)     OBJECT, ARRAY_A, ARRAY_N, default is ARRAY_A
-     * 
      * 
      * @param array $args
      * @return object|array
@@ -1772,6 +1778,7 @@ class tp_publications {
         $defaults = array(
             'user' => '',
             'include' => '',
+            'exclude' => '',
             'output_type' => ARRAY_A
         ); 
         $args = wp_parse_args( $args, $defaults );
@@ -1779,9 +1786,10 @@ class tp_publications {
         global $wpdb;
         $output_type = esc_sql($args['output_type']);
         $include = tp_db_helpers::generate_where_clause($args['include'], "type", "OR", "=");
+        $exclude = tp_db_helpers::generate_where_clause($args['exclude'], "type", "OR", "!=");
         $user = tp_db_helpers::generate_where_clause($args['user'], "u.user", "OR", "=");
         
-        $having = ( $include != '' ) ? " HAVING $include" : "";
+        $having = ( $include != '' || $exclude != '' ) ? " HAVING $include $exclude " : "";
         
         if ( $user == '' ) {
             $result = $wpdb->get_results("SELECT DISTINCT p.type FROM " .TEACHPRESS_PUB . " p $having ORDER BY p.type ASC", $output_type);

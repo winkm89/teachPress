@@ -185,7 +185,8 @@ class tp_shortcodes {
         // type filter
         if ( $mode === 'type' ) {
             $row = tp_publications::get_used_pubtypes( array( 'user' => $sql_parameter['user'],
-                                                              'include' => $sql_parameter['type']) );
+                                                              'include' => $sql_parameter['type'],
+                                                              'exclude' => isset($sql_parameter['exclude_types']) ? $sql_parameter['exclude_types'] : '') );
             $id = 'pub_type';
             $index = 'type';
             $title = __('All types','teachpress');
@@ -1057,6 +1058,7 @@ function tp_links_shortcode ($atts) {
  *      tag_limit (INT)             number of tags, default: 30
  *      hide_tags (STRING)          ids of the tags you want to hide from your users (separated by comma)
  *      exclude_tags (STRING)       similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
+ *      exclude_types (STRING)      name of the publication types you want to exclude (separated by comma)
  *      image (STRING)              none, left, right or bottom, default: none 
  *      image_size (INT)            max. Image size, default: 0
  *      image_link (STRING)         none, self or post (defalt: none)
@@ -1108,6 +1110,7 @@ function tp_cloud_shortcode($atts) {
         'tag_limit' => 30,
         'hide_tags' => '',
         'exclude_tags' => '',
+        'exclude_types' => '',
         'image' => 'none',
         'image_size' => 0,
         'image_link' => 'none',
@@ -1180,6 +1183,7 @@ function tp_cloud_shortcode($atts) {
         'year' => htmlspecialchars($atts['year']),
         'exclude' => htmlspecialchars($atts['exclude']),
         'exclude_tags' => htmlspecialchars($atts['exclude_tags']),
+        'exclude_types' => htmlspecialchars($atts['exclude_types']),
         'order' => htmlspecialchars($atts['order']),
     );
 
@@ -1287,6 +1291,7 @@ function tp_cloud_shortcode($atts) {
         'order' => $sql_parameter['order'], 
         'exclude' => $sql_parameter['exclude'],
         'exclude_tags' => $sql_parameter['exclude_tags'],
+        'exclude_types' => $sql_parameter['exclude_types'],
         'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'limit' => $pagination_limits['limit'],
         'output_type' => ARRAY_A);
@@ -1377,6 +1382,7 @@ function tp_cloud_shortcode($atts) {
  *      include_editor_as_author (INT)
  *      year (STRING)               the publication years (separated by comma)
  *      exclude_tags (STRING)       excludes all publications with the given tag IDs (separated by comma)
+ *      exclude_types (STRING)      names of the publication types you want to exclude (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
  *      image (STRING)              none, left, right or bottom, default: none 
@@ -1414,6 +1420,7 @@ function tp_list_shortcode($atts){
        'include_editor_as_author' => 1,
        'year' => '',
        'exclude_tags' => '',
+       'exclude_types' => '',
        'order' => 'date DESC',
        'headline' => 1,
        'image' => 'none',
@@ -1505,6 +1512,7 @@ function tp_list_shortcode($atts){
         'order' => $atts['order'], 
         'exclude' => $atts['exclude'],
         'exclude_tags' => $atts['exclude_tags'],
+        'exclude_types' => $atts['exclude_types'],
         'include' => $atts['include'], 
         'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'output_type' => ARRAY_A, 
