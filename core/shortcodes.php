@@ -365,11 +365,14 @@ class tp_shortcodes {
           $link_url = $settings['permalink'];
           $link_title = "";
           $link_class = "";
-          $pub = $tagcloud['tagPeak'] == 1 ? __('publication', 'teachpress') : __('publications', 'teachpress');
+          $pub = ( $tagcloud['tagPeak'] == 1 ) ? __('publication', 'teachpress') : __('publications', 'teachpress');
+          
+          // division through zero check
+          $divisor = ( $max - $min === 0 ) ? 1 : $max - $min;
 
           // calculate the font size
           // max. font size * (current occorence - min occurence) / (max occurence - min occurence)
-          $size = floor(( $cloud_settings['maxsize'] *( $tagcloud['tagPeak'] - $min )/( $max - $min ) ));
+          $size = floor(( $cloud_settings['maxsize'] *( $tagcloud['tagPeak'] - $min ) / $divisor ));
           // level out the font size
           if ( $size < $cloud_settings['minsize'] ) {
              $size = $cloud_settings['minsize'] ;
