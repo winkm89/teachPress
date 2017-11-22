@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.8.1
-Stable tag: 6.1.0
+Tested up to: 4.9.1
+Stable tag: 6.2.0
 
 Manage your courses and publications with teachPress 
 
@@ -131,6 +131,22 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.2.0 - (22.11.2017) =
+* New: Ajax based bibtex key generator (#70)
+* New: [tplist, tpcloud]: New parameter "exclude_types" (#75)
+* New: DOI url resolver is now editable through constant TEACHPRESS_DOI_RESOLVER (#72)
+* New: publication type "workshop" added (#67)
+* New: Add "show_link" option for [tpref] shortcode (experimental feature)
+* Bugfix: DOI included in URL list (Thanks to Sven Mayer) (#73)
+* Bugfix: Infinte loop when using headlines grouped by year and then by type (headline="4") (Thanks to Abel Gómez) (#76)
+* Bugfix: Wrong quote characters cause invalid generation of LaTeX accented letters (Thanks to Abel Gómez) (#77)
+* Bugfix: Enable title links in inline mode if DOI is available (Thanks to Abel Gómez)  (#78)
+* Bugfix: Booktitle column is too small for some publications (#80)
+* Bugfix: Division through zero error in shortcodes.php (#82)
+* Bugfix: Fix substitutions in convert_bibtex_functions (#83)
+* Bugfix: Prevent double encodes in tags (#84)
+
 = 6.1.0 - (14.08.2017) =
 * New: List of imports is now availabe
 * New: Support for returning meta data to get_publications() added (#61)
