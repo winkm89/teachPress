@@ -2172,8 +2172,8 @@ class tp_publications {
         global $wpdb;
         $pub_id = intval($pub_id);
         
-        // Make sure, that there are no slashes in the input
-        $input_string = stripslashes( htmlspecialchars( $input_string ) );
+        // Make sure, that there are no slashes or double htmlspecialchar encodes in the input
+        $input_string = stripslashes( htmlspecialchars( htmlspecialchars_decode($input_string) ) );
         
         $array = explode($delimiter, $input_string);
         foreach($array as $element) {
