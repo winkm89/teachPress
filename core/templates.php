@@ -472,7 +472,7 @@ class tp_html_publication_template {
     public static function prepare_url($url, $doi = '', $mode = 'list') {
         $end = '';
         $url = explode(chr(13) . chr(10), $url);
-        $url_displayed = [];
+        $url_displayed = array();
         foreach ($url as $url) {
             if ( $url == '' ) {
                 continue;
