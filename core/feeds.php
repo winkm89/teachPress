@@ -72,7 +72,7 @@ function tp_pub_rss_feed_func () {
         echo '
             <item>
                <title><![CDATA[' . tp_html::prepare_title($row['title'], 'replace') . ']]></title>
-               <description>' . tp_html::get_publication_meta_row($row, $settings) . '</description>
+               <description><![CDATA[' . tp_html::get_publication_meta_row($row, $settings) . ']]></description>
                <link><![CDATA[' . $item_link1[0] . ']]></link>
                <dc:creator>' . stripslashes($all_authors) . '</dc:creator>
                <guid isPermaLink="false">' . get_bloginfo('url') . '?publication=' . $row['pub_id'] . '</guid>
