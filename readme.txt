@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.9.1
-Stable tag: 6.2.0
+Stable tag: 6.2.1
 
 Manage your courses and publications with teachPress 
 
@@ -42,7 +42,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 == Credits ==
 
-Copyright 2008-2017 by Michael Winkler
+Copyright 2008-2018 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -131,6 +131,13 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.2.1 - (02.01.2018) =
+* New: [tpcloud]: New parameter "show_author_filter" (#89)
+* New: [tpcloud]: New parameter "show_user_filter" (#90)
+* Changed: Limit number of items in RSS feeds (#86)
+* Changed: Wrap description of publications in RSS feed in CDATA blocks (#87)
+* Bigfix: Fix a compatibility problem with PHP 5.3 or lower (#88, #72)
 
 = 6.2.0 - (22.11.2017) =
 * New: Ajax based bibtex key generator (#70)

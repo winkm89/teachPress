@@ -3,7 +3,7 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 6.2.0
+Version: 6.2.1
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
@@ -17,7 +17,7 @@ GitHub Branch: master
 /*
    LICENCE
 
-    Copyright 2008-2017 Michael Winkler
+    Copyright 2008-2018 Michael Winkler
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -377,7 +377,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '6.2.0';
+    return '6.2.1';
 }
 
 /**
