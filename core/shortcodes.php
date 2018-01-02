@@ -1080,6 +1080,8 @@ function tp_links_shortcode ($atts) {
  *      sort_list (STRING)          a list of publication types (separated by comma) which overwrites the default sort order for headline = 2
  *      show_tags_as (STRING)       cloud, pulldown or none, default: cloud
  *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
+ *      show_author_filter (INT)    0 (false) or 1 (true), default: 1
+ *      show_user_filter (INT)      0 (false) or 1 (true), default: 1
  *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
  *      show_altmetric_entry (INT)  0 (false) or 1 (true), default: 0
