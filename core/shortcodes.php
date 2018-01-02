@@ -1132,6 +1132,7 @@ function tp_cloud_shortcode($atts) {
         'sort_list' => '',
         'show_tags_as' => 'cloud',
         'show_author_filter' => 1,
+        'show_user_filter' => 1,
         'show_bibtex' => 1,
         'container_suffix' => '',
         'show_altmetric_donut' => 0,
@@ -1158,6 +1159,7 @@ function tp_cloud_shortcode($atts) {
         'entries_per_page' => intval($atts['entries_per_page']),
         'sort_list' => htmlspecialchars($atts['sort_list']),
         'show_author_filter' => ( $atts['show_author_filter'] == '1' ) ? true : false,
+        'show_user_filter' => ( $atts['show_user_filter'] == '1' ) ? true : false,
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
         'with_tags' => 1,
         'container_suffix' => htmlspecialchars($atts['container_suffix']),
@@ -1256,7 +1258,8 @@ function tp_cloud_shortcode($atts) {
     }
     
     // Filter user
-    if ( $atts['user'] == '' || strpos($atts['user'], ',') !== false  ) {
+    if ( ( $atts['user'] == '' || strpos($atts['user'], ',') !== false ) &&
+            $settings['show_user_filter'] === true ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'user');
     }
 
