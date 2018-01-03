@@ -1312,8 +1312,10 @@ function tp_cloud_shortcode($atts) {
     $row = tp_publications::get_publications( $args );
     $tpz = 0;
     $count = count($row);
-    $colspan = '';
     $tparray = array();
+    
+    // colspan setup
+    $colspan = '';
     if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut']) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
         $colspan = ' colspan="2"';
@@ -1327,7 +1329,7 @@ function tp_cloud_shortcode($atts) {
     
     // Create array of publications
     foreach ($row as $row) {
-        $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
+        $number = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $pagination_limits['entry_limit'], $atts['style']);
         $tparray[$tpz][0] = $row['year'] ;
         
         // teachPress style
@@ -1535,7 +1537,7 @@ function tp_list_shortcode($atts){
     $count = count($row);
     foreach ($row as $row) {
         $tparray[$tpz][0] = $row['year'];
-        $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
+        $number = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $pagination_limits['entry_limit'], $atts['style']);
         
         // teachPress style
         $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number);

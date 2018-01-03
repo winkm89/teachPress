@@ -398,6 +398,22 @@ class tp_html_publication_template {
     }
     
     /**
+     * Generates the visible sorting number of a publication
+     * @param int $number_entries       The number of selected publications
+     * @param int $tpz                  The publication counter in the list
+     * @param int $entry_limit          The current entry limit
+     * @param string $style             The sorting styles
+     * @since 6.2.2
+     * @return int
+     */
+    public static function prepare_publication_number($number_entries, $tpz, $entry_limit, $style) {
+        if ( $style === 'numbered_desc' || $style === 'std_num_desc' ) {
+            return $number_entries - $tpz - $entry_limit;
+        }
+        return $entry_limit + $tpz + 1;
+    }
+    
+    /**
      * This function prepares the publication title for html publication lists.
      * @param array $row                The publication array
      * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, title_ref, date_format, convert_bibtex, container_suffix,...)
