@@ -129,7 +129,7 @@ class tp_bibtex {
             $template = tp_load_template('tp_template_orig');
         }
         
-        $a = tp_html_publication_template::get_single ($row, $all_tags, $settings, $template, $tpz);	
+        $a = tp_html_publication_template::get_single ($row, $all_tags, $settings, $template, $tpz);    
         return $a;
     }
 
@@ -164,7 +164,7 @@ class tp_bibtex {
         $input = str_replace( $array_a , $array_b ,$input);
         
         // Step 2: All over special chars 
-        $array_1 = array('"{a}','"{A}','`{a}','`{A}',"'{a}","'{A}",'~{a}','~{A}','={a}','={A}','^{a}','^{A}','u{a}','u{A}','k{a}','k{A}','r{a}','r{A}',
+        $array_1 = array('"{a}','"{A}','`{a}','`{A}',"'{a}","'{A}",'~{a}','~{A}','={a}','={A}','^{a}','^{A}','u{a}','u{A}','k{a}','k{A}','r{a}','r{A}','{aa}','{AA}',
                          '.{b}','.{B}',
                          "'{c}","'{C}",'v{c}','v{C}','c{c}','c{C}','.{c}','.{C}','^{c}','^{C}',
                          'v{d}','v{D}','.{d}','.{D}','d{d}','d{D}','{d}','{D}',
@@ -188,7 +188,7 @@ class tp_bibtex {
                          '^{w}','^{W}',
                          '"{y}','"{Y}',"'{y}","'{Y}",'^{y}','^{Y}',
                          "'{z}","'{Z}",'v{z}','v{Z}','.{z}','.{Z}');
-        $array_2 = array('ä','Ä','à','À','á','Á','ã','Ã','ā','Ā','â','Â','ă','Ă','ą','Ą','å','Å',
+        $array_2 = array('ä','Ä','à','À','á','Á','ã','Ã','ā','Ā','â','Â','ă','Ă','ą','Ą','å','Å','å','Å',
                          'ḃ','Ḃ',
                          'ć','Ć','č','Č','ç','Ç','ċ','Ċ','ĉ','Ĉ',
                          'ď','Ď','ḋ','Ḋ','ḍ','Ḍ','đ','Đ',
@@ -227,12 +227,12 @@ class tp_bibtex {
                          '{é}','[É}',
                          '{í}',
                          '{ó}','{Ó}','{ö}','{Ö}',
-                         '{ü}','{Ü}','{ß}','{š}');
+                         '{ü}','{Ü}','{ß}','{š}', '{ø}', '{Ø}', '{å}', '{Å}');
         $array_b = array('á','Á','ä','Ä',
                          'é','É',
                          'í',
                          'ó','Ó','ö','Ö',
-                         'ü','Ü','ß','š');
+                         'ü','Ü','ß','š','ø', 'Ø', 'å', 'Å');
         $ret = str_replace($array_a, $array_b, $input);
         return $ret;
     }
@@ -436,7 +436,7 @@ class tp_bibtex {
      * 
      * Some examples for the parsing:
      * last:            Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf; van Beethoven, Ludwig
-     * initials: 	Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf F; van Beethoven, Ludwig
+     * initials:    Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf F; van Beethoven, Ludwig
      * 
      * @param string $input     The input string
      * @param string $separator The separator between the authors (for the output)
