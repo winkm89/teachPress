@@ -1611,7 +1611,7 @@ class tp_publications {
 
         // define where, having and limit clause
         $exclude = tp_db_helpers::generate_where_clause($exclude, "p.pub_id", "AND", "!=");
-        $exclude_types = tp_db_helpers::generate_where_clause($exclude_types , "p.type", "OR", "!=");
+        $exclude_types = tp_db_helpers::generate_where_clause($exclude_types , "p.type", "AND", "!=");
         $include = tp_db_helpers::generate_where_clause($include, "p.pub_id", "OR", "=");
         $type = tp_db_helpers::generate_where_clause($type, "p.type", "OR", "=");
         $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
