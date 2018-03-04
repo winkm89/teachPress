@@ -299,7 +299,7 @@ class tp_publication_page {
         }
         echo '<p><strong>' . __('Current','teachpress') . '</strong></p>';
         foreach ($current_tags as $row){
-            echo'<input name="delbox[]" type="checkbox" value="' . $row->con_id . '" id="checkbox_' . $row->con_id . '" onclick="teachpress_change_label_color(' . "'" . $row->con_id . "'" . ')"/> <label for="checkbox_' . $row->con_id . '" title="Tag &laquo;' . $row->name . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row->con_id . '">' . $row->name . '</label> | ';
+            echo'<input name="delbox[]" type="checkbox" value="' . $row->con_id . '" id="checkbox_' . $row->con_id . '" onclick="teachpress_change_label_color(' . "'" . $row->con_id . "'" . ')"/> <label for="checkbox_' . $row->con_id . '" title="Tag &laquo;' . stripslashes($row->name) . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row->con_id . '">' . stripslashes($row->name) . '</label> | ';
         } 
     }
     
