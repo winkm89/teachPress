@@ -4,7 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.9.1
-Stable tag: 6.2.1
+Stable tag: 6.2.2
 
 Manage your courses and publications with teachPress 
 
@@ -131,6 +131,12 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.2.2 (04.03.2018) = 
+* New: [tpcloud]: New parameter "show_in_author_filter" added (#95)
+* New: Publications import: Added handling for bibtech special chars {\aa}, {\AA},'{\O}','{\o}' (Thanks to Thomas Grah)
+* Bugfix: [tpcloud, tplist]: "exclude_types" parameter doesn't work with more than one value (#94)
+* Bugfix: [tpcloud, tplist, tpsearch] Fix for the numeration of publications (#91)
 
 = 6.2.1 - (02.01.2018) =
 * New: [tpcloud]: New parameter "show_author_filter" (#89)
