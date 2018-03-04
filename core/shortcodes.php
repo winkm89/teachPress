@@ -194,8 +194,11 @@ class tp_shortcodes {
         
         // author filter
         if ( $mode === 'author' ) {
+            // Use the visible filter o the SQL parameter
+            $author_id = ($filter_parameter['show_in_author_filter'] !== '') ? $filter_parameter['show_in_author_filter'] : $sql_parameter['author'];
+            
             $row = tp_authors::get_authors( array( 'user' => $sql_parameter['user'],
-                                                   'author_id' => $sql_parameter['author'],
+                                                   'author_id' => $author_id,
                                                    'output_type' => ARRAY_A, 
                                                    'group_by' => true ) );
             $id = 'pub_author';
@@ -1081,6 +1084,7 @@ function tp_links_shortcode ($atts) {
  *      show_tags_as (STRING)       cloud, pulldown or none, default: cloud
  *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
  *      show_author_filter (INT)    0 (false) or 1 (true), default: 1
+ *      show_in_author_filter (STRING) Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
  *      show_user_filter (INT)      0 (false) or 1 (true), default: 1
  *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
@@ -1134,6 +1138,7 @@ function tp_cloud_shortcode($atts) {
         'sort_list' => '',
         'show_tags_as' => 'cloud',
         'show_author_filter' => 1,
+        'show_in_author_filter' => '',
         'show_user_filter' => 1,
         'show_bibtex' => 1,
         'container_suffix' => '',
@@ -1182,7 +1187,8 @@ function tp_cloud_shortcode($atts) {
         'year' => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
         'type' => isset ($_GET['type']) ? htmlspecialchars( $_GET['type'] ) : '',
         'author' => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
-        'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : ''
+        'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : '',
+        'show_in_author_filter' => htmlspecialchars($atts['show_in_author_filter'])
     );
     
     $sql_parameter = array (
