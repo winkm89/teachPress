@@ -192,6 +192,24 @@ class tp_publication_interface {
     }
     
     /**
+     * Checks if a publication has a specific tag
+     * @param string $tag_name
+     * @return boolean
+     * @since 6.2.3
+     * @access public
+     */
+    public function has_tag ($tag_name) {
+        $tags = $this->data['keywords'];
+        foreach ( $tags as $single_array ) {
+            if (in_array($tag_name, $single_array) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    /**
      * Returns the year
      * @return string
      * @since 6.0.0

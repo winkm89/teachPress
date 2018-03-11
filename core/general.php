@@ -356,7 +356,7 @@ function get_tp_publication_types() {
 }
 
 /**
- * get the path to a mimetype image
+ * Returns the path to a mimetype image
  * @param string $url   --> the URL of a file
  * @return string 
  * @since 3.1.0
