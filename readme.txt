@@ -3,8 +3,8 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.9.1
-Stable tag: 6.2.2
+Tested up to: 4.9.4
+Stable tag: 6.2.3
 
 Manage your courses and publications with teachPress 
 
@@ -131,6 +131,9 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+= 6.2.3 (11.03.2018) = 
+* New: [tpcloud]: New parameter "show_type_filter" added
+* New: New method has_tag() for publication templates
 
 = 6.2.2 (04.03.2018) = 
 * New: [tpcloud]: New parameter "show_in_author_filter" added (#95)
