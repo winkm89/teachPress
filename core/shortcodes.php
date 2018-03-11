@@ -1086,6 +1086,7 @@ function tp_links_shortcode ($atts) {
  *      show_author_filter (INT)    0 (false) or 1 (true), default: 1
  *      show_in_author_filter (STRING) Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
  *      show_user_filter (INT)      0 (false) or 1 (true), default: 1
+ *      show_type_filter (INT)      0 (false) or 1 (true), default: 1
  *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
  *      show_altmetric_entry (INT)  0 (false) or 1 (true), default: 0
@@ -1139,6 +1140,7 @@ function tp_cloud_shortcode($atts) {
         'show_tags_as' => 'cloud',
         'show_author_filter' => 1,
         'show_in_author_filter' => '',
+        'show_type_filter' => 1,
         'show_user_filter' => 1,
         'show_bibtex' => 1,
         'container_suffix' => '',
@@ -1166,6 +1168,7 @@ function tp_cloud_shortcode($atts) {
         'entries_per_page' => intval($atts['entries_per_page']),
         'sort_list' => htmlspecialchars($atts['sort_list']),
         'show_author_filter' => ( $atts['show_author_filter'] == '1' ) ? true : false,
+        'show_type_filter' => ( $atts['show_type_filter'] == '1' ) ? true : false,
         'show_user_filter' => ( $atts['show_user_filter'] == '1' ) ? true : false,
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
         'with_tags' => 1,
@@ -1250,7 +1253,8 @@ function tp_cloud_shortcode($atts) {
     }
 
     // Filter type
-    if ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) {
+    if ( ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) && 
+            $settings['show_type_filter'] === true ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'type');
     }
     
