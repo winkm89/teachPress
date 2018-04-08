@@ -1748,7 +1748,7 @@ function tp_search_shortcode ($atts) {
     // Show results
     else {
         foreach ($results as $row) {
-            $count = ( $entry_limit == 0 ) ? ( $tpz + 1 ) : ( $entry_limit + $tpz + 1 );
+            $count = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $entry_limit, $atts['style']);
             $tparray[$tpz][0] = $row['year'];
             $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count);
             $tpz++;
