@@ -4,6 +4,7 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.9.4
+Requires PHP: 5.3
 Stable tag: 6.2.3
 
 Manage your courses and publications with teachPress 
