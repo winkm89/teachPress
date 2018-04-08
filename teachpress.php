@@ -658,7 +658,7 @@ if ( TEACHPRESS_COURSE_MODULE === true ) {
 // register publication module
 if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
     add_action('admin_menu', 'tp_add_menu2');
-    add_action('widgets_init', create_function('', 'return register_widget("tp_books_widget");'));
+    add_action('widgets_init', function(){ register_widget( 'tp_books_widget' ); });
     add_shortcode('tpcloud', 'tp_cloud_shortcode');
     add_shortcode('tplist', 'tp_list_shortcode');
     add_shortcode('tpsingle', 'tp_single_shortcode');
