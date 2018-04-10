@@ -1318,7 +1318,7 @@ function tp_cloud_shortcode($atts) {
         'output_type' => ARRAY_A);
 
     $all_tags = tp_tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
-    $number_entries = ( $settings['pagination'] === 1 ) ? tp_publications::get_publications($args, true) : 0;
+    $number_entries = tp_publications::get_publications($args, true);
     $row = tp_publications::get_publications( $args );
     $tpz = 0;
     $count = count($row);
@@ -1543,7 +1543,7 @@ function tp_list_shortcode($atts){
     );
     $row = tp_publications::get_publications( $args );
     
-    $number_entries = ( $pagination === 1 ) ? tp_publications::get_publications($args, true) : 0;
+    $number_entries = tp_publications::get_publications($args, true);
     $count = count($row);
     foreach ($row as $row) {
         $tparray[$tpz][0] = $row['year'];
