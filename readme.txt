@@ -5,7 +5,7 @@ License: GPLv2 or later
 Requires at least: 3.9
 Tested up to: 4.9.4
 Requires PHP: 5.3
-Stable tag: 6.2.3
+Stable tag: 6.2.4
 
 Manage your courses and publications with teachPress 
 
@@ -132,6 +132,13 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.2.4 (10.04.2018) =
+* Changed: Requirement for PHP 5.3+ added
+* Bugfix: Descending numeration starts with 0, if pagination is disabled in the shortcodes
+* Bugfix: [tpsearch]: Descending numeration doesn't work
+* Bugfix: Widget init uses deprecated PHP function (#97)
+
 = 6.2.3 (11.03.2018) = 
 * New: [tpcloud]: New parameter "show_type_filter" added
 * New: New method has_tag() for publication templates
