@@ -1480,7 +1480,7 @@ function tp_list_shortcode($atts){
     $pagination = intval($atts['pagination']);
     $entries_per_page = intval($atts['entries_per_page']);
     $sort_list = htmlspecialchars($atts['sort_list']);
-    $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
+    $form_limit = ( isset($_GET['limit' . $atts['container_suffix']]) ) ? intval($_GET['limit' . $atts['container_suffix']]) : '';
 
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
@@ -1573,6 +1573,7 @@ function tp_list_shortcode($atts){
                                                        'entry_limit' => $pagination_limits['entry_limit'],
                                                        'page_link' => $page_link,
                                                        'link_attributes' => $settings['html_anchor'],
+                                                       'container_suffix' => $settings['container_suffix'],
                                                        'mode' => 'bottom',
                                                        'before' => '<div class="tablenav">',
                                                        'after' => '</div>')) : '';
