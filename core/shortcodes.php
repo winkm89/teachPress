@@ -1160,7 +1160,7 @@ function tp_cloud_shortcode($atts) {
         'image_link' => htmlspecialchars($atts['image_link']),
         'link_style' => htmlspecialchars($atts['link_style']),
         'title_ref' => htmlspecialchars($atts['title_ref']),
-        'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' : '',
+        'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' . htmlspecialchars($atts['container_suffix']) : '',
         'date_format' => htmlspecialchars($atts['date_format']),
         'permalink' => ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;",
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
@@ -1284,7 +1284,10 @@ function tp_cloud_shortcode($atts) {
     }
     
     // complete the header (tag cloud + filter)
-    $part1 = '<a name="tppubs" id="tppubs"></a><div class="teachpress_cloud">' . $asg . '</div><div class="teachpress_filter">' . $filter . '</div><p style="text-align:center">' . $showall . '</p>';
+    $part1 = '<a name="tppubs" id="tppubs"' . $settings['container_suffix'] . '></a>
+            <div class="teachpress_cloud">' . $asg . '</div>
+            <div class="teachpress_filter">' . $filter . '</div>
+            <p style="text-align:center">' . $showall . '</p>';
 
     /************************/
     /* List of publications */
