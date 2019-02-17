@@ -11,6 +11,14 @@ Mark Grimshaw 2004/2005/2006
 http://bibliophile.sourceforge.net
 
 ################################################
+v2.4
+17/February/2019 - Michael Winkler
+- Add support for newer PHP versions for PARSEMONTH and PARSEPAGE 
+
+v2.3
+14/August/2013 - Michael Winkler
+- Add support for newer PHP versions for PARSEENTRIES and PARSECREATORS 
+
 v2.2
 24/April/2006 - Esteban Zimanyi and Mark Grimshaw
 1/ A 4th array, $this->undefinedStrings, is now returned that holds field values that are judged to be undefined strings. i.e. they are a non-numeric value that is not defined in a @string{...} entry and not enclosed by braces or double-quotes. This array will be empty unless the following condition is met:
