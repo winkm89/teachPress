@@ -62,6 +62,7 @@ a.tp_search_reset:hover {color:red;}
 .tablenav .tablenav-pages a {border: 1px solid; padding:3px 6px; font-size:0.9em; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-size:12px; font-weight:bold;}
 .tablenav .tablenav-pages a, .tablenav .tablenav-pages a:visited {border-color:silver; color:#333333; text-decoration:none;}
 .tablenav .tablenav-pages a:hover {background:#ECECEC; color:#333333;}
+.tablenav-pages .page-numbers {display: inline;}
 
 /********************************************************************************************/
 /* publication lists for the following shortcodes: [tpcloud] [tplist] [tpsinlge] [tpsearch] */
