@@ -64,7 +64,10 @@ This array will be empty unless the following condition is met:
 
 28/12/2015 Michael Winkler
   - Outdated PHP methods replaced
-  - Fix for saving line breaks in abstracts and other fields  
+  - Fix for saving line breaks in abstracts and other fields
+
+07/04/2019 Michael Winkler
+  - Fix array offset errors in get_line()
 
 */
 
@@ -185,12 +188,12 @@ class PARSEENTRIES {
             return FALSE;
         }
         else {
-            do {
+            while($this->currentLine < count($this->bibtexString) && !isset($line)) {
                 $line = trim($this->bibtexString[$this->currentLine]);
                 $this->currentLine++;
+                // echo $this->currentLine . ' ' . $line . '<br/>';
+                return $line;
             }
-            while($this->currentLine < count($this->bibtexString) && !$line);
-            return $line;
         }
     }
     
