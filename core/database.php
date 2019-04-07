@@ -1865,45 +1865,8 @@ class tp_publications {
      * @since 5.0.0
     */
     public static function add_publication($data, $tags, $bookmark) {
-         global $wpdb;
-         $defaults = array(
-            'title' => '',
-            'type' => '',
-            'bibtex' => '',
-            'author' => '',
-            'editor' => '',
-            'isbn' => '',
-            'url' => '',
-            'date' => '',
-            'urldate' => '', 
-            'booktitle' => '',
-            'issuetitle' => '',
-            'journal' => '',
-            'volume' => '',
-            'number' => '',
-            'pages' => '',
-            'publisher' => '',
-            'address' => '',
-            'edition' => '',
-            'chapter' => '',
-            'institution' => '',
-            'organization' => '',
-            'school' => '',
-            'series' => '',
-            'crossref' => '',
-            'abstract' => '',
-            'howpublished' => '',
-            'key' => '',
-            'techtype' => '',
-            'comment' => '',
-            'note' => '',
-            'image_url' => '',
-            'doi' => '',
-            'is_isbn' => '',
-            'rel_page' => '',
-            'status' => 'published',
-            'import_id' => 0
-        );
+        global $wpdb;
+        $defaults = self::get_default_fields();
         $post_time = current_time('mysql',0);
         $data = wp_parse_args( $data, $defaults );
         extract( $data, EXTR_SKIP );
@@ -2072,14 +2035,14 @@ class tp_publications {
      * @return boolean|int
      * @since 5.0.0
      */
-    public static function change_publication_by_key($key, $data, $tags) {
+    public static function change_publication_by_key($key, $input_data, $tags) {
         global $wpdb;
         $post_time = current_time('mysql',0);
-        $key = esc_sql($key);
-        $pub_id = $wpdb->get_var("SELECT `pub_id` FROM " . TEACHPRESS_PUB . " WHERE `bibtex` = '$key'");
-        if ( $pub_id === NULL ) {
+        $search_pub = self::get_publication_by_key($key, ARRAY_A);
+        if ( $search_pub === NULL ) {
             return false;
         }
+        $data = wp_parse_args( $input_data, $search_pub );
         
         // check if bibtex key has no spaces
         if ( strpos($data['bibtex'], ' ') !== false ) {
@@ -2104,27 +2067,26 @@ class tp_publications {
         $data['status'] =  stripslashes($data['status']);
         
         // update row
-        $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => $data['status'], 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
-        
+    $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => $data['status'], 'modified' => $post_time ), array( 'pub_id' => $search_pub['pub_id'] ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
         
         // Delete existing tags
-        $wpdb->query( "DELETE FROM " . TEACHPRESS_RELATION . " WHERE `pub_id` = $pub_id" );
+        $wpdb->query( "DELETE FROM " . TEACHPRESS_RELATION . " WHERE `pub_id` = " . $search_pub['pub_id'] );
         
         // Add new tags
         if ( $tags != '' ) {
-            tp_publications::add_relation($pub_id, $tags);
+            tp_publications::add_relation($search_pub['pub_id'], $tags);
         }
         
         // Handle author/editor relations
-        tp_authors::delete_author_relations($pub_id);
+        tp_authors::delete_author_relations($search_pub['pub_id']);
         if ( $data['author'] != '' ) {
-            tp_publications::add_relation($pub_id, $data['author'], ' and ', 'authors');
+            tp_publications::add_relation($search_pub['pub_id'], $data['author'], ' and ', 'authors');
         }
         if ( $data['editor'] != '' ) {
-            tp_publications::add_relation($pub_id, $data['editor'], ' and ', 'editors');
+            tp_publications::add_relation($search_pub['pub_id'], $data['editor'], ' and ', 'editors');
         }
         
-        return $pub_id;
+        return $search_pub['pub_id'];
     }
     
     /** 
@@ -2247,6 +2209,52 @@ class tp_publications {
         
         return $bibtex_key;
         
+    }
+    
+    /**
+     * Returns the default fields of a publication as array
+     * @return array
+     * @since 6.2.5
+     */
+    public static function get_default_fields () {
+        return array(
+            'title' => '',
+            'type' => '',
+            'bibtex' => '',
+            'author' => '',
+            'editor' => '',
+            'isbn' => '',
+            'url' => '',
+            'date' => '',
+            'urldate' => '', 
+            'booktitle' => '',
+            'issuetitle' => '',
+            'journal' => '',
+            'volume' => '',
+            'number' => '',
+            'pages' => '',
+            'publisher' => '',
+            'address' => '',
+            'edition' => '',
+            'chapter' => '',
+            'institution' => '',
+            'organization' => '',
+            'school' => '',
+            'series' => '',
+            'crossref' => '',
+            'abstract' => '',
+            'howpublished' => '',
+            'key' => '',
+            'techtype' => '',
+            'comment' => '',
+            'note' => '',
+            'image_url' => '',
+            'doi' => '',
+            'is_isbn' => '',
+            'rel_page' => '',
+            'status' => 'published',
+            'import_id' => 0
+        );
     }
 }
 
