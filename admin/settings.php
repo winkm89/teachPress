@@ -70,6 +70,7 @@ class tp_settings_page {
         // delete settings
         if ( isset( $_GET['delete'] ) ) {
             tp_options::delete_option($_GET['delete']);
+            get_tp_message(__('Deleted', 'teachPress'));
         }
         
         // Delete data field
