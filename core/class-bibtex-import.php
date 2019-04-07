@@ -40,6 +40,7 @@ class tp_bibtex_import {
         
         list($preamble, $strings, $entries, $undefinedStrings) = $parse->returnArrays();
         $max = count( $entries );
+        // print_r($undefinedStrings);
         for ( $i = 0; $i < $max; $i++ ) {
             $entries[$i]['name'] = array_key_exists('name', $entries[$i]) === true ? $entries[$i]['name'] : '';
             $entries[$i]['date'] = array_key_exists('date', $entries[$i]) === true ? $entries[$i]['date'] : '';
@@ -76,7 +77,7 @@ class tp_bibtex_import {
             
             // for author / editor
             $entries[$i]['author'] = tp_bibtex_import_author::init($entries[$i], 'author', $settings['author_format']);
-            if ( $entries[$i]['editor'] != '' ) { 
+            if ( array_key_exists('editor', $entries[$i]) ) { 
                 $entries[$i]['editor'] = tp_bibtex_import_author::init($entries[$i], 'editor', $settings['author_format']);
             }
             
