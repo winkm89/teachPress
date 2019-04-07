@@ -273,17 +273,20 @@ class tp_admin {
     
     /**
      * Returns a checkbox for admin/settings screens
-     * @param string $name
-     * @param string $title
-     * @param string $value
+     * @param string $name          The field name of the checkbox
+     * @param string $label         The label text for the checkbox 
+     * @param string $value         The checkbox value
+     * @param description           A text which is displayed as hover over the label text
      * @param boolean $disabled
      * @return string
      * @since 5.0.0
+     * @version 2
      */
-    public static function get_checkbox($name, $title, $value, $disabled = false) {
+    public static function get_checkbox($name, $label, $value, $description = '', $disabled = false) {
         $checked = ( $value == '1' ) ? 'checked="checked"' : '';
-        $disabled = ( $disabled === true ) ? ' disabled="disabled"' : '';
-        return '<input name="' . $name . '" id="' . $name . '" type="checkbox" value="1" ' . $checked . $disabled .'/> <label for="' . $name . '">' . stripslashes($title) . '</label>';
+        $dis = ( $disabled === true ) ? ' disabled="disabled"' : '';
+        $descr = ( $description != '' ) ? 'title="' . $description . '"' : '';
+        return '<input name="' . $name . '" id="' . $name . '" type="checkbox" value="1" ' . $checked . $dis .'/> <label for="' . $name . '" ' . $descr . '>' . stripslashes($label) . '</label>';
     }
     
     /**
