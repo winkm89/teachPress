@@ -416,7 +416,7 @@ class tp_settings_page {
         echo '</tr>';
         
         echo '<tr>';
-        echo '<th width="160">' . __('Update publications','teachpress') . '</th>';
+        echo '<th width="160">' . __('Update existing publications','teachpress') . '</th>';
         echo '<td>' . tp_admin::get_checkbox('import_overwrite', __('Allow optional updating for publication import','teachpress'), get_tp_option('import_overwrite')) . '</td>';
         echo '</tr>';
         

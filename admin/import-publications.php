@@ -174,7 +174,7 @@ class tp_import_publication_page {
                     <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
                     <?php if ( get_tp_option('import_overwrite') === '1' ) { ?>
                     <div class="inside">
-                        <p><strong><label for="overwrite"><?php _e('Update Publications','teachpress'); ?></label></strong></p>
+                        <p><strong><label for="overwrite"><?php _e('Publications','teachpress'); ?></label></strong></p>
                         <?php echo tp_admin::get_checkbox('overwrite', __('Update existing publications','teachpress'), '', __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress')); ?>
                     </div>
                     <?php } ?>
