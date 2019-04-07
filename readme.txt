@@ -3,9 +3,9 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.9.4
+Tested up to: 5.1.1
 Requires PHP: 5.3
-Stable tag: 6.2.4
+Stable tag: 6.2.5
 
 Manage your courses and publications with teachPress 
 
@@ -34,16 +34,16 @@ This plugin unites a course management system (with modules for enrollments, doc
 (o) Incomplete language files
 
 = Further information = 
-* [Developer blog](https://mtrv.wordpress.com/teachpress/) 
-* [Documentation](https://github.com/winkm89/teachPress/wiki) 
+* [Wiki/Documentation](https://github.com/winkm89/teachPress/wiki) 
 * [teachPress on GitHub](https://github.com/winkm89/teachPress)  
+* [Developer blog](https://mtrv.wordpress.com/teachpress/) 
 
 = Disclaimer =  
 Use at your own risk. No warranty expressed or implied is provided.  
 
 == Credits ==
 
-Copyright 2008-2018 by Michael Winkler
+Copyright 2008-2019 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -132,6 +132,15 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.2.5 (07.04.2019) =
+* New: [tplist]: HTML anchor added
+* Changed: Handling of [tplist] shortcodes which are used multiple times in one post/page
+* Changed: "Deleted" message for course terms and types in the settings added
+* Changed: Overwrite publication option for the importer is now an update option 
+* Bugfix: Buttons for 'next/last page' of [tplist] don't show in responsive design (#109)
+* Bugfix: bibtexParse class uses removed function split (#111)
+* Bugfix: Fix array offset errors in bibtexParse class PARSEENTRIES::get_line()
 
 = 6.2.4 (10.04.2018) =
 * Changed: Requirement for PHP 5.3+ added

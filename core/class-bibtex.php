@@ -143,8 +143,10 @@ class tp_bibtex {
      * @access public
      */
     public static function convert_bibtex_to_utf8 ($input) {
+        
         // return the input if there are no bibtex chars
         if ( strpos( $input,'\\' ) === false && strpos($input,'{') === false ) { return $input; }
+        
         // Step 1: Chars which based on a combination of two chars, delete escapes
         $array_a = array("\'a","\'A",'\"a','\"A',
                          "\'e","\'E",
