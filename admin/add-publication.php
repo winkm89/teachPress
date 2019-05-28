@@ -28,7 +28,7 @@ function tp_add_publication_page_help () {
  * @param string $search    for a return to the search
  * @param string $filter    for a return to the search
  * @param string $tag       for a return to the search
- * @param string $year      for a return to the search
+ * @param string $tp_year      for a return to the search
  * @param string $site      for a return to the search
  * @param string $limit      for a return to the search
  * @since 5.0.0
@@ -88,7 +88,7 @@ function tp_add_publication_page() {
     $filter = isset( $_GET['filter'] ) ? htmlspecialchars($_GET['filter']) : '';
     $site = isset( $_GET['site'] ) ? htmlspecialchars($_GET['site']) : '';
     $tag_id = isset( $_GET['tag'] ) ? htmlspecialchars($_GET['tag']) : '';
-    $year = isset( $_GET['year'] ) ? intval($_GET['year']) : '';
+    $year = isset( $_GET['tp_year'] ) ? intval($_GET['tp_year']) : '';
     $entry_limit = isset( $_GET['limit'] ) ? htmlspecialchars($_GET['limit']) : '';
 
     echo '<div class="wrap">';
@@ -145,7 +145,7 @@ function tp_add_publication_page() {
     /*
      * Disabled since tp 6.0
     if ( $pub_id != 0 && !isset($_POST['create_pub']) ) {
-        echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
+        echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;tp_year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
     }
      * 
      */
@@ -159,7 +159,7 @@ function tp_add_publication_page() {
         echo '<input type="hidden" name="site" id="site" value="' . $site . '" />';
         echo '<input type="hidden" name="filter" id="filter" value="' . $filter . '" />';
         echo '<input type="hidden" name="tag" id="tag" value="' . $tag_id . '" />';
-        echo '<input type="hidden" name="year" id="year" value="' . $year . '" />';
+        echo '<input type="hidden" name="tp_year" id="tp_year" value="' . $year . '" />';
     }
     
     echo '<div class="tp_postbody">';

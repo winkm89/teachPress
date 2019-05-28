@@ -65,7 +65,7 @@ function tp_show_publications_page() {
     $array_variables['action'] = isset( $_GET['action'] ) ? $_GET['action'] : '';
     $array_variables['page'] = isset( $_GET['page'] ) ? htmlspecialchars($_GET['page']) : '';
     $array_variables['type'] = ( isset( $_GET['filter'] ) && $_GET['filter'] != '0' ) ? htmlspecialchars($_GET['filter']) : '';
-    $array_variables['year'] = isset( $_GET['year'] ) ? intval($_GET['year']) : '';
+    $array_variables['year'] = isset( $_GET['tp_year'] ) ? intval($_GET['tp_year']) : '';
     $array_variables['search'] = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
     $array_variables['tag_id'] = isset( $_GET['tag'] ) ? intval($_GET['tag']) : '';
     $user = $current_user->ID;
@@ -362,10 +362,10 @@ class tp_publications_page {
                continue;
             }
             if ($temp["tag_id"] == $array_variables['tag_id']) {
-               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;year=' . $array_variables['year'] . '" title="' . __('Delete tag as filter','teachpress') . '"><strong>' . stripslashes($temp["name"]) . '</strong></a>, ';
+               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;tp_year=' . $array_variables['year'] . '" title="' . __('Delete tag as filter','teachpress') . '"><strong>' . stripslashes($temp["name"]) . '</strong></a>, ';
             }
             else {
-               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $temp["tag_id"] . '&amp;year=' . $array_variables['year'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($temp["name"]) . '</a>, ';
+               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $temp["tag_id"] . '&amp;tp_year=' . $array_variables['year'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($temp["name"]) . '</a>, ';
             }
         }
         return substr($tag_string, 0, -2);
@@ -424,7 +424,7 @@ class tp_publications_page {
             'order' => 'DESC', 
             'user' => ($array_variables['page'] == 'publications.php') ? '' : $user) );
         
-        echo '<select name="year">';
+        echo '<select name="tp_year">';
         echo '<option value="0">- ' . __('All years','teachpress') . ' -</option>';
         foreach ( $array_years as $row ) {
             $selected = ( $array_variables['year'] == $row->year ) ? 'selected="selected"' : '';
@@ -472,7 +472,7 @@ class tp_publications_page {
         
         <div id="tp_searchbox">
            <?php if ($array_variables['search'] != "") { 
-              echo '<a href="admin.php?page=' . $array_variables['page'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;year=' . $array_variables['year'] . '" class="tp_search_cancel" title="' . __('Cancel the search','teachpress') . '">X</a>';
+              echo '<a href="admin.php?page=' . $array_variables['page'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'] . '" class="tp_search_cancel" title="' . __('Cancel the search','teachpress') . '">X</a>';
            } ?>
             <input type="search" name="search" id="pub_search_field" value="<?php echo stripslashes($array_variables['search']); ?>"/>
             <input type="submit" name="pub_search_button" id="pub_search_button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
@@ -535,7 +535,7 @@ class tp_publications_page {
            else {
                 $row = tp_publications::get_publications($args);
                 $class_alternate = true;
-                $get_string = '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;site=' . $array_variables['page'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;year=' . $array_variables['year'];
+                $get_string = '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;site=' . $array_variables['page'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'];
                 foreach ($row as $row) { 
                     if ( $class_alternate === true ) {
                         $tr_class = 'class="alternate"';
