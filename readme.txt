@@ -3,8 +3,9 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 4.8.1
-Stable tag: 6.1.0
+Tested up to: 5.1.1
+Requires PHP: 5.3
+Stable tag: 6.2.5
 
 Manage your courses and publications with teachPress 
 
@@ -33,16 +34,16 @@ This plugin unites a course management system (with modules for enrollments, doc
 (o) Incomplete language files
 
 = Further information = 
-* [Developer blog](https://mtrv.wordpress.com/teachpress/) 
-* [Documentation](https://github.com/winkm89/teachPress/wiki) 
+* [Wiki/Documentation](https://github.com/winkm89/teachPress/wiki) 
 * [teachPress on GitHub](https://github.com/winkm89/teachPress)  
+* [Developer blog](https://mtrv.wordpress.com/teachpress/) 
 
 = Disclaimer =  
 Use at your own risk. No warranty expressed or implied is provided.  
 
 == Credits ==
 
-Copyright 2008-2017 by Michael Winkler
+Copyright 2008-2019 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -131,6 +132,54 @@ The plugin saves course documents in your WordPress upload directory under /teac
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 6.2.5 (07.04.2019) =
+* New: [tplist]: HTML anchor added
+* Changed: Handling of [tplist] shortcodes which are used multiple times in one post/page
+* Changed: "Deleted" message for course terms and types in the settings added
+* Changed: Overwrite publication option for the importer is now an update option 
+* Bugfix: Buttons for 'next/last page' of [tplist] don't show in responsive design (#109)
+* Bugfix: bibtexParse class uses removed function split (#111)
+* Bugfix: Fix array offset errors in bibtexParse class PARSEENTRIES::get_line()
+
+= 6.2.4 (10.04.2018) =
+* Changed: Requirement for PHP 5.3+ added
+* Bugfix: Descending numeration starts with 0, if pagination is disabled in the shortcodes
+* Bugfix: [tpsearch]: Descending numeration doesn't work
+* Bugfix: Widget init uses deprecated PHP function (#97)
+
+= 6.2.3 (11.03.2018) = 
+* New: [tpcloud]: New parameter "show_type_filter" added
+* New: New method has_tag() for publication templates
+
+= 6.2.2 (04.03.2018) = 
+* New: [tpcloud]: New parameter "show_in_author_filter" added (#95)
+* New: Publications import: Added handling for bibtech special chars {\aa}, {\AA},'{\O}','{\o}' (Thanks to Thomas Grah)
+* Bugfix: [tpcloud, tplist]: "exclude_types" parameter doesn't work with more than one value (#94)
+* Bugfix: [tpcloud, tplist, tpsearch] Fix for the numeration of publications (#91)
+
+= 6.2.1 - (02.01.2018) =
+* New: [tpcloud]: New parameter "show_author_filter" (#89)
+* New: [tpcloud]: New parameter "show_user_filter" (#90)
+* Changed: Limit number of items in RSS feeds (#86)
+* Changed: Wrap description of publications in RSS feed in CDATA blocks (#87)
+* Bigfix: Fix a compatibility problem with PHP 5.3 or lower (#88, #72)
+
+= 6.2.0 - (22.11.2017) =
+* New: Ajax based bibtex key generator (#70)
+* New: [tplist, tpcloud]: New parameter "exclude_types" (#75)
+* New: DOI url resolver is now editable through constant TEACHPRESS_DOI_RESOLVER (#72)
+* New: publication type "workshop" added (#67)
+* New: Add "show_link" option for [tpref] shortcode (experimental feature)
+* Bugfix: DOI included in URL list (Thanks to Sven Mayer) (#73)
+* Bugfix: Infinte loop when using headlines grouped by year and then by type (headline="4") (Thanks to Abel Gómez) (#76)
+* Bugfix: Wrong quote characters cause invalid generation of LaTeX accented letters (Thanks to Abel Gómez) (#77)
+* Bugfix: Enable title links in inline mode if DOI is available (Thanks to Abel Gómez)  (#78)
+* Bugfix: Booktitle column is too small for some publications (#80)
+* Bugfix: Division through zero error in shortcodes.php (#82)
+* Bugfix: Fix substitutions in convert_bibtex_functions (#83)
+* Bugfix: Prevent double encodes in tags (#84)
+
 = 6.1.0 - (14.08.2017) =
 * New: List of imports is now availabe
 * New: Support for returning meta data to get_publications() added (#61)

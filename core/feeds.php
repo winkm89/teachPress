@@ -34,7 +34,12 @@ function tp_pub_rss_feed_func () {
             <copyright>' . get_bloginfo('name') . '</copyright>
             <pubDate>' . date('r') . '</pubDate>
             <dc:creator>' . get_bloginfo('name') . '</dc:creator>' . chr(13) . chr(10);
-    $row = tp_publications::get_publications(array('user' => $id, 'tag' => $tag, 'output_type' => ARRAY_A));
+    $row = tp_publications::get_publications(
+                array('user' => $id, 
+                      'tag' => $tag,
+                      'limit' => '0,30',
+                      'output_type' => ARRAY_A)
+            );
     foreach ($row as $row) {
 
         // prepare url
@@ -67,7 +72,7 @@ function tp_pub_rss_feed_func () {
         echo '
             <item>
                <title><![CDATA[' . tp_html::prepare_title($row['title'], 'replace') . ']]></title>
-               <description>' . tp_html::get_publication_meta_row($row, $settings) . '</description>
+               <description><![CDATA[' . tp_html::get_publication_meta_row($row, $settings) . ']]></description>
                <link><![CDATA[' . $item_link1[0] . ']]></link>
                <dc:creator>' . stripslashes($all_authors) . '</dc:creator>
                <guid isPermaLink="false">' . get_bloginfo('url') . '?publication=' . $row['pub_id'] . '</guid>

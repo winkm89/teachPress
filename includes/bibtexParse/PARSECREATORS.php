@@ -36,14 +36,18 @@ class PARSECREATORS {
     public function __construct() {
     }
     
-    /* Create writer arrays from bibtex input.
-    'author field can be (delimiters between authors are 'and' or '&'):
-    1. <first-tokens> <von-tokens> <last-tokens>
-    2. <von-tokens> <last-tokens>, <first-tokens>
-    3. <von-tokens> <last-tokens>, <jr-tokens>, <first-tokens>
-    */
-    function parse($input) {
-        $input = trim($input);
+    /**
+     * Create writer arrays from bibtex input.
+     * 'author field can be (delimiters between authors are 'and' or '&'):
+     * 1. [first-tokens] [von-tokens] [last-tokens]
+     * 2. [von-tokens] [last-tokens], [first-tokens]
+     * 3. [von-tokens] [last-tokens], [jr-tokens], [first-tokens]
+     * @param string $input_string
+     * @return array OR false
+     * 
+     */
+    function parse($input_string) {
+        $input = trim($input_string);
         // split on ' and ' 
         $authorArray = preg_split("/\s(and|&)\s/i", $input);
         foreach($authorArray as $value) {
@@ -81,8 +85,9 @@ class PARSECREATORS {
             }
             $remainder = join(" ", $author);
             list($firstname, $initials) = $this->grabFirstnameInitials($remainder);
-            if(!empty($this->prefix))
-                    $prefix = join(' ', $this->prefix);
+            if(!empty($this->prefix)) {
+                $prefix = join(' ', $this->prefix);
+            }
             $surname = $surname . ' ' . $appellation;
             $creators[] = array("$firstname", "$initials", "$surname", "$prefix");
         }
@@ -91,7 +96,12 @@ class PARSECREATORS {
         }
         return FALSE;
     }
-    // grab firstname and initials which may be of form "A.B.C." or "A. B. C. " or " A B C " etc.
+    
+    /**
+     * grab firstname and initials which may be of form "A.B.C." or "A. B. C. " or " A B C " etc.
+     * @param string $remainder
+     * @return array
+     */
     function grabFirstnameInitials($remainder) {
         $firstname = $initials = '';
         $array = explode(" ", $remainder);
@@ -118,7 +128,12 @@ class PARSECREATORS {
         return array($firstname, $initials);
     }
     // surname may have title such as 'den', 'von', 'de la' etc. - characterised by first character lowercased.  Any 
-    // uppercased part means lowercased parts following are part of the surname (e.g. Van den Bussche)
+    
+    /**
+     * uppercased part means lowercased parts following are part of the surname (e.g. Van den Bussche)
+     * @param string $input
+     * @return array
+     */
     function grabSurname($input) {
         $surnameArray = explode(" ", $input);
         $noPrefix = $surname = FALSE;
@@ -142,4 +157,3 @@ class PARSECREATORS {
         return array($surname, FALSE);
     }
 }
-?>

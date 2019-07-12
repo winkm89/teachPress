@@ -70,6 +70,7 @@ class tp_settings_page {
         // delete settings
         if ( isset( $_GET['delete'] ) ) {
             tp_options::delete_option($_GET['delete']);
+            get_tp_message(__('Deleted', 'teachPress'));
         }
         
         // Delete data field
@@ -165,7 +166,7 @@ class tp_settings_page {
                 <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
                 <p style="font-size: 20px; font-weight: bold; color: #ffcc00;">' . get_tp_option('db-version') . ' "Banana Cream Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="https://github.com/winkm89/teachPress/">teachPress on GitHub</a> | <a href="https://github.com/winkm89/teachPress/wiki">Dokumentation</a> | <a href="https://github.com/winkm89/teachPress/wiki/Changelog">Changelog</a></p>
-                <p>&copy;2008-2017 by Michael Winkler | License: GPLv2 or later<br/></p>
+                <p>&copy;2008-2019 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
               </div>';
     }
@@ -415,8 +416,8 @@ class tp_settings_page {
         echo '</tr>';
         
         echo '<tr>';
-        echo '<th width="160">' . __('Overwrite publications','teachpress') . '</th>';
-        echo '<td>' . tp_admin::get_checkbox('import_overwrite', __('Allow optional overwriting for publication import','teachpress'), get_tp_option('import_overwrite')) . ' <b>(EXPERIMENTAL)</b></td>';
+        echo '<th width="160">' . __('Update existing publications','teachpress') . '</th>';
+        echo '<td>' . tp_admin::get_checkbox('import_overwrite', __('Allow optional updating for publication import','teachpress'), get_tp_option('import_overwrite')) . '</td>';
         echo '</tr>';
         
         echo '<tr>';

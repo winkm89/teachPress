@@ -109,6 +109,8 @@ class tp_import_publication_page {
         // import from textarea or file
         $file_name = isset($_FILES['file']['tmp_name']) ? htmlentities($_FILES['file']['tmp_name']) : '';
         $bibtex_area = isset($post['bibtex_area']) ? $post['bibtex_area'] : '';
+
+        // Check file name
         if ( $file_name !== '' ) {
             $file_type = substr(htmlentities($_FILES['file']['name']),-4,4);
             if ( substr($file_type,-4,4) !== '.txt' && substr($file_type,-4,4) !== '.bib' ) {
@@ -117,6 +119,7 @@ class tp_import_publication_page {
             }
         }
         
+        // if there is something to import
         if ( $file_name !== '' || $bibtex_area !== '' ) {
             if ( $file_name !== '' ) {
                 $bibtex =  file_get_contents ( $file_name );
@@ -139,6 +142,7 @@ class tp_import_publication_page {
             // add publications to database
             $entries = tp_bibtex_import::init($bibtex, $settings);
         }
+        
         // if there is no import
         else {
             $tp_entries = ( isset($post['tp_entries']) ) ? htmlspecialchars($post['tp_entries'] ) : '0';
@@ -170,8 +174,8 @@ class tp_import_publication_page {
                     <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
                     <?php if ( get_tp_option('import_overwrite') === '1' ) { ?>
                     <div class="inside">
-                        <p><strong><label for="overwrite"><?php _e('Overwrite Publications','teachpress'); ?></label></strong></p>
-                        <?php echo tp_admin::get_checkbox('overwrite', __('Overwrite existing publications with a similar BibTeX key','teachpress'), ''); ?>
+                        <p><strong><label for="overwrite"><?php _e('Publications','teachpress'); ?></label></strong></p>
+                        <?php echo tp_admin::get_checkbox('overwrite', __('Update existing publications','teachpress'), '', __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress')); ?>
                     </div>
                     <?php } ?>
                     <div id="major-publishing-actions" style="text-align: center;">

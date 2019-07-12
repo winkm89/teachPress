@@ -229,28 +229,32 @@ function tp_load_template($slug) {
  *      @type string entry_limit       SQL entry limit
  *      @type string page_link         the name of the page you will insert the menu
  *      @type string link_atrributes   the url attributes for get parameters
+ *      @type string container_suffix  The optional suffix from the shortcode container 
  *      @type string mode              top or bottom, default: top
  * @param array $atts
  * @return string
  * @since 5.0.0
 */
 function tp_page_menu ($atts) {
-    extract(shortcode_atts(array(
+    $atts = shortcode_atts(array(
        'number_entries' => 0,
        'entries_per_page' => 50,
        'current_page' => 1,
        'entry_limit' => 0,
        'page_link' => '',
        'link_attributes' => '',
+       'container_suffix' => '',
        'mode' => 'top',
        'class' => 'tablenav-pages',
        'before' => '',
        'after' => ''
-    ), $atts));
-    $number_entries = intval($number_entries);
-    $entries_per_page = intval($entries_per_page);
-    $current_page = intval($current_page);
-    $entry_limit = intval($entry_limit);
+    ), $atts);
+    
+    $number_entries = intval($atts['number_entries']);
+    $entries_per_page = intval($atts['entries_per_page']);
+    $current_page = intval($atts['current_page']);
+    $entry_limit = intval($atts['entry_limit']);
+    $limit_name = 'limit' . $atts['container_suffix'];
     
     // if number of entries > number of entries per page
     if ($number_entries > $entries_per_page) {
@@ -262,27 +266,27 @@ function tp_page_menu ($atts) {
 
         // first page / previous page
         if ($entry_limit != 0) {
-            $back_links = '<a href="' . $page_link . 'limit=1&amp;' . $link_attributes . '" title="' . __('first page','teachpress') . '" class="page-numbers">&laquo;</a> <a href="' . $page_link . 'limit=' . ($current_page - 1) . '&amp;' . $link_attributes . '" title="' . __('previous page','teachpress') . '" class="page-numbers">&lsaquo;</a> ';
+            $back_links = '<a href="' . $atts['page_link'] . $limit_name . '=1&amp;' . $atts['link_attributes'] . '" title="' . __('first page','teachpress') . '" class="page-numbers button">&laquo;</a> <a href="' . $atts['page_link'] . $limit_name . '=' . ($current_page - 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('previous page','teachpress') . '" class="page-numbers button">&lsaquo;</a> ';
         }
         else {
-            $back_links = '<a class="first-page disabled">&laquo;</a> <a class="prev-page disabled">&lsaquo;</a> ';
+            $back_links = '<a class="first-page button disabled">&laquo;</a> <a class="prev-page button disabled">&lsaquo;</a> ';
         }
-        $page_input = ' <input name="limit" type="text" size="2" value="' .  $current_page . '" style="text-align:center;" /> ' . __('of','teachpress') . ' ' . $num_pages . ' ';
+        $page_input = ' <input name="' . $limit_name . '" type="text" size="2" value="' .  $current_page . '" style="text-align:center;" /> ' . __('of','teachpress') . ' ' . $num_pages . ' ';
 
         // next page/ last page
         if ( ( $entry_limit + $entries_per_page ) <= ($number_entries)) { 
-            $next_links = '<a href="' . $page_link . 'limit=' . ($current_page + 1) . '&amp;' . $link_attributes . '" title="' . __('next page','teachpress') . '" class="page-numbers">&rsaquo;</a> <a href="' . $page_link . 'limit=' . $num_pages . '&amp;' . $link_attributes . '" title="' . __('last page','teachpress') . '" class="page-numbers">&raquo;</a> ';
+            $next_links = '<a href="' . $atts['page_link'] . $limit_name . '=' . ($current_page + 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('next page','teachpress') . '" class="page-numbers button">&rsaquo;</a> <a href="' . $atts['page_link'] . $limit_name . '=' . $num_pages . '&amp;' . $atts['link_attributes'] . '" title="' . __('last page','teachpress') . '" class="page-numbers button">&raquo;</a> ';
         }
         else {
             $next_links = '<a class="next-page disabled">&rsaquo;</a> <a class="last-page disabled">&raquo;</a> ';
         }
 
         // return
-        if ($mode === 'top') {
-            return $before . '<div class="' . $class . '"><span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ' . $back_links . '' . $page_input . '' . $next_links . '</div>' . $after;
+        if ($atts['mode'] === 'top') {
+            return $atts['before'] . '<div class="' . $atts['class'] . '"><span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ' . $back_links . '' . $page_input . '' . $next_links . '</div>' . $atts['after'];
         }
         else {
-            return $before . '<div class="' . $class . '"><span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ' . $back_links . ' ' . $current_page . ' ' . __('of','teachpress') . ' ' . $num_pages . ' ' . $next_links . '</div>' . $after;
+            return $atts['before'] . '<div class="' . $atts['class'] . '"><span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ' . $back_links . ' ' . $current_page . ' ' . __('of','teachpress') . ' ' . $num_pages . ' ' . $next_links . '</div>' . $atts['after'];
         }	
     }
 }	
@@ -356,7 +360,7 @@ function get_tp_publication_types() {
 }
 
 /**
- * get the path to a mimetype image
+ * Returns the path to a mimetype image
  * @param string $url   --> the URL of a file
  * @return string 
  * @since 3.1.0

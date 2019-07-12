@@ -192,6 +192,24 @@ class tp_publication_interface {
     }
     
     /**
+     * Checks if a publication has a specific tag
+     * @param string $tag_name
+     * @return boolean
+     * @since 6.2.3
+     * @access public
+     */
+    public function has_tag ($tag_name) {
+        $tags = $this->data['keywords'];
+        foreach ( $tags as $single_array ) {
+            if (in_array($tag_name, $single_array) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    /**
      * Returns the year
      * @return string
      * @since 6.0.0
@@ -398,6 +416,22 @@ class tp_html_publication_template {
     }
     
     /**
+     * Generates the visible sorting number of a publication
+     * @param int $number_entries       The number of selected publications
+     * @param int $tpz                  The publication counter in the list
+     * @param int $entry_limit          The current entry limit
+     * @param string $style             The sorting styles
+     * @since 6.2.2
+     * @return int
+     */
+    public static function prepare_publication_number($number_entries, $tpz, $entry_limit, $style) {
+        if ( $style === 'numbered_desc' || $style === 'std_num_desc' ) {
+            return $number_entries - $tpz - $entry_limit;
+        }
+        return $entry_limit + $tpz + 1;
+    }
+    
+    /**
      * This function prepares the publication title for html publication lists.
      * @param array $row                The publication array
      * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, title_ref, date_format, convert_bibtex, container_suffix,...)
@@ -418,7 +452,7 @@ class tp_html_publication_template {
         }
         
         // for inline style
-        elseif ( $row['url'] != '' && $settings['link_style'] === 'inline' ) {
+        elseif ( ($row['url'] != '' || $row['doi'] != '') && $settings['link_style'] === 'inline' ) {
             return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
         }
         
@@ -472,7 +506,7 @@ class tp_html_publication_template {
     public static function prepare_url($url, $doi = '', $mode = 'list') {
         $end = '';
         $url = explode(chr(13) . chr(10), $url);
-        $url_displayed = [];
+        $url_displayed = array();
         foreach ($url as $url) {
             if ( $url == '' ) {
                 continue;

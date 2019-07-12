@@ -7,7 +7,7 @@ For downloading offical teachPress versions, please use: https://wordpress.org/p
 
 Documentation : https://github.com/winkm89/teachPress/wiki
 
-= Features: =
+## Features
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
@@ -17,7 +17,7 @@ Documentation : https://github.com/winkm89/teachPress/wiki
 * Many shortcodes for an easy using of publication lists, publication searches, enrollments and course overviews
 * Dymamic meta data system for courses, students and publications
 
-= Supported Languages =
+## Supported Languages
 * English
 * German
 * Italian (o)
@@ -27,12 +27,12 @@ Documentation : https://github.com/winkm89/teachPress/wiki
 
 (o) Outdated language files
 
-= Disclaimer =  
+## Disclaimer 
 Use at your own risk. No warranty expressed or implied is provided.  
 
-== Credits ==
+## Credits
 
-Copyright 2008-2017 by Michael Winkler
+Copyright 2008-2019 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-= Licence information of external resources =
+## Licence information of external resources
 * bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
 * OSBib by Mark Grimshaw (Licence: GPL)
 * Graphics for mimetypes, user-new-3.png, folder-new-7.png and document-new-6.png by Oxygen Icons 4.3.1 http://www.oxygen-icons.org/ (Licence: LPGL)

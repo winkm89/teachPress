@@ -28,7 +28,7 @@ function tp_add_publication_page_help () {
  * @param string $search    for a return to the search
  * @param string $filter    for a return to the search
  * @param string $tag       for a return to the search
- * @param string $year      for a return to the search
+ * @param string $tp_year      for a return to the search
  * @param string $site      for a return to the search
  * @param string $limit      for a return to the search
  * @since 5.0.0
@@ -42,14 +42,14 @@ function tp_add_publication_page() {
 
     // form variables from add_publication.php
     $data = get_tp_var_types('publication_array');
-    $data['title'] = isset( $_POST['post_title'] ) ? htmlspecialchars($_POST['post_title']) : '';
+    $data['title'] = isset( $_POST['tp_post_title'] ) ? htmlspecialchars($_POST['tp_post_title']) : '';
     $data['type'] = isset( $_POST['type'] ) ? htmlspecialchars($_POST['type']) : '';
     $data['bibtex'] = isset( $_POST['bibtex'] ) ? htmlspecialchars($_POST['bibtex']) : '';
     $data['author'] = isset( $_POST['author'] ) ? htmlspecialchars($_POST['author']) : '';
     $data['editor'] = isset( $_POST['editor'] ) ? htmlspecialchars($_POST['editor']) : '';
     $data['isbn'] = isset( $_POST['isbn'] ) ? htmlspecialchars($_POST['isbn']) : '';
     $data['url'] = isset( $_POST['url'] ) ? htmlspecialchars($_POST['url']) : '';
-    $data['date'] = isset( $_POST['date'] ) ? htmlspecialchars($_POST['date']) : '';
+    $data['date'] = isset( $_POST['pubdate'] ) ? htmlspecialchars($_POST['pubdate']) : '';
     $data['status'] = isset( $_POST['forthcoming'] ) ? 'forthcoming' : 'published';
     $data['urldate'] = isset( $_POST['urldate'] ) ? htmlspecialchars($_POST['urldate']) : '';
     $data['booktitle'] = isset( $_POST['booktitle'] ) ? htmlspecialchars($_POST['booktitle']) : '';
@@ -88,7 +88,7 @@ function tp_add_publication_page() {
     $filter = isset( $_GET['filter'] ) ? htmlspecialchars($_GET['filter']) : '';
     $site = isset( $_GET['site'] ) ? htmlspecialchars($_GET['site']) : '';
     $tag_id = isset( $_GET['tag'] ) ? htmlspecialchars($_GET['tag']) : '';
-    $year = isset( $_GET['year'] ) ? intval($_GET['year']) : '';
+    $year = isset( $_GET['tp_year'] ) ? intval($_GET['tp_year']) : '';
     $entry_limit = isset( $_GET['limit'] ) ? htmlspecialchars($_GET['limit']) : '';
 
     echo '<div class="wrap">';
@@ -145,7 +145,7 @@ function tp_add_publication_page() {
     /*
      * Disabled since tp 6.0
     if ( $pub_id != 0 && !isset($_POST['create_pub']) ) {
-        echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
+        echo '<p style="margin-bottom:0px;"><a href="admin.php?page=publications.php&amp;search=' . $search . '&amp;filter=' .  $filter . '&amp;limit=' . $entry_limit . '&amp;tag=' . $tag_id . '&amp;tp_year=' . $year . '" class="button-secondary" title="' . __('Back','teachpress') . '">&larr; ' . __("Back",'teachpress') . '</a></p>';
     }
      * 
      */
@@ -159,7 +159,7 @@ function tp_add_publication_page() {
         echo '<input type="hidden" name="site" id="site" value="' . $site . '" />';
         echo '<input type="hidden" name="filter" id="filter" value="' . $filter . '" />';
         echo '<input type="hidden" name="tag" id="tag" value="' . $tag_id . '" />';
-        echo '<input type="hidden" name="year" id="year" value="' . $year . '" />';
+        echo '<input type="hidden" name="tp_year" id="tp_year" value="' . $year . '" />';
     }
     
     echo '<div class="tp_postbody">';
@@ -171,7 +171,7 @@ function tp_add_publication_page() {
     echo '<div id="titlediv" style="padding-bottom: 15px;">';
     echo '<div id="titlewrap">';
     echo '<label class="hide-if-no-js" style="display:none;" id="title-prompt-text" for="title">' . __('Title','teachpress') . '</label>';
-    echo '<input type="text" name="post_title" size="30" title="' . __('Title','teachpress') . '" tabindex="1" value="' . stripslashes($pub_data["title"]) . '" id="title" placeholder="' . __('Title','teachpress') . '" autocomplete="off" />';
+    echo '<input type="text" name="tp_post_title" size="30" title="' . __('Title','teachpress') . '" tabindex="1" value="' . stripslashes($pub_data["title"]) . '" id="title" placeholder="' . __('Title','teachpress') . '" autocomplete="off" />';
     echo '</div>';
     echo '</div>';
     
@@ -299,7 +299,7 @@ class tp_publication_page {
         }
         echo '<p><strong>' . __('Current','teachpress') . '</strong></p>';
         foreach ($current_tags as $row){
-            echo'<input name="delbox[]" type="checkbox" value="' . $row->con_id . '" id="checkbox_' . $row->con_id . '" onclick="teachpress_change_label_color(' . "'" . $row->con_id . "'" . ')"/> <label for="checkbox_' . $row->con_id . '" title="Tag &laquo;' . $row->name . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row->con_id . '">' . $row->name . '</label> | ';
+            echo'<input name="delbox[]" type="checkbox" value="' . $row->con_id . '" id="checkbox_' . $row->con_id . '" onclick="teachpress_change_label_color(' . "'" . $row->con_id . "'" . ')"/> <label for="checkbox_' . $row->con_id . '" title="Tag &laquo;' . stripslashes($row->name) . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row->con_id . '">' . stripslashes($row->name) . '</label> | ';
         } 
     }
     
@@ -335,8 +335,8 @@ class tp_publication_page {
                 echo tp_admin::get_form_field('editor', __('The names of the editors, separate by `and`. Example: Mark Twain and Albert Einstein','teachpress'),__('Editor(s)','teachpress'),'textarea', '', $pub_data["editor"], array(''), 5, 'width:95%; height: 65px;');
                 ?>
           
-             <p><label for="date"><strong><?php _e('date of publishing','teachpress'); ?></strong></label></p>
-             <input type="text" name="date" id="date" title="<?php _e('date of publishing','teachpress'); ?>" value="<?php if ($pub_id != 0) { echo $pub_data["date"]; } else {_e('JJJJ-MM-TT','teachpress'); } ?>" onblur="if(this.value==='') this.value='<?php _e('JJJJ-MM-TT','teachpress'); ?>';" onfocus="if(this.value==='<?php _e('JJJJ-MM-TT','teachpress'); ?>') this.value='';" tabindex="6"/>
+             <p><label for="pubdate"><strong><?php _e('date of publishing','teachpress'); ?></strong></label></p>
+             <input type="text" name="pubdate" id="pubdate" title="<?php _e('date of publishing','teachpress'); ?>" value="<?php if ($pub_id != 0) { echo $pub_data["date"]; } else {_e('JJJJ-MM-TT','teachpress'); } ?>" onblur="if(this.value==='') this.value='<?php _e('JJJJ-MM-TT','teachpress'); ?>';" onfocus="if(this.value==='<?php _e('JJJJ-MM-TT','teachpress'); ?>') this.value='';" tabindex="6"/>
              <input type="checkbox" name="forthcoming" id="forthcoming" value="true" <?php if ( $pub_data['status'] === 'forthcoming' ) { echo 'checked="checked"'; } ?>/>
              <label for="forthcoming"><?php _e('Forthcoming','teachpress'); ?></label>
             </div>
@@ -533,7 +533,7 @@ class tp_publication_page {
             $( "#bibtex_key_gen" ).click(function() {
                 var author = $("#author").val();
                 var editor = $("#editor").val();
-                var year = $("#date").val().substr(0,4);
+                var year = $("#pubdate").val().substr(0,4);
                 if ( author === '' ) {
                     if ( editor === '' ) {
                         alert('<?php _e('Please enter an author before!','teachpress') ?>');
@@ -578,7 +578,7 @@ class tp_publication_page {
         </script>
         <script type="text/javascript" charset="utf-8">
         jQuery(document).ready(function($) {
-            $('#date').datepicker({showWeek: true, changeMonth: true, changeYear: true, showOtherMonths: true, firstDay: 1, renderer: $.extend({}, $.datepicker.weekOfYearRenderer), onShow: $.datepicker.showStatus, dateFormat: 'yy-mm-dd', yearRange: '1950:c+5'});
+            $('#pubdate').datepicker({showWeek: true, changeMonth: true, changeYear: true, showOtherMonths: true, firstDay: 1, renderer: $.extend({}, $.datepicker.weekOfYearRenderer), onShow: $.datepicker.showStatus, dateFormat: 'yy-mm-dd', yearRange: '1950:c+5'});
             $('#urldate').datepicker({showWeek: true, changeMonth: true, changeYear: true, showOtherMonths: true, firstDay: 1, renderer: $.extend({}, $.datepicker.weekOfYearRenderer), onShow: $.datepicker.showStatus, dateFormat: 'yy-mm-dd', yearRange: '1990:c+5'});
             $('#abstract').resizable({handles: "se", minHeight: 80, minWidth: 500});
             $('#url').resizable({handles: "se", minHeight: 80, minWidth: 500});
@@ -605,11 +605,11 @@ class tp_publication_page {
                 $sql2 = tp_authors::get_authors( array('group_by' => true, 'include_editors' =>true) );
                 foreach ($sql2 as $row) {
                     if ( $start2 === '' ) {
-                        echo '"' . $row->name . '"';
+                        echo '"' . esc_js($row->name) . '"';
                         $start2 = '1';
                     }
                     else {
-                        echo ',"' . $row->name . '"';
+                        echo ',"' . esc_js($row->name) . '"';
                     }        
                 } ?>];
             

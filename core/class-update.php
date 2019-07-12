@@ -99,7 +99,7 @@ class tp_update_db {
         
         // force updates to reach structure of teachPress 6.0.0
         if ( $db_version[0] === '6' || $update_level === '6' ) {
-            tp_update_db::upgrade_to_60();
+            tp_update_db::upgrade_to_60($charset_collate);
         }
         
         // Add teachPress options
@@ -615,9 +615,10 @@ class tp_update_db {
     
     /**
      * Database upgrade to teachPress 6.0.0 structure
+     * @param string $charset_collate
      * @since 6.0.0
      */
-    private static function upgrade_to_60 (){
+    private static function upgrade_to_60 ($charset_collate){
         global $wpdb;
         $charset = tp_tables::get_charset();
         
@@ -634,6 +635,11 @@ class tp_update_db {
         // add column import_id to table teachpress_courses
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'import_id'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `import_id` INT NULL DEFAULT NULL AFTER `use_capabilites`");
+        }
+        
+        // expand char limit for tp_publications::booktitle
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'booktitle'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `booktitle` `booktitle` VARCHAR (1000) $charset_collate NULL DEFAULT NULL");
         }
         
     }

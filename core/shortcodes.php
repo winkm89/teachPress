@@ -185,7 +185,8 @@ class tp_shortcodes {
         // type filter
         if ( $mode === 'type' ) {
             $row = tp_publications::get_used_pubtypes( array( 'user' => $sql_parameter['user'],
-                                                              'include' => $sql_parameter['type']) );
+                                                              'include' => $sql_parameter['type'],
+                                                              'exclude' => isset($sql_parameter['exclude_types']) ? $sql_parameter['exclude_types'] : '') );
             $id = 'pub_type';
             $index = 'type';
             $title = __('All types','teachpress');
@@ -193,8 +194,11 @@ class tp_shortcodes {
         
         // author filter
         if ( $mode === 'author' ) {
+            // Use the visible filter o the SQL parameter
+            $author_id = ($filter_parameter['show_in_author_filter'] !== '') ? $filter_parameter['show_in_author_filter'] : $sql_parameter['author'];
+            
             $row = tp_authors::get_authors( array( 'user' => $sql_parameter['user'],
-                                                   'author_id' => $sql_parameter['author'],
+                                                   'author_id' => $author_id,
                                                    'output_type' => ARRAY_A, 
                                                    'group_by' => true ) );
             $id = 'pub_author';
@@ -364,11 +368,14 @@ class tp_shortcodes {
           $link_url = $settings['permalink'];
           $link_title = "";
           $link_class = "";
-          $pub = $tagcloud['tagPeak'] == 1 ? __('publication', 'teachpress') : __('publications', 'teachpress');
+          $pub = ( $tagcloud['tagPeak'] == 1 ) ? __('publication', 'teachpress') : __('publications', 'teachpress');
+          
+          // division through zero check
+          $divisor = ( $max - $min === 0 ) ? 1 : $max - $min;
 
           // calculate the font size
           // max. font size * (current occorence - min occurence) / (max occurence - min occurence)
-          $size = floor(( $cloud_settings['maxsize'] *( $tagcloud['tagPeak'] - $min )/( $max - $min ) ));
+          $size = floor(( $cloud_settings['maxsize'] *( $tagcloud['tagPeak'] - $min ) / $divisor ));
           // level out the font size
           if ( $size < $cloud_settings['minsize'] ) {
              $size = $cloud_settings['minsize'] ;
@@ -416,7 +423,7 @@ class tp_shortcodes {
         }
         // with headlines grouped by type then by year
         else if ($args['headline'] === 4) {
-            $publications = tp_shortcodes::sort_pub_by_type_year($tparray, $tpz, $args);
+            $publications = tp_shortcodes::sort_pub_by_type_year($tparray, $template, $tpz, $args);
         }
         // without headlines
         else {
@@ -1057,6 +1064,7 @@ function tp_links_shortcode ($atts) {
  *      tag_limit (INT)             number of tags, default: 30
  *      hide_tags (STRING)          ids of the tags you want to hide from your users (separated by comma)
  *      exclude_tags (STRING)       similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
+ *      exclude_types (STRING)      name of the publication types you want to exclude (separated by comma)
  *      image (STRING)              none, left, right or bottom, default: none 
  *      image_size (INT)            max. Image size, default: 0
  *      image_link (STRING)         none, self or post (defalt: none)
@@ -1075,6 +1083,10 @@ function tp_links_shortcode ($atts) {
  *      sort_list (STRING)          a list of publication types (separated by comma) which overwrites the default sort order for headline = 2
  *      show_tags_as (STRING)       cloud, pulldown or none, default: cloud
  *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
+ *      show_author_filter (INT)    0 (false) or 1 (true), default: 1
+ *      show_in_author_filter (STRING) Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
+ *      show_user_filter (INT)      0 (false) or 1 (true), default: 1
+ *      show_type_filter (INT)      0 (false) or 1 (true), default: 1
  *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
  *      show_altmetric_entry (INT)  0 (false) or 1 (true), default: 0
@@ -1108,6 +1120,7 @@ function tp_cloud_shortcode($atts) {
         'tag_limit' => 30,
         'hide_tags' => '',
         'exclude_tags' => '',
+        'exclude_types' => '',
         'image' => 'none',
         'image_size' => 0,
         'image_link' => 'none',
@@ -1125,6 +1138,10 @@ function tp_cloud_shortcode($atts) {
         'entries_per_page' => 50,
         'sort_list' => '',
         'show_tags_as' => 'cloud',
+        'show_author_filter' => 1,
+        'show_in_author_filter' => '',
+        'show_type_filter' => 1,
+        'show_user_filter' => 1,
         'show_bibtex' => 1,
         'container_suffix' => '',
         'show_altmetric_donut' => 0,
@@ -1143,13 +1160,16 @@ function tp_cloud_shortcode($atts) {
         'image_link' => htmlspecialchars($atts['image_link']),
         'link_style' => htmlspecialchars($atts['link_style']),
         'title_ref' => htmlspecialchars($atts['title_ref']),
-        'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' : '',
+        'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' . htmlspecialchars($atts['container_suffix']) : '',
         'date_format' => htmlspecialchars($atts['date_format']),
         'permalink' => ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;",
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
         'pagination' => intval($atts['pagination']),
         'entries_per_page' => intval($atts['entries_per_page']),
         'sort_list' => htmlspecialchars($atts['sort_list']),
+        'show_author_filter' => ( $atts['show_author_filter'] == '1' ) ? true : false,
+        'show_type_filter' => ( $atts['show_type_filter'] == '1' ) ? true : false,
+        'show_user_filter' => ( $atts['show_user_filter'] == '1' ) ? true : false,
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
         'with_tags' => 1,
         'container_suffix' => htmlspecialchars($atts['container_suffix']),
@@ -1170,7 +1190,8 @@ function tp_cloud_shortcode($atts) {
         'year' => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
         'type' => isset ($_GET['type']) ? htmlspecialchars( $_GET['type'] ) : '',
         'author' => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
-        'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : ''
+        'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : '',
+        'show_in_author_filter' => htmlspecialchars($atts['show_in_author_filter'])
     );
     
     $sql_parameter = array (
@@ -1180,6 +1201,7 @@ function tp_cloud_shortcode($atts) {
         'year' => htmlspecialchars($atts['year']),
         'exclude' => htmlspecialchars($atts['exclude']),
         'exclude_tags' => htmlspecialchars($atts['exclude_tags']),
+        'exclude_types' => htmlspecialchars($atts['exclude_types']),
         'order' => htmlspecialchars($atts['order']),
     );
 
@@ -1231,7 +1253,8 @@ function tp_cloud_shortcode($atts) {
     }
 
     // Filter type
-    if ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) {
+    if ( ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) && 
+            $settings['show_type_filter'] === true ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'type');
     }
     
@@ -1241,12 +1264,14 @@ function tp_cloud_shortcode($atts) {
     }
 
     // Filter author
-    if ( $atts['author'] == '' || strpos($atts['author'], ',') !== false ) {
+    if ( ( $atts['author'] == '' || strpos($atts['author'], ',') !== false ) && 
+            $settings['show_author_filter'] === true ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'author');
     }
     
     // Filter user
-    if ( $atts['user'] == '' || strpos($atts['user'], ',') !== false  ) {
+    if ( ( $atts['user'] == '' || strpos($atts['user'], ',') !== false ) &&
+            $settings['show_user_filter'] === true ) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'user');
     }
 
@@ -1259,7 +1284,10 @@ function tp_cloud_shortcode($atts) {
     }
     
     // complete the header (tag cloud + filter)
-    $part1 = '<a name="tppubs" id="tppubs"></a><div class="teachpress_cloud">' . $asg . '</div><div class="teachpress_filter">' . $filter . '</div><p style="text-align:center">' . $showall . '</p>';
+    $part1 = '<a name="tppubs" id="tppubs"' . $settings['container_suffix'] . '></a>
+            <div class="teachpress_cloud">' . $asg . '</div>
+            <div class="teachpress_filter">' . $filter . '</div>
+            <p style="text-align:center">' . $showall . '</p>';
 
     /************************/
     /* List of publications */
@@ -1287,17 +1315,20 @@ function tp_cloud_shortcode($atts) {
         'order' => $sql_parameter['order'], 
         'exclude' => $sql_parameter['exclude'],
         'exclude_tags' => $sql_parameter['exclude_tags'],
+        'exclude_types' => $sql_parameter['exclude_types'],
         'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'limit' => $pagination_limits['limit'],
         'output_type' => ARRAY_A);
 
     $all_tags = tp_tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
-    $number_entries = ( $settings['pagination'] === 1 ) ? tp_publications::get_publications($args, true) : 0;
+    $number_entries = tp_publications::get_publications($args, true);
     $row = tp_publications::get_publications( $args );
     $tpz = 0;
     $count = count($row);
-    $colspan = '';
     $tparray = array();
+    
+    // colspan setup
+    $colspan = '';
     if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut']) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
         $colspan = ' colspan="2"';
@@ -1311,7 +1342,7 @@ function tp_cloud_shortcode($atts) {
     
     // Create array of publications
     foreach ($row as $row) {
-        $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
+        $number = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $pagination_limits['entry_limit'], $atts['style']);
         $tparray[$tpz][0] = $row['year'] ;
         
         // teachPress style
@@ -1377,11 +1408,13 @@ function tp_cloud_shortcode($atts) {
  *      include_editor_as_author (INT)
  *      year (STRING)               the publication years (separated by comma)
  *      exclude_tags (STRING)       excludes all publications with the given tag IDs (separated by comma)
+ *      exclude_types (STRING)      names of the publication types you want to exclude (separated by comma)
  *      order (STRING)              title, year, bibtex or type, default: date DESC
  *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
  *      image (STRING)              none, left, right or bottom, default: none 
  *      image_size (INT)            max. Image size, default: 0
  *      image_link (STRING)         none, self or post (defalt: none)
+ *      anchor (INT)                0 (false) or 1 (true), default: 1
  *      author_name (STRING)        last, initials or old, default: last
  *      editor_name (STRING)        last, initials or old, default: last
  *      author_separator (STRING)   The separator for author names
@@ -1414,11 +1447,13 @@ function tp_list_shortcode($atts){
        'include_editor_as_author' => 1,
        'year' => '',
        'exclude_tags' => '',
+       'exclude_types' => '',
        'order' => 'date DESC',
        'headline' => 1,
        'image' => 'none',
        'image_size' => 0,
        'image_link' => 'none',
+       'anchor' => 1,
        'author_name' => 'initials',
        'editor_name' => 'initials',
        'author_separator' => ';',
@@ -1445,7 +1480,7 @@ function tp_list_shortcode($atts){
     $pagination = intval($atts['pagination']);
     $entries_per_page = intval($atts['entries_per_page']);
     $sort_list = htmlspecialchars($atts['sort_list']);
-    $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
+    $form_limit = ( isset($_GET['limit' . $atts['container_suffix']]) ) ? intval($_GET['limit' . $atts['container_suffix']]) : '';
 
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
@@ -1458,6 +1493,7 @@ function tp_list_shortcode($atts){
         'image_link' => htmlspecialchars($atts['image_link']),
         'with_tags' => 0,
         'title_ref' => htmlspecialchars($atts['title_ref']),
+        'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' . htmlspecialchars($atts['container_suffix']) : '',
         'link_style' => htmlspecialchars($atts['link_style']),
         'date_format' => htmlspecialchars($atts['date_format']),
         'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
@@ -1505,6 +1541,7 @@ function tp_list_shortcode($atts){
         'order' => $atts['order'], 
         'exclude' => $atts['exclude'],
         'exclude_tags' => $atts['exclude_tags'],
+        'exclude_types' => $atts['exclude_types'],
         'include' => $atts['include'], 
         'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'output_type' => ARRAY_A, 
@@ -1512,11 +1549,11 @@ function tp_list_shortcode($atts){
     );
     $row = tp_publications::get_publications( $args );
     
-    $number_entries = ( $pagination === 1 ) ? tp_publications::get_publications($args, true) : 0;
+    $number_entries = tp_publications::get_publications($args, true);
     $count = count($row);
     foreach ($row as $row) {
         $tparray[$tpz][0] = $row['year'];
-        $number = ( $atts['style'] === 'numbered_desc' || $atts['style'] === 'std_num_desc' ) ? $count - $tpz : $tpz + 1 ;
+        $number = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $pagination_limits['entry_limit'], $atts['style']);
         
         // teachPress style
         $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number);
@@ -1527,14 +1564,16 @@ function tp_list_shortcode($atts){
         $tpz++;
     }
     
+    // HTML anchor
+    $r = '<a name="tppubs" id="tppubs' . $settings['container_suffix'] . '"></a>';
     // menu
-    $r = '';
     $menu = ( $pagination === 1 ) ? tp_page_menu(array('number_entries' => $number_entries,
                                                        'entries_per_page' => $entries_per_page,
                                                        'current_page' => $pagination_limits['current_page'],
                                                        'entry_limit' => $pagination_limits['entry_limit'],
                                                        'page_link' => $page_link,
-                                                       'link_attributes' => '',
+                                                       'link_attributes' => $settings['html_anchor'],
+                                                       'container_suffix' => $settings['container_suffix'],
                                                        'mode' => 'bottom',
                                                        'before' => '<div class="tablenav">',
                                                        'after' => '</div>')) : '';
@@ -1717,7 +1756,7 @@ function tp_search_shortcode ($atts) {
     // Show results
     else {
         foreach ($results as $row) {
-            $count = ( $entry_limit == 0 ) ? ( $tpz + 1 ) : ( $entry_limit + $tpz + 1 );
+            $count = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $entry_limit, $atts['style']);
             $tparray[$tpz][0] = $row['year'];
             $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count);
             $tpz++;
