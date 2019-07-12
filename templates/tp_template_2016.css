@@ -12,4 +12,4 @@ td.tp_pub_info {border-bottom:1px solid silver; vertical-align:top; padding:8px;
 .tp_pub_tags a:hover {color:#AAAAAA; text-decoration:none;}
 .tp_pub_type {background-color: #008bd2; color: #fff; display: inline-block; padding: 3px 4px; margin-left: 5px; font-size: 10px; font-weight: bold; line-height: 1; border-radius: 2px; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);}
 .tp_pub_label_status {background-color: orange; color: #fff; display: inline-block; padding: 3px 4px; margin-left: 5px; font-size: 10px; font-weight: bold; line-height: 1; border-radius: 2px; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);}
-
+.tp_pub_link_image {max-width: 2em; max-height: 2em;}

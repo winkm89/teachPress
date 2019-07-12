@@ -365,8 +365,11 @@ function get_tp_publication_types() {
  * @return string 
  * @since 3.1.0
  */
-function get_tp_mimetype_images($url) {
-    $mimetype = substr($url,-4,4);
+function get_tp_mimetype_images($url_link) {
+    $mimetype = substr($url_link,-4,4);
+    preg_match( "/^(https?:\/\/)?(.+)$/", $url_link, $urltype);
+    $urltype = preg_split("#/#", $urltype[2])[0];
+    $urltype = str_replace("www.", "", $urltype);
     $url = plugins_url();
     $mimetypes = array(
         '.pdf' => $url . '/teachpress/images/mimetypes/application-pdf.png',
@@ -402,10 +405,21 @@ function get_tp_mimetype_images($url) {
         '.flv' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
         '.mov' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
         '.mp4' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
-        '.wmv' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
+        '.wmv' => $url . '/teachpress/images/mimetypes/video-x-generic.png'
         );
+    $mediaicons = array(
+        'youtube.com' => $url . '/teachpress/images/icons/icon-youtube.png',
+        'vimeo.com' => $url . '/teachpress/images/icons/icon-vimeo.png',
+        'github.com' => $url . '/teachpress/images/icons/icon-github.png',
+        'gitlab.com' => $url . '/teachpress/images/icons/icon-gitlab.png',
+
+    );
+    
     if ( isset ($mimetypes[$mimetype]) ) {
         return $mimetypes[$mimetype];
+    }
+    elseif ( isset ($mediaicons[$urltype]) ) {
+        return $mediaicons[$urltype];
     }
     else {
         return $mimetypes['html'];
