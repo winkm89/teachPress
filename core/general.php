@@ -436,8 +436,8 @@ function get_tp_mimetype_icon($url_link) {
     $mimetype = substr($url_link,-4,4);
     preg_match( "/^(https?:\/\/)?(.+)$/", $url_link, $urltype);
     $urltype = preg_split("#/#", $urltype[2])[0];
-    $urltype = str_replace("www.", "", $urltype);
-    $url = plugins_url();
+    $urltype = explode(".", $urltype);
+    $urltype = $urltype[count($urltype)-2].".".end($urltype);
     $mimetypes = array(
         'doi' => 'ai ai-doi',
         '.pdf' => 'fas fa-file-pdf',
