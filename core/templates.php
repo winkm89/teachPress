@@ -522,11 +522,11 @@ class tp_html_publication_template {
                 if ( $length > 80 ) {
                     $parts[1] .= '[...]';
                 }
-                $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( $parts[0] ) . ')" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank">' . $parts[1] . '</a></li>';
+                $end .= '<li><a class="tp_pub_list" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank"><i class="' . get_tp_mimetype_icon( $parts[0] ).'"></i></a></li>';
             }
             // enumeration mode
             else {
-                $end .= '<a class="tp_pub_link" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( $parts[0] ) . '"/></a>';
+                $end .= '<a class="tp_pub_link" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank"><i class="' . get_tp_mimetype_icon( $parts[0] ).'"></i></a>';
             }
         }
         
@@ -538,10 +538,10 @@ class tp_html_publication_template {
             $doi_url = TEACHPRESS_DOI_RESOLVER . $doi;
             if (in_array($doi_url, $url_displayed) == False){
                 if ( $mode === 'list' ) {
-                    $end .= '<li><a class="tp_pub_list" style="background-image: url(' . get_tp_mimetype_images( 'html' ) . ')" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
+                    $end .= '<li><a class="tp_pub_list" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><i class="' . get_tp_mimetype_icon( 'doi' ).'"></i></a></li>';
                 }
                 else {
-                    $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><img class="tp_pub_link_image" alt="" src="' . get_tp_mimetype_images( 'html' ) . '"/></a>';
+                    $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><i class="' . get_tp_mimetype_icon( 'doi').'"></i></a>';
                 }
             }
         }
