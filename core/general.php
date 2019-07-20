@@ -369,7 +369,8 @@ function get_tp_mimetype_images($url_link) {
     $mimetype = substr($url_link,-4,4);
     preg_match( "/^(https?:\/\/)?(.+)$/", $url_link, $urltype);
     $urltype = preg_split("#/#", $urltype[2])[0];
-    $urltype = str_replace("www.", "", $urltype);
+    $urltype = explode(".", $urltype);
+    $urltype = $urltype[count($urltype)-2].".".end($urltype);
     $url = plugins_url();
     $mimetypes = array(
         '.pdf' => $url . '/teachpress/images/mimetypes/application-pdf.png',
