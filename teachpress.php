@@ -588,6 +588,9 @@ function tp_frontend_scripts() {
     $version = get_tp_version();
     echo chr(13) . chr(10) . '<!-- teachPress -->' . chr(13) . chr(10);
     echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/frontend.js?ver=' . $version . '"></script>' . chr(13) . chr(10);
+    echo '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">' . chr(13) . chr(10);
+    echo '<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">' . chr(13) . chr(10);
+    
     $value = get_tp_option('stylesheet');
     if ($value == '1') {
         echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . chr(13) . chr(10);
