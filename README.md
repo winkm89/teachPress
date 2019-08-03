@@ -55,3 +55,5 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
 * view-refresh-3.png by GNOME Icon Theme 2.26.0 http://art.gnome.org (License: GPLv2)
 * bookmark-new-4.png by Tango Icon Library (License: Public Domain)
+* Font Awesome Free 5.10.1 by fontawesome (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+* Academicons 1.8.6 by James Walsh (Font: SIL OFL 1.1, CSS: MIT License)

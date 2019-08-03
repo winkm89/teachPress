@@ -61,10 +61,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 = Licence information of external resources =
 * bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
-* Graphics for mimetypes, user-new-3.png, folder-new-7.png and document-new-6.png by Oxygen Icons 4.3.1 http://www.oxygen-icons.org/ (Licence: LPGL)
+* Font Awesome Free 5.10.1 by fontawesome (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+* Academicons 1.8.6 by James Walsh (Font: SIL OFL 1.1, CSS: MIT License)
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
-* view-refresh-3.png by GNOME Icon Theme 2.26.0 http://art.gnome.org (License: GPLv2)
-* bookmark-new-4.png by Tango Icon Library (License: Public Domain)
 
 = Thanks =
 I would like to thank the team of [CBIS, Chemnitz University of Technology](http://www.tu-chemnitz.de/wirtschaft/wi2/wp/en/) for the support and the collaboration during the last years.
@@ -133,12 +132,21 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 6.3 (beta) =
+* New: Extra icons for URL/Files in the publication overview (#118) (Thanks to Sven Mayer)
+* New: Font Awesome Fonts added
+* New: Academicons Font added
+* Changed: Mimetype icons removed 
+* Bugfix: Rename form fields for publications
+* Bugfix: Fix problem with not escaped authors in JavaScript on add-publication.php
+* Bugfix: Fix "A variable mismatch has been detected." error on add-publication.php
+
 = 6.2.5 (07.04.2019) =
 * New: [tplist]: HTML anchor added
 * Changed: Handling of [tplist] shortcodes which are used multiple times in one post/page
 * Changed: "Deleted" message for course terms and types in the settings added
 * Changed: Overwrite publication option for the importer is now an update option 
-* Bugfix: Buttons for 'next/last page' of [tplist] don't show in responsive design (#109)
+* Bugfix: Buttons for 'next/last page' of [tplist] are not visible in responsive design (#109)
 * Bugfix: bibtexParse class uses removed function split (#111)
 * Bugfix: Fix array offset errors in bibtexParse class PARSEENTRIES::get_line()
 
