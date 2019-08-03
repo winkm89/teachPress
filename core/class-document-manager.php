@@ -84,20 +84,18 @@ class tp_document_manager {
                 $upload_dir = wp_upload_dir();
                 foreach ($documents as $row) {
                     $class = 'tp_file tp_file_headline';
-                    $style = '';
                     $size = '';
                     $checkbox = '';
-                    $name = '<span class="tp_file_name">' . stripslashes($row['name']) . '</span>';
+                    $name = '<span class="tp_file_name"><i class="' . tp_icons::get_class( $row['path'] ) . '"></i>' . stripslashes($row['name']) . '</span>';
                     if ( $row['path'] !== '' ) {
                         $class = 'tp_file';
-                        $style = 'background-image: url(' . get_tp_mimetype_images( $row['path'] ) . ');';
                         $size = '<span class="tp_file_size">' . tp_convert_file_size($row['size']) . '</span>';
                     }
                     if ( $mode === 'tinyMCE' && $row['path'] !== '' ) {
                         $checkbox = '<input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' . $row['doc_id'] . '" class="tp_file_checkbox" data_1="' . esc_js($row['name']) . '" data_2="' . esc_url($upload_dir['baseurl'] . $row['path']) . '" value="' . $row['doc_id'] . '" />';
                         $name = '<label class="tp_file_label" for="tp_file_checkbox_' . $row['doc_id'] . '"><span class="tp_file_name">' . stripslashes($row['name']) . '</span></label>';
                     }
-                    echo '<li class="' . $class . '" id="tp_file_' . $row['doc_id'] . '" style="' . $style . '">' . $checkbox . $name . ' ' . $size . ' <span class="tp_file_actions"><a class="tp_file_view" href="' . $upload_dir['baseurl'] . $row['path'] . '" target="_blank">' . __('Show','teachpress') . '</a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Edit','teachpress') . '</a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Delete','teachpress') . '</a></span></li>';
+                    echo '<li class="' . $class . '" id="tp_file_' . $row['doc_id'] . '">' . $checkbox . $name . ' ' . $size . ' <span class="tp_file_actions"><a class="tp_file_view" href="' . $upload_dir['baseurl'] . $row['path'] . '" target="_blank">' . __('Show','teachpress') . '</a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Edit','teachpress') . '</a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Delete','teachpress') . '</a></span></li>';
                 }
                 ?>
             </ul>
@@ -153,10 +151,10 @@ class tp_document_manager {
                     $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&mimetype_input=" + file.name, 
                     function(text){
                         <?php if ( $mode === 'tinyMCE' ) { ?>
-                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '" style="background-image: url(' + text + ');"><input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' + file.id + '" disabled="disabled" class="tp_file_checkbox" data_1="' + file.name + '" data_2="" value=""/><label class="tp_file_label" for="tp_file_checkbox_' + file.id + '"><span class="tp_file_name">' +
+                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '"><input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' + file.id + '" disabled="disabled" class="tp_file_checkbox" data_1="' + file.name + '" data_2="" value=""/><label class="tp_file_label" for="tp_file_checkbox_' + file.id + '"><span class="tp_file_name"><i class="' + text + '"></i>' +
                         file.name + '</span></label> (<span class="tp_file_size">' + plupload.formatSize(0) + '/</span>' + plupload.formatSize(file.size) + ') ' + '<div class="tp_fileprogress"></div></li>');
                         <?php } else { ?>
-                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '" style="background-image: url(' + text + ');"><span class="tp_file_name">' +
+                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '"><span class="tp_file_name"><i class="' + text + '"></i>' +
                         file.name + '</span> (<span class="tp_file_size">' + plupload.formatSize(0) + '/</span>' + plupload.formatSize(file.size) + ') ' + '<div class="tp_fileprogress"></div></li>');
                         <?php } ?>
                         console.log(file);

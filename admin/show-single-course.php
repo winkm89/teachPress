@@ -722,9 +722,9 @@ class tp_single_course_page {
         echo '</div>';
         // Menu
         echo '<div class="tp_actions">';
-        echo '<span style="margin-right:15px;"><a onclick="teachpress_showhide(' . "'tp_add_artefact_form'" . ');" id="teachpress_add_artefact" class="button-secondary" style="cursor:pointer;">' . __('Add artefact','teachpress') . '</a></span> ';
-        echo '<span style="margin-right:15px;"><a onclick="teachpress_showhide(' . "'tp_add_assessment_form'" . ');" style="cursor:pointer;" id="teachpress_add_assessment" class="button-secondary">' . __('Add single assessment','teachpress') . '</a></span> ';
-        echo '<span style="margin-right:15px;"><a href="admin.php?page=teachpress/teachpress.php&course_id=' . $course_id . '&sem=' . $link_parameter['sem'] . '&search=' . $link_parameter['search'] . '&action=add_assessments" style="cursor:pointer;" id="teachpress_add_assessment" class="button-secondary">' . __('Add a set of assessments','teachpress') . '</a></span> ';
+        echo '<span style="margin-right:15px;"><a onclick="teachpress_showhide(' . "'tp_add_artefact_form'" . ');" id="teachpress_add_artefact" class="button-secondary" style="cursor:pointer;"><i class="fas fa-folder-plus"></i> ' . __('Add artefact','teachpress') . '</a></span> ';
+        echo '<span style="margin-right:15px;"><a onclick="teachpress_showhide(' . "'tp_add_assessment_form'" . ');" style="cursor:pointer;" id="teachpress_add_assessment" class="button-secondary"><i class="fas fa-bookmark"></i> ' . __('Add single assessment','teachpress') . '</a></span> ';
+        echo '<span style="margin-right:15px;"><a href="admin.php?page=teachpress/teachpress.php&course_id=' . $course_id . '&sem=' . $link_parameter['sem'] . '&search=' . $link_parameter['search'] . '&action=add_assessments" style="cursor:pointer;" id="teachpress_add_assessment" class="button-secondary"><i class="fas fa-bookmark"></i> ' . __('Add a set of assessments','teachpress') . '</a></span> ';
         echo '</div>';
         // Delete artefact
         if ( isset( $_POST['tp_delete_artefact'] ) ) {
@@ -849,7 +849,7 @@ class tp_single_course_page {
             get_tp_message( __("You can't set user capabilites here, because you are using global capabilites for this course.",'teachpress'), 'orange' );
             return;
         }
-        echo '<div class="tp_actions"><a id="teachpress_add_capability" class="button-secondary" onclick="javascript:teachpress_showhide(' . "'add_capability'" .');">' . __('Add new','teachpress') . '</a></div>';
+        echo '<div class="tp_actions"><a id="teachpress_add_capability" class="button-secondary" onclick="javascript:teachpress_showhide(' . "'add_capability'" .');"><i class="fas fa-user-plus"></i> ' . __('Add new','teachpress') . '</a></div>';
         echo '<div id="add_capability" class="teachpress_message" style="display:none;">';
         echo '<form name="add_cap" method=""post>';
         echo '<p class="teachpress_message_headline">' . __('Add capability for user','teachpress') . '</p>';
@@ -1145,14 +1145,14 @@ class tp_single_course_page {
             <input name="tp_submit" type="submit" class="button-secondary" value="<?php _e('OK', 'teachpress'); ?>"/>
             </span>
            <span style="margin-right:15px;">
-            <a id="teachpress_add_signup" style="cursor:pointer;" class="button-secondary" onclick="teachpress_showhide('tp_add_signup_form');" title="<?php _e('Add signup','teachpress'); ?>"><?php _e('Add signup','teachpress'); ?></a>
-            <a id="teachpress_create_list" href="admin.php?page=teachpress/teachpress.php&amp;course_id=<?php echo $course_id; ?>&amp;sem=<?php echo $link_parameter['sem']; ?>&amp;search=<?php echo $link_parameter['search']; ?>&amp;redirect=<?php echo $link_parameter['redirect']; ?>&amp;action=list" class="button-secondary" title="<?php _e('Attendance list','teachpress'); ?>"><?php _e('Attendance list','teachpress'); ?></a>
+            <a id="teachpress_add_signup" style="cursor:pointer;" class="button-secondary" onclick="teachpress_showhide('tp_add_signup_form');" title="<?php _e('Add signup','teachpress'); ?>"><i class="fas fa-plus-square"></i> <?php _e('Add signup','teachpress'); ?></a>
+            <a id="teachpress_create_list" href="admin.php?page=teachpress/teachpress.php&amp;course_id=<?php echo $course_id; ?>&amp;sem=<?php echo $link_parameter['sem']; ?>&amp;search=<?php echo $link_parameter['search']; ?>&amp;redirect=<?php echo $link_parameter['redirect']; ?>&amp;action=list" class="button-secondary" title="<?php _e('Attendance list','teachpress'); ?>"><i class="fas fa-address-book"></i> <?php _e('Attendance list','teachpress'); ?></a>
            </span>
            <span style="margin-right:15px;">
-               <a id="teachpress_create_csv" class="button-secondary" href="<?php echo home_url(); ?>?feed=tp_export&amp;course_id=<?php echo $course_id; ?>&amp;type=csv" title="<?php _e('CSV export','teachpress'); ?>">CSV</a>
-               <a id="teachpress_create_xls" class="button-secondary" href="<?php echo home_url(); ?>?feed=tp_export&amp;course_id=<?php echo $course_id; ?>&amp;type=xls" title="<?php _e('XLS export','teachpress'); ?>">XLS</a>
+               <a id="teachpress_create_csv" class="button-secondary" href="<?php echo home_url(); ?>?feed=tp_export&amp;course_id=<?php echo $course_id; ?>&amp;type=csv" title="<?php _e('CSV export','teachpress'); ?>"><i class="fas fa-file-csv"></i> CSV</a>
+               <a id="teachpress_create_xls" class="button-secondary" href="<?php echo home_url(); ?>?feed=tp_export&amp;course_id=<?php echo $course_id; ?>&amp;type=xls" title="<?php _e('XLS export','teachpress'); ?>"><i class="fas fa-file-excel"></i> XLS</a>
            </span>
-           <a id="teachpress_send_mail" class="button-secondary" href="admin.php?page=teachpress/teachpress.php&amp;course_id=<?php echo $course_id; ?>&amp;sem=<?php echo $link_parameter['sem']; ?>&amp;search=<?php echo $link_parameter['search']; ?>&amp;redirect=<?php echo $link_parameter['redirect']; ?>&amp;action=mail&amp;type=course" title="<?php _e('Send E-Mail','teachpress'); ?>"><?php _e('Send E-Mail','teachpress'); ?></a>
+           <a id="teachpress_send_mail" class="button-secondary" href="admin.php?page=teachpress/teachpress.php&amp;course_id=<?php echo $course_id; ?>&amp;sem=<?php echo $link_parameter['sem']; ?>&amp;search=<?php echo $link_parameter['search']; ?>&amp;redirect=<?php echo $link_parameter['redirect']; ?>&amp;action=mail&amp;type=course" title="<?php _e('Send E-Mail','teachpress'); ?>"><i class="fas fa-envelope"></i> <?php _e('Send E-Mail','teachpress'); ?></a>
        </div>
        <?php
        // Add students

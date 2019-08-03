@@ -387,7 +387,7 @@ class tp_ajax {
      * @access public
      */
     public static function get_mimetype_image( $filename ) {
-        echo get_tp_mimetype_images($filename);
+        echo tp_icons::get_class($filename);
     }
 
     /**

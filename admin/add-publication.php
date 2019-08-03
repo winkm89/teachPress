@@ -324,7 +324,7 @@ class tp_publication_page {
                 </td>
                 <td style="border:none; padding:0 0 0 0; margin: 0 0 0 0;">
                     <p><label for="bibtex" title="<?php _e('A simple unique key without spaces','teachpress'); ?>"><strong><?php _e('BibTeX Key','teachpress'); ?></strong></label></p>
-                    <input name="bibtex" id="bibtex" type="text" title="<?php _e('A simple unique key without spaces','teachpress'); ?>" value="<?php echo stripslashes($pub_data["bibtex"]); ?>" tabindex="3" /> <a id="bibtex_key_gen" style="cursor: pointer;" title="<?php _e('Generate BibTeX key','teachpress') ?>"><img src="<?php echo plugins_url() . '/teachpress/images/view-refresh-3.png'; ?>" alt=""/></a>
+                    <input name="bibtex" id="bibtex" type="text" title="<?php _e('A simple unique key without spaces','teachpress'); ?>" value="<?php echo stripslashes($pub_data["bibtex"]); ?>" tabindex="3" /> <a id="bibtex_key_gen" style="cursor: pointer;" title="<?php _e('Generate BibTeX key','teachpress') ?>"><i class="fas fa-retweet"></i></a>
                 </td>
                 </tr>
               </table>
