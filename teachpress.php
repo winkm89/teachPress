@@ -253,7 +253,20 @@ if ( !defined('TEACHPRESS_DOI_RESOLVER') ) {
      * @since 6.1.1
     */
     define('TEACHPRESS_DOI_RESOLVER', 'https://dx.doi.org/');}
-
+    
+if ( !defined('TEACHPRESS_LOAD_ACADEMICONS') ) {
+    /**
+     * This value defines if the URL for the DOI resolve service
+     * @since 6.3
+    */
+    define('TEACHPRESS_LOAD_ACADEMICONS', true);}
+    
+if ( !defined('TEACHPRESS_LOAD_FONT_AWESOME') ) {
+    /**
+     * This value defines if the URL for the DOI resolve service
+     * @since 6.3
+    */
+    define('TEACHPRESS_LOAD_FONT_AWESOME', true);}
 
 /*********/
 /* Menus */
@@ -352,6 +365,7 @@ include_once("core/class-cite-object.php");
 include_once("core/class-document-manager.php");
 include_once("core/class-export.php");
 include_once("core/class-html.php");
+include_once("core/class-icons.php");
 include_once("core/class-mail.php");
 include_once("core/database.php");
 include_once("core/deprecated.php");
@@ -377,7 +391,7 @@ if ( !class_exists( 'PARSEENTRIES' ) ) {
  * @return string
 */
 function get_tp_version() {
-    return '6.2.4';
+    return '6.3b';
 }
 
 /**
@@ -560,15 +574,27 @@ function tp_register_tinymce_js ($plugins) {
  * Admin interface script loader
  */
 function tp_backend_scripts() {
-    // Define $page
+    $version = get_tp_version();
     $page = isset($_GET['page']) ? $_GET['page'] : '';
-    wp_enqueue_style('teachpress-print-css', plugins_url() . '/teachpress/styles/print.css', false, false, 'print');
+    
+    wp_enqueue_style('teachpress-print-css', plugins_url() . '/teachpress/styles/print.css', false, $version, 'print');
     // Load scripts only, if it's a teachpress page
     if ( strpos($page, 'teachpress') !== false || strpos($page, 'publications') !== false ) {
         wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
-        wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css');
+        wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css', false, $version);
         wp_enqueue_script('media-upload');
         add_thickbox();
+        
+        /* academicons v1.8.6 */
+        if ( TEACHPRESS_LOAD_ACADEMICONS === true ) {
+            wp_enqueue_style('academicons', plugins_url() . '/teachpress/includes/academicons/css/academicons.min.css');
+        }
+
+        /* Font Awesome Free 5.10.1 */
+        if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
+            wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css'); 
+        }
+        
         // Load jQuery + ui plugins + plupload
         wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
         wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
@@ -586,20 +612,35 @@ function tp_backend_scripts() {
  */
 function tp_frontend_scripts() {
     $version = get_tp_version();
-    echo chr(13) . chr(10) . '<!-- teachPress -->' . chr(13) . chr(10);
-    echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/frontend.js?ver=' . $version . '"></script>' . chr(13) . chr(10);
-    echo '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">' . chr(13) . chr(10);
-    echo '<link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">' . chr(13) . chr(10);
     
+    /* start */
+    echo chr(13) . chr(10) . '<!-- teachPress -->' . chr(13) . chr(10);
+    
+    /* tp-frontend script */
+    echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/frontend.js?ver=' . $version . '"></script>' . chr(13) . chr(10);
+    
+    /* tp-frontend style */
     $value = get_tp_option('stylesheet');
     if ($value == '1') {
         echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . chr(13) . chr(10);
     }
-
+    
+    /* altmetric support */
     if ( TEACHPRESS_ALTMETRIC_SUPPORT === true ) {
         echo '<script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>' . chr(13) . chr(10);
     }
+    
+     /* academicons v1.8.6 */
+    if ( TEACHPRESS_LOAD_ACADEMICONS === true ) {
+        wp_enqueue_style('academicons', plugins_url() . '/teachpress/includes/academicons/css/academicons.min.css');
+    }
 
+    /* Font Awesome Free 5.10.1 */
+    if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
+        wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css'); 
+    }
+    
+    /* END */ 
     echo '<!-- END teachPress -->' . chr(13) . chr(10);
 }
 

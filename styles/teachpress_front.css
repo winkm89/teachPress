@@ -76,8 +76,9 @@ td.tp_pub_number, td.tp_pub_number_simple {vertical-align: top; padding: 8px; bo
 .tp_close_menu {margin-top:1px; margin-bottom:1px;}
 .tp_close {cursor:pointer; font-weight: bold;}
 .tp_pub_link img {margin: 0; width: 17px; height: 17px; padding: 0 1px 0 1px; display: inline;}
-ul.tp_pub_list li {padding: 3px 0 3px 0; list-style: none; margin-left:10px;}
-a.tp_pub_list {padding: 5px 0 5px 22px; background: no-repeat 0 3px; background-size: 18px 18px;}
+ul.tp_pub_list li {padding: 3px 0 3px 0; list-style: none; margin-left:10px; font-size: small}
+a.tp_pub_list {padding: 5px 0 5px 0px; background: no-repeat 0 3px; background-size: 18px 18px;}
+ul.tp_pub_list li i {width: 25px;}
 a.tp_show {color: inherit;}
 a.tp_show_block {font-weight: bold; text-decoration: none;}
 /* images */
