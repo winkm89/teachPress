@@ -155,6 +155,7 @@ class tp_bibtex_import {
      * @access public
      */
     public static function parse_month ($input) {
+        $output = '';
         if ( strlen($input) > 2 ) {
             $date = date_parse($input);
             $output = ( $date['month'] < 10 ) ? '0' . $date['month'] : $date['month'];
