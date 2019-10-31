@@ -149,7 +149,8 @@ class tp_tables {
                     `image_url` VARCHAR(400),
                     `strict_signup` INT(1),
                     `use_capabilites` INT(1),
-                    PRIMARY KEY (`course_id`)
+                    PRIMARY KEY (`course_id`),
+                    KEY `semester` (`semester`)
                 ) $charset_collate;");
         
         // test engine
@@ -175,7 +176,9 @@ class tp_tables {
                     `wp_id` INT UNSIGNED,
                     `course_id` INT UNSIGNED,
                     `capability` VARCHAR(100),
-                    PRIMARY KEY (`cap_id`)
+                    PRIMARY KEY (`cap_id`),
+                    KEY `ind_course_id` (`course_id`),
+                    KEY `ind_wp_id` (`wp_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -204,7 +207,8 @@ class tp_tables {
                     `size` BIGINT,
                     `sort` INT,
                     `course_id` INT UNSIGNED,
-                    PRIMARY KEY (doc_id)
+                    PRIMARY KEY (doc_id),
+                    KEY `ind_course_id` (`course_id`)
                 ) $charset_collate;");
          
         // test engine
@@ -230,7 +234,8 @@ class tp_tables {
                     `course_id` INT UNSIGNED,
                     `meta_key` VARCHAR(255),
                     `meta_value` TEXT,
-                    PRIMARY KEY (meta_id)
+                    PRIMARY KEY (meta_id),
+                    KEY `ind_course_id` (`course_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -257,7 +262,8 @@ class tp_tables {
                     `lastname` VARCHAR(100),
                     `userlogin` VARCHAR (100),
                     `email` VARCHAR(50),
-                    PRIMARY KEY (wp_id)
+                    PRIMARY KEY (wp_id),
+                    KEY `ind_userlogin` (`userlogin`)
                 ) $charset_collate;");
         
         // test engine
@@ -283,7 +289,8 @@ class tp_tables {
                     `wp_id` INT UNSIGNED,
                     `meta_key` VARCHAR(255),
                     `meta_value` TEXT,
-                    PRIMARY KEY (meta_id)
+                    PRIMARY KEY (meta_id),
+                    KEY `ind_wp_id` (`wp_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -310,7 +317,10 @@ class tp_tables {
                     `wp_id` INT UNSIGNED,
                     `waitinglist` INT(1) UNSIGNED,
                     `date` DATETIME,
-                    PRIMARY KEY (con_id)
+                    PRIMARY KEY (con_id),
+                    KEY `ind_course_id` (`course_id`),
+                    KEY `ind_wp_id` (`wp_id`),
+                    KEY `ind_date` (`date`)
                 ) $charset_collate;");
         
         // test engine
@@ -322,6 +332,10 @@ class tp_tables {
      * @param string $charset_collate
      * @since 5.0.0
      */
+    
+
+
+    
     public static function add_table_artefacts($charset_collate) {
         global $wpdb;
         
@@ -339,7 +353,8 @@ class tp_tables {
                     `scale` TEXT,
                     `passed` INT(1),
                     `max_value` VARCHAR(50),
-                    PRIMARY KEY (artefact_id)
+                    PRIMARY KEY (artefact_id),
+                    KEY `ind_course_id` (`course_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -372,7 +387,10 @@ class tp_tables {
                     `exam_date` DATETIME,
                     `comment` TEXT,
                     `passed` INT(1),
-                    PRIMARY KEY (assessment_id)
+                    PRIMARY KEY (assessment_id),
+                    KEY `ind_course_id` (`course_id`),
+                    KEY `ind_artefact_id` (`artefact_id`),
+                    KEY `ind_wp_id` (`wp_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -505,7 +523,13 @@ class tp_tables {
                     `modified` DATETIME,
                     `use_capabilites` INT(1),
                     `import_id` INT,
-                    PRIMARY KEY (pub_id)
+                    PRIMARY KEY (pub_id),
+                    KEY `ind_type` (`type`),
+                    KEY `ind_date` (`date`),
+                    KEY `ind_import_id` (`import_id`),
+                    KEY `ind_key` (`key`),
+                    KEY `ind_bibtex_key` (`bibtex`),
+                    KEY `ind_status` (`status`)
                 ) $charset_collate;");
         
         // test engine
@@ -531,7 +555,8 @@ class tp_tables {
                     `pub_id` INT UNSIGNED,
                     `meta_key` VARCHAR(255),
                     `meta_value` TEXT,
-                    PRIMARY KEY (meta_id)
+                    PRIMARY KEY (meta_id),
+                    KEY `ind_pub_id` (`pub_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -557,7 +582,9 @@ class tp_tables {
                     `wp_id` INT UNSIGNED,
                     `pub_id` INT UNSIGNED,
                     `capability` VARCHAR(100),
-                    PRIMARY KEY (`cap_id`)
+                    PRIMARY KEY (`cap_id`),
+                    KEY `ind_pub_id` (`pub_id`),
+                    KEY `ind_wp_id` (`wp_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -586,7 +613,8 @@ class tp_tables {
                     `size` BIGINT,
                     `sort` INT,
                     `pub_id` INT UNSIGNED,
-                    PRIMARY KEY (doc_id)
+                    PRIMARY KEY (doc_id),
+                    KEY `ind_pub_id` (`pub_id`)
                 ) $charset_collate;");
          
         // test engine
@@ -635,7 +663,8 @@ class tp_tables {
         dbDelta("CREATE TABLE " . TEACHPRESS_TAGS . " (
                     `tag_id` INT UNSIGNED AUTO_INCREMENT,
                     `name` VARCHAR(300),
-                    PRIMARY KEY (tag_id)
+                    PRIMARY KEY (tag_id),
+                    KEY `ind_tag_name` (`name`)
                 ) $charset_collate;");
         
         // test engine
@@ -660,7 +689,9 @@ class tp_tables {
                     `con_id` INT UNSIGNED AUTO_INCREMENT,
                     `pub_id` INT UNSIGNED,
                     `tag_id` INT UNSIGNED,
-                    PRIMARY KEY (con_id)
+                    PRIMARY KEY (con_id),
+                    KEY `ind_pub_id` (`pub_id`),
+                    KEY `ind_tag_id` (`tag_id`)
                 ) $charset_collate;");
         
         // test engine
@@ -685,7 +716,9 @@ class tp_tables {
                     `bookmark_id` INT UNSIGNED AUTO_INCREMENT,
                     `pub_id` INT UNSIGNED,
                     `user` INT UNSIGNED,
-                    PRIMARY KEY (bookmark_id)
+                    PRIMARY KEY (bookmark_id),
+                    KEY `ind_pub_id` (`pub_id`),
+                    KEY `ind_user` (`user`)
                     ) $charset_collate;");
         
         // test engine
@@ -710,7 +743,8 @@ class tp_tables {
                     `author_id` INT UNSIGNED AUTO_INCREMENT,
                     `name` VARCHAR(500),
                     `sort_name` VARCHAR(500),
-                    PRIMARY KEY (author_id)
+                    PRIMARY KEY (author_id),
+                    KEY `ind_sort_name` (`sort_name`)
                 ) $charset_collate;");
         
         // test engine
@@ -737,7 +771,9 @@ class tp_tables {
                     `author_id` INT UNSIGNED,
                     `is_author` INT(1),
                     `is_editor` INT(1),
-                    PRIMARY KEY (con_id)
+                    PRIMARY KEY (con_id),
+                    KEY `ind_pub_id` (`pub_id`),
+                    KEY `ind_author_id` (`author_id`)
                 ) $charset_collate;");
         
         // test engine
