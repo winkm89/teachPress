@@ -4,11 +4,13 @@
  * 
  * @package teachpress\admin\publications
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
+ * @since 5.0.0
  */
 
 /**
  * Defines the screen options for edit_tags page
  * @global object $tp_admin_edit_tags_page
+ * @since 5.0.0
  */
 function tp_edit_tags_page_screen_options () {
     global $tp_admin_edit_tags_page;
@@ -44,7 +46,7 @@ function tp_tags_page(){
         $per_page = $screen->get_option( 'per_page', 'default' );
     }
     
-    echo '<div class="wrap" style="max-width:700px;">';
+    echo '<div class="wrap" style="max-width:800px;">';
     echo '<h2>' . __('Tags') . '</h2>';
     echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
     echo '<input name="page" type="hidden" value="teachpress/tags.php" />';
@@ -131,17 +133,18 @@ class tp_tags_page {
             <input type="search" name="search" id="pub_search_field" value="<?php echo stripslashes($search); ?>"/>
             <input type="submit" name="button" id="button" value="<?php _e('Search','teachpress'); ?>" class="button-secondary"/>
         </div>
-        <div class="tablenav" style="padding-bottom:5px;"> 
-            <select name="action1">
-                <option value="">- <?php _e('Bulk actions','teachpress'); ?> -</option>
-                <option value="delete"><?php _e('Delete','teachpress'); ?></option>
-            </select>
-            <input name="OK" value="OK" type="submit" class="button-secondary"/>
+        <div class="tablenav" style="padding-bottom:5px;">
+            <div class="alignleft actions">
+                <select name="action1">
+                    <option value="">- <?php _e('Bulk actions','teachpress'); ?> -</option>
+                    <option value="delete"><?php _e('Delete','teachpress'); ?></option>
+                </select>
+                <input name="OK" value="OK" type="submit" class="button-secondary"/>
+            </div>
             <?php
             echo tp_page_menu($args);
             ?>
         </div>
-        <div style="width:700px;">
         <table border="0" cellspacing="0" cellpadding="0" class="widefat">
             <thead>
             <tr>
@@ -189,7 +192,6 @@ class tp_tags_page {
             }
             ?>
             </div>
-        </div>
         </div>
         
     <?php

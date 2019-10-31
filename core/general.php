@@ -278,7 +278,7 @@ function tp_page_menu ($atts) {
             $next_links = '<a href="' . $atts['page_link'] . $limit_name . '=' . ($current_page + 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('next page','teachpress') . '" class="page-numbers button">&rsaquo;</a> <a href="' . $atts['page_link'] . $limit_name . '=' . $num_pages . '&amp;' . $atts['link_attributes'] . '" title="' . __('last page','teachpress') . '" class="page-numbers button">&raquo;</a> ';
         }
         else {
-            $next_links = '<a class="next-page disabled">&rsaquo;</a> <a class="last-page disabled">&raquo;</a> ';
+            $next_links = '<a class="next-page button disabled">&rsaquo;</a> <a class="last-page button disabled">&raquo;</a> ';
         }
 
         // return

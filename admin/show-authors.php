@@ -112,7 +112,7 @@ class tp_show_authors_page {
             $curr_page = 1;
         }
         
-        echo '<div class="wrap" style="max-width:700px;">';
+        echo '<div class="wrap" style="max-width:800px;">';
         echo '<h2>' . __('Authors','teachpress') . '</h2>';
         echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
         echo '<input name="page" type="hidden" value="' . $page . '" />';
@@ -120,6 +120,7 @@ class tp_show_authors_page {
         // actions
         self::actions($action, $checkbox, $page, $search, $curr_page);
 
+        // Searchbox
         echo '<div id="tp_searchbox">';
         if ($search != "") {
             echo '<a href="admin.php?page=teachpress/authors.php" class="tp_search_cancel" title="' . __('Cancel the search','teachpress') . '">X</a>';
@@ -127,13 +128,17 @@ class tp_show_authors_page {
         echo '<input type="search" name="search" id="pub_search_field" value="' . stripslashes($search) . '"/>';
         echo '<input type="submit" name="button" id="button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';
         echo '</div>';
-
+        // END Searchbox
+        
+        // Tablenav actions
         echo '<div class="tablenav" style="padding-bottom:5px;">';
+        echo '<div class="alignleft actions">';
         echo '<select name="action1">';
         echo '<option value="">- ' . __('Bulk actions','teachpress') . ' -</option>';
         echo '<option value="delete">' . __('Delete','teachpress') . '</option>';
         echo '</select>';
         echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
+        echo '</div>';
         $test = tp_authors::get_authors( array( 'count' => true, 'search' => $search, 'include_editors' => true ) );
         $args = array('number_entries' => $test,
                           'entries_per_page' => $number_messages,
@@ -143,8 +148,10 @@ class tp_show_authors_page {
                           'link_attributes' => "search=$search");
         echo tp_page_menu($args);
         echo '</div>';
+        // END Tablenav actions
 
-        echo '<table class="widefat" style="width:700px;">';
+        // Main table
+        echo '<table class="widefat">';
         echo '<thead id="tp_authors_table_header">';
         echo '<td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" /></td>';
         echo '<th>' . __('Name','teachpress') . '</th>';
@@ -160,7 +167,9 @@ class tp_show_authors_page {
         }
         echo '</tbody>';
         echo '</table>';
+        // END Main Table
 
+        // Tablenav actions
         echo '<div class="tablenav bottom">';
         echo '<div class="alignleft actions">';
         echo '<select name="action2">';
@@ -190,6 +199,7 @@ class tp_show_authors_page {
             }
         echo '</div>';
         echo '</div>';
+        // END Tablenav actions
 
         echo '</form>';
         self::print_scripts();
