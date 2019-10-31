@@ -3126,4 +3126,15 @@ class tp_db_helpers {
         tp_options::add_option($column, $value, $table);
     }
     
+    /**
+     * Returns the indexes of a given table
+     * @param string $db_name
+     * @return array
+     * @since 7.0.0
+     */
+    public static function get_db_index ($db_name) {
+        global $wpdb;
+        return $wpdb->get_results("SHOW INDEX FROM " . $db_name, ARRAY_A);
+    }
+    
 }
