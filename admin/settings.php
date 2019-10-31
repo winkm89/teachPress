@@ -162,9 +162,9 @@ class tp_settings_page {
     private static function get_about_dialog () {
         echo '<div id="dialog" title="About">
                 <div style="text-align: center;">
-                <p><img src="' . plugins_url() . '/teachpress/images/misc/about.jpg" style="border-radius: 130px; width: 250px; height: 250px;" title="Image by Ashwin Vaswani" /></p>
+                <p><img src="' . plugins_url() . '/teachpress/images/misc/about.jpg" style="border-radius: 130px; width: 250px; height: 250px;" title="Photo by Dilyara Garifullina on Unsplash" /></p>
                 <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
-                <p style="font-size: 20px; font-weight: bold; color: #ffcc00;">' . get_tp_option('db-version') . ' "Banana Cream Pie"</p>
+                <p style="font-size: 20px; font-weight: bold; color: #e6bb3a;">' . get_tp_option('db-version') . ' "Apple Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="https://github.com/winkm89/teachPress/">teachPress on GitHub</a> | <a href="https://github.com/winkm89/teachPress/wiki">Dokumentation</a> | <a href="https://github.com/winkm89/teachPress/wiki/Changelog">Changelog</a></p>
                 <p>&copy;2008-2019 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
