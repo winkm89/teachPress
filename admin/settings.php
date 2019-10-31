@@ -70,7 +70,7 @@ class tp_settings_page {
         // delete settings
         if ( isset( $_GET['delete'] ) ) {
             tp_options::delete_option($_GET['delete']);
-            get_tp_message(__('Deleted', 'teachPress'));
+            get_tp_message(__('Deleted', 'teachpress'));
         }
         
         // Delete data field
@@ -131,7 +131,7 @@ class tp_settings_page {
 
         /* General */
         if ($tab === '' || $tab === 'general') {
-            self::get_general_tab();
+            self::get_general_tab($site);
         }
         /* Courses */
         if ( $tab === 'courses' ) { 
@@ -148,6 +148,10 @@ class tp_settings_page {
         /* Templates */
         if ( $tab === 'publication_templates' ) {
             self::get_template_tab();
+        }
+        /* DB Status Tab */
+        if ( $tab === 'db_status' ) {
+            self::get_db_status_tab();
         }
 
         echo '</form>';
@@ -264,20 +268,24 @@ class tp_settings_page {
     
     /**
      * Shows the tab for general options
+     * @param sting $site
      * @access private
      * @since 5.0.0
      */
-    private static function get_general_tab() {
+    private static function get_general_tab($site) {
 
         echo '<table class="form-table">';
         echo '<thead>';
 
+        // Version
         echo '<tr>';
         echo '<th width="160">' . __('teachPress version','teachpress') . '</th>';
         echo '<td width="250"><a id="tp_open_readme" class="tp_open_readme">' . get_tp_option('db-version') . '</a></td>';
         echo '<td></td>';
+        echo '</td>';
         echo '</tr>';
 
+        // Components
         echo '<tr>';
         echo '<th>' . __('Components','teachpress') . '</th>';
         echo '<td style="vertical-align: top;">';
@@ -292,6 +300,7 @@ class tp_settings_page {
         echo '</td>';
         echo '</tr>';
 
+        // Related content
         echo '<tr>';
         echo '<th>' . __('Related content','teachpress') . '</th>';
         echo '<td>';
@@ -301,6 +310,7 @@ class tp_settings_page {
         echo '<td style="vertical-align: top;">' . __('If you create a course or a publication you can define a link to related content. It is kind of a "more information link", which helps you to connect a course/publication with a page. If you want to use custom post types instead of pages, so you can set it here.','teachpress') . '</td>';
         echo '</tr>';
 
+        // Frontend styles
         echo '<tr>';
         echo '<th><label for="stylesheet">' . __('Frontend styles','teachpress') . '</label></th>';
         echo '<td style="vertical-align: top;">';
@@ -320,6 +330,7 @@ class tp_settings_page {
         echo '<td>' . __('Select which style sheet you will use. teachpress_front.css is the teachPress default style. If you have created your own style in the default style sheet of your theme, you can activate this here.','teachpress') . '</td>';
         echo '</tr>';
 
+        // User roles
         tp_settings_page::get_user_role_form('userrole_publications');
         tp_settings_page::get_user_role_form('userrole_courses');
         
@@ -327,6 +338,7 @@ class tp_settings_page {
         echo '<th colspan="3"><h3>' . __('Enrollment system','teachpress') . '</h3></th>';
         echo '</tr>';
 
+        // Current semester
         echo '<tr>';
         echo '<th><label for="semester">' . __('Current term','teachpress') . '</label></th>';
         echo '<td><select name="semester" id="semester" title="' . __('Current term','teachpress') . '">'; 
@@ -348,6 +360,7 @@ class tp_settings_page {
         echo '<td>' . __('Here you can change the current term. This value is used for the default settings for all menus.','teachpress') . '</td>';
         echo '</tr>';
 
+        // Enrollment mode
         echo '<tr>';
         echo '<th width="160"><label for="login_mode">' . __('Mode','teachpress') . '</label></th>';
         echo '<td width="210" style="vertical-align: top;">';
@@ -367,6 +380,7 @@ class tp_settings_page {
         echo '<td>' . __('Standard - teachPress has a separate registration. This is usefull if you have an auto login for WordPress or most of your users are registered in your blog, for example in a network.','teachpress') . '<br />' . __('Integrated - teachPress deactivates the own registration and uses all available data from WordPress. This is usefull, if most of your users has not an acount in your blog.','teachpress') . '</td>';
         echo '</tr>';
 
+        // Prevent Sign out
         echo '<tr>';
         echo '<th><label for="sign_out">' . __('Prevent sign out','teachpress') . '</label></th>';
         echo '<td><select name="sign_out" id="sign_out" title="' . __('Prevent sign out','teachpress') . '">';
@@ -385,11 +399,27 @@ class tp_settings_page {
         echo '<td>' . __('Prevent sign out for your users','teachpress') . '</td>';
         echo '</tr>';
 
+        echo '<tr>';
+        echo '<th colspan="3"><h3>' . __('Misc','teachpress') . '</h3></th>';
+        echo '</tr>';
+        
+        echo '<tr>';
+        echo '<th>' . __('Database','teachpress') . '</th>';
+        echo '<td>';
+        echo '<a href="' .$site . '&amp;tab=db_status">' . __('Index status','teachpress') . '</a>';
+        echo '</td>';
+        echo '</tr>';
+        
+        echo '<tr>';
+        echo '<th>' . __('Uninstalling','teachpress') . '</th>';
+        echo '<td>';
+        echo '<a class="tp_row_delete" href="options-general.php?page=teachpress/settings.php&amp;tab=general&amp;drop_tp=1">' . __('Remove teachPress from database','teachpress') . '</a>';
+        echo '</td>';
+        echo '</tr>';
+        
         echo '</thead>';
         echo '</table>';
-
-        echo '<h3>' . __('Uninstalling','teachpress') . '</h3> ';
-        echo '<a href="options-general.php?page=teachpress/settings.php&amp;tab=general&amp;drop_tp=1">' . __('Remove teachPress from database','teachpress') . '</a>';
+        
         echo '<p><input name="einstellungen" type="submit" id="teachpress_settings" value="' . __('Save') . '" class="button-primary" /></p>';
         
         echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/admin_settings.js"></script>';
@@ -624,7 +654,7 @@ class tp_settings_page {
         echo self::list_templates();
         echo '</table>';
     }
-    
+
     /**
      * Creates the list of publication templates
      * @return string
@@ -669,6 +699,89 @@ class tp_settings_page {
         
         $s .= '</table>';
         return $s;
+    }
+    
+    /**
+     * Shows the db status tab
+     * @access private
+     * @since 7.0.0 
+     */
+    private static function get_db_status_tab () {
+        self::list_db_table_index(TEACHPRESS_ARTEFACTS);
+        self::list_db_table_index(TEACHPRESS_ASSESSMENTS);
+        self::list_db_table_index(TEACHPRESS_AUTHORS);
+        self::list_db_table_index(TEACHPRESS_COURSES);
+        self::list_db_table_index(TEACHPRESS_COURSE_CAPABILITES);
+        self::list_db_table_index(TEACHPRESS_COURSE_DOCUMENTS);
+        self::list_db_table_index(TEACHPRESS_COURSE_META);
+        self::list_db_table_index(TEACHPRESS_PUB);
+        self::list_db_table_index(TEACHPRESS_PUB_CAPABILITES);
+        self::list_db_table_index(TEACHPRESS_PUB_DOCUMENTS);
+        self::list_db_table_index(TEACHPRESS_PUB_IMPORTS);
+        self::list_db_table_index(TEACHPRESS_PUB_META);
+        self::list_db_table_index(TEACHPRESS_RELATION);
+        self::list_db_table_index(TEACHPRESS_REL_PUB_AUTH);
+        self::list_db_table_index(TEACHPRESS_SETTINGS);
+        self::list_db_table_index(TEACHPRESS_SIGNUP);
+        self::list_db_table_index(TEACHPRESS_STUD);
+        self::list_db_table_index(TEACHPRESS_STUD_META);
+        self::list_db_table_index(TEACHPRESS_TAGS);
+        self::list_db_table_index(TEACHPRESS_USER);
+    }
+    
+    /**
+     * Returns the list of table indexes for the given database table
+     * @param $db_name
+     * @return string
+     * @access private
+     * @since 7.0.0
+     */
+    private static function list_db_table_index ($db_name) {
+        echo '<h3>' . $db_name . '</h3>';
+        echo '<table class="widefat">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>' . __('Key_name','teachpress') . '</th>';
+        echo '<th>' . __('Type','teachpress') . '</th>';
+        echo '<th>' . __('Unique','teachpress') . '</th>';
+        echo '<th>' . __('Packed','teachpress') . '</th>';
+        echo '<th>' . __('Column','teachpress') . '</th>';
+        echo '<th>' . __('Cardinality','teachpress') . '</th>';
+        echo '<th>' . __('Collation','teachpress') . '</th>';
+        echo '<th>NULL</th>';
+        echo '<th>' . __('Seq index','teachpress') . '</th>';
+        echo '</tr>';
+        echo '</thead>';
+        
+        $result = tp_db_helpers::get_db_index($db_name);
+        foreach ($result as $row) {
+            // For unique field
+            $unique = ( $row['Non_unique'] === '0' ) ? __('No') : __('Yes');
+            
+            // For NULL field
+            if ( $row['Null'] === 'YES' ) {
+                $n = __('Yes');
+            }
+            else if ( $row['Null'] === 'NO' ) {
+                $n = __('No');
+            }
+            else {
+                $n = $row['Null'];
+            }
+            
+            echo '<tr>';
+            echo '<td>' . $row['Key_name'] . '</td>';
+            echo '<td>' . $row['Index_type'] . '</td>';
+            echo '<td>' . $unique . '</td>';
+            echo '<td>' . $row['Packed'] . '</td>';
+            echo '<td>' . $row['Column_name'] . '</td>';
+            echo '<td>' . $row['Cardinality'] . '</td>';
+            echo '<td>' . $row['Collation'] . '</td>';
+            echo '<td>' . $n . '</th>';
+            echo '<td>' . $row['Seq_in_index'] . '</td>';
+            echo '</tr>';
+        }
+        echo '</table>';
     }
     
     /**
