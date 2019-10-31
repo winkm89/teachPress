@@ -3,11 +3,11 @@
 Plugin Name: teachPress
 Plugin URI: http://mtrv.wordpress.com/teachpress/
 Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 6.2.5
+Version: 6.3
 Author: Michael Winkler
 Author URI: http://mtrv.wordpress.com/
 Min WP Version: 3.9
-Max WP Version: 5.1.1
+Max WP Version: 5.3
 Text Domain: teachpress
 Domain Path: /languages
 GitHub Plugin URI: https://github.com/winkm89/teachPress
@@ -34,239 +34,59 @@ GitHub Branch: master
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-/*************/
-/* Constants */
-/*************/
+/************/
+/* Includes */
+/************/
 
-/*
- * If you want, you can owerwrite this parameters in your wp-config.php.
- */
+define('TEACHPRESS_GLOBAL_PATH', plugin_dir_path(__FILE__));
 
-global $wpdb;
+// Loads contstants
+include_once("core/constants.php");
 
-if ( !defined('TEACHPRESS_ARTEFACTS') ) {
-    /**
-     * This constant defines the table name for teachpress_artefacts.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_ARTEFACTS', $wpdb->prefix . 'teachpress_artefacts');}
+// Core functions
+include_once("core/admin.php");
+include_once("core/class-ajax.php");
+include_once("core/class-bibtex.php");
+include_once("core/class-bibtex-import.php");
+include_once("core/class-bibtex-macros.php");
+include_once("core/class-cite-object.php");
+include_once("core/class-document-manager.php");
+include_once("core/class-export.php");
+include_once("core/class-html.php");
+include_once("core/class-icons.php");
+include_once("core/class-mail.php");
+include_once("core/database.php");
+include_once("core/deprecated.php");
+include_once("core/enrollments.php");
+include_once("core/feeds.php");
+include_once("core/general.php");
+include_once("core/shortcodes.php");
+include_once("core/templates.php");
+include_once("core/widgets.php");
 
-if ( !defined('TEACHPRESS_ASSESSMENTS') ) {
-    /**
-     * This constant defines the table name for teachpress_assessments.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_ASSESSMENTS', $wpdb->prefix . 'teachpress_assessments');}
+// Admin menus
+if ( is_admin() ) {
+    include_once("admin/add-course.php");
+    include_once("admin/add-publication.php");
+    include_once("admin/add-students.php");
+    include_once("admin/create-lists.php");
+    include_once("admin/edit-student.php");
+    include_once("admin/edit-tags.php");
+    include_once("admin/import-publications.php");
+    include_once("admin/mail.php");
+    include_once("admin/settings.php");
+    include_once("admin/show-authors.php");
+    include_once("admin/show-courses.php");
+    include_once("admin/show-publications.php");
+    include_once("admin/show-single-course.php");
+    include_once("admin/show-students.php");
+}
 
-if ( !defined('TEACHPRESS_STUD') ) {
-    /**
-     * This constant defines the table name for teachpress_stud.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_STUD', $wpdb->prefix . 'teachpress_stud');}
-
-if ( !defined('TEACHPRESS_STUD_META') ) {
-    /**
-     * This constant defines the table name for teachpress_stud_meta.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_STUD_META', $wpdb->prefix . 'teachpress_stud_meta');}
-
-if ( !defined('TEACHPRESS_COURSES') ) {
-    /**
-     * This constant defines the table name for teachpress_courses.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_COURSES', $wpdb->prefix . 'teachpress_courses');}
-
-if ( !defined('TEACHPRESS_COURSE_META') ) {
-    /**
-     * This constant defines the table name for teachpress_course_meta.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_COURSE_META', $wpdb->prefix . 'teachpress_course_meta');}
-
-if ( !defined('TEACHPRESS_COURSE_CAPABILITES') ) {
-    /**
-     * This constant defines the table name for teachpress_course_cababilites.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_COURSE_CAPABILITES', $wpdb->prefix . 'teachpress_course_capabilites');}
-
-if ( !defined('TEACHPRESS_COURSE_DOCUMENTS') ) {
-    /**
-     * This constant defines the table name for teachpress_course_documents.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_COURSE_DOCUMENTS', $wpdb->prefix . 'teachpress_course_documents');}
-
-if ( !defined('TEACHPRESS_SIGNUP') ) {
-    /**
-     * This constant defines the table name for teachpress_signups.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_SIGNUP', $wpdb->prefix . 'teachpress_signup');}
-
-if ( !defined('TEACHPRESS_SETTINGS') ) {
-    /**
-     * This constant defines the table name for teachpress_settings.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_SETTINGS', $wpdb->prefix . 'teachpress_settings');}
-
-if ( !defined('TEACHPRESS_PUB') ) {
-    /**
-     * This constant defines the table name for teachpress_pub.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_PUB', $wpdb->prefix . 'teachpress_pub');}
-
-if ( !defined('TEACHPRESS_PUB_META') ) {
-    /**
-     * This constant defines the table name for teachpress_pub_meta.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_PUB_META', $wpdb->prefix . 'teachpress_pub_meta');}
-
-if ( !defined('TEACHPRESS_PUB_CAPABILITES') ) {
-    /**
-     * This constant defines the table name for teachpress_course_cababilites.
-     * @since 6.0.0
-    */
-    define('TEACHPRESS_PUB_CAPABILITES', $wpdb->prefix . 'teachpress_pub_capabilites');}
-
-if ( !defined('TEACHPRESS_PUB_DOCUMENTS') ) {
-    /**
-     * This constant defines the table name for teachpress_course_documents.
-     * @since 6.0.0
-    */
-    define('TEACHPRESS_PUB_DOCUMENTS', $wpdb->prefix . 'teachpress_pub_documents');}
-
-if ( !defined('TEACHPRESS_PUB_IMPORTS') ) {
-    /**
-     * This constant defines the table name for teachpress_pub_imports.
-     * @since 6.0.0
-    */
-    define('TEACHPRESS_PUB_IMPORTS', $wpdb->prefix . 'teachpress_pub_imports');}    
-    
-if ( !defined('TEACHPRESS_TAGS') ) {
-    /**
-     * This constant defines the table name for teachpress_tags.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_TAGS', $wpdb->prefix . 'teachpress_tags');}
-
-if ( !defined('TEACHPRESS_RELATION') ) {
-    /**
-     * This constant defines the table name for teachpress_relation. This is the relationship tags to publications.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_RELATION', $wpdb->prefix . 'teachpress_relation');}
-
-if ( !defined('TEACHPRESS_USER') ) {
-    /**
-     * This constant defines the table name for teachpress_user. This is the relationship publications to users.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_USER', $wpdb->prefix . 'teachpress_user');}
-
-if ( !defined('TEACHPRESS_AUTHORS') ) {
-    /**
-     * This constant defines the table name for teachpress_authors.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_AUTHORS', $wpdb->prefix . 'teachpress_authors');}
-
-if ( !defined('TEACHPRESS_REL_PUB_AUTH') ) {
-    /**
-     * This constant defines the table name for teachpress_rel_pub_auth. This is the relationship publications to authors.
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_REL_PUB_AUTH', $wpdb->prefix . 'teachpress_rel_pub_auth');}
-
-if ( !defined('TEACHPRESS_TIME_LIMIT') ) {
-    /**
-     * This value is used for PHP's set_time_limit(). The plugin sets this value before an import or export of publications
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_TIME_LIMIT', 240);}
-
-if ( !defined('TEACHPRESS_FILE_LINK_CSS_CLASS') ) {
-    /**
-     * This value defines the CSS classes for file links which are inserted via the tinyMCE plugin
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_FILE_LINK_CSS_CLASS', 'linksecure tp_file_link');}
-
-if ( !defined('TEACHPRESS_COURSE_MODULE') ) {
-    /**
-     * This value defines if the course module of teachPress is active
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_COURSE_MODULE', true);}
-
-if ( !defined('TEACHPRESS_PUBLICATION_MODULE') ) {
-    /**
-     * This value defines if the publication module of teachPress is active
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_PUBLICATION_MODULE', true);}
-
-if ( !defined('TEACHPRESS_ERROR_REPORTING') ) {
-    /**
-     * This value defines if the error reporting is active or not
-     * @since 5.0.13
-    */
-    define('TEACHPRESS_ERROR_REPORTING', false);}
-
-if ( !defined('TEACHPRESS_FOREIGN_KEY_CHECKS') ) {
-    /**
-     * This value defines if foreign key checks are enabled or disabled, while adding database tables
-     * @since 5.0.16
-    */
-    define('TEACHPRESS_FOREIGN_KEY_CHECKS', true);}
-
-if ( !defined('TEACHPRESS_TEMPLATE_PATH') ) {
-    /**
-     * This value defines the template path
-     * @since 6.0.0
-    */
-    define('TEACHPRESS_TEMPLATE_PATH', plugin_dir_path(__FILE__) . 'templates/');}
-
-if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
-    /**
-     * This value defines the template url
-     * @since 6.0.0
-    */
-    define('TEACHPRESS_TEMPLATE_URL', plugins_url() . '/teachpress/templates/');}
-
-if ( !defined('TEACHPRESS_ALTMETRIC_SUPPORT') ) {
-    /**
-     * This value defines if the altmetric support is available (loads external sources)
-     * @since 6.0.0
-    */
-    define('TEACHPRESS_ALTMETRIC_SUPPORT', false);}
-    
-if ( !defined('TEACHPRESS_DOI_RESOLVER') ) {
-    /**
-     * This value defines if the URL for the DOI resolve service
-     * @since 6.1.1
-    */
-    define('TEACHPRESS_DOI_RESOLVER', 'https://dx.doi.org/');}
-    
-if ( !defined('TEACHPRESS_LOAD_ACADEMICONS') ) {
-    /**
-     * This value defines if the URL for the DOI resolve service
-     * @since 6.3
-    */
-    define('TEACHPRESS_LOAD_ACADEMICONS', true);}
-    
-if ( !defined('TEACHPRESS_LOAD_FONT_AWESOME') ) {
-    /**
-     * This value defines if the URL for the DOI resolve service
-     * @since 6.3
-    */
-    define('TEACHPRESS_LOAD_FONT_AWESOME', true);}
+// BibTeX Parse
+if ( !class_exists( 'PARSEENTRIES' ) ) {
+    include_once("includes/bibtexParse/PARSEENTRIES.php");
+    include_once("includes/bibtexParse/PARSECREATORS.php");
+}
 
 /*********/
 /* Menus */
@@ -331,55 +151,6 @@ function tp_add_menu2() {
  */
 function tp_add_menu_settings() {
     add_options_page(__('teachPress Settings','teachpress'),'teachPress','administrator','teachpress/settings.php', 'tp_show_admin_settings');
-}
-
-/************/
-/* Includes */
-/************/
-
-// Admin menus
-if ( is_admin() ) {
-    include_once("admin/add-course.php");
-    include_once("admin/add-publication.php");
-    include_once("admin/add-students.php");
-    include_once("admin/create-lists.php");
-    include_once("admin/edit-student.php");
-    include_once("admin/edit-tags.php");
-    include_once("admin/import-publications.php");
-    include_once("admin/mail.php");
-    include_once("admin/settings.php");
-    include_once("admin/show-authors.php");
-    include_once("admin/show-courses.php");
-    include_once("admin/show-publications.php");
-    include_once("admin/show-single-course.php");
-    include_once("admin/show-students.php");
-}
-
-// Core functions
-include_once("core/admin.php");
-include_once("core/class-ajax.php");
-include_once("core/class-bibtex.php");
-include_once("core/class-bibtex-import.php");
-include_once("core/class-bibtex-macros.php");
-include_once("core/class-cite-object.php");
-include_once("core/class-document-manager.php");
-include_once("core/class-export.php");
-include_once("core/class-html.php");
-include_once("core/class-icons.php");
-include_once("core/class-mail.php");
-include_once("core/database.php");
-include_once("core/deprecated.php");
-include_once("core/enrollments.php");
-include_once("core/feeds.php");
-include_once("core/general.php");
-include_once("core/shortcodes.php");
-include_once("core/templates.php");
-include_once("core/widgets.php");
-
-// BibTeX Parse
-if ( !class_exists( 'PARSEENTRIES' ) ) {
-    include_once("includes/bibtexParse/PARSEENTRIES.php");
-    include_once("includes/bibtexParse/PARSECREATORS.php");
 }
 
 /*****************/
