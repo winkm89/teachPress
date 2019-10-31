@@ -101,10 +101,11 @@ function tp_add_menu() {
     global $wp_version;
     global $tp_admin_show_courses_page;
     global $tp_admin_add_course_page;
+    $pos = TEACHPRESS_MENU_POSITION;
 
     $logo = (version_compare($wp_version, '3.8', '>=')) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
 
-    $tp_admin_show_courses_page = add_menu_page(__('Course','teachpress'), __('Course','teachpress'),'use_teachpress_courses', __FILE__, 'tp_show_courses_page', $logo);
+    $tp_admin_show_courses_page = add_menu_page(__('Course','teachpress'), __('Course','teachpress'),'use_teachpress_courses', __FILE__, 'tp_show_courses_page', $logo, $pos);
     $tp_admin_add_course_page = add_submenu_page('teachpress/teachpress.php',__('Add new','teachpress'), __('Add new', 'teachpress'),'use_teachpress_courses','teachpress/add_course.php','tp_add_course_page');
     add_submenu_page('teachpress/teachpress.php',__('Students','teachpress'), __('Students','teachpress'),'use_teachpress_courses', 'teachpress/students.php', 'tp_students_page');
     add_action("load-$tp_admin_add_course_page", 'tp_add_course_page_help');
@@ -127,8 +128,9 @@ function tp_add_menu2() {
     global $tp_admin_edit_tags_page;
 
     $logo = ( version_compare($wp_version, '3.8', '>=') ) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
+    $pos = TEACHPRESS_MENU_POSITION;
 
-    $tp_admin_all_pub_page = add_menu_page (__('Publications','teachpress'), __('Publications','teachpress'), 'use_teachpress', 'publications.php', 'tp_show_publications_page', $logo);
+    $tp_admin_all_pub_page = add_menu_page (__('Publications','teachpress'), __('Publications','teachpress'), 'use_teachpress', 'publications.php', 'tp_show_publications_page', $logo, $pos);
     $tp_admin_your_pub_page = add_submenu_page('publications.php',__('Your publications','teachpress'), __('Your publications','teachpress'),'use_teachpress','teachpress/publications.php','tp_show_publications_page');
     $tp_admin_add_pub_page = add_submenu_page('publications.php',__('Add new', 'teachpress'), __('Add new','teachpress'),'use_teachpress','teachpress/addpublications.php','tp_add_publication_page');
     $tp_admin_import_page = add_submenu_page('publications.php',__('Import/Export'), __('Import/Export'), 'use_teachpress', 'teachpress/import.php','tp_show_import_publication_page');
