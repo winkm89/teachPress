@@ -3,9 +3,9 @@ Contributors: Michael Winkler
 Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 Requires at least: 3.9
-Tested up to: 5.1.1
+Tested up to: 5.3
 Requires PHP: 5.3
-Stable tag: 6.2.5
+Stable tag: 6.3
 
 Manage your courses and publications with teachPress 
 
@@ -134,12 +134,16 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 = 6.3 (beta) =
 * New: Extra icons for URL/Files in the publication overview (#118) (Thanks to Sven Mayer)
-* New: Font Awesome Fonts added
-* New: Academicons Font added
+* New: Font Awesome Fonts added (#118)
+* New: Academicons Font added (#118)
+* New: Menu position is now editable via TEACHPRESS_MENU_POSITION constant (#122)
+* New: Various index columns for most of the database tables added 
 * Changed: Mimetype icons removed 
 * Bugfix: Rename form fields for publications
 * Bugfix: Fix problem with not escaped authors in JavaScript on add-publication.php
 * Bugfix: Fix "A variable mismatch has been detected." error on add-publication.php
+* Bugfix: Fix missing output from tp_bibtex_import::parse_month()
+* Bugfix: Fix missing design for disabled last page button in page menus
 
 = 6.2.5 (07.04.2019) =
 * New: [tplist]: HTML anchor added
