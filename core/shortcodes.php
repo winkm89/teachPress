@@ -828,7 +828,7 @@ function tp_cite_shortcode ($atts) {
  * 
  * possible values of $atts:
  *      author_name (STRING)    last, initials or old, default: simple
- *      author_name (STRING)    last, initials or old, default: initials
+ *      editor_name (STRING)    last, initials or old, default: initials
  *      author_separator (STRING)   The separator for author names, default: ;
  *      editor_separator (STRING)   The separator for editor names, default: ;
  *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y
@@ -1171,7 +1171,7 @@ function tp_cloud_shortcode($atts) {
         'show_type_filter' => ( $atts['show_type_filter'] == '1' ) ? true : false,
         'show_user_filter' => ( $atts['show_user_filter'] == '1' ) ? true : false,
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
-        'with_tags' => 1,
+        'with_tags' => ( $atts['show_tags_as'] == 'none' ) ? 0 : 1,
         'container_suffix' => htmlspecialchars($atts['container_suffix']),
         'show_altmetric_entry' => ($atts['show_altmetric_entry'] == '1') ? true : false,
         'show_altmetric_donut' => ($atts['show_altmetric_donut'] == '1') ? true : false
