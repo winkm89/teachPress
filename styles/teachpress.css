@@ -27,6 +27,7 @@ td.tp_course_child {padding-left:25px; background: url(../images/child.png) no-r
 .options_for_number{display: none;}
 #tp_searchbox {float:right; padding-bottom: 5px;}
 a.tp_search_cancel {font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;}
+.tp_pub_label_status {background-color: orange; color: #fff; display: inline-block; padding: 3px 4px; margin-left: 5px; font-size: 10px; font-weight: bold; line-height: 1; border-radius: 2px; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);}
 
 /* Action menus */
 .tp_row_actions {visibility: hidden;padding: 2px 0 0; color:#ddd;}
