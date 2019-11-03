@@ -3,13 +3,13 @@
  * This file contains all functions of the tp_icons class
  * @package teachpress\core\icons
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
- * @since 6.3
+ * @since 7.0
  */
 
 /**
  * This class contains some function around icon usage
  * @package teachpress\core\icons
- * @since 6.3
+ * @since 7.0
  */
 class tp_icons {
     
@@ -17,7 +17,7 @@ class tp_icons {
      * Returns the suitable icon classes for a given file_path or URL
      * @param string $url_link
      * @return string
-     * @since 6.3
+     * @since 7.0
      */
     public static function get_class ($url_link) {
         $file_endings = self::files();
@@ -51,7 +51,7 @@ class tp_icons {
     /**
      * Returns an array with file endings and their suitable font awesome class names
      * @return string
-     * @since 6.3
+     * @since 7.0
      */
     private static function files () {
         $file = array(
@@ -138,7 +138,7 @@ class tp_icons {
     /**
      * Returns an array with web services and their suitable font awesome class names
      * @return string
-     * @since 6.3
+     * @since 7.0
      */
     private static function web () {
         $web = array(

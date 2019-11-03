@@ -218,14 +218,14 @@ if ( !defined('TEACHPRESS_DOI_RESOLVER') ) {
 if ( !defined('TEACHPRESS_LOAD_ACADEMICONS') ) {
     /**
      * This value defines if the URL for the DOI resolve service
-     * @since 6.3
+     * @since 7.0
     */
     define('TEACHPRESS_LOAD_ACADEMICONS', true);}
     
 if ( !defined('TEACHPRESS_LOAD_FONT_AWESOME') ) {
     /**
      * This value defines if the URL for the DOI resolve service
-     * @since 6.3
+     * @since 7.0
     */
     define('TEACHPRESS_LOAD_FONT_AWESOME', true);}
     
@@ -239,7 +239,7 @@ if ( !defined('TEACHPRESS_MENU_POSITION') ) {
      * For more see:
      * https://developer.wordpress.org/reference/functions/add_menu_page/#default-bottom-of-menu-structure
      * 
-     * @since 6.3
+     * @since 7.0
     */
     define('TEACHPRESS_MENU_POSITION', null);}
 
