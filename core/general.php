@@ -269,7 +269,7 @@ function tp_page_menu ($atts) {
             $back_links = '<a href="' . $atts['page_link'] . $limit_name . '=1&amp;' . $atts['link_attributes'] . '" title="' . __('first page','teachpress') . '" class="page-numbers button">&laquo;</a> <a href="' . $atts['page_link'] . $limit_name . '=' . ($current_page - 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('previous page','teachpress') . '" class="page-numbers button">&lsaquo;</a> ';
         }
         else {
-            $back_links = '<a class="first-page button disabled">&laquo;</a> <a class="prev-page button disabled">&lsaquo;</a> ';
+            $back_links = '<a class="page-numbers button disabled">&laquo;</a> <a class="page-numbers button disabled">&lsaquo;</a> ';
         }
         $page_input = ' <input name="' . $limit_name . '" type="text" size="2" value="' .  $current_page . '" style="text-align:center;" /> ' . __('of','teachpress') . ' ' . $num_pages . ' ';
 
@@ -278,7 +278,7 @@ function tp_page_menu ($atts) {
             $next_links = '<a href="' . $atts['page_link'] . $limit_name . '=' . ($current_page + 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('next page','teachpress') . '" class="page-numbers button">&rsaquo;</a> <a href="' . $atts['page_link'] . $limit_name . '=' . $num_pages . '&amp;' . $atts['link_attributes'] . '" title="' . __('last page','teachpress') . '" class="page-numbers button">&raquo;</a> ';
         }
         else {
-            $next_links = '<a class="next-page button disabled">&rsaquo;</a> <a class="last-page button disabled">&raquo;</a> ';
+            $next_links = '<a class="page-numbers button disabled">&rsaquo;</a> <a class="page-numbers button disabled">&raquo;</a> ';
         }
 
         // return

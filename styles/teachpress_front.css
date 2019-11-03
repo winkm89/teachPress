@@ -61,7 +61,7 @@ a.tp_search_reset:hover {color:red;}
 .tablenav-pages span.inactive {border: 1px solid silver; padding:3px 6px; font-size:0.9em; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; color:#CCCCCC; font-size:12px; }
 .tablenav .tablenav-pages a {border: 1px solid; padding:3px 6px; font-size:0.9em; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-size:12px; font-weight:bold;}
 .tablenav .tablenav-pages a, .tablenav .tablenav-pages a:visited {border-color:silver; color:#333333; text-decoration:none;}
-.tablenav .tablenav-pages a:hover {background:#ECECEC; color:#333333;}
+.tablenav .tablenav-pages a:hover , .tablenav .tablenav-pages a.disabled{background:#ECECEC; color:#333333;}
 .tablenav-pages .page-numbers {display: inline;}
 
 /********************************************************************************************/
