@@ -15,7 +15,7 @@ class tp_template_2016 implements tp_publication_template {
         return array ('name' => 'teachPress 2016',
                       'description' => 'A new 4 line style template for publication lists.',
                       'author' => 'Michael Winkler',
-                      'version'=> '1.0',
+                      'version'=> '1.1',
                       'button_separator' => ' | ',
                       'citation_style'      => 'teachPress'
         );
@@ -78,7 +78,8 @@ class tp_template_2016 implements tp_publication_template {
      * @return string
      */
     public function get_entry ($interface) {
-        $s = '<tr class="tp_publication">';
+        $class = ' tp_publication_' . $interface->get_type('');
+        $s = '<tr class="tp_publication' . $class . '">';
         $s .= $interface->get_number('<td class="tp_pub_number">', '.</td>');
         $s .= $interface->get_images('left');
         $s .= '<td class="tp_pub_info">';

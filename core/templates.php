@@ -132,14 +132,18 @@ class tp_publication_interface {
     }
     
     /**
-     * Returns the type of a publication
+     * Returns the type of a publication (as html element)
+     * @param string container      Default is span, For a plain retun use get_type(''), New since 7.0.0
      * @return string
      * @since 6.0.0
      * @access public
      */
-    public function get_type() {
+    public function get_type($container = 'span') {
         $type = $this->data['row']['type'];
-        return '<span class="tp_pub_type ' . $type . '">' . tp_translate_pub_type($type) . '</span>';
+        if ( $container !== '' ) {
+            return '<' . $container . ' class="tp_pub_type ' . $type . '">' . tp_translate_pub_type($type) . '</' . $container . '>';
+        }
+        return $type;
     }
     
     /**

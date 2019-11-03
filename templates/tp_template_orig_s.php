@@ -12,7 +12,7 @@ class tp_template_orig_s implements tp_publication_template {
         return array ('name'                => 'teachPress original small',
                       'description'         => 'The original 1-line style template for publication lists.',
                       'author'              => 'Michael Winkler',
-                      'version'             => '1.0',
+                      'version'             => '1.1',
                       'button_separator'    => ' | ',
                       'citation_style'      => 'teachPress_small'
         );
@@ -62,7 +62,8 @@ class tp_template_orig_s implements tp_publication_template {
      * @return string
      */
     public function get_entry ($interface) {
-        $s = '<tr class="tp_publication_simple">';
+        $class = ' tp_publication_simple_' . $interface->get_type('');
+        $s = '<tr class="tp_publication_simple' . $class . '">';
         $s .= $interface->get_number('<td class="tp_pub_number_simple">', '.</td>');
         $s .= $interface->get_images('left');
         $s .= '<td class="tp_pub_info_simple">';
