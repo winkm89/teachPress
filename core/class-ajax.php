@@ -235,7 +235,8 @@ class tp_ajax {
     public static function get_cite_text ($cite_id, $mode) {
         if ( $mode === 'bibtex' ) {
             $publication = tp_publications::get_publication($cite_id, ARRAY_A);
-            echo tp_bibtex::get_single_publication_bibtex($publication);
+            $tags = tp_tags::get_tags(array('pub_id' => $cite_id, 'output_type' => ARRAY_A));
+            echo tp_bibtex::get_single_publication_bibtex($publication, $tags);
         }
         if ( $mode === 'text' ) {
             $publication = tp_publications::get_publication($cite_id, ARRAY_A);
