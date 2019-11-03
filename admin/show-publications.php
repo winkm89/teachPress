@@ -329,6 +329,9 @@ class tp_publications_page {
         echo '<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row->pub_id . '" /></th>';
         echo '<td>';
         echo '<a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . tp_html::prepare_title($row->title, 'decode') . '</strong></a>';
+        if ( $row->status === 'forthcoming' ) {
+            echo '<span class="tp_pub_label_status">' . __('Forthcoming','teachpress') . '</span>';
+        }
         echo '<div class="tp_row_actions"><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&cite_id=' . $row->pub_id . '" class="teachpress_cite_pub teachpress_link">' . __('Cite', 'teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=' . $array_variables['page']  .'&amp;checkbox%5B%5D=' . $row->pub_id . '&amp;action=delete' . $get_string . '" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
         echo '</td>';
         echo '<td>' . $row->pub_id . '</td>';
