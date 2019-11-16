@@ -574,6 +574,35 @@ class tp_shortcodes {
         }
     }
     
+    /**
+     * Sets the colspan for the rows of publication list headlines
+     * @param array $settings
+     * @return string
+     * @since 7.0.0
+     */
+    public static function set_colspan ($settings) {
+        $count = 1;
+        
+        // if there is a numbered style
+        if ( $settings['style'] === 'numbered' || $settings['style'] === 'numbered_desc' ) {
+            $count++;
+        }
+        
+        // if there is an image left or right
+        if ( $settings['image']== 'left' || $settings['image']== 'right' ) {
+            $count++;
+        }
+        
+        // if there is an altmetric donut
+        if ( $settings['show_altmetric_donut']  ) {
+            $count++;
+        }
+        
+        if ( $count < 2 ) {
+            return '';
+        }
+        return ' colspan="' . $count . '"';
+    }
 }
 
 /** 
@@ -1328,11 +1357,11 @@ function tp_cloud_shortcode($atts) {
     $tparray = array();
     
     // colspan setup
-    $colspan = '';
-    if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut']) {
+    $colspan = tp_shortcodes::set_colspan($settings);
+    if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut'] == true) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
-        $colspan = ' colspan="2"';
     }
+    
     
     // Load template
     $template = tp_load_template($settings['template']);
@@ -1474,7 +1503,6 @@ function tp_list_shortcode($atts){
 
     $tparray = array();
     $tpz = 0;
-    $colspan = '';
     $headline = intval($atts['headline']);
     $image_size = intval($atts['image_size']);
     $pagination = intval($atts['pagination']);
@@ -1507,6 +1535,7 @@ function tp_list_shortcode($atts){
     $pagination_limits = tp_shortcodes::generate_pagination_limits($pagination, $entries_per_page, $form_limit );
     
     $page_link = ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;";
+    $colspan = tp_shortcodes::set_colspan($settings);
 
     // Handle headline/order settings
     if ( $headline === 1 && strpos($atts['order'], 'year') === false && strpos($atts['order'], 'date') === false ) {
@@ -1522,7 +1551,6 @@ function tp_list_shortcode($atts){
     // Image settings
     if ( $settings['image']== 'left' || $settings['image']== 'right' ) {
        $settings['pad_size'] = $image_size + 5;
-       $colspan = ' colspan="2"';
     }
     
     // Load template
@@ -1646,7 +1674,6 @@ function tp_search_shortcode ($atts) {
     ), $atts); 
     
     $tparray = array();
-    $colspan = '';
     $image_size = intval($atts['image_size']);
     $entries_per_page = intval($atts['entries_per_page']);
     $order = esc_sql($atts['order']);
@@ -1669,11 +1696,12 @@ function tp_search_shortcode ($atts) {
         'show_altmetric_donut' => false,
         'container_suffix' => htmlspecialchars($atts['container_suffix'])
     );
+    
     if ($settings['image']== 'left' || $settings['image']== 'right') {
        $settings['pad_size'] = $image_size + 5;
-       $colspan = ' colspan="2"';
     }
     
+    $colspan = tp_shortcodes::set_colspan($settings);
     $search = isset( $_GET['tps'] ) ? htmlspecialchars( $_GET['tps'] ) : "";
     $link_attributes = "tps=$search";
     
