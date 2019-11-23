@@ -444,7 +444,7 @@ class tp_publications_page {
      */
     public static function get_tab($user, $array_variables) {
         $title = ($array_variables['page'] == 'publications.php' && $array_variables['search'] == '') ? __('All publications','teachpress') : __('Your publications','teachpress');
-        echo '<h2>' . $title . '<a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Create','teachpress') . '</a></h2>';
+        echo '<h2>' . $title . '<a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Add new','teachpress') . '</a></h2>';
         echo '<form id="showlvs" name="form1" method="get" action="admin.php">';
         echo '<input type="hidden" name="page" id="page" value="' . $array_variables['page'] . '" />';
         echo '<input type="hidden" name="tag" id="tag" value="' . $array_variables['tag_id'] . '" />';
