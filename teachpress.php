@@ -164,7 +164,7 @@ function tp_add_menu_settings() {
  * @return string
 */
 function get_tp_version() {
-    return '6.3b';
+    return '7.0.0';
 }
 
 /**

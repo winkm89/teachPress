@@ -126,7 +126,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 7.0.0 (beta) =
+= 7.0.0 (23.11.2019) =
 * New: Extra icons for URL/Files in the publication overview (#118) (Thanks to Sven Mayer)
 * New: Font Awesome Fonts added (#118)
 * New: Academicons Font added (#118)
@@ -134,7 +134,11 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * New: Various index columns for most of the database tables added (#123)
 * New: Default templates: publication type as tr-class element for each entry added (#124)
 * New: Label for forthcoming publications in the backend view added
+* New: [tpcloud] New parameters "show_tags_as", "show_author_filter", "show_type_filter", "show_user_filter", "show_year_filter" added.
+* Changed: [tpcloud], [tpsearch] and [tplist] using one common interface.
+* Changed: [tpsearch]: The shortcode displays publications now by default. Can be turned off with the parameter use_as_filter="0"
 * Changed: Mimetype icons removed 
+* Changed: [tpsearch]: Parameter "as_filter" is replaced with "use_as_filter".
 * Bugfix: Rename form fields for publications
 * Bugfix: Fix problem with not escaped authors in JavaScript on add-publication.php
 * Bugfix: Fix "A variable mismatch has been detected." error on add-publication.php
@@ -143,6 +147,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Bugfix: Fix styling of disabled tablenav buttons in all shortcodes
 * Bugfix: [tp_cloud show_tags_as="none"] doesn't hide the tag line of each publication (#107)
 * Bugfix: Missing keywords in the bibtex output of the cite function
+* Bugfix: [tpcloud, tplist, tpsearch]: Fix colspan for headline rows in the publication list
 
 = 6.2.5 (07.04.2019) =
 * New: [tplist]: HTML anchor added
