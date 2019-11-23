@@ -202,7 +202,7 @@ function tp_list_templates () {
  */
 function tp_load_template($slug) {
     if ( $slug === '' ) {
-        return;
+        return false;
     }
     
     $slug = esc_attr($slug);
