@@ -157,19 +157,18 @@ class tp_shortcodes {
     }
     
     /**
-     * Generates and returns filter for the shortcode [tp_cloud]
+     * Generates and returns filter for the shortcodes
      * @param array $filter_parameter       An associative array with filter parameter (user input). The keys are: year, type, author, user
      * @param array $sql_parameter          An assosciative array with SQL search parameter (user, type, exclude, exclude_tags, order)
      * @param array $settings               An assosciative array with settings (permalink, html_anchor,...)
+     * @param int $tabindex                 The tabindex
      * @param string $mode                  year, type, author, user or tag, default is year
      * @return string
      * @since 5.0.0
      * @access public
      */
-    public static function generate_filter ($filter_parameter, $sql_parameter, $settings, $mode = 'year'){
+    public static function generate_filter ($filter_parameter, $sql_parameter, $settings, $tabindex, $mode = 'year'){
 
-        $options = '';
-        
         // year filter
         if ( $mode === 'year' ) {
             $row = tp_publications::get_years( array( 'user' => $sql_parameter['user'], 
@@ -177,7 +176,7 @@ class tp_shortcodes {
                                                       'include' => $sql_parameter['year'],
                                                       'order' => 'DESC', 
                                                       'output_type' => ARRAY_A ) );
-            $id = 'pub_year';
+            $id = 'yr';
             $index = 'year';
             $title = __('All years','teachpress');
         }
@@ -187,7 +186,7 @@ class tp_shortcodes {
             $row = tp_publications::get_used_pubtypes( array( 'user' => $sql_parameter['user'],
                                                               'include' => $sql_parameter['type'],
                                                               'exclude' => isset($sql_parameter['exclude_types']) ? $sql_parameter['exclude_types'] : '') );
-            $id = 'pub_type';
+            $id = 'type';
             $index = 'type';
             $title = __('All types','teachpress');
         }
@@ -201,7 +200,7 @@ class tp_shortcodes {
                                                    'author_id' => $author_id,
                                                    'output_type' => ARRAY_A, 
                                                    'group_by' => true ) );
-            $id = 'pub_author';
+            $id = 'auth';
             $index = 'author_id';
             $title = __('All authors','teachpress');
         }
@@ -209,7 +208,7 @@ class tp_shortcodes {
         // user filter
         if ( $mode === 'user' ) {
             $row = tp_publications::get_pub_users( array('output_type' => ARRAY_A) );
-            $id = 'pub_user';
+            $id = 'usr';
             $index = 'user';
             $title = __('All users','teachpress');
         }
@@ -220,11 +219,34 @@ class tp_shortcodes {
                                              'group_by' => true, 
                                              'order' => 'ASC', 
                                              'exclude' => $sql_parameter['exclude_tags'] ) );
-            $id = 'pub_tag';
+            $id = 'tgid';
             $index = 'tag_id';
             $title = __('All tags','teachpress');
         }
 
+        // Generate filter
+        if ( $settings['use_jumpmenu'] === true ) {
+            return self::generate_filter_jumpmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode);
+        }
+        return self::generate_filter_selectmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode);
+    }
+    
+    /**
+     * Generates and returns filter for the shortcodes (jumpmenus)
+     * @param array $row                The array of select options
+     * @param string $id                name/id of the form field
+     * @param string $index             year/type/author_id/user/tag_id
+     * @param string $title             The title for the default value
+     * @param array $filter_parameter   An array with the user input. The keys are: year, type, author, user
+     * @param array $settings           An array with SQL search parameter (user, type, exclude, exclude_tags, order)
+     * @param int tabindex              The tabindex fo the form field
+     * @param string $mode              year/type/author/user/tag
+     * @return string
+     * @since 7.0.0
+     */
+    private static function generate_filter_jumpmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode) {
+        $options = '';
+        
         // generate option
         foreach ( $row as $row ){
             // Set the values for URL parameters
@@ -264,8 +286,69 @@ class tp_shortcodes {
         $filter_parameter[$mode] = '';
         
         // return filter menu
-        return '<select name="' . $id . '" id="' . $id . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this, ' . "'" . $settings['permalink'] . "'" . ')">
+        return '<select class="' . $settings['filter_class'] . '" name="' . $id . '" id="' . $id . '" tabindex="' . $tabindex . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this, ' . "'" . $settings['permalink'] . "'" . ')">
                    <option value="tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '' . $settings['html_anchor'] . '">' . $title . '</option>
+                   ' . $options . '
+                </select>';
+    }
+    
+    /**
+     * Generates and returns filter for the shortcodes (selectmenus)
+     * @param array $row                The array of select options
+     * @param string $id                name/id of the form field
+     * @param string $index             year/type/author_id/user/tag_id
+     * @param string $title             The title for the default value
+     * @param array $filter_parameter   An array with the user input. The keys are: year, type, author, user
+     * @param array $settings           An array with SQL search parameter (user, type, exclude, exclude_tags, order)
+     * @param int tabindex              The tabindex fo the form field
+     * @param string $mode              year/type/author/user/tag
+     * @return string
+     * @since 7.0.0
+     */
+    private static function generate_filter_selectmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode ) {
+        $options = '';
+        
+        // generate option
+        foreach ( $row as $row ){
+            $current = ( $row[$index] == $filter_parameter[$mode] && $filter_parameter[$mode] != '0' ) ? 'selected="selected"' : '';
+            $value = '';
+            
+            // Set the label for each select option
+            if ( $mode === 'type' ) {
+                $text = tp_translate_pub_type($row['type'], 'pl');
+                $value = $row['type'];
+            }
+            else if ( $mode === 'author' ) {
+                $text = tp_bibtex::parse_author($row['name'], '', $settings['author_name']);
+                $value = $row['author_id'];
+            }
+            else if ( $mode === 'user' ) {
+                $user_info = get_userdata( $row['user'] );
+                if ( $user_info === false ) {
+                    continue;
+                }
+                $text = $user_info->display_name;
+                $value = $row['user'];
+            }
+            else if ( $mode === 'tag' ) {
+                $text = $row['name'];
+                $value = $row['tag_id'];
+            }
+            else {
+                $text = $row[$index];
+                $value = $row[$index];
+            }
+            
+            // Write the select option
+            $options .= '<option value="' . $value. '" ' . $current . '>' . stripslashes($text) . '</option>';
+        }
+
+        // clear filter_parameter[$mode]
+        $filter_parameter[$mode] = '';
+        
+        // return filter menu
+        return '<select class="' . $settings['filter_class'] . '" name="' . $id . '" id="' . $id . '" tabindex="' . $tabindex . '">
+                   <option value="">' . $title . '</option>
                    ' . $options . '
                 </select>';
     }
@@ -1073,110 +1156,74 @@ function tp_links_shortcode ($atts) {
         return '<h2 class="tp_links">' . __('Links','teachpress') . '</h2><p class="tp_abstract">' . tp_html_publication_template::prepare_url($publication['url'], $publication['doi'], 'list') . '</p>';
     } 
     return;
-    
 }
 
-/** 
- * Shortcode for displaying a publication list with tag cloud
- * 
- * Parameters for the array $atts:
- *      user (STRING)               the ID of on or more users (separated by comma)
- *      type (STRING)               the publication types you want to show (separated by comma)
- *      author (STRING)             author IDs (separated by comma)
- *      year (STRING)               one or more years (separated by comma)
- *      exclude (INT)               one or more IDs of publications you don't want to show (separated by comma)
- *      include_editor_as_author (INT)
- *      order (STRING)              title, year, bibtex or type, default: date DESC
- *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
- *      maxsize (INT)               maximal font size for the tag cloud, default: 35
- *      minsize (INT)               minimal font size for the tag cloud, default: 11
- *      tag_limit (INT)             number of tags, default: 30
- *      hide_tags (STRING)          ids of the tags you want to hide from your users (separated by comma)
- *      exclude_tags (STRING)       similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
- *      exclude_types (STRING)      name of the publication types you want to exclude (separated by comma)
- *      image (STRING)              none, left, right or bottom, default: none 
- *      image_size (INT)            max. Image size, default: 0
- *      image_link (STRING)         none, self or post (defalt: none)
- *      anchor (INT)                0 (false) or 1 (true), default: 1
- *      author_name (STRING)        simple, last, initials or old, default: last
- *      editor_name (STRING)        simple, last, initials or old, default: last
- *      author_separator (STRING)   The separator for author names
- *      editor_separator (STRING)   The separator for editor names
- *      style (STRING)              numbered, numbered_desc or none, default: none
- *      template (STRING)           the key of the template, default: tp_template_2016
- *      title_ref (STRING)          links or abstract, default: links
- *      link_style (STRING)         inline, direct or images, default: inline
- *      date_format (STRING)        the format for date; needed for the types: presentations, online; default: d.m.Y
- *      pagination (INT)            activate pagination (1) or not (0), default: 1
- *      entries_per_page (INT)      number of publications per page (pagination must be set to 1), default: 30
- *      sort_list (STRING)          a list of publication types (separated by comma) which overwrites the default sort order for headline = 2
- *      show_tags_as (STRING)       cloud, pulldown or none, default: cloud
- *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
- *      show_author_filter (INT)    0 (false) or 1 (true), default: 1
- *      show_in_author_filter (STRING) Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
- *      show_user_filter (INT)      0 (false) or 1 (true), default: 1
- *      show_type_filter (INT)      0 (false) or 1 (true), default: 1
- *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
- *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
- *      show_altmetric_entry (INT)  0 (false) or 1 (true), default: 0
- * 
- * WARNINGS: 
- *      "id" has been removed with teachPress 4.0.0, please use "user" instead!
+/**
+ * General interface for [tpcloud], [tplist] and [tpsearch]
  * 
  * Parameters from $_GET: 
- *      $yr (INT)              Year 
- *      $type (STRING)         Publication type 
- *      $auth (INT)            Author ID
- *      $tg (INT)              Tag ID
- *      $usr (INT)             User ID
+ *      $yr (INT)               Year 
+ *      $type (STRING)          Publication type 
+ *      $auth (INT)             Author ID
+ *      $tg (INT)               Tag ID
+ *      $usr (INT)              User ID
+ *      $tsr (STRING)           Full text search
+ * 
  * 
  * @param array $atts
  * @return string
- * @since 0.10.0
-*/
-function tp_cloud_shortcode($atts) {
+ * @since 7.0.0
+ */
+function tp_publist_shortcode ($atts) {
     $atts = shortcode_atts(array(
-        'user' => '',
-        'type' => '',
-        'author' => '',
-        'year' => '',
-        'exclude' => '', 
-        'include_editor_as_author' => 1,
-        'order' => 'date DESC',
-        'headline' => 1, 
-        'maxsize' => 35,
-        'minsize' => 11,
-        'tag_limit' => 30,
-        'hide_tags' => '',
-        'exclude_tags' => '',
-        'exclude_types' => '',
-        'image' => 'none',
-        'image_size' => 0,
-        'image_link' => 'none',
-        'anchor' => 1,
-        'author_name' => 'initials',
-        'editor_name' => 'initials',
-        'author_separator' => ';',
-        'editor_separator' => ';',
-        'style' => 'none',
-        'template' => 'tp_template_2016',
-        'title_ref' => 'links',
-        'link_style' => 'inline',
-        'date_format' => 'd.m.Y',
-        'pagination' => 1,
-        'entries_per_page' => 50,
-        'sort_list' => '',
-        'show_tags_as' => 'cloud',
-        'show_author_filter' => 1,
-        'show_in_author_filter' => '',
-        'show_type_filter' => 1,
-        'show_user_filter' => 1,
-        'show_bibtex' => 1,
-        'container_suffix' => '',
-        'show_altmetric_donut' => 0,
-        'show_altmetric_entry' => 0
+        'user' => '',                       // the WordPress IDs of on or more users (separated by comma)
+        'tag' => '',                        // tag IDs (separated by comma)
+        'type' => '',                       // the publication types you want to show (separated by comma)
+        'author' => '',                     // author IDs (separated by comma)
+        'year' => '',                       // one or more years (separated by comma)
+        'exclude' => '',                    // one or more IDs of publications you don't want to show (separated by comma)
+        'include' => '',                    // one or more IDs of publications you want to show (separated by comma)
+        'include_editor_as_author' => 1,    // 0 (false) or 1 (true), default: 1
+        'order' => 'date DESC',             // title, year, bibtex or type, default: date DESC
+        'headline' => 1,                    // show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
+        'maxsize' => 35,                    // maximal font size for the tag cloud, default: 35
+        'minsize' => 11,                    // minimal font size for the tag cloud, default: 11
+        'tag_limit' => 30,                  // number of tags, default: 30
+        'hide_tags' => '',                  // ids of the tags you want to hide from your users (separated by comma)
+        'exclude_tags' => '',               // similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
+        'exclude_types' => '',              // name of the publication types you want to exclude (separated by comma)
+        'image' => 'none',                  // none, left, right or bottom, default: none 
+        'image_size' => 0,                  // max. Image size, default: 0
+        'image_link' => 'none',             // none, self or post (defalt: none)
+        'anchor' => 1,                      // 0 (false) or 1 (true), default: 1
+        'author_name' => 'initials',        // simple, last, initials or old, default: last
+        'editor_name' => 'initials',        // simple, last, initials or old, default: last
+        'author_separator' => ';',          // The separator for author names
+        'editor_separator' => ';',          // The separator for editor names
+        'style' => 'none',                  // numbered, numbered_desc or none, default: none
+        'template' => 'tp_template_2016',   // the key of the template, default: tp_template_2016
+        'title_ref' => 'links',             // links or abstract, default: links
+        'link_style' => 'inline',           // inline, direct or images, default: inline
+        'date_format' => 'd.m.Y',           //  the format for date; needed for the types: presentations, online; default: d.m.Y
+        'pagination' => 1,                  // activate pagination (1) or not (0), default: 1
+        'entries_per_page' => 50,           // number of publications per page (pagination must be set to 1), default: 50
+        'sort_list' => '',                  // a list of publication types (separated by comma) which overwrites the default sort order for headline = 2
+        'show_tags_as' => 'cloud',          // cloud, pulldown or none, default: cloud
+        'show_author_filter' => 1,          // 0 (false) or 1 (true), default: 1
+        'show_in_author_filter' => '',      // Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
+        'show_type_filter' => 1,            // 0 (false) or 1 (true), default: 1
+        'show_user_filter' => 1,            // 0 (false) or 1 (true), default: 1
+        'show_search_filter' => 1,          // 0 (false) or 1 (true), default: 1
+        'show_year_filter' => 1,            // 0 (false) or 1 (true), default: 1
+        'show_bibtex' => 1,                 // 0 (false) or 1 (true), default: 1
+        'container_suffix' => '',           // a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
+        'filter_class' => 'default',        // The CSS class for filter/select menus
+        'show_altmetric_donut' => 0,        // 0 (false) or 1 (true), default: 0
+        'show_altmetric_entry' => 0,        // 0 (false) or 1 (true), default: 0
+        'use_jumpmenu' => 1,                // 0 (false) or 1 (true), default: 1
+        'use_as_filter' => 1                // The old as_filter value from [tpsearch]
     ), $atts);
-   
+    
     $settings = array(
         'author_name' => htmlspecialchars($atts['author_name']),
         'editor_name' => htmlspecialchars($atts['editor_name']),
@@ -1199,11 +1246,15 @@ function tp_cloud_shortcode($atts) {
         'show_author_filter' => ( $atts['show_author_filter'] == '1' ) ? true : false,
         'show_type_filter' => ( $atts['show_type_filter'] == '1' ) ? true : false,
         'show_user_filter' => ( $atts['show_user_filter'] == '1' ) ? true : false,
+        'show_year_filter' => ( $atts['show_year_filter'] == '1' ) ? true : false,
+        'show_search_filter' => ( $atts['show_search_filter'] == '1' ) ? true : false,
         'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
         'with_tags' => ( $atts['show_tags_as'] == 'none' ) ? 0 : 1,
         'container_suffix' => htmlspecialchars($atts['container_suffix']),
+        'filter_class' => htmlspecialchars($atts['filter_class']),
         'show_altmetric_entry' => ($atts['show_altmetric_entry'] == '1') ? true : false,
-        'show_altmetric_donut' => ($atts['show_altmetric_donut'] == '1') ? true : false
+        'show_altmetric_donut' => ($atts['show_altmetric_donut'] == '1') ? true : false,
+        'use_jumpmenu' => ( $atts['use_jumpmenu'] == '1' ) ? true : false
     );
 
     $cloud_settings = array (
@@ -1220,6 +1271,7 @@ function tp_cloud_shortcode($atts) {
         'type' => isset ($_GET['type']) ? htmlspecialchars( $_GET['type'] ) : '',
         'author' => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
         'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : '',
+        'search' => isset ($_GET['tsr']) ? htmlspecialchars( $_GET['tsr'] ) : '',
         'show_in_author_filter' => htmlspecialchars($atts['show_in_author_filter'])
     );
     
@@ -1253,6 +1305,11 @@ function tp_cloud_shortcode($atts) {
     if ( $filter_parameter['year'] === '' ) {
        $filter_parameter['year'] = htmlspecialchars($atts['year']);
     } 
+    
+    // tags: overwrite filter with the shortcode value if the filter param is unset
+    if ( $filter_parameter['tag'] === '' ) {
+       $filter_parameter['tag'] = htmlspecialchars($atts['tag']);
+    } 
    
     // Handle limits for pagination   
     $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
@@ -1266,9 +1323,25 @@ function tp_cloud_shortcode($atts) {
     /*************/
     /* Tag cloud */
     /*************/
-    $asg = '';
+    $tag_cloud = '';
     if ( $cloud_settings['show_tags_as'] === 'cloud' ) {
-        $asg = tp_shortcodes::generate_tag_cloud($atts['user'], $cloud_settings, $filter_parameter, $sql_parameter, $settings);
+        $tag_cloud = tp_shortcodes::generate_tag_cloud($atts['user'], $cloud_settings, $filter_parameter, $sql_parameter, $settings);
+    }
+    
+    /****************/
+    /* Search Field */
+    /****************/
+    
+    $searchbox = '';
+    
+    if ( $settings['show_search_filter'] === true ) {
+        if ( !get_option('permalink_structure') ) {
+            $searchbox .= '<input type="hidden" name="p" id="page_id" value="' . get_the_id() . '"/>';
+        }
+
+        $searchbox .= '<input name="tsr" id="tp_search_input_field" type="search" placeholder="' . __('Enter search word','teachpress') .'" value="' . stripslashes($filter_parameter['search']) . '" tabindex="1"/>';
+        $searchbox .= '<input name="tps_button" class="tp_search_button" type="submit" tabindex="7" value="' . __('Search', 'teachpress') . '"/>';
+
     }
     
     /**********/ 
@@ -1277,47 +1350,78 @@ function tp_cloud_shortcode($atts) {
     $filter = '';
     
     // Filter year
-    if ( $atts['year'] == '' || strpos($atts['year'], ',') !== false ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'year');
+    if ( ( $atts['year'] == '' || strpos($atts['year'], ',') !== false ) && 
+            $settings['show_year_filter'] === true ) {
+        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 2,'year');
     }
 
     // Filter type
     if ( ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) && 
             $settings['show_type_filter'] === true ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'type');
+        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 3, 'type');
     }
     
     // Filter tag
     if ( $cloud_settings['show_tags_as'] === 'pulldown' ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'tag');
+        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 4,'tag');
     }
 
     // Filter author
     if ( ( $atts['author'] == '' || strpos($atts['author'], ',') !== false ) && 
             $settings['show_author_filter'] === true ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'author');
+        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 5,'author');
     }
     
     // Filter user
     if ( ( $atts['user'] == '' || strpos($atts['user'], ',') !== false ) &&
             $settings['show_user_filter'] === true ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 'user');
+        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 6,'user');
     }
 
     // Endformat
-    if ($filter_parameter['year'] == '' && ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $atts['type'] ) && ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && $filter_parameter['author'] == '' && $filter_parameter['tag'] == '') {
+    if ($filter_parameter['year'] == '' && ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $atts['type'] ) && ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && $filter_parameter['author'] == '' && $filter_parameter['tag'] == '' && $filter_parameter['search'] == '') {
         $showall = '';
     }
     else {
         $showall = '<a rel="nofollow" href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . __('Show all','teachpress') . '">' . __('Show all','teachpress') . '</a>';
     }
     
-    // complete the header (tag cloud + filter)
-    $part1 = '<a name="tppubs" id="tppubs"' . $settings['container_suffix'] . '></a>
-            <div class="teachpress_cloud">' . $asg . '</div>
-            <div class="teachpress_filter">' . $filter . '</div>
-            <p style="text-align:center">' . $showall . '</p>';
-
+    /***********************/ 
+    /* Complete the header */
+    /***********************/
+    
+    $part1 = '';
+    
+    // anchor
+    $part1 .= '<a name="tppubs" id="tppubs"' . $settings['container_suffix'] . '></a>';
+    
+    // tag cloud
+    if ( $tag_cloud !== '' ) {
+        $part1 .= '<div class="teachpress_cloud">' . $tag_cloud . '</div>';
+    }
+    
+    // search
+    if ( $searchbox !== '' ) {
+        $part1 .= '<div class="tp_search_input">' . $searchbox . '</div>';
+    }
+    
+    // filter
+    if ( $filter !== '' ) {
+        $part1 .= '<div class="teachpress_filter">' . $filter . '</div>';
+    }
+    
+    // show all button
+    if ( $showall !== '' ) {
+        $part1 .= '<p style="text-align:center">' . $showall . '</p>';
+    }
+    
+    // Form
+    $part1 = '<form name="tppublistform" method="get">' . $part1 . '</form>';
+    
+    // Return if we don't want so display the publications fo default
+    if ( intval($atts['use_as_filter']) === 0 && $showall === '' ) {
+        return '<div class="teachpress_pub_list">' . $part1 . '</div>';
+    }
     /************************/
     /* List of publications */
     /************************/
@@ -1335,16 +1439,19 @@ function tp_cloud_shortcode($atts) {
         $sql_parameter['order'] = "year DESC, type ASC, date DESC";
     }
     
+    // Parameters for returning publications
     $args = array(
         'tag' => $filter_parameter['tag'], 
         'year' => $filter_parameter['year'], 
         'type' => $filter_parameter['type'], 
         'user' => $filter_parameter['user'], 
+        'search' => $filter_parameter['search'],
         'author_id' => $filter_parameter['author'],
         'order' => $sql_parameter['order'], 
         'exclude' => $sql_parameter['exclude'],
         'exclude_tags' => $sql_parameter['exclude_tags'],
         'exclude_types' => $sql_parameter['exclude_types'],
+        'include' => $atts['include'], 
         'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
         'limit' => $pagination_limits['limit'],
         'output_type' => ARRAY_A);
@@ -1361,7 +1468,6 @@ function tp_cloud_shortcode($atts) {
     if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut'] == true) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
     }
-    
     
     // Load template
     $template = tp_load_template($settings['template']);
@@ -1417,49 +1523,83 @@ function tp_cloud_shortcode($atts) {
     }
     // If there are no publications founded
     else {
-        $part2 = '<div class="teachpress_list"><p class="teachpress_mistake">' . __('Sorry, no publications matched your criteria.','teachpress') . '</p></div>';
+        $part2 = '<div class="teachpress_message_error"><p>' . __('Sorry, no publications matched your criteria.','teachpress') . '</p></div>';
     }
     
+    // For debugging only:
+    // print_r($settings);
+    
     // Return
-    return $part1 . $part2;
+    return '<div class="teachpress_pub_list">' . $part1 . $part2 . '</div>';
 }
 
 /** 
- * Shortcode for displaying apublication list without filters
+ * Shortcode for displaying a publication list with tag cloud
+ * This is just a preset for tp_publist_shortcode()
  * 
- * possible values for $atts:
- *      user (STRING)               wp user IDs (separated by comma)
- *      tag (STRING)                tag IDs (separated by comma)
- *      type (STRING)               publication types (separated by comma)
- *      author (STRING)             author IDs (separated by comma)
- *      exclude (STRING)            a string with one or more IDs of publication you don't want to display
- *      include (STRING)            a string with one or more IDs of publication you want to display
- *      include_editor_as_author (INT)
- *      year (STRING)               the publication years (separated by comma)
- *      exclude_tags (STRING)       excludes all publications with the given tag IDs (separated by comma)
- *      exclude_types (STRING)      names of the publication types you want to exclude (separated by comma)
- *      order (STRING)              title, year, bibtex or type, default: date DESC
- *      headline (INT)              show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
- *      image (STRING)              none, left, right or bottom, default: none 
- *      image_size (INT)            max. Image size, default: 0
- *      image_link (STRING)         none, self or post (defalt: none)
- *      anchor (INT)                0 (false) or 1 (true), default: 1
- *      author_name (STRING)        last, initials or old, default: last
- *      editor_name (STRING)        last, initials or old, default: last
- *      author_separator (STRING)   The separator for author names
- *      editor_separator (STRING)   The separator for editor names
- *      style (STRING)              numbered, numbered_desc or none, default: none
- *      template (STRING)           the key of the template, default: tp_template_2016
- *      title_ref (STRING)          links or abstract, default: links
- *      link_style (STRING)         inline or images, default: inline
- *      date_format (STRING)        the format for date; needed for the types: presentations, online; default: d.m.Y
- *      pagination (INT)            activate pagination (1) or not (0), default: 1
- *      entries_per_page (INT)      number of publications per page (pagination must be set to 1), default: 30
- *      sort_list (STRING)          a list of publication types (separated by comma) which overwrites the default sort order for headline = 2 
- *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
- *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
- *      show_altmetric_donut (INT)  0 (false) or 1 (true), default: 0
- *      show_altmetric_entry (INT)  0 (false) or 1 (true), default: 0
+ * Parameters from $_GET: 
+ *      $yr (INT)              Year 
+ *      $type (STRING)         Publication type 
+ *      $auth (INT)            Author ID
+ *      $tg (INT)              Tag ID
+ *      $usr (INT)             User ID
+ * 
+ * @param array $atts
+ * @return string
+ * @since 0.10.0
+*/
+function tp_cloud_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'user' => '',
+        'type' => '',
+        'author' => '',
+        'year' => '',
+        'exclude' => '', 
+        'include_editor_as_author' => 1,
+        'order' => 'date DESC',
+        'headline' => 1, 
+        'maxsize' => 35,
+        'minsize' => 11,
+        'tag_limit' => 30,
+        'hide_tags' => '',
+        'exclude_tags' => '',
+        'exclude_types' => '',
+        'image' => 'none',
+        'image_size' => 0,
+        'image_link' => 'none',
+        'anchor' => 1,
+        'author_name' => 'initials',
+        'editor_name' => 'initials',
+        'author_separator' => ';',
+        'editor_separator' => ';',
+        'style' => 'none',
+        'template' => 'tp_template_2016',
+        'title_ref' => 'links',
+        'link_style' => 'inline',
+        'date_format' => 'd.m.Y',
+        'pagination' => 1,
+        'entries_per_page' => 50,
+        'sort_list' => '',
+        'show_tags_as' => 'cloud',
+        'show_author_filter' => 1,
+        'show_in_author_filter' => '',
+        'show_type_filter' => 1,
+        'show_user_filter' => 1,
+        'show_search_filter' => 0,
+        'show_bibtex' => 1,
+        'container_suffix' => '',
+        'show_altmetric_donut' => 0,
+        'show_altmetric_entry' => 0,
+        'use_jumpmenu' => 1  
+    ), $atts);
+   
+    return tp_publist_shortcode($atts);
+
+}
+
+/** 
+ * Shortcode for displaying a publication list without filters
+ * This is just a preset for tp_publist_shortcode()
  * 
  * @param array $atts
  * @return string
@@ -1496,155 +1636,24 @@ function tp_list_shortcode($atts){
        'entries_per_page' => 50,
        'sort_list' => '',
        'show_bibtex' => 1,
+       'show_type_filter' => 0,
+       'show_author_filter' => 0,
+       'show_search_filter' => 0,
+       'show_user_filter' => 0, 
+       'show_year_filter' => 0, 
+       'show_tags_as' => 'none',
        'container_suffix' => '',
        'show_altmetric_donut' => 0,
-       'show_altmetric_entry' => 0
+       'show_altmetric_entry' => 0,
+       'use_jumpmenu' => 1 
     ), $atts);
 
-    $tparray = array();
-    $tpz = 0;
-    $headline = intval($atts['headline']);
-    $image_size = intval($atts['image_size']);
-    $pagination = intval($atts['pagination']);
-    $entries_per_page = intval($atts['entries_per_page']);
-    $sort_list = htmlspecialchars($atts['sort_list']);
-    $form_limit = ( isset($_GET['limit' . $atts['container_suffix']]) ) ? intval($_GET['limit' . $atts['container_suffix']]) : '';
-
-    $settings = array(
-        'author_name' => htmlspecialchars($atts['author_name']),
-        'editor_name' => htmlspecialchars($atts['editor_name']),
-        'author_separator' => htmlspecialchars($atts['author_separator']),
-        'editor_separator' => htmlspecialchars($atts['editor_separator']),
-        'style' => htmlspecialchars($atts['style']),
-        'template' => htmlspecialchars($atts['template']),
-        'image' => htmlspecialchars($atts['image']),
-        'image_link' => htmlspecialchars($atts['image_link']),
-        'with_tags' => 0,
-        'title_ref' => htmlspecialchars($atts['title_ref']),
-        'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' . htmlspecialchars($atts['container_suffix']) : '',
-        'link_style' => htmlspecialchars($atts['link_style']),
-        'date_format' => htmlspecialchars($atts['date_format']),
-        'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
-        'show_bibtex' => $atts['show_bibtex'] == '1' ? true : false,
-        'container_suffix' => htmlspecialchars($atts['container_suffix']),
-        'show_altmetric_entry' => $atts['show_altmetric_entry'] == '1' ? true : false,
-        'show_altmetric_donut' => $atts['show_altmetric_donut'] == '1' ? true : false
-    );
-    
-    // Handle limits for pagination
-    $pagination_limits = tp_shortcodes::generate_pagination_limits($pagination, $entries_per_page, $form_limit );
-    
-    $page_link = ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;";
-    $colspan = tp_shortcodes::set_colspan($settings);
-
-    // Handle headline/order settings
-    if ( $headline === 1 && strpos($atts['order'], 'year') === false && strpos($atts['order'], 'date') === false ) {
-        $order = 'date DESC, ' . $atts['order'];
-    }
-    if ( $headline === 2 ) {
-        $order = "type ASC, date DESC";
-    }
-    if ( $headline === 3 || $headline === 4  ) {
-        $order = "year DESC , type ASC , date DESC ";
-    }
-
-    // Image settings
-    if ( $settings['image']== 'left' || $settings['image']== 'right' ) {
-       $settings['pad_size'] = $image_size + 5;
-    }
-    
-    // Load template
-    $template = tp_load_template($settings['template']);
-    if ( $template === false ) {
-        $template = tp_load_template('tp_template_orig');
-    }
-    
-    // get publications
-    $args = array(
-        'tag' => $atts['tag'], 
-        'year' => $atts['year'], 
-        'type' => $atts['type'], 
-        'author_id' => $atts['author'], 
-        'user' => $atts['user'], 
-        'order' => $atts['order'], 
-        'exclude' => $atts['exclude'],
-        'exclude_tags' => $atts['exclude_tags'],
-        'exclude_types' => $atts['exclude_types'],
-        'include' => $atts['include'], 
-        'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
-        'output_type' => ARRAY_A, 
-        'limit' => $pagination_limits['limit']
-    );
-    $row = tp_publications::get_publications( $args );
-    
-    $number_entries = tp_publications::get_publications($args, true);
-    $count = count($row);
-    foreach ($row as $row) {
-        $tparray[$tpz][0] = $row['year'];
-        $number = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $pagination_limits['entry_limit'], $atts['style']);
-        
-        // teachPress style
-        $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $number);
-        
-        if ( 2 <= $headline && $headline <= 4 ) {
-                $tparray[$tpz][2] = $row['type'];
-        }
-        $tpz++;
-    }
-    
-    // HTML anchor
-    $r = '<a name="tppubs" id="tppubs' . $settings['container_suffix'] . '"></a>';
-    // menu
-    $menu = ( $pagination === 1 ) ? tp_page_menu(array('number_entries' => $number_entries,
-                                                       'entries_per_page' => $entries_per_page,
-                                                       'current_page' => $pagination_limits['current_page'],
-                                                       'entry_limit' => $pagination_limits['entry_limit'],
-                                                       'page_link' => $page_link,
-                                                       'link_attributes' => $settings['html_anchor'],
-                                                       'container_suffix' => $settings['container_suffix'],
-                                                       'mode' => 'bottom',
-                                                       'before' => '<div class="tablenav">',
-                                                       'after' => '</div>')) : '';
-    $r .= $menu;
-
-    $row_year = ( $headline === 1 ) ? tp_publications::get_years( array('output_type' => ARRAY_A, 'order' => 'DESC') ) : '';
-    
-    $r .= tp_shortcodes::generate_pub_table(
-                $tparray, 
-                $template, 
-                array( 'number_publications' => $tpz, 
-                       'headline' => $headline,
-                       'years' => $row_year,
-                       'colspan' => $colspan,
-                       'user' => $atts['user'],
-                       'sort_list' => $sort_list ) );
-    $r .= $menu;
-    return $r;
+    return tp_publist_shortcode($atts);
 }
 
 /**
- * tpsearch: Frontend search function for publications
- *
- * possible values for $atts:
- *      user (STRING)               user_ids (separated by comma)
- *      tag (STRING)                tag_ids (separated by comma)
- *      entries_per_page (INT)      number of entries per page (default: 20)
- *      image (STRING)              none, left, right or bottom, default: none 
- *      image_size (INT)            max. Image size, default: 0
- *      image_link (STRING)         none, self or post (defalt: none)
- *      author_name (STRING)        last, initials or old, default: initials
- *      editor_name (STRING)        last, initials or old, default: initials
- *      author_separator (STRING)   The separator for author names, default: ;
- *      editor_separator (STRING)   The separator for editor names, default: ;
- *      style (STRING)              numbered, numbered_desc or none, default: none
- *      template (STRING)           the key of the template, default: tp_template_2016
- *      title_ref (STRING)          links or abstract, default: links
- *      link_style (STRING)         inline, images or direct, default: inline
- *      as_filter (STRING)          set it to "true" if you want to display publications by default
- *      date_format (STRING)        the format for date; needed for presentations, default: d.m.Y
- *      order (STRING)              date, title, year, bibtex or type, default: date DESC
- *      show_bibtex (INT)           0 (false) or 1 (true), default: 1
- *      container_suffix (STRING)   a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
+ * Shortcode for frontend search function for publications
+ * This is just a preset for tp_publist_shortcode()
  * 
  * @param array $atts
  * @return string
@@ -1666,141 +1675,25 @@ function tp_search_shortcode ($atts) {
        'template' => 'tp_template_orig_s',
        'title_ref' => 'links',
        'link_style' => 'inline',
-       'as_filter' => 'false',
+       'use_as_filter' => 1,
        'date_format' => 'd.m.Y',
        'order' => 'date DESC',
        'show_bibtex' => 1,
-       'container_suffix' => ''
+       'anchor' => 0,
+       'container_suffix' => '',
+       'show_tags_as' => 'none',
+       'show_in_author_filter' => '',
+       'show_user_filter' => 0,
+       'show_type_filter' => 0,
+       'show_author_filter' => 0,
+       'show_search_filter' => 1,
+       'show_year_filter' => 0,
+       'filter_class' => 'block', 
+       'use_jumpmenu' => 0 
+       
     ), $atts); 
     
-    $tparray = array();
-    $image_size = intval($atts['image_size']);
-    $entries_per_page = intval($atts['entries_per_page']);
-    $order = esc_sql($atts['order']);
-    $settings = array(
-        'author_name' => htmlspecialchars($atts['author_name']),
-        'editor_name' => htmlspecialchars($atts['editor_name']),
-        'author_separator' => htmlspecialchars($atts['author_separator']),
-        'editor_separator' => htmlspecialchars($atts['editor_separator']),
-        'style' => htmlspecialchars($atts['style']),
-        'template' => htmlspecialchars($atts['template']),
-        'image' => htmlspecialchars($atts['image']),
-        'image_link' => htmlspecialchars($atts['image_link']),
-        'with_tags' => 0,
-        'link_style' => htmlspecialchars($atts['link_style']),
-        'title_ref' => htmlspecialchars($atts['title_ref']),
-        'date_format' => htmlspecialchars($atts['date_format']),
-        'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
-        'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
-        'show_altmetric_entry' => false,
-        'show_altmetric_donut' => false,
-        'container_suffix' => htmlspecialchars($atts['container_suffix'])
-    );
-    
-    if ($settings['image']== 'left' || $settings['image']== 'right') {
-       $settings['pad_size'] = $image_size + 5;
-    }
-    
-    $colspan = tp_shortcodes::set_colspan($settings);
-    $search = isset( $_GET['tps'] ) ? htmlspecialchars( $_GET['tps'] ) : "";
-    $link_attributes = "tps=$search";
-    
-    // Handle limits
-    if ( isset( $_GET['limit'] ) ) {
-        $current_page = intval( $_GET['limit'] );
-        if ( $current_page <= 0 ) {
-            $current_page = 1;
-        }
-        $entry_limit = ( $current_page - 1 ) * $entries_per_page;
-    }
-    else {
-        $entry_limit = 0;
-        $current_page = 1;
-    }
-    
-    // Define pagelink
-    $page_link = ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;";
-    
-    $r = '';
-    $r .= '<form method="get">';
-    if ( !get_option('permalink_structure') ) {
-        $r .= '<input type="hidden" name="p" id="page_id" value="' . get_the_id() . '"/>';
-    }
-    $r .= '<div class="tp_search_input">';
-    
-    if ( $search != "" ) {
-        $r .= '<a name="tps_reset" class="tp_search_reset" title="' . __('Reset', 'teachpress') . '" href="' . get_permalink() . '">X</a>';
-    }
-    // If someone wants a form reset instead of a full reset:
-    // $r .= '<a name="tps_reset" class="tp_search_reset" title="' . __('Reset', 'teachpress') . '" onclick="teachpress_tp_search_clean();">X</a>';
-    
-    $r .= '<input name="tps" id="tp_search_input_field" type="search" value="' . stripslashes($search) . '" tabindex="1" size="40"/>';
-    $r .= '<input name="tps_button" class="tp_search_button" type="submit" value="' . __('Search', 'teachpress') . '"/>';
-    
-    $r .= '</div>';
-    
-    // If there is nothing to show
-    if ( $search == "" && $atts['as_filter'] == 'false' ) {
-        $r .= '</form>';
-        return $r;
-    }
-    
-    // get results
-    $tpz = 0;
-    $args = array ('user' => $atts['user'],
-                   'tag' => $atts['tag'],
-                   'search' => $search, 
-                   'limit' => $entry_limit . ',' .  $entries_per_page,
-                   'order' => $order,
-                   'output_type' => ARRAY_A);
-    $results = tp_publications::get_publications( $args );
-    $number_entries = tp_publications::get_publications($args, true);
-
-    // menu
-    $menu = tp_page_menu(array('number_entries' => $number_entries,
-                               'entries_per_page' => $entries_per_page,
-                               'current_page' => $current_page,
-                               'entry_limit' => $entry_limit,
-                               'page_link' => $page_link,
-                               'link_attributes' => $link_attributes,
-                               'mode' => 'bottom',
-                               'before' => '<div class="tablenav">',
-                               'after' => '</div>'));
-    if ( $search != "" ) {
-        $r .= '<h3 class="tp_search_result">' . __('Results for','teachpress') . ' "' . stripslashes($search) . '":</h3>';
-    }
-    $r .= $menu;
-
-    // Load template
-    $template = tp_load_template($settings['template']);
-    if ( $template === false ) {
-        $template = tp_load_template('tp_template_orig_s');
-    }
-
-    // If there are no results
-    if ( count($results) === 0 ) {
-        $r .= '<div class="teachpress_message_error">' . __('Sorry, no entries matched your criteria.','teachpress') . '</div>';
-    }
-    // Show results
-    else {
-        foreach ($results as $row) {
-            $count = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $entry_limit, $atts['style']);
-            $tparray[$tpz][0] = $row['year'];
-            $tparray[$tpz][1] = tp_html_publication_template::get_single($row,'', $settings, $template, $count);
-            $tpz++;
-        }
-        $r .= tp_shortcodes::generate_pub_table(
-                    $tparray, 
-                    $template, 
-                    array( 'number_publications' => $tpz, 
-                           'colspan' => $colspan,
-                           'headline' => 0,
-                           'user' => '') );
-    }
-    $r .= $menu;
-    
-    $r .= '</form>';
-    return $r;
+    return tp_publist_shortcode($atts);
 }
 
 /** 
