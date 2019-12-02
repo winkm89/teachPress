@@ -1551,10 +1551,12 @@ function tp_publist_shortcode ($atts) {
 function tp_cloud_shortcode($atts) {
     $atts = shortcode_atts(array(
         'user' => '',
+        'tag' => '',
         'type' => '',
         'author' => '',
         'year' => '',
         'exclude' => '', 
+        'include' => '',
         'include_editor_as_author' => 1,
         'order' => 'date DESC',
         'headline' => 1, 
@@ -1586,11 +1588,14 @@ function tp_cloud_shortcode($atts) {
         'show_type_filter' => 1,
         'show_user_filter' => 1,
         'show_search_filter' => 0,
+        'show_year_filter' => 1, 
         'show_bibtex' => 1,
         'container_suffix' => '',
         'show_altmetric_donut' => 0,
         'show_altmetric_entry' => 0,
-        'use_jumpmenu' => 1  
+        'use_jumpmenu' => 1,
+        'use_as_filter' => 1,
+        'filter_class' => 'default'
     ), $atts);
    
     return tp_publist_shortcode($atts);
@@ -1611,10 +1616,10 @@ function tp_list_shortcode($atts){
        'tag' => '',
        'type' => '',
        'author' => '',
+       'year' => '',
        'exclude' => '',
        'include' => '',
        'include_editor_as_author' => 1,
-       'year' => '',
        'exclude_tags' => '',
        'exclude_types' => '',
        'order' => 'date DESC',
@@ -1638,6 +1643,7 @@ function tp_list_shortcode($atts){
        'show_bibtex' => 1,
        'show_type_filter' => 0,
        'show_author_filter' => 0,
+       'show_in_author_filter' => '',
        'show_search_filter' => 0,
        'show_user_filter' => 0, 
        'show_year_filter' => 0, 
@@ -1645,7 +1651,9 @@ function tp_list_shortcode($atts){
        'container_suffix' => '',
        'show_altmetric_donut' => 0,
        'show_altmetric_entry' => 0,
-       'use_jumpmenu' => 1 
+       'use_jumpmenu' => 1,
+       'use_as_filter' => 1,
+       'filter_class' => 'default'
     ), $atts);
 
     return tp_publist_shortcode($atts);
@@ -1663,10 +1671,20 @@ function tp_search_shortcode ($atts) {
     $atts = shortcode_atts(array(
        'user' => '',
        'tag' => '',
-       'entries_per_page' => 20,
+       'type' => '',
+       'author' => '',
+       'year' => '',
+       'exclude' => '',
+       'include' => '',
+       'include_editor_as_author' => 1,
+       'order' => 'date DESC',
+       'headline' => 0,
+       'exclude_tags' => '',
+       'exclude_types' => '',
        'image' => 'none',
        'image_size' => 0,
        'image_link' => 'none',
+       'anchor' => 0,
        'author_name' => 'initials',
        'editor_name' => 'initials',
        'author_separator' => ';',
@@ -1675,22 +1693,24 @@ function tp_search_shortcode ($atts) {
        'template' => 'tp_template_orig_s',
        'title_ref' => 'links',
        'link_style' => 'inline',
-       'use_as_filter' => 1,
        'date_format' => 'd.m.Y',
-       'order' => 'date DESC',
+       'pagination' => 1,
+       'entries_per_page' => 20,
+       'sort_list' => '',
        'show_bibtex' => 1,
-       'anchor' => 0,
-       'container_suffix' => '',
        'show_tags_as' => 'none',
-       'show_in_author_filter' => '',
-       'show_user_filter' => 0,
-       'show_type_filter' => 0,
        'show_author_filter' => 0,
+       'show_in_author_filter' => '',
+       'show_type_filter' => 0,
+       'show_user_filter' => 0,
        'show_search_filter' => 1,
        'show_year_filter' => 0,
-       'filter_class' => 'block', 
-       'use_jumpmenu' => 0 
-       
+       'container_suffix' => '',
+       'show_altmetric_donut' => 0,
+       'show_altmetric_entry' => 0,
+       'use_jumpmenu' => 0,
+       'use_as_filter' => 1,
+       'filter_class' => 'block'
     ), $atts); 
     
     return tp_publist_shortcode($atts);
