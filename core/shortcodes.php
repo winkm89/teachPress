@@ -1378,8 +1378,14 @@ function tp_publist_shortcode ($atts) {
         $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 6,'user');
     }
 
-    // Endformat
-    if ($filter_parameter['year'] == '' && ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $atts['type'] ) && ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && $filter_parameter['author'] == '' && $filter_parameter['tag'] == '' && $filter_parameter['search'] == '') {
+    // Show all link
+    if ( ( $filter_parameter['year'] == '' || $filter_parameter['year'] == $atts['year'] ) && 
+         ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $atts['type'] ) && 
+         ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && 
+         ( $filter_parameter['author'] == '' || $filter_parameter['author'] == $atts['author'] ) && 
+         ( $filter_parameter['tag'] == '' || $filter_parameter['tag'] == $atts['tag'] ) && 
+           $filter_parameter['search'] == '' 
+        ) {
         $showall = '';
     }
     else {
