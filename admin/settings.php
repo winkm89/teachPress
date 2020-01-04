@@ -170,7 +170,7 @@ class tp_settings_page {
                 <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
                 <p style="font-size: 20px; font-weight: bold; color: #e6bb3a;">' . get_tp_option('db-version') . ' "Apple Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="https://github.com/winkm89/teachPress/">teachPress on GitHub</a> | <a href="https://github.com/winkm89/teachPress/wiki">Dokumentation</a> | <a href="https://github.com/winkm89/teachPress/wiki/Changelog">Changelog</a></p>
-                <p>&copy;2008-2019 by Michael Winkler | License: GPLv2 or later<br/></p>
+                <p>&copy;2008-2020 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
               </div>';
     }

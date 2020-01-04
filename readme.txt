@@ -4,9 +4,9 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 5.3.1
+Tested up to: 5.3.2
 Requires PHP: 5.3
-Stable tag: 7.0.1
+Stable tag: 7.0.2
 
 Manage your courses and publications with teachPress 
 
@@ -70,7 +70,7 @@ The plugin saves course documents in your WordPress upload directory under /teac
 
 == Credits ==
 
-Copyright 2008-2019 by Michael Winkler
+Copyright 2008-2020 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -125,6 +125,9 @@ Use at your own risk. No warranty expressed or implied is provided.
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 7.0.2 (04.01.2020) =
+* Bugfix: Fixed the visible "Show all" link for [tplist]
 
 = 7.0.1 (02.12.2019) =
 * Bugfix: [tpcloud], [tplist], [tpsearch]: Fix multiple missing default parameters
