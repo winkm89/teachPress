@@ -4,9 +4,9 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 5.3.2
+Tested up to: 5.4
 Requires PHP: 5.3
-Stable tag: 7.0.2
+Stable tag: 7.0.3
 
 Manage your courses and publications with teachPress 
 
@@ -125,6 +125,9 @@ Use at your own risk. No warranty expressed or implied is provided.
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 7.0.3 (19.04.2020) =
+* Bugfix: Fixed the pagination for [tpsearch]
 
 = 7.0.2 (04.01.2020) =
 * Bugfix: Fixed the visible "Show all" link for [tplist]
