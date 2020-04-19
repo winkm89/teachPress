@@ -1499,7 +1499,7 @@ function tp_publist_shortcode ($atts) {
     // If there are publications
     if ( $tpz != 0 ) {
         $part2 = '';
-        $link_attributes = 'tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . $settings['html_anchor'];
+        $link_attributes = 'tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '&amp;tsr=' . $filter_parameter['search'] . $settings['html_anchor'];
         $menu = ( $settings['pagination'] === 1 ) ? tp_page_menu(array('number_entries' => $number_entries,
                                                                        'entries_per_page' => $settings['entries_per_page'],
                                                                        'current_page' => $pagination_limits['current_page'],
@@ -1534,6 +1534,8 @@ function tp_publist_shortcode ($atts) {
     
     // For debugging only:
     // print_r($settings);
+    print_r($_GET['type']);
+    print_r($filter_parameter);
     
     // Return
     return '<div class="teachpress_pub_list">' . $part1 . $part2 . '</div>';
