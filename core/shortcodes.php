@@ -1194,7 +1194,7 @@ function tp_publist_shortcode ($atts) {
         'exclude_types' => '',              // name of the publication types you want to exclude (separated by comma)
         'image' => 'none',                  // none, left, right or bottom, default: none 
         'image_size' => 0,                  // max. Image size, default: 0
-        'image_link' => 'none',             // none, self or post (defalt: none)
+        'image_link' => 'none',             // none, self, rel_page or external (defalt: none)
         'anchor' => 1,                      // 0 (false) or 1 (true), default: 1
         'author_name' => 'initials',        // simple, last, initials or old, default: last
         'editor_name' => 'initials',        // simple, last, initials or old, default: last
@@ -1534,8 +1534,7 @@ function tp_publist_shortcode ($atts) {
     
     // For debugging only:
     // print_r($settings);
-    print_r($_GET['type']);
-    print_r($filter_parameter);
+    // print_r($filter_parameter);
     
     // Return
     return '<div class="teachpress_pub_list">' . $part1 . $part2 . '</div>';
