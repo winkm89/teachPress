@@ -12,3 +12,4 @@ td.tp_pub_info_simple {border-bottom:1px solid silver; vertical-align:top; paddi
 .tp_pub_tags_simple a:hover {color:#AAAAAA; text-decoration:none;}
 .tp_pub_type_simple {}
 .tp_pub_link_image {max-width: 2em; max-height: 2em;}
+.tp_pub_tags_simple i {padding-left: 2px; padding-right: 2px; font-size: 110%; text-decoration: none;}
