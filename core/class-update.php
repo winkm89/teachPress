@@ -105,7 +105,8 @@ class tp_update_db {
         
         // force updates to reach structure of teachPress 7.0.0
         if ( $db_version[0] === '7' || $update_level === '7' ) {
-            tp_update_db::upgrade_to_70($charset_collate);
+            tp_update_db::upgrade_to_70();
+            tp_update_db::upgrade_to_71();
         }
         
         // Add teachPress options
@@ -655,7 +656,7 @@ class tp_update_db {
      * @param string $charset_collate
      * @since 7.0.0
      */
-    public static function upgrade_to_70 () {
+    private static function upgrade_to_70 () {
         global $wpdb;
         
         // Try to raise the time limit
@@ -791,6 +792,24 @@ class tp_update_db {
         }
         if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_USER . " WHERE key_name = 'ind_user'") == '0') {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_USER . " ADD INDEX `ind_user` (`user`)");
+        }
+    }
+    
+    /**
+     * Database upgrade to teachPress 7.1.0 structure
+     * @since 7.1.0
+     */
+    private static function upgrade_to_71() {
+        global $wpdb;
+        
+        // add column image_target to table teachpress_pub
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'image_target'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `image_target` VARCHAR (100) NULL DEFAULT NULL AFTER `image_url`");
+        }
+        
+        // add column image_ext to table teachpress_pub
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'image_ext'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `image_ext` VARCHAR (400) NULL DEFAULT NULL AFTER `image_target`");
         }
     }
     

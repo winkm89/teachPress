@@ -636,12 +636,7 @@ class tp_html_publication_template {
         }
         
         // image link
-        if ( $settings['image_link'] === 'self' ) {
-            $image = '<a href="' . $row['image_url'] . '" target="_blank">' . $image . '</a>';
-        }
-        if ( $settings['image_link'] === 'post' && $row['rel_page'] != 0 ) {
-            $image = '<a href="' . get_permalink($row['rel_page']) . '" title="' . stripslashes($row['title']) . '">' . $image . '</a>';
-        }
+        $image = tp_html_publication_template::handle_image_link ($image, $row, $settings);
         
         // Altmetric donut
         $altmetric = '';
@@ -664,6 +659,39 @@ class tp_html_publication_template {
         }
         
         return $return;
+    }
+    
+    /**
+     * Handles the image link generation
+     * @param array $row
+     * @param array $settings
+     * @retun string
+     * @since 7.1.0
+     */
+    public static function handle_image_link ($image, $row, $settings) {
+        // Local image settings (higher priority)
+        if ( $row['image_target'] === 'self'  ) {
+            return '<a href="' . $row['image_url'] . '" target="_blank">' . $image . '</a>';
+        }
+        if ( $row['image_target'] === 'rel_page' && $row['rel_page'] != 0 ) {
+            return '<a href="' . get_permalink($row['rel_page']) . '" title="' . stripslashes($row['title']) . '">' . $image . '</a>';
+        }
+        if ( $row['image_target'] === 'external' && $row['image_ext'] != '' ) {
+            return '<a href="' . $row['image_ext'] . '" target="_blank">' . $image . '</a>';
+        }
+        
+        // global shortcode settings (lower priority)
+        if ( $settings['image_link'] === 'self'  ) {
+            return '<a href="' . $row['image_url'] . '" target="_blank">' . $image . '</a>';
+        }
+        if ( $settings['image_link'] === 'rel_page' && $row['rel_page'] != 0 ) {
+            return '<a href="' . get_permalink($row['rel_page']) . '" title="' . stripslashes($row['title']) . '">' . $image . '</a>';
+        }
+        if ( $settings['image_link'] === 'external' && $row['image_ext'] != '' ) {
+            return '<a href="' . $row['image_ext'] . '" target="_blank">' . $image . '</a>';
+        }
+
+        return $image;
     }
     
 }

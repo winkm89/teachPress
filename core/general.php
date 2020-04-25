@@ -464,6 +464,8 @@ function get_tp_var_types($type) {
             'comment' => '',
             'note' => '',
             'image_url' => '',
+            'image_target' => '',
+            'image_ext' => '',
             'doi' => '',
             'is_isbn' => '',
             'rel_page' => '',

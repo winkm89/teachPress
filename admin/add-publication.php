@@ -74,6 +74,8 @@ function tp_add_publication_page() {
     $data['comment'] = isset( $_POST['comment'] ) ? htmlspecialchars($_POST['comment']) : '';
     $data['note'] = isset( $_POST['note'] ) ? htmlspecialchars($_POST['note']) : '';
     $data['image_url'] = isset( $_POST['image_url'] ) ? htmlspecialchars($_POST['image_url']) : '';
+    $data['image_target'] = isset( $_POST['image_target'] ) ? htmlspecialchars($_POST['image_target']) : '';
+    $data['image_ext'] = isset( $_POST['image_ext'] ) ? htmlspecialchars($_POST['image_ext']) : '';
     $data['doi'] = isset( $_POST['doi'] ) ? htmlspecialchars($_POST['doi']) : '';
     $data['rel_page'] = isset( $_POST['rel_page'] ) ? intval($_POST['rel_page']) : '';
     $data['is_isbn'] = isset( $_POST['is_isbn'] ) ? intval($_POST['is_isbn']) : '';
@@ -189,6 +191,7 @@ function tp_add_publication_page() {
     tp_publication_page::get_boobmarks_box ($pub_id, $user);
     tp_publication_page::get_tags_box ($pub_id);
     tp_publication_page::get_image_box ($pub_data);
+    tp_publication_page::get_rel_page_box ($pub_data);
     echo '</div>';
     
     echo '</form>';
@@ -352,33 +355,65 @@ class tp_publication_page {
     public static function get_image_box ($pub_data) {
         ?>
         <div class="postbox">
-            <h3 class="tp_postbox"><span><?php _e('Image &amp; Related content','teachpress'); ?></span></h3>
+            <h3 class="tp_postbox"><span><?php _e('Image','teachpress'); ?></span></h3>
             <div class="inside">
+                <!-- Image URL -->
                 <?php if ($pub_data["image_url"] != '') {
                     echo '<p><img name="tp_pub_image" src="' . $pub_data["image_url"] . '" alt="' . $pub_data["title"] . '" title="' . $pub_data["title"] . '" style="max-width:100%;"/></p>';
                 } ?>
                 <p><label for="image_url" title="<?php _e('With the image field you can add an image to a publication. You can display images in all publication lists','teachpress'); ?>"><strong><?php _e('Image URL','teachpress'); ?></strong></label></p>
-                <input name="image_url" id="image_url" class="upload" type="text" title="<?php _e('With the image field you can add an image to a publication. You can display images in all publication lists','teachpress'); ?>" style="width:90%;" value="<?php echo $pub_data["image_url"]; ?>"/>
+                <input name="image_url" id="image_url" class="upload" type="text" title="<?php _e('With the image field you can add an image to a publication. You can display images in all publication lists','teachpress'); ?>" style="width:90%;" value="<?php echo $pub_data["image_url"]; ?>" tabindex="34"/>
                 <a class="upload_button_image" title="<?php _e('Add Image','teachpress'); ?>" style="cursor:pointer; border:none;"><img src="images/media-button-image.gif" alt="<?php _e('Add image','teachpress'); ?>" /></a>
-                <p><label for="rel_page" title="<?php _e('Select a post/page with releated content.','teachpress'); ?>"><strong><?php _e('Related content','teachpress'); ?></strong></label></p>
-                <div style="overflow:hidden;">
-                <select name="rel_page" id="rel_page" title="<?php _e('Select a post/page with releated content.','teachpress'); ?>" style="width:90%;">
                 <?php
-                $post_type = get_tp_option('rel_page_publications');
-                get_tp_wp_pages("menu_order", "ASC", $pub_data["rel_page"], $post_type, 0, 0); 
+                // Image Link Target
+                echo '<p><label for="image_target" title="' . __('Define the link target for the image.','teachpress') . '"><strong>' . __('Image Link Target','teachpress') . '</strong></label></p>';
+                echo '<select name="image_target" id="image_target" title="' . __('Define the link target for the image.','teachpress') . '" style="width:90%;" tabindex="35">';
+                
+                echo tp_admin::get_select_option('none', __('none','teachpress'), $pub_data["image_target"]);
+                echo tp_admin::get_select_option('self', __('Self','teachpress'), $pub_data["image_target"]);
+                echo tp_admin::get_select_option('rel_page', __('Related content','teachpress'), $pub_data["image_target"]);
+                echo tp_admin::get_select_option('external', __('External URL','teachpress'), $pub_data["image_target"]);
+
+                echo '</select>';
+                
+                // External Image Link
+                echo tp_admin::get_form_field('image_ext', __('If you choice an external link target for the image, then you can define the URL of this target here.','teachpress'), __('External Image Link','teachpress'), 'input', '', $pub_data["image_ext"], array(''), 36, 'width:90%;');
                 ?>
-                </select>
-                <p style="padding:5px 0 0 5px;">
-                    <?php 
-                    $value = ( get_tp_option('rel_content_auto') == '1' ) ? '1' : '0';
-                    echo tp_admin::get_checkbox('create_rel_content', __('Create related content','teachpress'), $value); 
-                    ?>
-                </p>
-            </div>
+                
               </div>
           </div>
         <?php
     }
+    
+    /**
+     * Gets the related page box
+     * @param array $pub_data   An associative array with publication data
+     * @since 7.1.0
+     */
+    public static function get_rel_page_box ($pub_data) {
+        ?>
+        <div class="postbox">
+            <h3 class="tp_postbox"><span><?php _e('Related content','teachpress'); ?></span></h3>
+            <div class="inside">
+                <p><label for="rel_page" title="<?php _e('Select a post/page with releated content.','teachpress'); ?>"><strong><?php _e('Related content','teachpress'); ?></strong></label></p>
+                <div style="overflow:hidden;">
+                    <select name="rel_page" id="rel_page" title="<?php _e('Select a post/page with releated content.','teachpress'); ?>" style="width:90%;" tabindex="37">
+                    <?php
+                    $post_type = get_tp_option('rel_page_publications');
+                    get_tp_wp_pages("menu_order", "ASC", $pub_data["rel_page"], $post_type, 0, 0); 
+                    ?>
+                    </select>
+                    <p style="padding:5px 0 0 5px;">
+                        <?php 
+                        $value = ( get_tp_option('rel_content_auto') == '1' ) ? '1' : '0';
+                        echo tp_admin::get_checkbox('create_rel_content', __('Create related content','teachpress'), $value); 
+                        ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <?php
+    } 
     
     /**
      * Gets the main box
@@ -495,8 +530,10 @@ class tp_publication_page {
                 tp_publication_page::get_current_tags ( $pub_id );
             }
             
-            echo '<p><label for="tags"><strong>' . __('New (separate by comma)','teachpress'). '</strong></label></p>';
-            echo '<input name="tags" type="text" id="tags" title="' . __('New (separate by comma)','teachpress'). '" style="width:95%">';
+            // New tags field
+            echo tp_admin::get_form_field('tags', __('New (separate by comma)','teachpress'), __('New (separate by comma)','teachpress'), 'input', '', '', array(''), 33, 'width:95%;');
+            
+            // Start tag cloud
             echo '<div class="teachpress_cloud" style="padding-top:15px;">';
             
             // Font sizes
@@ -518,6 +555,8 @@ class tp_publication_page {
             }
             
             echo '</div>';
+            // End tag cloud
+            
             echo '</div>';
             echo '</div>';
     }

@@ -515,6 +515,8 @@ class tp_tables {
                     `comment` TEXT,
                     `note` TEXT,
                     `image_url` VARCHAR (400),
+                    `image_target` VARCHAR (100),
+                    `image_ext` VARCHAR (400),
                     `doi` VARCHAR (100),
                     `is_isbn` INT(1),
                     `rel_page` INT,
