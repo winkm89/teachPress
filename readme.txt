@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.4
 Requires PHP: 5.3
-Stable tag: 7.0.3
+Stable tag: 7.1.0
 
 Manage your courses and publications with teachPress 
 
@@ -126,8 +126,13 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 7.1.0 (25.04.2020) =
+* New: image target (none, self, related post, external) and external image target URL can be defined for each publication
+* Changed: [tpcloud, tplist, tpsearch]: Changed behavior for parameter "image_link". Local image target settings in each publication are priorised now
+* Bugfix: Fix link icon padding in template "tp_template_orig_s" and "tp_template_orig"
+
 = 7.0.3 (19.04.2020) =
-* Bugfix: Fixed the pagination for [tpsearch]
+* Bugfix: Fixed the pagination for [tpsearch] (#128)
 
 = 7.0.2 (04.01.2020) =
 * Bugfix: Fixed the visible "Show all" link for [tplist]
