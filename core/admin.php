@@ -98,8 +98,8 @@ class tp_admin {
         global $wpdb;
         $return = '';
         $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
-        $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
-        $required = ( $required === true ) ? 'required="required"' : '';
+        $ro = ( $readonly === true ) ? 'readonly="true" ' : '' ;
+        $rq = ( $required === true ) ? 'required="required"' : '';
         // extrakt checkbox_values
         $array_checked = tp_enrollments::extract_checkbox_data($checked);
         $return .= '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>';
@@ -107,8 +107,8 @@ class tp_admin {
         $max = count($options);
         foreach ($options as $opt) {
             $checked = ( in_array($opt->value, $array_checked) ) ? 'checked="checked"' : '';
-            $required = ( $max === 1 ) ? $required : '';  // The required optopns is only available for single checkboxes
-            $return .= '<input name="' . $field_name . '[]" type="checkbox" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $readonly . ' ' . $required . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
+            $rq = ( $max === 1 ) ? $rq : '';  // The required option is only available for single checkboxes
+            $return .= '<input name="' . $field_name . '[]" type="checkbox" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $ro . ' ' . $rq . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
             $i++;
         }
         return $return;
@@ -158,10 +158,10 @@ class tp_admin {
      * @since 5.0.0
      */
     public static function get_int_field($field_name, $label, $value, $min = 0, $max = 999, $step = 1, $readonly = false, $required = false){
-        $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
-        $required = ( $required === true ) ? 'required="required"' : '';
+        $ro = ( $readonly === true ) ? 'readonly="true" ' : '' ;
+        $r = ( $required === true ) ? 'required="required"' : '';
         return '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>
-                <input name="' . $field_name . '" type="number" id="' . $field_name . '" value="' . $value . '" size="50" ' . $readonly . ' ' . $required . ' min="' . $min . '" max="' . $max . '" step="' . $step . '"/>';
+                <input name="' . $field_name . '" type="number" id="' . $field_name . '" value="' . $value . '" size="50" ' . $ro . ' ' . $r . ' min="' . $min . '" max="' . $max . '" step="' . $step . '"/>';
     }
     
     /**
@@ -178,13 +178,13 @@ class tp_admin {
         global $wpdb;
         $return = '';
         $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
-        $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
-        $required = ( $required === true ) ? 'required="required"' : '';
+        $ro = ( $readonly === true ) ? 'readonly="true" ' : '' ;
+        $rq = ( $required === true ) ? 'required="required"' : '';
         $return .= '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>';
         $i = 1;
         foreach ($options as $opt) {
             $checked = ( $value == $opt->value ) ? 'checked="checked"' : '';
-            $return .= '<input name="' . $field_name . '" type="radio" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $readonly . ' ' . $required . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
+            $return .= '<input name="' . $field_name . '" type="radio" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $ro . ' ' . $rq . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
             $i++;
         }
         return $return;
@@ -208,11 +208,23 @@ class tp_admin {
             $return .= '<option value="">- ' . __('none','teachpress') . ' -</option>';
         }
         foreach ($options as $opt) {
-            $selected = ( $value == $opt->value ) ? 'selected="selected"' : '';
-            $return .= '<option value="' . stripslashes($opt->value) . '" ' . $selected . '>' . stripslashes($opt->value) . '</option>';
+            tp_admin::get_select_option(stripslashes($opt->value), stripslashes($opt->value), $value);
         }
         $return .= '</select>';
         return $return;
+    }
+    
+    /**
+     * Returns a single option for a select field
+     * @param string $value     The option value
+     * @param string $label     The option label   
+     * @param string $match     If $match is the same as $value the option is set as selected
+     * @return string
+     * @since 7.1.0
+     */
+    public static function get_select_option($value, $label, $match) {
+        $s = ( $match == $value ) ? 'selected="selected"' : '';
+        return '<option value="' . $value . '" ' . $s . '>' . $label . '</option>';
     }
     
     /**
@@ -225,9 +237,9 @@ class tp_admin {
      * @since 5.0.0
      */
     public static function get_text_field($field_name, $label, $value, $readonly = false) {
-        $readonly = ( $readonly === false ) ? '' : 'readonly="true" ';
+        $ro = ( $readonly === false ) ? '' : 'readonly="true" ';
         return '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>
-                <input name="' . $field_name . '" type="text" id="' . $field_name . '" value="' . stripslashes($value) . '" size="50" ' . $readonly . '/>';
+                <input name="' . $field_name . '" type="text" id="' . $field_name . '" value="' . stripslashes($value) . '" size="50" ' . $ro . '/>';
     }
     
     /**
