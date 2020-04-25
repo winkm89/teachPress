@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-23 13:46+0000\n"
+"POT-Creation-Date: 2020-04-25 14:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -20,9 +20,9 @@ msgid "Course"
 msgstr ""
 
 #: teachpress.php:109 teachpress.php:135 teachpress.php:135
-#: admin/add-course.php:115 admin/add-publication.php:115
-#: admin/settings.php:582 admin/settings.php:582
-#: admin/show-single-course.php:852
+#: admin/add-course.php:115 admin/add-publication.php:117
+#: admin/settings.php:582 admin/settings.php:582 admin/show-courses.php:112
+#: admin/show-publications.php:447 admin/show-single-course.php:852
 msgid "Add new"
 msgstr ""
 
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Students"
 msgstr ""
 
-#: teachpress.php:133 admin/add-publication.php:242 admin/edit-tags.php:234
+#: teachpress.php:133 admin/add-publication.php:245 admin/edit-tags.php:234
 #: admin/import-publications.php:36 admin/import-publications.php:177
 #: admin/settings.php:122 admin/settings.php:123 admin/show-authors.php:270
 msgid "Publications"
@@ -194,10 +194,10 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: admin/add-course.php:202 admin/add-publication.php:339
-#: admin/add-publication.php:339 admin/add-publication.php:339
-#: admin/add-publication.php:469 admin/add-publication.php:469
-#: admin/add-publication.php:469
+#: admin/add-course.php:202 admin/add-publication.php:342
+#: admin/add-publication.php:342 admin/add-publication.php:342
+#: admin/add-publication.php:504 admin/add-publication.php:504
+#: admin/add-publication.php:504
 msgid "JJJJ-MM-TT"
 msgstr ""
 
@@ -310,7 +310,8 @@ msgid ""
 "overview) so you can do this here"
 msgstr ""
 
-#: admin/add-course.php:308 admin/add-publication.php:363
+#: admin/add-course.php:308 admin/add-publication.php:374
+#: admin/add-publication.php:396 admin/add-publication.php:398
 #: admin/settings.php:305 admin/settings.php:454
 #: admin/show-single-course.php:1000
 msgid "Related content"
@@ -348,15 +349,15 @@ msgid "With the image field you can add an image to a course."
 msgstr ""
 
 #: admin/add-course.php:348 admin/add-course.php:349
-#: admin/add-publication.php:360
+#: admin/add-publication.php:364
 msgid "Image URL"
 msgstr ""
 
-#: admin/add-course.php:350 admin/add-publication.php:362
+#: admin/add-course.php:350 admin/add-publication.php:366
 msgid "Add image"
 msgstr ""
 
-#: admin/add-course.php:350 admin/add-publication.php:362
+#: admin/add-course.php:350 admin/add-publication.php:366
 msgid "Add Image"
 msgstr ""
 
@@ -368,14 +369,13 @@ msgstr ""
 msgid "Capabilites"
 msgstr ""
 
-#: admin/add-course.php:374 admin/add-publication.php:261
+#: admin/add-course.php:374 admin/add-publication.php:264
 msgid "Reset"
 msgstr ""
 
-#: admin/add-course.php:375 admin/add-publication.php:101
-#: admin/add-publication.php:261 admin/add-students.php:98
-#: admin/create-lists.php:82 admin/show-courses.php:112
-#: admin/show-publications.php:447 core/admin.php:349
+#: admin/add-course.php:375 admin/add-publication.php:103
+#: admin/add-publication.php:264 admin/add-students.php:98
+#: admin/create-lists.php:82 core/admin.php:361
 msgid "Create"
 msgstr ""
 
@@ -389,9 +389,10 @@ msgstr ""
 msgid "Parent course"
 msgstr ""
 
-#: admin/add-course.php:394 admin/settings.php:470 admin/show-courses.php:353
+#: admin/add-course.php:394 admin/add-publication.php:372
+#: admin/settings.php:470 admin/show-courses.php:353
 #: admin/show-single-course.php:948 admin/show-single-course.php:1006
-#: core/admin.php:208 core/admin.php:520 core/admin.php:731 core/widgets.php:79
+#: core/admin.php:208 core/admin.php:532 core/admin.php:743 core/widgets.php:79
 msgid "none"
 msgstr ""
 
@@ -423,88 +424,88 @@ msgstr ""
 msgid "title, author, bibtex key, tags"
 msgstr ""
 
-#: admin/add-publication.php:19 admin/add-publication.php:472
-#: admin/add-publication.php:472
+#: admin/add-publication.php:19 admin/add-publication.php:507
+#: admin/add-publication.php:507
 msgid "URL/Files"
 msgstr ""
 
-#: admin/add-publication.php:20 admin/add-publication.php:475
+#: admin/add-publication.php:20 admin/add-publication.php:510
 msgid ""
 "You can add one URL or file per line. Insert the name of the URL/file behind "
 "the address and separate it by a comma and a space. Example:"
 msgstr ""
 
-#: admin/add-publication.php:98
+#: admin/add-publication.php:100
 msgid "Add a new publication"
 msgstr ""
 
-#: admin/add-publication.php:101 core/class-ajax.php:178
+#: admin/add-publication.php:103 core/class-ajax.php:178
 msgid "Edit publication"
 msgstr ""
 
-#: admin/add-publication.php:115
+#: admin/add-publication.php:117
 msgid "Publication added"
 msgstr ""
 
-#: admin/add-publication.php:141
+#: admin/add-publication.php:143
 msgid ""
 "Please check the format of author/editor information and correct it to the "
 "following format: firstname1 lastname1 and firstname2 lastname 2. Example: "
 "Adam Smith and John M. Keynes"
 msgstr ""
 
-#: admin/add-publication.php:173 admin/add-publication.php:174
-#: admin/add-publication.php:174 admin/import-publications.php:236
+#: admin/add-publication.php:175 admin/add-publication.php:176
+#: admin/add-publication.php:176 admin/import-publications.php:236
 #: admin/show-publications.php:519 admin/show-single-course.php:400
 #: core/class-ajax.php:83 core/widgets.php:67
 msgid "Title"
 msgstr ""
 
-#: admin/add-publication.php:227
+#: admin/add-publication.php:230
 msgid "Bookmark for"
 msgstr ""
 
-#: admin/add-publication.php:245
+#: admin/add-publication.php:248
 msgid "Add a publication to different publication lists"
 msgstr ""
 
-#: admin/add-publication.php:245
+#: admin/add-publication.php:248
 msgid "Bookmarks"
 msgstr ""
 
-#: admin/add-publication.php:249 admin/add-publication.php:252
+#: admin/add-publication.php:252 admin/add-publication.php:255
 msgid "add to your own list"
 msgstr ""
 
-#: admin/add-publication.php:252
+#: admin/add-publication.php:255
 msgid "Click to add the publication in your own list"
 msgstr ""
 
-#: admin/add-publication.php:279
+#: admin/add-publication.php:282
 msgid "Comments"
 msgstr ""
 
-#: admin/add-publication.php:282
+#: admin/add-publication.php:285
 msgid "A not vissible private comment"
 msgstr ""
 
-#: admin/add-publication.php:282
+#: admin/add-publication.php:285
 msgid "private comment"
 msgstr ""
 
-#: admin/add-publication.php:284
+#: admin/add-publication.php:287
 msgid "Additional information"
 msgstr ""
 
-#: admin/add-publication.php:284
+#: admin/add-publication.php:287
 msgid "note"
 msgstr ""
 
-#: admin/add-publication.php:300
+#: admin/add-publication.php:303
 msgid "Current"
 msgstr ""
 
-#: admin/add-publication.php:302 admin/edit-student.php:171
+#: admin/add-publication.php:305 admin/edit-student.php:171
 #: admin/edit-tags.php:85 admin/edit-tags.php:140 admin/edit-tags.php:169
 #: admin/edit-tags.php:234 admin/edit-tags.php:234
 #: admin/import-publications.php:231 admin/import-publications.php:346
@@ -525,285 +526,310 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: admin/add-publication.php:315
+#: admin/add-publication.php:318
 msgid "General information"
 msgstr ""
 
-#: admin/add-publication.php:320 admin/add-publication.php:321
+#: admin/add-publication.php:323 admin/add-publication.php:324
 msgid "The type of publication"
 msgstr ""
 
-#: admin/add-publication.php:326 admin/add-publication.php:327
+#: admin/add-publication.php:329 admin/add-publication.php:330
 msgid "A simple unique key without spaces"
 msgstr ""
 
-#: admin/add-publication.php:326
+#: admin/add-publication.php:329
 msgid "BibTeX Key"
 msgstr ""
 
-#: admin/add-publication.php:327
+#: admin/add-publication.php:330
 msgid "Generate BibTeX key"
 msgstr ""
 
-#: admin/add-publication.php:333
+#: admin/add-publication.php:336
 msgid ""
 "The names of the authors, separate by `and`. Example: Mark Twain and Albert "
 "Einstein"
 msgstr ""
 
-#: admin/add-publication.php:333 admin/import-publications.php:239
+#: admin/add-publication.php:336 admin/import-publications.php:239
 #: admin/show-publications.php:522
 msgid "Author(s)"
 msgstr ""
 
-#: admin/add-publication.php:335
+#: admin/add-publication.php:338
 msgid ""
 "The names of the editors, separate by `and`. Example: Mark Twain and Albert "
 "Einstein"
 msgstr ""
 
-#: admin/add-publication.php:335
+#: admin/add-publication.php:338
 msgid "Editor(s)"
 msgstr ""
 
-#: admin/add-publication.php:338 admin/add-publication.php:339
+#: admin/add-publication.php:341 admin/add-publication.php:342
 msgid "date of publishing"
 msgstr ""
 
-#: admin/add-publication.php:341 admin/show-publications.php:333
+#: admin/add-publication.php:344 admin/show-publications.php:333
 #: core/class-html.php:57 core/templates.php:99
 msgid "Forthcoming"
 msgstr ""
 
-#: admin/add-publication.php:355
-msgid "Image &amp; Related content"
+#: admin/add-publication.php:358
+msgid "Image"
 msgstr ""
 
-#: admin/add-publication.php:360 admin/add-publication.php:361
+#: admin/add-publication.php:364 admin/add-publication.php:365
 msgid ""
 "With the image field you can add an image to a publication. You can display "
 "images in all publication lists"
 msgstr ""
 
-#: admin/add-publication.php:363 admin/add-publication.php:365
+#: admin/add-publication.php:369 admin/add-publication.php:370
+msgid "Define the link target for the image."
+msgstr ""
+
+#: admin/add-publication.php:369
+msgid "Image Link Target"
+msgstr ""
+
+#: admin/add-publication.php:373
+msgid "Self"
+msgstr ""
+
+#: admin/add-publication.php:375
+msgid "External URL"
+msgstr ""
+
+#: admin/add-publication.php:380
+msgid ""
+"If you choice an external link target for the image, then you can define the "
+"URL of this target here."
+msgstr ""
+
+#: admin/add-publication.php:380
+msgid "External Image Link"
+msgstr ""
+
+#: admin/add-publication.php:398 admin/add-publication.php:400
 msgid "Select a post/page with releated content."
 msgstr ""
 
-#: admin/add-publication.php:374
+#: admin/add-publication.php:409
 msgid "Create related content"
 msgstr ""
 
-#: admin/add-publication.php:392
+#: admin/add-publication.php:427
 msgid "Detailed information"
 msgstr ""
 
-#: admin/add-publication.php:392
+#: admin/add-publication.php:427
 msgid "Show all fields"
 msgstr ""
 
-#: admin/add-publication.php:392
+#: admin/add-publication.php:427
 msgid "Show recommend fields"
 msgstr ""
 
-#: admin/add-publication.php:396
+#: admin/add-publication.php:431
 msgid "The title of a book"
 msgstr ""
 
-#: admin/add-publication.php:396
+#: admin/add-publication.php:431
 msgid "booktitle"
 msgstr ""
 
-#: admin/add-publication.php:399
+#: admin/add-publication.php:434
 msgid "The subtitle of a periodical publication"
 msgstr ""
 
-#: admin/add-publication.php:399
+#: admin/add-publication.php:434
 msgid "issuetitle"
 msgstr ""
 
-#: admin/add-publication.php:402
+#: admin/add-publication.php:437
 msgid "The title of a journal"
 msgstr ""
 
-#: admin/add-publication.php:402
+#: admin/add-publication.php:437
 msgid "journal"
 msgstr ""
 
-#: admin/add-publication.php:405
+#: admin/add-publication.php:440
 msgid "The volume of a journal or book"
 msgstr ""
 
-#: admin/add-publication.php:405
+#: admin/add-publication.php:440
 msgid "volume"
 msgstr ""
 
-#: admin/add-publication.php:408
+#: admin/add-publication.php:443
 msgid "The number of a book, journal or work in a series"
 msgstr ""
 
-#: admin/add-publication.php:408 admin/edit-tags.php:154
+#: admin/add-publication.php:443 admin/edit-tags.php:154
 msgid "Number"
 msgstr ""
 
-#: admin/add-publication.php:411
+#: admin/add-publication.php:446
 msgid "The page you are referring to."
 msgstr ""
 
-#: admin/add-publication.php:411
+#: admin/add-publication.php:446
 msgid "pages"
 msgstr ""
 
-#: admin/add-publication.php:414
+#: admin/add-publication.php:449
 msgid "The names of publisher"
 msgstr ""
 
-#: admin/add-publication.php:414
+#: admin/add-publication.php:449
 msgid "publisher"
 msgstr ""
 
-#: admin/add-publication.php:417
+#: admin/add-publication.php:452
 msgid "The address of the publisher or the place of confernece"
 msgstr ""
 
-#: admin/add-publication.php:417
+#: admin/add-publication.php:452
 msgid "address"
 msgstr ""
 
-#: admin/add-publication.php:420
+#: admin/add-publication.php:455
 msgid "The edition of a book"
 msgstr ""
 
-#: admin/add-publication.php:420
+#: admin/add-publication.php:455
 msgid "edition"
 msgstr ""
 
-#: admin/add-publication.php:423
+#: admin/add-publication.php:458
 msgid "The chapter or the section number"
 msgstr ""
 
-#: admin/add-publication.php:423
+#: admin/add-publication.php:458
 msgid "chapter"
 msgstr ""
 
-#: admin/add-publication.php:426
+#: admin/add-publication.php:461
 msgid "The name of a sponsoring institution"
 msgstr ""
 
-#: admin/add-publication.php:426
+#: admin/add-publication.php:461
 msgid "institution"
 msgstr ""
 
-#: admin/add-publication.php:429
+#: admin/add-publication.php:464
 msgid "The names of a sponsoring organization"
 msgstr ""
 
-#: admin/add-publication.php:429
+#: admin/add-publication.php:464
 msgid "organization"
 msgstr ""
 
-#: admin/add-publication.php:432
+#: admin/add-publication.php:467
 msgid "The names of the academic instituion where a thesis was written"
 msgstr ""
 
-#: admin/add-publication.php:432
+#: admin/add-publication.php:467
 msgid "school"
 msgstr ""
 
-#: admin/add-publication.php:435
+#: admin/add-publication.php:470
 msgid "The name of a series"
 msgstr ""
 
-#: admin/add-publication.php:435
+#: admin/add-publication.php:470
 msgid "series"
 msgstr ""
 
-#: admin/add-publication.php:438
+#: admin/add-publication.php:473
 msgid "The BibTeX key this work is referring to"
 msgstr ""
 
-#: admin/add-publication.php:438
+#: admin/add-publication.php:473
 msgid "crossref"
 msgstr ""
 
-#: admin/add-publication.php:441
+#: admin/add-publication.php:476
 msgid "A short summary of the publication"
 msgstr ""
 
-#: admin/add-publication.php:441
+#: admin/add-publication.php:476
 msgid "abstract"
 msgstr ""
 
-#: admin/add-publication.php:444
+#: admin/add-publication.php:479
 msgid "An unusual method for publishing"
 msgstr ""
 
-#: admin/add-publication.php:444
+#: admin/add-publication.php:479
 msgid "howpublished"
 msgstr ""
 
-#: admin/add-publication.php:447
+#: admin/add-publication.php:482
 msgid ""
 "If there is no author or editor given, so this field is used for the sorting."
 msgstr ""
 
-#: admin/add-publication.php:447
+#: admin/add-publication.php:482
 msgid "Key"
 msgstr ""
 
-#: admin/add-publication.php:450
+#: admin/add-publication.php:485
 msgid "The type of a technical report, thesis, incollection or inbook."
 msgstr ""
 
-#: admin/add-publication.php:454
+#: admin/add-publication.php:489
 msgid "ISBN/ISSN"
 msgstr ""
 
-#: admin/add-publication.php:455
+#: admin/add-publication.php:490
 msgid "The ISBN or ISSN of the publication"
 msgstr ""
 
-#: admin/add-publication.php:457
+#: admin/add-publication.php:492
 msgid "ISBN"
 msgstr ""
 
-#: admin/add-publication.php:458
+#: admin/add-publication.php:493
 msgid "ISSN"
 msgstr ""
 
-#: admin/add-publication.php:463
+#: admin/add-publication.php:498
 msgid "DOI number"
 msgstr ""
 
-#: admin/add-publication.php:468 admin/add-publication.php:469
+#: admin/add-publication.php:503 admin/add-publication.php:504
 msgid "The date you have visited the online resource"
 msgstr ""
 
-#: admin/add-publication.php:468
+#: admin/add-publication.php:503
 msgid "Urldate"
 msgstr ""
 
-#: admin/add-publication.php:474
+#: admin/add-publication.php:509
 msgid "Insert a file from the WordPress Media Library"
 msgstr ""
 
-#: admin/add-publication.php:474
+#: admin/add-publication.php:509
 msgid "Add/Upload"
 msgstr ""
 
-#: admin/add-publication.php:498 admin/add-publication.php:499
-#: admin/show-publications.php:229
+#: admin/add-publication.php:534 admin/show-publications.php:229
 msgid "New (separate by comma)"
 msgstr ""
 
-#: admin/add-publication.php:516
+#: admin/add-publication.php:553
 msgid "add as tag"
 msgstr ""
 
-#: admin/add-publication.php:539
+#: admin/add-publication.php:578
 msgid "Please enter an author before!"
 msgstr ""
 
-#: admin/add-publication.php:547
+#: admin/add-publication.php:586
 msgid "Please enter the date before!"
 msgstr ""
 
@@ -983,7 +1009,7 @@ msgstr ""
 #: admin/edit-tags.php:134 admin/show-authors.php:129
 #: admin/show-courses.php:146 admin/show-publications.php:481
 #: admin/show-single-course.php:721 admin/show-students.php:177
-#: core/shortcodes.php:1342
+#: core/shortcodes.php:1343
 msgid "Search"
 msgstr ""
 
@@ -1108,8 +1134,8 @@ msgid "Publications by user"
 msgstr ""
 
 #: admin/import-publications.php:290 admin/mail.php:86 admin/mail.php:89
-#: admin/mail.php:92 admin/show-students.php:108 core/general.php:574
-#: core/general.php:585
+#: admin/mail.php:92 admin/show-students.php:108 core/general.php:576
+#: core/general.php:587
 msgid "All"
 msgstr ""
 
@@ -1875,7 +1901,7 @@ msgstr ""
 msgid "Capability"
 msgstr ""
 
-#: admin/show-single-course.php:1014 core/admin.php:365
+#: admin/show-single-course.php:1014 core/admin.php:377
 msgid "Custom meta data"
 msgstr ""
 
@@ -2126,19 +2152,19 @@ msgstr ""
 msgid "In"
 msgstr ""
 
-#: core/class-tables.php:457 core/class-update.php:988
+#: core/class-tables.php:457 core/class-update.php:1007
 msgid "Course of studies"
 msgstr ""
 
-#: core/class-tables.php:460 core/class-update.php:993
+#: core/class-tables.php:460 core/class-update.php:1012
 msgid "Birthday"
 msgstr ""
 
-#: core/class-tables.php:463 core/class-update.php:998
+#: core/class-tables.php:463 core/class-update.php:1017
 msgid "Semester number"
 msgstr ""
 
-#: core/class-tables.php:466 core/class-update.php:1003
+#: core/class-tables.php:466 core/class-update.php:1022
 msgid "Matriculation number"
 msgstr ""
 
@@ -2146,32 +2172,32 @@ msgstr ""
 msgid "An update is not necessary."
 msgstr ""
 
-#: core/class-update.php:887
+#: core/class-update.php:906
 msgid "Step 1: Read data and add authors"
 msgstr ""
 
-#: core/class-update.php:899
+#: core/class-update.php:918
 msgid "Step 2: Add relations between authors and publications"
 msgstr ""
 
-#: core/class-update.php:901 core/class-update.php:925
-#: core/class-update.php:1022
+#: core/class-update.php:920 core/class-update.php:944
+#: core/class-update.php:1041
 msgid "Update successful"
 msgstr ""
 
-#: core/class-update.php:913
+#: core/class-update.php:932
 msgid "Step 1: Read and prepare data"
 msgstr ""
 
-#: core/class-update.php:923
+#: core/class-update.php:942
 msgid "Step 2: Insert data"
 msgstr ""
 
-#: core/database.php:893
+#: core/database.php:899
 msgid "Error while adding new related content."
 msgstr ""
 
-#: core/database.php:2536
+#: core/database.php:2544
 msgid "Changes in your profile successful."
 msgstr ""
 
@@ -2550,7 +2576,7 @@ msgstr ""
 msgid "Workshops"
 msgstr ""
 
-#: core/general.php:567
+#: core/general.php:569
 msgid "Default"
 msgstr ""
 
@@ -2594,15 +2620,15 @@ msgstr ""
 msgid "Links"
 msgstr ""
 
-#: core/shortcodes.php:1341
+#: core/shortcodes.php:1342
 msgid "Enter search word"
 msgstr ""
 
-#: core/shortcodes.php:1385
+#: core/shortcodes.php:1392
 msgid "Show all"
 msgstr ""
 
-#: core/shortcodes.php:1521
+#: core/shortcodes.php:1532
 msgid "Sorry, no publications matched your criteria."
 msgstr ""
 
