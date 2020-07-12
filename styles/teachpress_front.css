@@ -53,9 +53,9 @@ h3.tp_enrollments {color:#005A46;}
 
 /* filter and search field */
 .teachpress_filter {text-align:center; padding-top:5px;}
-.teachpress_filter select.block {display: block; width: 100%;}
+.teachpress_filter select.block {display: block; width: 100%; margin-bottom:8px; margin-top:5px;}
 .teachpress_cloud {text-align:center;}
-input.tp_search_button {border: 1px solid silver; padding:3px 6px; font-size:0.9em; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; font-size:12px; background:transparent; margin:0 0 0 6px; cursor:pointer;}
+input.tp_search_button {border: 1px solid silver; padding:6px 6px; font-size:0.9em; font-weight: bold; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; background:transparent; margin:0 0 0 6px; cursor:pointer;  background: #008bd2; color: #FFFFFF;}
 input.tp_search_button:hover {background:#ECECEC; color:#333333;}
 a.tp_search_reset {background:transparent; cursor:pointer; border:none; font-weight: bold; padding:3px 6px; text-decoration: none; font-size:13px; color:#000;}
 a.tp_search_reset:hover {color:red;}
