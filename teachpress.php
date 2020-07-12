@@ -384,37 +384,38 @@ function tp_backend_scripts() {
  * Frontend script loader
  */
 function tp_frontend_scripts() {
-    $version = get_tp_version();
-    
+    $type_attr = current_theme_supports( 'html5', 'script' ) ? '' : ' type="text/javascript"';
+    $version   = get_tp_version();
+
     /* start */
-    echo chr(13) . chr(10) . '<!-- teachPress -->' . chr(13) . chr(10);
-    
+    echo PHP_EOL . '<!-- teachPress -->' . PHP_EOL;
+
     /* tp-frontend script */
-    echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/frontend.js?ver=' . $version . '"></script>' . chr(13) . chr(10);
-    
+    echo '<script' . $type_attr . ' src="' . plugins_url() . '/teachpress/js/frontend.js?ver=' . $version . '"></script>' . PHP_EOL;
+
     /* tp-frontend style */
     $value = get_tp_option('stylesheet');
     if ($value == '1') {
-        echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . chr(13) . chr(10);
+        echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . PHP_EOL;
     }
-    
+
     /* altmetric support */
     if ( TEACHPRESS_ALTMETRIC_SUPPORT === true ) {
-        echo '<script type="text/javascript" src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>' . chr(13) . chr(10);
+        echo '<script' . $type_attr . ' src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>' . PHP_EOL;
     }
-    
-     /* academicons v1.8.6 */
+
+    /* academicons v1.8.6 */
     if ( TEACHPRESS_LOAD_ACADEMICONS === true ) {
         wp_enqueue_style('academicons', plugins_url() . '/teachpress/includes/academicons/css/academicons.min.css');
     }
 
     /* Font Awesome Free 5.10.1 */
     if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
-        wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css'); 
+        wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css');
     }
-    
-    /* END */ 
-    echo '<!-- END teachPress -->' . chr(13) . chr(10);
+
+    /* END */
+    echo '<!-- END teachPress -->' . PHP_EOL;
 }
 
 /**
