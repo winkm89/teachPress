@@ -16,8 +16,9 @@ class tp_bibtex_import {
     * Imports a BibTeX string
     * @global class $PARSEENTRIES
     * @param string $input      The input string with bibtex entries
-    * @param array $settings    With index names: keyword_separator, author_format
+    * @param array $settings    With index names: keyword_separator, author_format, overwrite
     * @param string $test       Set it to true for test mode. This mode disables the inserting of publications into database
+    * @return $array            An array with the inserted publication entries
     * @since 3.0.0
     */
     public static function init ($input, $settings, $test = false) {
