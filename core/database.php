@@ -1653,7 +1653,7 @@ class tp_publications {
 
         // define global search
         if ( $search != '' ) {
-            $search = "p.title LIKE '%$search%' OR p.author LIKE '%$search%' OR p.editor LIKE '%$search%' OR p.isbn LIKE '%$search%' OR p.booktitle LIKE '%$search%' OR p.issuetitle LIKE '%$search%' OR p.journal LIKE '%$search%' OR p.date LIKE '%$search%' OR p.abstract LIKE '%$search%'";
+            $search = "p.title LIKE '%$search%' OR p.author LIKE '%$search%' OR p.editor LIKE '%$search%' OR p.isbn LIKE '%$search%' OR p.booktitle LIKE '%$search%' OR p.issuetitle LIKE '%$search%' OR p.journal LIKE '%$search%' OR p.date LIKE '%$search%' OR p.abstract LIKE '%$search%' OR p.note LIKE '%$search%'";
         }
 
         if ( $exclude != '' ) {
