@@ -279,14 +279,14 @@ class tp_shortcodes {
             }
             
             // Write the select option
-            $options .= '<option value = "tgid=' . $tag. '&amp;yr=' . $year . '&amp;type=' . $type . '&amp;usr=' . $user . '&amp;auth=' . $author . $settings['html_anchor'] . '" ' . $current . '>' . stripslashes($text) . '</option>';
+            $options .= '<option value = "tgid=' . $tag. '&amp;yr=' . $year . '&amp;type=' . $type . '&amp;usr=' . $user . '&amp;auth=' . $author . $settings['html_anchor'] . '" ' . $current . '>' . stripslashes(urldecode($text)) . '</option>';
         }
 
         // clear filter_parameter[$mode]
         $filter_parameter[$mode] = '';
         
         // return filter menu
-        return '<select class="' . $settings['filter_class'] . '" name="' . $id . '" id="' . $id . '" tabindex="' . $tabindex . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this, ' . "'" . $settings['permalink'] . "'" . ')">
+        return '<select class="' . $settings['filter_class'] . '" name="' . $id . '" id="' . $id . '" tabindex="' . $tabindex . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this, ' . "'" . stripslashes(urldecode($settings['permalink'])) . "'" . ')">
                    <option value="tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '' . $settings['html_anchor'] . '">' . $title . '</option>
                    ' . $options . '
                 </select>';
@@ -1533,6 +1533,7 @@ function tp_publist_shortcode ($atts) {
     }
     
     // For debugging only:
+    // print_r($pagination_limits);
     // print_r($settings);
     // print_r($filter_parameter);
     
