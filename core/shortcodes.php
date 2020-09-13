@@ -171,9 +171,9 @@ class tp_shortcodes {
 
         // year filter
         if ( $mode === 'year' ) {
-            $row = tp_publications::get_years( array( 'user' => $sql_parameter['user'], 
-                                                      'type' => $sql_parameter['type'],
-                                                      'include' => $sql_parameter['year'],
+            $row = tp_publications::get_years( array( 'user' => $filter_parameter['user_preselect'], 
+                                                      'type' => $filter_parameter['type_preselect'],
+                                                      'include' => $filter_parameter['year_preselect'],
                                                       'order' => 'DESC', 
                                                       'output_type' => ARRAY_A ) );
             $id = 'yr';
@@ -183,8 +183,8 @@ class tp_shortcodes {
         
         // type filter
         if ( $mode === 'type' ) {
-            $row = tp_publications::get_used_pubtypes( array( 'user' => $sql_parameter['user'],
-                                                              'include' => $sql_parameter['type'],
+            $row = tp_publications::get_used_pubtypes( array( 'user' => $filter_parameter['user_preselect'], 
+                                                              'include' => $filter_parameter['type_preselect'],
                                                               'exclude' => isset($sql_parameter['exclude_types']) ? $sql_parameter['exclude_types'] : '') );
             $id = 'type';
             $index = 'type';
@@ -194,7 +194,7 @@ class tp_shortcodes {
         // author filter
         if ( $mode === 'author' ) {
             // Use the visible filter o the SQL parameter
-            $author_id = ($filter_parameter['show_in_author_filter'] !== '') ? $filter_parameter['show_in_author_filter'] : $sql_parameter['author'];
+            $author_id = ($filter_parameter['show_in_author_filter'] !== '') ? $filter_parameter['show_in_author_filter'] : $filter_parameter['author_preselect'];
             
             $row = tp_authors::get_authors( array( 'user' => $sql_parameter['user'],
                                                    'author_id' => $author_id,
@@ -1257,6 +1257,7 @@ function tp_publist_shortcode ($atts) {
         'use_jumpmenu' => ( $atts['use_jumpmenu'] == '1' ) ? true : false
     );
 
+    // Settings for the tag cloud
     $cloud_settings = array (
         'show_tags_as' => htmlspecialchars($atts['show_tags_as']),
         'tag_limit' => intval($atts['tag_limit']),
@@ -1265,6 +1266,7 @@ function tp_publist_shortcode ($atts) {
         'minsize' => intval($atts['minsize'])
     );
     
+    // Settings for and from form fields
     $filter_parameter = array(
         'tag' => ( isset ($_GET['tgid']) && $_GET['tgid'] != '' ) ? intval($_GET['tgid']) : '',
         'year' => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
@@ -1272,44 +1274,31 @@ function tp_publist_shortcode ($atts) {
         'author' => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
         'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : '',
         'search' => isset ($_GET['tsr']) ? htmlspecialchars( $_GET['tsr'] ) : '',
-        'show_in_author_filter' => htmlspecialchars($atts['show_in_author_filter'])
+        'show_in_author_filter' => htmlspecialchars($atts['show_in_author_filter']),
+        'tag_preselect' => htmlspecialchars($atts['tag']),
+        'year_preselect' => htmlspecialchars($atts['year']),
+        'author_preselect' => htmlspecialchars($atts['author']),
+        'type_preselect' => htmlspecialchars($atts['type']),
+        'user_preselect' => htmlspecialchars($atts['user']),
     );
     
+    /*
+     * Settings for data selection
+     * 
+     * Default values are from the shortcode parameters
+     * Can be overwritten with filter_parameter
+     */
     $sql_parameter = array (
-        'user' => htmlspecialchars($atts['user']),
-        'type' => htmlspecialchars($atts['type']),
-        'author' => htmlspecialchars($atts['author']),
-        'year' => htmlspecialchars($atts['year']),
+        'user' => ( $filter_parameter['user'] !== '' ) ? $filter_parameter['user'] : htmlspecialchars($atts['user']),
+        'type' => ( $filter_parameter['type'] !== '' ) ? $filter_parameter['type'] : htmlspecialchars($atts['type']),
+        'author' => ( $filter_parameter['author'] !== '' ) ? $filter_parameter['author'] : htmlspecialchars($atts['author']),
+        'year' => ( $filter_parameter['year'] !== '' ) ? $filter_parameter['year'] : htmlspecialchars($atts['year']),
+        'tag' => ( $filter_parameter['tag'] !== '' ) ? $filter_parameter['tag'] : htmlspecialchars($atts['tag']),
         'exclude' => htmlspecialchars($atts['exclude']),
         'exclude_tags' => htmlspecialchars($atts['exclude_tags']),
         'exclude_types' => htmlspecialchars($atts['exclude_types']),
         'order' => htmlspecialchars($atts['order']),
     );
-
-    // user: overwrite filter with the shortcode value if the filter param is unset
-    if ( $filter_parameter['user'] === '' ) {
-        $filter_parameter['user'] = htmlspecialchars($atts['user']);
-    }
-    
-    // types: overwrite filter with the shortcode value if the filter param is unset
-    if ( $filter_parameter['type'] === '' ) {
-        $filter_parameter['type'] = htmlspecialchars($atts['type']);
-    }
-    
-    // authors: overwrite filter with the shortcode value if the filter param is unset
-    if ( $filter_parameter['author'] === '' ) {
-       $filter_parameter['author'] = htmlspecialchars($atts['author']);
-    }
-    
-    // years: overwrite filter with the shortcode value if the filter param is unset
-    if ( $filter_parameter['year'] === '' ) {
-       $filter_parameter['year'] = htmlspecialchars($atts['year']);
-    } 
-    
-    // tags: overwrite filter with the shortcode value if the filter param is unset
-    if ( $filter_parameter['tag'] === '' ) {
-       $filter_parameter['tag'] = htmlspecialchars($atts['tag']);
-    } 
    
     // Handle limits for pagination   
     $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
@@ -1447,12 +1436,12 @@ function tp_publist_shortcode ($atts) {
     
     // Parameters for returning publications
     $args = array(
-        'tag' => $filter_parameter['tag'], 
-        'year' => $filter_parameter['year'], 
-        'type' => $filter_parameter['type'], 
-        'user' => $filter_parameter['user'], 
+        'tag' => $sql_parameter['tag'], 
+        'year' => $sql_parameter['year'], 
+        'type' => $sql_parameter['type'], 
+        'user' => $sql_parameter['user'], 
         'search' => $filter_parameter['search'],
-        'author_id' => $filter_parameter['author'],
+        'author_id' => $sql_parameter['author'],
         'order' => $sql_parameter['order'], 
         'exclude' => $sql_parameter['exclude'],
         'exclude_tags' => $sql_parameter['exclude_tags'],
