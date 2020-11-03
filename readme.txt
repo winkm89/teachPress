@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.5
 Requires PHP: 5.3
-Stable tag: 7.1.1
+Stable tag: 7.1.2
 
 Manage your courses and publications with teachPress 
 
@@ -125,6 +125,9 @@ Use at your own risk. No warranty expressed or implied is provided.
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 7.1.2 (03.11.2020) =
+* Changed: Migrate to newer jQuery versions: Replace jQery .live() calls with .on()
 
 = 7.1.1 (13.09.2020) =
 * Changed: Consider note field in the publication search (#140)
