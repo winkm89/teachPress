@@ -611,7 +611,7 @@ class tp_publications_page {
                 });
                 
                 // bibtex button in the cite publication window 
-                $(".tp_cite_bibtex").live('click',function() {
+                $("body").on('click','.tp_cite_bibtex', function() {
                     var pub_id = $(this).attr("pub_id");
                     $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&cite_pub=" + pub_id + "&cite_type=bibtex", 
                     function(text){
@@ -623,7 +623,7 @@ class tp_publications_page {
                 });
                 
                 // text button in the cite publication window 
-                $(".tp_cite_text").live('click',function() {
+                $("body").on('click','.tp_cite_text',function() {
                     var pub_id = $(this).attr("pub_id");
                     $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&cite_pub=" + pub_id + "&cite_type=text", 
                     function(text){

@@ -86,9 +86,10 @@ class tp_document_manager {
                     $class = 'tp_file tp_file_headline';
                     $size = '';
                     $checkbox = '';
-                    $name = '<span class="tp_file_name"><i class="' . tp_icons::get_class( $row['path'] ) . '"></i>' . stripslashes($row['name']) . '</span>';
+                    $name = '<span class="tp_file_name">' . stripslashes($row['name']) . '</span>';
                     if ( $row['path'] !== '' ) {
                         $class = 'tp_file';
+                        $name = '<span class="tp_file_name"><i class="' . tp_icons::get_class( $row['path'] ) . '"></i>' . stripslashes($row['name']) . '</span>';
                         $size = '<span class="tp_file_size">' . tp_convert_file_size($row['size']) . '</span>';
                     }
                     if ( $mode === 'tinyMCE' && $row['path'] !== '' ) {
@@ -220,7 +221,7 @@ class tp_document_manager {
             $( "#tp_sortable" ).disableSelection();
             
             // Add headlines
-            $("#tp_add_headline_button").live("click", function() {
+            $("body").on("click", "#tp_add_headline_button", function() {
                 var value = $("#tp_add_headline_name").val();
                 if ( value !== '' ) {
                     $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&add_document=" + value + "&course_id=<?php echo $course_id; ?>", 
@@ -258,7 +259,7 @@ class tp_document_manager {
             }
             
             // Checkboxes for file inserts (tinyMCE Document Manager only)
-            $(".tp_file_checkbox").live( "click", function() {
+            $("body").on( "click", ".tp_file_checkbox", function() {
                 var value = '';
                 // var tp_saved_cookie = getCookie("teachpress_data_store");
                 $(".tp_file_checkbox").each(function( index ) {
@@ -270,7 +271,7 @@ class tp_document_manager {
             });
             
             // Edit documents: add menu
-            $(".tp_file_edit").live( "click", function() {
+            $("body").on( "click", ".tp_file_edit", function() {
                 var document_id = $(this).attr("document_id");
                 
                 $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&get_document_name=" + document_id, 
@@ -280,13 +281,13 @@ class tp_document_manager {
             });
             
             // Edit documents: cancel
-            $(".tp_file_edit_cancel").live( "click", function() {
+            $("body").on( "click", ".tp_file_edit_cancel", function() {
                 var document_id = $(this).attr("document_id");
                 $("#tp_file_edit_" + document_id).remove();
             });
             
             // Edit documents: save
-            $(".tp_file_edit_save").live( "click", function() {
+            $("body").on( "click", ".tp_file_edit_save", function() {
                 var document_id = $(this).attr("document_id");
                 var value = $("#tp_file_edit_text_" + document_id).val();
                 
@@ -298,7 +299,7 @@ class tp_document_manager {
             });
             
             // Delete documents
-            $(".tp_file_delete").live( "click", function() {
+            $("body").on( "click", ".tp_file_delete", function() {
                 var document_id = $(this).attr("document_id");
                 $("#tp_file_" + document_id).remove().hide();
                 $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&del_document=" + document_id, 
