@@ -378,6 +378,7 @@ function teachpress_publicationFields(mode) {
 
 /**
  * Make it possible to use the wordpress media uploader
+ * @since 2.0.0
  */
 jQuery(document).ready(function() {
     var uploadID = '';
@@ -399,7 +400,9 @@ jQuery(document).ready(function() {
     });
 
     window.send_to_editor = function(html) {
-        var imgurl = jQuery('img',html).attr('src');
+        // html_fixed should fix the jQuery error: HTML strings must start with '<' character
+        var html_fixed = '<html>' + html + '</html>';
+        var imgurl = jQuery('img',html_fixed).attr('src');
         var sel = document.getElementById("upload_mode").value;
         if (typeof(imgurl) === "undefined") {
             imgurl = jQuery(html).attr('href');
@@ -411,7 +414,7 @@ jQuery(document).ready(function() {
                 imgurl = old.value + imgurl;
             }
             // Firefox, Chrome, Safari, Opera
-            else if (old.selectionStart || old.selectionStart == '0') {
+            else if (old.selectionStart || old.selectionStart === '0') {
                 var startPos = old.selectionStart;
                 var endPos = old.selectionEnd;
                 var urlLength = imgurl.length;
