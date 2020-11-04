@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.5
 Requires PHP: 5.3
-Stable tag: 7.1.2
+Stable tag: 7.1.3
 
 Manage your courses and publications with teachPress 
 
@@ -92,9 +92,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 * Academicons 1.8.6 by James Walsh (Font: SIL OFL 1.1, CSS: MIT License)
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
 
-= Thanks =
-I would like to thank the team of [CBIS, Chemnitz University of Technology](http://www.tu-chemnitz.de/wirtschaft/wi2/wp/en/) for the support and the collaboration during the last years.
-
 = Translators who did a great job in translating the plugin into other languages. Thank you! =
 * Alexandre Touzet (French)
 * Alfonso Montejo Ráez (Spanish)
@@ -126,8 +123,11 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 7.1.3 (04.11.2020) = 
+* Bugfix: Adding image URL no longer working with WordPress 5.5
+
 = 7.1.2 (03.11.2020) =
-* Changed: Migrate to newer jQuery versions: Replace jQery .live() calls with .on()
+* Changed: Migrate to newer jQuery versions: Replace jQuery .live() calls with .on()
 
 = 7.1.1 (13.09.2020) =
 * Changed: Consider note field in the publication search (#140)
