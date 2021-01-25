@@ -251,7 +251,7 @@ class PARSEENTRIES {
             $oldString = substr_replace($oldString, '', $pos, strlen($value));
         }
         $rev = strrev(trim($oldString));
-        if( $rev{0} != ',' ) {
+        if( $rev[0] != ',' ) {
             $oldString .= ',';
         }
         $keys = preg_split("/=,/", $oldString);
@@ -263,7 +263,7 @@ class PARSEENTRIES {
             $value = trim(array_shift($values));
             $rev = strrev($value);
             // remove any dangling ',' left on final field of entry
-            if($rev{0} == ',') {
+            if($rev[0] == ',') {
                 $value = rtrim($value, ",");
             }
             if(!$value) {
@@ -340,11 +340,11 @@ class PARSEENTRIES {
      * @return string
      */
     function removeDelimiters($string) {
-        if($string  && ($string{0} == "\"")) {
+        if($string  && ($string[0] == "\"")) {
             $string = substr($string, 1);
             $string = substr($string, 0, -1);
         }
-        else if($string && ($string{0} == "{")) {
+        else if($string && ($string[0] == "{")) {
             if(strlen($string) > 0 && $string[strlen($string)-1] == "}") {
                 $string = substr($string, 1);
                 $string = substr($string, 0, -1);
