@@ -396,14 +396,12 @@ class tp_bibtex {
     
     /**
      * The function splits a author/editor name and returns the lastname or NULL if there is no name was found
-     * @global $PARSECREATORS
      * @param string $input     A name of an author or editor
      * @return string
      * @since 5.0.0
      */
     public static function get_lastname ($input) {
-        global $PARSECREATORS;
-        $creator = new PARSECREATORS();
+        $creator = new BIBTEXCREATORPARSE();
         $creatorArray = $creator->parse($input);
         if ( isset( $creatorArray[0][2] ) ) {
             return trim($creatorArray[0][2]);
@@ -446,11 +444,10 @@ class tp_bibtex {
      * @return string
      * @since 5.0.0
      * @access public
-     * @uses PARSECREATORS()    This class is a part of bibtexParse
+     * @uses BIBTEXCREATORPARSE()    This class is a part of bibtexParse
      */
     public static function parse_author_default ($input, $separator = ';', $mode = 'initials') {
-        global $PARSECREATORS;
-        $creator = new PARSECREATORS();
+        $creator = new BIBTEXCREATORPARSE();
         $creatorArray = $creator->parse($input);
         $all_authors = '';
         $max = count($creatorArray);

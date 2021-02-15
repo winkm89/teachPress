@@ -70,7 +70,7 @@ The plugin saves course documents in your WordPress upload directory under /teac
 
 == Credits ==
 
-Copyright 2008-2020 by Michael Winkler
+Copyright 2008-2021 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 = Licence information of external resources =
-* bibtexParse by Mark Grimshaw & Guillaume Gardey (Licence: GPL)
+* Wikindx bibtex import classes (bibtexParse) by Mark Grimshaw-Aagaard & Stéphane Aulery (Licence: ISC License)
 * Font Awesome Free 5.10.1 by fontawesome (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
 * Academicons 1.8.6 by James Walsh (Font: SIL OFL 1.1, CSS: MIT License)
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
@@ -122,6 +122,9 @@ Use at your own risk. No warranty expressed or implied is provided.
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= x.x.x =
+* Changed: Update bibtexParse to v2.5 
 
 = 7.1.3 (04.11.2020) = 
 * Bugfix: Adding image URL no longer working with WordPress 5.5

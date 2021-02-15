@@ -92,10 +92,10 @@ if ( is_admin() ) {
     include_once("admin/show-students.php");
 }
 
-// BibTeX Parse
-if ( !class_exists( 'PARSEENTRIES' ) ) {
-    include_once("includes/bibtexParse/PARSEENTRIES.php");
-    include_once("includes/bibtexParse/PARSECREATORS.php");
+// BibTeX Parse v2.5
+if ( !class_exists( 'BIBTEXPARSE' ) ) {
+    include_once("includes/bibtexParse/BIBTEXPARSE.php");
+    include_once("includes/bibtexParse/BIBTEXCREATORPARSE.php");
 }
 
 /*********/

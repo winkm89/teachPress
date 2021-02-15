@@ -30,9 +30,8 @@ class tp_bibtex_import {
         $import_id = ( $test === false ) ? tp_publication_imports::add_import() : 0;
         
         // Init bibtexParse
-        global $PARSEENTRIES;
         $input = tp_bibtex::convert_bibtex_to_utf8($input);
-        $parse = NEW PARSEENTRIES();
+        $parse = NEW BIBTEXPARSE();
         $parse->expandMacro = TRUE;
         $array = array('RMP' => 'Rev., Mod. Phys.');
         $parse->loadStringMacro($array);
@@ -258,7 +257,6 @@ class tp_bibtex_import_author {
     
     /**
      * This function can detect the name format automatically
-     * @global class $PARSECREATORS
      * @param array $entry
      * @param string $key
      * @return string
@@ -266,8 +264,7 @@ class tp_bibtex_import_author {
      * @access private
      */
     private static function dynamic_mode ($entry, $key) {
-        global $PARSECREATORS;
-        $creator = new PARSECREATORS();
+        $creator = new BIBTEXCREATORPARSE();
         $creatorArray = $creator->parse( $entry[$key] );
         // print_r($creatorArray);
         $string = '';
