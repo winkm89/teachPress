@@ -1,86 +1,75 @@
 <?php
 /**
- * This file contains the external class PARSEPAGE of bibtexParse
- * @package teachpress\includes\bibtexParse
+ * This file contains the external class PARSEPAGE of WIKINDX
+ *
+ * @see https://wikindx.sourceforge.io/ The WIKINDX SourceForge project
+ *
+ * @author The WIKINDX Team
+ * @license https://www.isc.org/licenses/ ISC License
  */
 
-/*
-Released through http://bibliophile.sourceforge.net under the GPL licence.
-Do whatever you like with this -- some credit to the author(s) would be appreciated.
-
-A collection of PHP classes to manipulate bibtex files.
-
-If you make improvements, please consider contacting the administrators at bibliophile.sourceforge.net 
-so that your improvements can be added to the release package.
-
-Mark Grimshaw 2005
-http://bibliophile.sourceforge.net*/
-/*****
-*	PARSEPAGE: BibTeX PAGES import class
-*****/
-class PARSEPAGE {
-    // Constructor
-    public function __construct() {
+/**
+ * BibTeX PAGE import class
+ */
+class BIBTEXPAGEPARSE {
+    /** boolean */
+    private $completeField = FALSE;
+    
+    /**
+     * calls the page parser and returns an array with first- and lastpage
+     *
+     * @param string $item
+     *
+     * @return array
+     */
+    public function init($item) {
+        $item = trim($item);
+        if (!$item) {
+            return [FALSE, FALSE];
+        }
+        elseif ($this->completeField)
+        { //if true, return the complete item, else return only the first number found.
+            return [$item, FALSE];
+        }
+        if ($this->parsePages($item)) {
+            return $this->return; // first and last page present.
+        }
+        // return whatever we have
+        return [$item, FALSE];
     }
-        
-        /**
-         * Create page arrays from bibtex input.
-         *'pages' field can be:
-         *	"77--99"
-         *	"3 - 5"
-         *	"ix -- 101"
-         *	"73+"
-         *	73, 89,103"
-         * Currently, PARSEPAGE will take 1/, 2/ and 3/ above as page_start and page_end and, in the other cases, will accept
-         * the first valid number it finds from the left as page_start setting page_end to NULL
-         * @param type $item
-         * @return type
-         */
-	function init($item){
-            $item = trim($item);
-            if($this->type1($item)) {
-                return $this->return;
+    
+    /**
+     * parsePages tries to split on '--' or '-' (in case no valid split on '--' is possible.
+     * if the split results in 2 elements, the split is considered valid.
+     *
+     * @param string $pages
+     *
+     * @return mixed BOOLEAN|array(start, end)
+     */
+    private function parsePages($pages) {
+        $start = $end = FALSE;
+        $elements = preg_split("/--/u", $pages);
+        //first split on the valid bibtex page separator
+        if (count($elements) == 1) {
+            //no '--' found, try on single '-'
+            $elements = preg_split("/-/u", $pages);
+        }
+        //try on ','
+        if (count($elements) == 1) {
+            $elements = preg_split("/,/u", $pages);
+        }
+        if (count($elements) == 2) {
+            //found valid pages that are separated by '--' or by '-'
+            $start = trim($elements[0]);
+            $end = trim($elements[1]);
+            // if [1] < [0], this might be e.g. 456-76 or 456,76 inferring 456-476.  Will only work if arabic numerals
+            if (is_numeric($start) && is_numeric($end) && ($end < $start)) {
+                $end = mb_substr($start, 0, mb_strlen($start) - mb_strlen($end)) . $end;
             }
-            
-            // else, return first number we can find
-            if(preg_match("/(\d+|[ivx]+)/i", $item, $array)) {
-                return array($array[1], FALSE);
-            }
-            
-            // No valid page numbers found
-            return array(FALSE, FALSE);
-	}
-        // "77--99" or '-'type?
-        
-        /**
-         * 
-         * @param type $item
-         * @return boolean
-         */
-	function type1($item) {
-            $start = $end = FALSE;
-            $array = preg_split("/--|-/", $item);
-            if( sizeof($array) > 1 ) {
-                if(is_numeric(trim($array[0]))) {
-                    $start = trim($array[0]);
-                }
-                else {
-                    $start = strtolower(trim($array[0]));
-                }
-                if(is_numeric(trim($array[1]))) {
-                    $end = trim($array[1]);
-                }
-                else {
-                    $end = strtolower(trim($array[1]));
-                }
-                if($end && !$start) {
-                    $this->return = array($end, $start);
-                }
-                else {
-                    $this->return = array($start, $end);
-                }
-                return TRUE;
-            }
-            return FALSE;
-	}
+            $this->return = [$start, $end];
+
+            return TRUE;
+        }
+        return FALSE;
+    }
 }

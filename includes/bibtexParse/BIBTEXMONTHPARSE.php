@@ -1,34 +1,26 @@
 <?php
 /**
- * This file contains the external class PARSEMONTH of bibtexParse
- * @package teachpress\includes\bibtexParse
+ * This file contains the external class PARSEMONTH of WIKINDX
+ * 
+ * @see https://wikindx.sourceforge.io/ The WIKINDX SourceForge project
+ *
+ * @author The WIKINDX Team
+ * @license https://www.isc.org/licenses/ ISC License
  */
 
-/*
-Released through http://bibliophile.sourceforge.net under the GPL licence.
-Do whatever you like with this -- some credit to the author(s) would be appreciated.
-
-A collection of PHP classes to manipulate bibtex files.
-
-If you make improvements, please consider contacting the administrators at bibliophile.sourceforge.net so 
-that your improvements can be added to the release package.
-
-Mark Grimshaw 2005
-http://bibliophile.sourceforge.net
-*/
-/*****
-* PARSEMONTH: BibTeX MONTH import class
-*
-* BibTeX month field can come in as:
-* jan
-* "8~" # jan
-* jan#"~8"
-* etc.
-* where # is concatenation and '~' can be any non-numeric character.
-*****/
-
-// 17/June/2005 - Mark Grimshaw:  month fields that have multiple dates (e.g. dec # " 5--9," or nov # " 29" # "--" # dec # " 2") are correctly parsed.
-class PARSEMONTH {
+/**
+ * BibTeX MONTH import class
+ *
+ * BibTeX month field can come in as:
+ * jan
+ * "8~" # jan
+ * jan#"~8"
+ *
+ * where # is concatenation and '~' can be any non-numeric character. The number must be extracted for use in the WIKINDX 'day' field.
+ *
+ * Entries of type jun # "-" # aug are reduced to just the first month.
+ */
+class BIBTEXMONTHPARSE {
     
     // Constructor
     public function __construct() {
@@ -37,10 +29,10 @@ class PARSEMONTH {
     function init($monthField) {
         $startMonth = $this->startDay = $endMonth = $this->endDay = FALSE;
         $date = explode("#", $monthField);
-        foreach($date as $field) {
-            $field = ucfirst(strtolower(trim($field)));
-            if( $month = array_search($field, $this->monthToLongName()) ) {
-                if(!$startMonth) {
+        foreach ($date as $field) {
+            $field = ucfirst(mb_strtolower(trim($field)));
+            if ( $month = array_search($field, $this->monthToLongName()) ) {
+                if (!$startMonth) {
                     $startMonth = $month;
                 }
                 else {
@@ -48,9 +40,8 @@ class PARSEMONTH {
                 }
                 continue;
             }
-            else if( $month = array_search($field, $this->monthToShortName()) )
-            {
-                if(!$startMonth) {
+            elseif ( $month = array_search($field, $this->monthToShortName()) ) {
+                if (!$startMonth) {
                     $startMonth = $month;
                 }
                 else {
@@ -60,9 +51,10 @@ class PARSEMONTH {
             }
             $this->parseDay($field);
         }
-        if($this->endDay && !$endMonth) {
+        if ($this->endDay && !$endMonth) {
             $endMonth = $startMonth;
         }
+        
         return array($startMonth, $this->startDay, $endMonth, $this->endDay);
     }
         
@@ -70,22 +62,21 @@ class PARSEMONTH {
      * extract day of month from field
      * @param string $dayField
      */
-    function parseDay($dayField) {
-        preg_match("/([0-9]+).*([0-9]+)|([0-9]+)/", $dayField, $array);
-        if(array_key_exists(3, $array))
-        {
-            if(!$this->startDay) {
+    private function parseDay($dayField) {
+        preg_match("/([0-9]+).*([0-9]+)|([0-9]+)/u", $dayField, $array);
+        if (array_key_exists(3, $array)) {
+            if (!$this->startDay) {
                 $this->startDay = $array[3];
             }
-            else if(!$this->endDay) {
+            elseif (!$this->endDay) {
                 $this->endDay = $array[3];
             }
         }
         else {
-            if(array_key_exists(1, $array)) {
+            if (array_key_exists(1, $array)) {
                 $this->startDay = $array[1];
             }
-            if(array_key_exists(2, $array)) {
+            if (array_key_exists(2, $array)) {
                 $this->endDay = $array[2];
             }
         }

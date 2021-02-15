@@ -1,13 +1,3 @@
-Released through http://bibliophile.sourceforge.net under the GPL licence.
-Do whatever you like with this -- some credit to the author(s) would be appreciated.
-
-A collection of PHP classes to manipulate bibtex files.
-
-If you make improvements, please consider contacting the administrators at bibliophile.sourceforge.net so that your improvements can be added to the release package.
-
-Mark Grimshaw & Guillaume Gardey 2004 - 2006
-http://bibliophile.sourceforge.net
-
 ################################################
 PARSEENTRIES
 ############
