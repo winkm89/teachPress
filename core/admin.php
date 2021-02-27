@@ -208,7 +208,7 @@ class tp_admin {
             $return .= '<option value="">- ' . __('none','teachpress') . ' -</option>';
         }
         foreach ($options as $opt) {
-            tp_admin::get_select_option(stripslashes($opt->value), stripslashes($opt->value), $value);
+            $return .= tp_admin::get_select_option(stripslashes($opt->value), stripslashes($opt->value), $value);
         }
         $return .= '</select>';
         return $return;
