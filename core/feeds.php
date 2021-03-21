@@ -43,7 +43,9 @@ function tp_pub_rss_feed_func () {
     foreach ($row as $row) {
 
         // prepare url
-        if ( $row['url'] != '' ) {
+        if ( $row['doi'] != '') {
+            $item_link = "https://dx.doi.org/" . $row['doi'];
+        } elseif ( $row['url'] != '' ) {
             $new = explode(', ', $row['url']);
             $item_link = $new[0];
         } elseif ($row['rel_page'] != '') {
