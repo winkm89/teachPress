@@ -1,6 +1,6 @@
 <?php
 /*
- * If you want, you can owerwrite this parameters in your wp-config.php.
+ * If you want, you can owerwrite this parameters in your wp-config.php
  */
 
 global $wpdb;
@@ -242,4 +242,12 @@ if ( !defined('TEACHPRESS_MENU_POSITION') ) {
      * @since 7.0
     */
     define('TEACHPRESS_MENU_POSITION', null);}
+    
+if ( !defined('TEACHPRESS_DEBUG') ) { 
+    /**
+     * This value defines if the debug mode is active or not
+     * @since 7.2
+     */
+    define('TEACHPRESS_DEBUG', false);
+}
 
