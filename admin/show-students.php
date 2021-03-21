@@ -40,7 +40,7 @@ function tp_students_page() {
         $subject = isset ( $_POST['subject'] ) ? htmlspecialchars($_POST['subject']) : '';
         $text = isset ( $_POST['text'] ) ? htmlspecialchars($_POST['text']) : '';
         $attachments = isset ( $_POST['attachments'] ) ? $_POST['attachments'] : '';
-        tp_mail::sendMail($from, $to, $subject, $text, $recipients_option, $attachments);
+        TP_Mail::sendMail($from, $to, $subject, $text, $recipients_option, $attachments);
         get_tp_message( __('E-Mail sent','teachpress') );
     }
     
@@ -49,7 +49,7 @@ function tp_students_page() {
     $visible_fields = array();
     $select_fields = array();
     foreach ($fields as $row) {
-        $data = tp_db_helpers::extract_column_data($row['value']);
+        $data = TP_DB_Helpers::extract_column_data($row['value']);
         if ( $data['visibility'] === 'admin') {
             array_push($visible_fields, $row['variable']);
         }
@@ -72,16 +72,16 @@ function tp_students_page() {
 
     // Event handler
     if ( $action === 'show' ) {
-        tp_student_page::show_tab($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
+        TP_Student_Page::show_tab($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
     }
     elseif ( $action === 'edit' ) {
-        tp_student_page::edit_tab($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
+        TP_Student_Page::edit_tab($student, $fields, $search, $page_settings['curr_page'], $url_parameter);
     }
     elseif ( $action === 'add' ) {
         tp_add_student_page($fields);
     }
     else {
-        tp_students_page::get_page($bulk, $search, $meta_search, $fields, $visible_fields, $select_fields, $page_settings, $url_parameter);
+        TP_Students_Page::get_page($bulk, $search, $meta_search, $fields, $visible_fields, $select_fields, $page_settings, $url_parameter);
     }
 }
 
@@ -89,7 +89,7 @@ function tp_students_page() {
  * This class contains all function for the show students page
  * @since 5.0.0
  */
-class tp_students_page {
+class TP_Students_Page {
     
     /**
      * Gets the filter for meta data
@@ -102,7 +102,7 @@ class tp_students_page {
         $max = count($select_fields);
         for ($i = 0; $i < $max; $i++) {
             $meta_field = get_tp_option($select_fields[$i], 'teachpress_stud');
-            $meta_field_options = tp_db_helpers::extract_column_data($meta_field);
+            $meta_field_options = TP_DB_Helpers::extract_column_data($meta_field);
             
             echo '<select name="' . $select_fields[$i] . '" title="' . __('Select','teachpress') . ': ' . $meta_field_options['title'] . '">';
             echo '<option value="">- ' . __('All','teachpress') . ' -</option>';
@@ -154,17 +154,17 @@ class tp_students_page {
         
         // Delete students part 2
         if ( isset($_GET['delete_ok']) ) {
-            tp_students::delete_student($checkbox);
+            TP_Students::delete_student($checkbox);
             $message = __('Removing successful','teachpress');
             get_tp_message($message);
         }
         
         // Load data
-        $number_entries = tp_students::get_students( array('search' => $search, 
+        $number_entries = TP_Students::get_students( array('search' => $search, 
                                                            'meta_search' => $meta_search, 
                                                            'output_type' => OBJECT, 
                                                            'count' => true ) );
-        $students = tp_students::get_students( array('search' => $search, 
+        $students = TP_Students::get_students( array('search' => $search, 
                                                      'meta_search' => $meta_search, 
                                                      'limit' => $page_settings['entry_limit'] . ',' . $page_settings['entries_per_page'], 
                                                      'output_type' => ARRAY_A ) );
@@ -183,7 +183,7 @@ class tp_students_page {
             </select>
             <input type="submit" name="teachpress_submit" value="<?php _e('OK','teachpress'); ?>" id="doaction" class="button-secondary"/>
             <?php 
-            tp_students_page::get_filter($select_fields, $meta_search);
+            TP_Students_Page::get_filter($select_fields, $meta_search);
             // Page Menu
             $args = array('number_entries' => $number_entries,
                       'entries_per_page' => $page_settings['entries_per_page'],
@@ -206,7 +206,7 @@ class tp_students_page {
             echo '<th>' . __('User account','teachpress') . '</th>'; 
             echo '<th>' . __('E-Mail') . '</th>';
             foreach ($fields as $row) {
-                $data = tp_db_helpers::extract_column_data($row['value']);
+                $data = TP_DB_Helpers::extract_column_data($row['value']);
                 if ( $data['visibility'] === 'admin' ) {
                     echo '<th>' . $data['title'] . '</th>';
                 }
@@ -216,7 +216,7 @@ class tp_students_page {
         </thead>
         <tbody> 
         <?php
-        tp_students_page::get_table_row ($students, $bulk, $checkbox, $search, $page_settings['curr_page'], $visible_fields, $url_parameter);
+        TP_Students_Page::get_table_row ($students, $bulk, $checkbox, $search, $page_settings['curr_page'], $visible_fields, $url_parameter);
         ?> 
         </tbody>
         </table>
@@ -268,7 +268,7 @@ class tp_students_page {
 
         $class_alternate = true;
         foreach( $students as $row3) { 
-            $student_meta = tp_students::get_student_meta($row3['wp_id']);
+            $student_meta = TP_Students::get_student_meta($row3['wp_id']);
             $tr_class = ( $class_alternate === true ) ? 'class="alternate"' : '';
             $class_alternate = ( $class_alternate === true ) ? false : true;
             echo '<tr ' . $tr_class . '>';

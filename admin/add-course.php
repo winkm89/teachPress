@@ -93,7 +93,7 @@ function tp_add_course_page() {
    $search = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
    $sem = isset( $_GET['sem'] ) ? htmlspecialchars($_GET['sem']) : '';
    $ref = isset( $_GET['ref'] ) ? htmlspecialchars($_GET['ref']) : '';
-   $capability = ($course_id !== 0) ? tp_courses::get_capability($course_id, $current_user->ID) : 'owner';
+   $capability = ($course_id !== 0) ? TP_Courses::get_capability($course_id, $current_user->ID) : 'owner';
    
    // If the user has no permissions to edit this course
    if ( $course_id !== 0 && ( $capability !== 'owner' && $capability !== 'approved' ) ) {
@@ -110,25 +110,25 @@ function tp_add_course_page() {
    <?php 
         // Add new course
         if ( isset($_POST['create']) ) {
-             $course_id = tp_courses::add_course($data, $sub);
-             tp_db_helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
+             $course_id = TP_Courses::add_course($data, $sub);
+             TP_DB_Helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
              $message = __('Course created successful.','teachpress') . ' <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;action=show&amp;search=&amp;sem=' . get_tp_option('sem') . '">' . __('Show course','teachpress') . '</a> | <a href="admin.php?page=teachpress/add_course.php">' . __('Add new','teachpress') . '</a>';
              get_tp_message($message);
         }
 
         // Saves changes
         if ( isset($_POST['save']) ) {
-             tp_courses::delete_course_meta($course_id);
-             tp_courses::change_course($course_id, $data);
-             tp_db_helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
+             TP_Courses::delete_course_meta($course_id);
+             TP_Courses::change_course($course_id, $data);
+             TP_DB_Helpers::prepare_meta_data($course_id, $fields, $_POST, 'courses');
              $message = __('Saved');
              get_tp_message($message);
         }
 
         // Default vaulues
         if ( $course_id != 0 ) {
-             $course_data = tp_courses::get_course($course_id, ARRAY_A);
-             $course_meta = tp_courses::get_course_meta($course_id);
+             $course_data = TP_Courses::get_course($course_id, ARRAY_A);
+             $course_meta = TP_Courses::get_course_meta($course_id);
         }
         else {
              $course_data = get_tp_var_types('course_array');
@@ -154,13 +154,13 @@ function tp_add_course_page() {
                    </div>
                </div>
                 <?php
-                tp_add_course::get_general_box ($course_id, $course_types, $course_data);
+                TP_Add_Course::get_general_box ($course_id, $course_types, $course_data);
 
                 if ( $course_id === 0 ) { 
-                    tp_add_course::get_subcourses_box($course_types, $course_data);
+                    TP_Add_Course::get_subcourses_box($course_types, $course_data);
                 }
                 if ( count($fields) !== 0 ) { 
-                    tp_admin::display_meta_data($fields, $course_meta);       
+                    TP_Admin::display_meta_data($fields, $course_meta);       
                 } 
                 ?>
            </div>
@@ -168,8 +168,8 @@ function tp_add_course_page() {
      </div>
      <div class="tp_postcontent_right">  
         <?php
-        tp_add_course::get_meta_box ($course_id, $course_data, $capability);
-        tp_add_course::get_enrollments_box ($course_id, $course_data);
+        TP_Add_Course::get_meta_box ($course_id, $course_data, $capability);
+        TP_Add_Course::get_enrollments_box ($course_id, $course_data);
         ?>
      </div>
      </div>
@@ -183,7 +183,7 @@ function tp_add_course_page() {
  * This class contains all funcitons for the add_course_page
  * @since 5.0.0
  */
-class tp_add_course {
+class TP_Add_Course {
     
     /**
      * Gets the enrollment box
@@ -232,7 +232,7 @@ class tp_add_course {
                 <p>
                 <?php 
                  if ($course_data["parent"] != 0) {
-                    $parent_data_strict = tp_courses::get_course_data($course_data["parent"], 'strict_signup'); 
+                    $parent_data_strict = TP_Courses::get_course_data($course_data["parent"], 'strict_signup'); 
                     $check = $parent_data_strict == 1 ? 'checked="checked"' : '';
                     ?>
                     <input name="strict_signup_2" id="strict_signup_2" type="checkbox" value="1" tabindex="27" <?php echo $check; ?> disabled="disabled" /> <label for="strict_signup_2" title="<?php _e('This is a child course. You can only change this option in the parent course','teachpress'); ?>"><?php _e('Strict sign up','teachpress'); ?></label></p>
@@ -287,20 +287,50 @@ class tp_add_course {
             </select>
             <?php
             // lecturer
-            echo tp_admin::get_form_field('lecturer', __('The lecturer(s) of the course','teachpress'), __('Lecturer','teachpress'), 'input' , 'course', $course_data["lecturer"], array('course'), 4, 'width:95%;');
+            echo TP_Admin::get_form_field(
+                array(
+                    'name' => 'lecturer',
+                    'title' => __('The lecturer(s) of the course','teachpress'),
+                    'label' => __('Lecturer','teachpress'),
+                    'type' => 'input',
+                    'value' => $course_data['lecturer'],
+                    'tabindex' => 4,
+                    'display' => 'block', 
+                    'style' => 'width:95%;') );
+            
             // date
-            echo tp_admin::get_form_field('date', __('The date(s) for the course','teachpress'), __('Date','teachpress'), 'input' , 'course', $course_data["date"], array('course'), 5, 'width:95%;');
+            echo TP_Admin::get_form_field(
+                array(
+                    'name' => 'date',
+                    'title' => __('The date(s) for the course','teachpress'),
+                    'label' => __('Date','teachpress'),
+                    'type' => 'input',
+                    'value' => $course_data['date'],
+                    'tabindex' => 5,
+                    'display' => 'block', 
+                    'style' => 'width:95%;') );
+            
             // room
-            echo tp_admin::get_form_field('room', __('The room or place for the course','teachpress'), __('Room','teachpress'), 'input' , 'course', $course_data["room"], array('course'), 6, 'width:95%;');
+            echo TP_Admin::get_form_field(
+                array(
+                    'name' => 'room',
+                    'title' => __('The room or place for the course','teachpress'),
+                    'label' => __('Room','teachpress'),
+                    'type' => 'input',
+                    'value' => $course_data['room'],
+                    'tabindex' => 6,
+                    'display' => 'block', 
+                    'style' => 'width:95%;') );
+            
             ?>
             <p><label for="places" title="<?php _e('The number of available places.','teachpress'); ?>"><strong><?php _e('Number of places','teachpress'); ?></strong></label></p>
             <input name="places" type="text" id="places" title="<?php _e('The number of available places.','teachpress'); ?>" style="width:70px;" tabindex="7" value="<?php echo $course_data["places"]; ?>" />
             <?php 
             if ($course_id != 0) {
-                $free_places = tp_courses::get_free_places($course_data["course_id"], $course_data["places"]);
+                $free_places = TP_Courses::get_free_places($course_data["course_id"], $course_data["places"]);
                 echo ' | ' . __('free places','teachpress') . ': ' . $free_places;
             } 
-            tp_add_course::get_parent_select_field($course_id, $course_data);
+            TP_Add_Course::get_parent_select_field($course_id, $course_data);
             ?>
             
             <p><label for="comment" title="<?php _e('For parent courses the comment is showing in the overview and for child courses in the enrollments system.','teachpress'); ?>"><strong><?php _e('Comment or Description','teachpress'); ?></strong></label></p>
@@ -394,7 +424,7 @@ class tp_add_course {
                 <option value="0"><?php _e('none','teachpress'); ?></option>
                 <?php
                 foreach ( $semester as $row ) {
-                    $courses = tp_courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
+                    $courses = TP_Courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
                     if ( count($courses) !== 0 ) {
                         echo '<optgroup label="' . $row->value . '">';
                     }
@@ -435,10 +465,29 @@ class tp_add_course {
                      } ?>
                  </select>
                  <?php
-                 // number of subcourses
-                 echo tp_admin::get_form_field('sub_number', __('Number of sub courses','teachpress'), __('Number of sub courses','teachpress'), 'input' , 'course', '0', array('course'), 18, 'width:70px;');
-                 // places
-                 echo tp_admin::get_form_field('sub_places', __('Number of places per course','teachpress'), __('Number of places per course','teachpress'), 'input' , 'course', '0', array('course'), 19, 'width:70px;');
+                // number of subcourses
+                echo TP_Admin::get_form_field(
+                    array(
+                        'name' => 'sub_number',
+                        'title' => __('Number of sub courses','teachpress'),
+                        'label' => __('Number of sub courses','teachpress'),
+                        'type' => 'input',
+                        'value' => '0',
+                        'tabindex' => 18,
+                        'display' => 'block', 
+                        'style' => 'width:70px;') );
+              
+                // places
+                echo TP_Admin::get_form_field(
+                    array(
+                        'name' => 'sub_places',
+                        'title' => __('Number of places per course','teachpress'), 
+                        'label' => __('Number of places per course','teachpress'),
+                        'type' => 'input',
+                        'value' => '0',
+                        'tabindex' => 19,
+                        'display' => 'block', 
+                        'style' => 'width:70px;') );
              ?>
             </div>
          </div>

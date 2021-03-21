@@ -43,7 +43,7 @@ function tp_show_authors_page () {
     if ( isset( $_GET['action'] ) && $_GET['action'] !== '' ) {
         $action = htmlspecialchars($_GET['action']);
     }
-    tp_show_authors_page::get_page($action);
+    TP_Show_Authors_Page::get_page($action);
     
 }
 
@@ -51,7 +51,7 @@ function tp_show_authors_page () {
  * This class contains all functions for the show authors page
  * @since 6.0.0
  */
-class tp_show_authors_page {
+class TP_Show_Authors_Page {
     
     /**
      * This function executes all actions for this page
@@ -74,7 +74,7 @@ class tp_show_authors_page {
         }
         // delete tags - part 2
         if ( isset( $_GET['delete_ok'] ) ) {
-            tp_authors::delete_authors($checkbox);
+            TP_Authors::delete_authors($checkbox);
             get_tp_message( __('Removing successful','teachpress') );
         }
     }
@@ -139,7 +139,7 @@ class tp_show_authors_page {
         echo '</select>';
         echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
         echo '</div>';
-        $test = tp_authors::get_authors( array( 'count' => true, 'search' => $search, 'include_editors' => true ) );
+        $test = TP_Authors::get_authors( array( 'count' => true, 'search' => $search, 'include_editors' => true ) );
         $args = array('number_entries' => $test,
                           'entries_per_page' => $number_messages,
                           'current_page' => $curr_page,
@@ -220,7 +220,7 @@ class tp_show_authors_page {
      */
     private static function get_table ($action, $checkbox, $page, $search, $curr_page, $entry_limit, $number_messages) {
         $class_alternate = true;
-        $row = tp_authors::count_authors($search, $entry_limit . ',' . $number_messages);
+        $row = TP_Authors::count_authors($search, $entry_limit . ',' . $number_messages);
         foreach ( $row as $row ) {
             $checked = '';
             if ( $class_alternate === true ) {
@@ -238,7 +238,7 @@ class tp_show_authors_page {
             }
             echo '<tr class="' . $tr_class . '" id="resultbox_' . $row['author_id'] . '">';
             echo '<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' type="checkbox" value="' . $row['author_id'] . '"></th>';
-            echo '<td><a class="tp_show_pub_info" author_id="' . $row['author_id'] . '" title="' . __('Show publications','teachpress') . '" style_class="' . $tr_class . '" style="cursor:pointer;"><b>' . tp_bibtex::parse_author_simple($row['name']) . '</b></a>';
+            echo '<td><a class="tp_show_pub_info" author_id="' . $row['author_id'] . '" title="' . __('Show publications','teachpress') . '" style_class="' . $tr_class . '" style="cursor:pointer;"><b>' . TP_Bibtex::parse_author_simple($row['name']) . '</b></a>';
                 echo '<div class="tp_row_actions">';
                 echo '<a class="tp_row_delete" href="admin.php?page=' . $page . '&amp;checkbox%5B%5D=' . $row['author_id'] . '&amp;search=' . $search . '&amp;limit=' . $curr_page . '&amp;action=delete' . '" title="' . __('Delete','teachpress') . '">' . __('Delete', 'teachpress') . '</a>';
                 echo '</div>';

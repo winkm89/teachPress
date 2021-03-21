@@ -11,7 +11,7 @@
  * @package teachpress\core\bibtex
  * @since 6.0.0
  */
-class tp_bibtex_import {
+class TP_Bibtex_Import {
    /**
     * Imports a BibTeX string
     * @global class $PARSEENTRIES
@@ -30,7 +30,7 @@ class tp_bibtex_import {
         $import_id = ( $test === false ) ? tp_publication_imports::add_import() : 0;
         
         // Init bibtexParse
-        $input = tp_bibtex::convert_bibtex_to_utf8($input);
+        $input = TP_Bibtex::convert_bibtex_to_utf8($input);
         $parse = NEW BIBTEXPARSE();
         $parse->expandMacro = TRUE;
         $array = array('RMP' => 'Rev., Mod. Phys.');
@@ -107,7 +107,7 @@ class tp_bibtex_import {
             foreach ($entries[$i] as $key => $value) {
                 if ( $key == 'author' || $key == 'editor' ) {
                     // replace only a list of special chars and not all {} blocks
-                    $entries[$i][$key] = tp_bibtex::clean_author_names($value);
+                    $entries[$i][$key] = TP_Bibtex::clean_author_names($value);
                     continue;
                 }
                 $entries[$i][$key] = str_replace(array('{','}'), array('',''), $value);
@@ -139,11 +139,11 @@ class tp_bibtex_import {
     private static function import_publication_to_database ($entry, $tags, $settings) {
         $check = true;
         if ( $settings['overwrite'] === true ) {
-            $entry['entry_id'] = tp_publications::change_publication_by_key($entry['bibtex'], $entry, $tags);
+            $entry['entry_id'] = TP_Publications::change_publication_by_key($entry['bibtex'], $entry, $tags);
             $check = ( $entry['entry_id'] === false ) ? false : true;
         }
         if ( $settings['overwrite'] === false || $check === false ) {
-            $entry['entry_id'] = tp_publications::add_publication($entry, $tags, '');
+            $entry['entry_id'] = TP_Publications::add_publication($entry, $tags, '');
         }
         return $entry['entry_id'];
     }
@@ -221,7 +221,7 @@ class tp_bibtex_import {
      * @since 6.0.0
      */
     private static function replace_journal_macros ($entry) {
-        $macro_list = tp_bibtex_macros::journals();
+        $macro_list = TP_Bibtex_Macros::journals();
         if ( array_key_exists($entry, $macro_list) ) {
             return $macro_list[$entry];
         }

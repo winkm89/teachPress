@@ -11,7 +11,7 @@
  * @package teachpress\core\bibtex
  * @since 6.0.0
  */
-class tp_bibtex_macros {
+class TP_Bibtex_Macros {
     
     /**
      * Returns an array of journals (macros + full name)

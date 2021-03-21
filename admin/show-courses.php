@@ -51,7 +51,7 @@ function tp_show_course_page_screen_options() {
  */
 function tp_show_courses_page() {
     
-    tp_admin::database_test('<div class="wrap">', '</div>');
+    TP_Admin::database_test('<div class="wrap">', '</div>');
      
     // Send mail (received from mail tab)
     if( isset( $_POST['send_mail'] ) ) {
@@ -62,7 +62,7 @@ function tp_show_courses_page() {
         $options['backup_mail'] = isset ( $_POST['backup_mail'] ) ? htmlspecialchars($_POST['backup_mail']) : '';
         $options['recipients'] = isset ( $_POST['recipients_option'] ) ? htmlspecialchars($_POST['recipients_option']) : '';
         $attachments = isset ( $_POST['attachments'] ) ? $_POST['attachments'] : '';
-        $ret = tp_mail::sendMail($from, $to, $subject, $text, $options, $attachments);
+        $ret = TP_Mail::sendMail($from, $to, $subject, $text, $options, $attachments);
         $message = ( $ret === true ) ? __('E-Mail sent','teachpress') : __('Error: E-Mail could not sent','teachpress');
         get_tp_message($message);
     }
@@ -83,7 +83,7 @@ function tp_show_courses_page() {
         tp_show_mail_page();
     }
     else {
-        tp_courses_page::get_tab();
+        TP_Courses_Page::get_tab();
     }
 }
 
@@ -91,7 +91,7 @@ function tp_show_courses_page() {
  * This class contains all function for the show courses page
  * @since 5.0.0
  */
-class tp_courses_page {
+class TP_Courses_Page {
     
     /**
      * Gets the show courses main page
@@ -123,13 +123,13 @@ class tp_courses_page {
            }
            // delete a course, part 2
            if ( isset($_GET['delete_ok']) ) {
-                tp_courses::delete_courses($current_user->ID, $checkbox);
+                TP_Courses::delete_courses($current_user->ID, $checkbox);
                 $message = __('Removing successful','teachpress');
                 get_tp_message($message);
            }
            // copy a course, part 1
            if ( $bulk === "copy" ) { 
-                tp_courses_page::get_copy_course_form($terms, $sem, $search);
+                TP_Courses_Page::get_copy_course_form($terms, $sem, $search);
            }
            // copy a course, part 2
            if ( isset($_GET['copy_ok']) ) {
@@ -187,7 +187,7 @@ class tp_courses_page {
                if ($search != '') {
                    $order = 'semester DESC, name';	
                }
-               tp_courses_page::get_courses($current_user->ID, $search, $sem, $bulk, $checkbox);
+               TP_Courses_Page::get_courses($current_user->ID, $search, $sem, $bulk, $checkbox);
   
             ?>
             </tbody>
@@ -210,7 +210,7 @@ class tp_courses_page {
      * @access private
      */
     private static function get_courses ($user_ID, $search, $sem, $bulk, $checkbox) {
-        $row = tp_courses::get_courses( array('search' => $search, 'semester' => $sem, 'order' => 'name, course_id') );
+        $row = TP_Courses::get_courses( array('search' => $search, 'semester' => $sem, 'order' => 'name, course_id') );
         // if the query is empty
         if ( count($row) === 0 ) { 
             echo '<tr><td colspan="13"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
@@ -218,7 +218,7 @@ class tp_courses_page {
         }
            
         // prepare data
-        $used_places = tp_courses::get_used_places();
+        $used_places = TP_Courses::get_used_places();
         $static['bulk'] = $bulk;
         $static['sem'] = $sem;
         $static['search'] = $search;
@@ -259,11 +259,11 @@ class tp_courses_page {
                 // alternate table rows
                 $static['tr_class'] = ( $class_alternate === true ) ? ' class="alternate"' : '';
                 $class_alternate = ( $class_alternate === true ) ? false : true;
-                echo tp_courses_page::get_single_table_row($courses[$i], $user_ID, $checkbox, $static);
+                echo TP_Courses_Page::get_single_table_row($courses[$i], $user_ID, $checkbox, $static);
                 // Search childs
                 for ($j = 0; $j < $z; $j++) {
                     if ($courses[$i]['course_id'] == $courses[$j]['parent']) {
-                        echo tp_courses_page::get_single_table_row($courses[$j], $user_ID, $checkbox, $static, $courses[$i]['name'],'child');
+                        echo TP_Courses_Page::get_single_table_row($courses[$j], $user_ID, $checkbox, $static, $courses[$i]['name'],'child');
                     }
                 }
                 // END search childs
@@ -272,8 +272,8 @@ class tp_courses_page {
             // table design for searches
             else {
                 $static['tr_class'] = '';
-                $parent_name = ( $courses[$i]['parent'] != 0 ) ? tp_courses::get_course_data($courses[$i]['parent'], 'name') : '';
-                echo tp_courses_page::get_single_table_row($courses[$i], $user_ID, $checkbox, $static, $parent_name, 'search');
+                $parent_name = ( $courses[$i]['parent'] != 0 ) ? TP_Courses::get_course_data($courses[$i]['parent'], 'name') : '';
+                echo TP_Courses_Page::get_single_table_row($courses[$i], $user_ID, $checkbox, $static, $parent_name, 'search');
             }
         }	
              
@@ -322,7 +322,7 @@ class tp_courses_page {
         // row actions
         $delete_link = '';
         $edit_link = '';
-        $capability = tp_courses::get_capability($course['course_id'], $user_ID);
+        $capability = TP_Courses::get_capability($course['course_id'], $user_ID);
         if ( $capability === 'owner' || $capability === 'approved' ) {
             $edit_link = '| <a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course['course_id'] . '&amp;sem=' . $static['sem'] . '&amp;search=' . $static['search'] . '&amp;action=edit&amp;ref=overview" title="' . __('Edit','teachpress') . '">' . __('Edit','teachpress') . '</a>';
         }

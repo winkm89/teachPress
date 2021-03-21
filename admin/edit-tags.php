@@ -88,23 +88,23 @@ function tp_tags_page(){
     }
     // delete tags - part 2
     if ( isset($_GET['delete_ok']) ) {
-        tp_tags::delete_tags($checkbox);
+        TP_Tags::delete_tags($checkbox);
         get_tp_message( __('Removing successful','teachpress') );
     }
     if ( isset( $_GET['tp_edit_tag_submit'] )) {
         $name = htmlspecialchars($_GET['tp_edit_tag_name']);
         $tag_id = intval($_GET['tp_edit_tag_id']);
-        tp_tags::edit_tag($tag_id, $name);
+        TP_Tags::edit_tag($tag_id, $name);
         get_tp_message( __('Tag saved','teachpress') );
     }
     
-    tp_tags_page::get_page($search, $entry_limit, $number_messages, $checkbox, $action, $page, $curr_page);
+    TP_Tags_Page::get_page($search, $entry_limit, $number_messages, $checkbox, $action, $page, $curr_page);
     
     echo '</form>';
     echo '</div>';
 }
 
-class tp_tags_page {
+class TP_Tags_Page {
     
     /**
      * Prints the page
@@ -119,7 +119,7 @@ class tp_tags_page {
      */
     public static function get_page ($search, $entry_limit, $number_messages, $checkbox, $action, $page, $curr_page) {
         // Page Menu
-        $test = tp_tags::get_tags( array( 'count' => true, 'search' => $search ) );
+        $test = TP_Tags::get_tags( array( 'count' => true, 'search' => $search ) );
     
         $args = array('number_entries' => $test,
                   'entries_per_page' => $number_messages,
@@ -159,7 +159,7 @@ class tp_tags_page {
                 echo '<tr><td colspan="4"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
             }
             else {
-                tp_tags_page::get_table($checkbox, $action, $search, $page, $curr_page, $entry_limit, $number_messages);
+                TP_Tags_Page::get_table($checkbox, $action, $search, $page, $curr_page, $entry_limit, $number_messages);
             } ?>
         </table>
         <div class="tablenav bottom">
@@ -210,7 +210,7 @@ class tp_tags_page {
      */
     public static function get_table ($checkbox, $action, $search, $page, $curr_page, $entry_limit, $number_messages) {
         $class_alternate = true;
-        $row = tp_tags::count_tags($search, $entry_limit . ',' . $number_messages);
+        $row = TP_Tags::count_tags($search, $entry_limit . ',' . $number_messages);
         foreach ($row as $row) {
             if ( $class_alternate === true ) {
                 $tr_class = 'class="alternate"';

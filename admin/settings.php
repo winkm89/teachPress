@@ -11,14 +11,14 @@
  * @since 5.0.0
  */
 function tp_show_admin_settings() {
-    tp_settings_page::load_page();   
+    TP_Settings_Page::load_page();   
 }
 
 /**
  * This class contains all functions for the teachpress settings page
  * @since 5.0.0
  */
-class tp_settings_page {
+class TP_Settings_Page {
     
     /**
      * Generates the settings page
@@ -32,7 +32,7 @@ class tp_settings_page {
 
         // update dababase
         if ( isset($_GET['up']) ) {
-            tp_settings_page::update_database($site);
+            TP_Settings_Page::update_database($site);
         }
 
         // sync database
@@ -40,7 +40,7 @@ class tp_settings_page {
             $sync = intval($_GET['sync']);
             if ( $sync === 1 ) {
                 tp_db_sync('authors');
-                tp_settings_page::update_database($site, false);
+                TP_Settings_Page::update_database($site, false);
             }
             if ( $sync === 2 ) {
                 tp_db_sync('stud_meta');
@@ -54,33 +54,33 @@ class tp_settings_page {
         
         // delete database
         if ( isset( $_GET['drop_tp'] ) || isset( $_GET['drop_tp_ok'] ) ) {
-            tp_settings_page::delete_database();
+            TP_Settings_Page::delete_database();
         }
 
         // change general options
         if (isset( $_POST['einstellungen'] )) {
-            tp_settings_page::change_general_options();
+            TP_Settings_Page::change_general_options();
         }
 
         // change publication options
         if ( isset($_POST['save_pub']) ) {
-            tp_settings_page::change_publication_options();
+            TP_Settings_Page::change_publication_options();
         }
 
         // delete settings
         if ( isset( $_GET['delete'] ) ) {
-            tp_options::delete_option($_GET['delete']);
+            TP_Options::delete_option($_GET['delete']);
             get_tp_message(__('Deleted', 'teachpress'));
         }
         
         // Delete data field
         if ( isset( $_GET['delete_field'] ) || isset( $_GET['delete_field_ok'] ) ) {
-            tp_settings_page::delete_meta_fields($tab);
+            TP_Settings_Page::delete_meta_fields($tab);
         }
 
         // add course options
         if ( isset( $_POST['add_term'] ) || isset( $_POST['add_type'] ) ) {
-            tp_settings_page::add_course_options();
+            TP_Settings_Page::add_course_options();
         }
 
         // add meta field options
@@ -94,11 +94,11 @@ class tp_settings_page {
             else {
                 $table = 'teachpress_stud';
             }
-            tp_settings_page::add_meta_fields($table);
+            TP_Settings_Page::add_meta_fields($table);
         }
 
         // test if database is installed
-        tp_admin::database_test();
+        TP_Admin::database_test();
 
         echo '<h2 style="padding-bottom:0px;">' . __('teachPress settings','teachpress') . '</h2>';
 
@@ -248,7 +248,7 @@ class tp_settings_page {
             'add_title' => __('Add term','teachpress'),
             'tab' => 'courses'
             );
-            tp_admin::get_course_option_box(__('Term','teachpress'), 'term', $args2);
+            TP_Admin::get_course_option_box(__('Term','teachpress'), 'term', $args2);
 
         echo '</div>';
         echo '<div style="width:48%; float:left; padding-left:2%;">';
@@ -260,7 +260,7 @@ class tp_settings_page {
             'add_title' => __('Add type','teachpress'),
             'tab' => 'courses'
             );
-        tp_admin::get_course_option_box(__('Types of courses','teachpress'), 'type', $args3);
+        TP_Admin::get_course_option_box(__('Types of courses','teachpress'), 'type', $args3);
 
         echo '</div>';
         echo '</div>';
@@ -304,8 +304,8 @@ class tp_settings_page {
         echo '<tr>';
         echo '<th>' . __('Related content','teachpress') . '</th>';
         echo '<td>';
-        tp_settings_page::get_rel_page_form('rel_page_courses');
-        tp_settings_page::get_rel_page_form('rel_page_publications');
+        TP_Settings_Page::get_rel_page_form('rel_page_courses');
+        TP_Settings_Page::get_rel_page_form('rel_page_publications');
         echo '</td>';
         echo '<td style="vertical-align: top;">' . __('If you create a course or a publication you can define a link to related content. It is kind of a "more information link", which helps you to connect a course/publication with a page. If you want to use custom post types instead of pages, so you can set it here.','teachpress') . '</td>';
         echo '</tr>';
@@ -331,8 +331,8 @@ class tp_settings_page {
         echo '</tr>';
 
         // User roles
-        tp_settings_page::get_user_role_form('userrole_publications');
-        tp_settings_page::get_user_role_form('userrole_courses');
+        TP_Settings_Page::get_user_role_form('userrole_publications');
+        TP_Settings_Page::get_user_role_form('userrole_courses');
         
         echo '<tr>';
         echo '<th colspan="3"><h3>' . __('Enrollment system','teachpress') . '</h3></th>';
@@ -442,12 +442,12 @@ class tp_settings_page {
         
         echo '<tr>';
         echo '<th width="160">' . __('BibTeX special chars','teachpress') . '</th>';
-        echo '<td>' . tp_admin::get_checkbox('convert_bibtex', __('Try to convert utf-8 chars into BibTeX compatible ASCII strings','teachpress'), get_tp_option('convert_bibtex')) . '</td>';
+        echo '<td>' . TP_Admin::get_checkbox('convert_bibtex', __('Try to convert utf-8 chars into BibTeX compatible ASCII strings','teachpress'), get_tp_option('convert_bibtex')) . '</td>';
         echo '</tr>';
         
         echo '<tr>';
         echo '<th width="160">' . __('Update existing publications','teachpress') . '</th>';
-        echo '<td>' . tp_admin::get_checkbox('import_overwrite', __('Allow optional updating for publication import','teachpress'), get_tp_option('import_overwrite')) . '</td>';
+        echo '<td>' . TP_Admin::get_checkbox('import_overwrite', __('Allow optional updating for publication import','teachpress'), get_tp_option('import_overwrite')) . '</td>';
         echo '</tr>';
         
         echo '<tr>';
@@ -456,7 +456,7 @@ class tp_settings_page {
         
         echo '<tr>';
         echo '<th>' . __('Automatic related content','teachpress') . '</th>';
-        echo '<td>' . tp_admin::get_checkbox('rel_content_auto', __('Create an automatic related content with every new publication','teachpress'), get_tp_option('rel_content_auto')) . '</td>';
+        echo '<td>' . TP_Admin::get_checkbox('rel_content_auto', __('Create an automatic related content with every new publication','teachpress'), get_tp_option('rel_content_auto')) . '</td>';
         echo '</tr>';
 		
         echo '<tr>';
@@ -534,12 +534,12 @@ class tp_settings_page {
         $class_alternate = true;
         $fields = get_tp_options($table,'`variable` ASC');
         foreach ($fields as $field) {
-            $data = tp_db_helpers::extract_column_data($field->value);
+            $data = TP_DB_Helpers::extract_column_data($field->value);
             if ( $data['type'] === 'SELECT' || $data['type'] === 'CHECKBOX' || $data['type'] === 'RADIO' ) {
                 array_push($select_fields, $field->variable);
                 // search for select options and add it
                 if ( isset( $_POST['add_' . $field->variable] ) && $_POST['new_' . $field->variable] != __('Add element','teachpress') ) {
-                    tp_options::add_option($_POST['new_' . $field->variable], $_POST['new_' . $field->variable], $field->variable);
+                    TP_Options::add_option($_POST['new_' . $field->variable], $_POST['new_' . $field->variable], $field->variable);
                 }
             }
             if ( $class_alternate === true ) {
@@ -596,7 +596,7 @@ class tp_settings_page {
                  'add_title' => __('Add element','teachpress'),
                  'tab' => $tab
                  );
-             tp_admin::get_course_option_box($elem, $elem, $args1);
+             TP_Admin::get_course_option_box($elem, $elem, $args1);
         }
 
         echo '</div>';
@@ -753,7 +753,7 @@ class tp_settings_page {
         echo '</tr>';
         echo '</thead>';
         
-        $result = tp_db_helpers::get_db_index($db_name);
+        $result = TP_DB_Helpers::get_db_index($db_name);
         foreach ($result as $row) {
             // For unique field
             $unique = ( $row['Non_unique'] === '0' ) ? __('No') : __('Yes');
@@ -794,11 +794,11 @@ class tp_settings_page {
         $new_type = isset( $_POST['new_type'] ) ? htmlspecialchars($_POST['new_type']) : '';
 
         if (isset( $_POST['add_type'] ) && $new_type != __('Add type','teachpress')) {
-            tp_options::add_option($new_type, $new_type, 'course_type');
+            TP_Options::add_option($new_type, $new_type, 'course_type');
             get_tp_message(__('Saved'));
         }
         if (isset( $_POST['add_term'] ) && $new_term != __('Add term','teachpress')) {
-           tp_options::add_option($new_term, $new_term, 'semester');
+           TP_Options::add_option($new_term, $new_term, 'semester');
            get_tp_message(__('Saved'));
         }
     }
@@ -840,10 +840,10 @@ class tp_settings_page {
             
             // Delete old settings if needed
             if ( $data['field_edit'] > 0 ) {
-                tp_options::delete_option($data['field_edit']);
+                TP_Options::delete_option($data['field_edit']);
             }
             
-            tp_db_helpers::register_column($table, $field_name, $data);
+            TP_DB_Helpers::register_column($table, $field_name, $data);
             get_tp_message(  __('Field added','teachpress') );
         }
         else {
@@ -894,12 +894,12 @@ class tp_settings_page {
             get_tp_message($message,'orange');
         }
         if ( isset($_GET['delete_field_ok']) ) {
-            $option = tp_options::get_option_by_id($_GET['delete_field_ok']);
+            $option = TP_Options::get_option_by_id($_GET['delete_field_ok']);
             $options = get_tp_options($option['variable'], "`setting_id` DESC", ARRAY_A);
             foreach ( $options as $row ) {
-                tp_options::delete_option($row['setting_id']);
+                TP_Options::delete_option($row['setting_id']);
             }
-            tp_options::delete_option($_GET['delete_field_ok']);
+            TP_Options::delete_option($_GET['delete_field_ok']);
             get_tp_message( __('Field deleted','teachpress') );
         }
     }
@@ -919,12 +919,12 @@ class tp_settings_page {
         $option_userrole_publications = isset( $_POST['userrole_publications'] ) ? $_POST['userrole_publications'] : '';
         $option_userrole_courses = isset( $_POST['userrole_courses'] ) ? $_POST['userrole_courses'] : '';
     
-        tp_options::change_option('sem', $option_semester);
-        tp_options::change_option('rel_page_courses', $option_rel_page_courses);
-        tp_options::change_option('rel_page_publications', $option_rel_page_publications);
-        tp_options::change_option('stylesheet', $option_stylesheet);
-        tp_options::change_option('sign_out', $option_sign_out);
-        tp_options::change_option('login', $option_login);
+        TP_Options::change_option('sem', $option_semester);
+        TP_Options::change_option('rel_page_courses', $option_rel_page_courses);
+        TP_Options::change_option('rel_page_publications', $option_rel_page_publications);
+        TP_Options::change_option('stylesheet', $option_stylesheet);
+        TP_Options::change_option('sign_out', $option_sign_out);
+        TP_Options::change_option('login', $option_login);
         tp_update_userrole($option_userrole_courses, 'use_teachpress_courses');
         tp_update_userrole($option_userrole_publications, 'use_teachpress');
 
@@ -940,11 +940,11 @@ class tp_settings_page {
         $checkbox_convert_bibtex = isset( $_POST['convert_bibtex'] ) ? 1 : '';
         $checkbox_import_overwrite = isset( $_POST['import_overwrite'] ) ? 1 : '';
         $checkbox_rel_content_auto = isset( $_POST['rel_content_auto'] ) ? 1 : '';
-        tp_options::change_option('convert_bibtex', $checkbox_convert_bibtex, 'checkbox');
-        tp_options::change_option('import_overwrite', $checkbox_import_overwrite, 'checkbox');
-        tp_options::change_option('rel_content_auto', $checkbox_rel_content_auto, 'checkbox');
-        tp_options::change_option('rel_content_template', $_POST['rel_content_template']);
-        tp_options::change_option('rel_content_category', $_POST['rel_content_category']);
+        TP_Options::change_option('convert_bibtex', $checkbox_convert_bibtex, 'checkbox');
+        TP_Options::change_option('import_overwrite', $checkbox_import_overwrite, 'checkbox');
+        TP_Options::change_option('rel_content_auto', $checkbox_rel_content_auto, 'checkbox');
+        TP_Options::change_option('rel_content_template', $_POST['rel_content_template']);
+        TP_Options::change_option('rel_content_category', $_POST['rel_content_category']);
         get_tp_message(__('Saved'));
         
     }
@@ -960,8 +960,8 @@ class tp_settings_page {
         if ( $with_structure_change === true ) {
             tp_db_update();
         }
-        $check_stud_meta = tp_update_db::check_table_stud_meta();
-        $check_authors = tp_update_db::check_table_authors();
+        $check_stud_meta = TP_Update::check_table_stud_meta();
+        $check_authors = TP_Update::check_table_authors();
         if ( $check_authors === false && $check_stud_meta === false ) {
             return;
         }

@@ -19,7 +19,7 @@ function tp_add_student_page($fields) {
 
     // actions
     if (isset( $_POST['insert'] ) && $wp_id != __('WordPress User-ID','teachpress') && $wp_id != '') {
-        tp_enrollments::add_student($wp_id, $data['userlogin'], $data['email'], $fields, filter_input_array(INPUT_POST, $_POST));
+        TP_Enrollments::add_student($wp_id, $data['userlogin'], $data['email'], $fields, filter_input_array(INPUT_POST, $_POST));
         get_tp_message( __('Student added','teachpress') );
     }
     ?>
@@ -37,7 +37,7 @@ function tp_add_student_page($fields) {
                 <?php 
                 echo '<select name="wp_id" id="wp_id">';
                 echo '<option value="n">' . __('Select user','teachpress') . '</option>';
-                $row = tp_students::get_unregistered_students();
+                $row = TP_Students::get_unregistered_students();
                 foreach ($row as $row) {
                     echo '<option value="' . $row['ID'] . '">' . $row['user_login'] . '</option>';
                 }
@@ -63,32 +63,32 @@ function tp_add_student_page($fields) {
           <?php
           // Show custom fields
             foreach ($fields as $row) {
-                $data = tp_db_helpers::extract_column_data($row['value']);
+                $data = TP_DB_Helpers::extract_column_data($row['value']);
                 $required = ( $data['required'] === 'true' ) ? true : false;
                 $value = '';
                 if ( $data['type'] === 'SELECT' ) {
-                    echo tp_enrollments::get_form_select_field($row['variable'], $data['title'], $value, false, $required);
+                    echo TP_Enrollments::get_form_select_field($row['variable'], $data['title'], $value, false, $required);
                 }
                 elseif ( $data['type'] === 'TEXTAREA' ) {
-                    echo tp_enrollments::get_form_textarea_field($row['variable'], $data['title'], $value, $required);
+                    echo TP_Enrollments::get_form_textarea_field($row['variable'], $data['title'], $value, $required);
                 }
                 elseif ( $data['type'] === 'DATE' ) {
-                    echo tp_enrollments::get_form_date_field($row['variable'], $data['title'], $value);
+                    echo TP_Enrollments::get_form_date_field($row['variable'], $data['title'], $value);
                 }
                 elseif ( $data['type'] === 'INT' ) {
                     $data['min'] = ( $data['min'] !== 'false' ) ? intval($data['min']) : 0;
                     $data['max'] = ( $data['max'] !== 'false' ) ? intval($data['max']) : 999;
                     $data['step'] = ( $data['step'] !== 'false' ) ? intval($data['step']) : 1;
-                    echo tp_enrollments::get_form_int_field($row['variable'], $data['title'], $value, $data['min'], $data['max'], $data['step'], false, $required);
+                    echo TP_Enrollments::get_form_int_field($row['variable'], $data['title'], $value, $data['min'], $data['max'], $data['step'], false, $required);
                 }
                 elseif ( $data['type'] === 'CHECKBOX' ) {
-                    echo tp_enrollments::get_form_checkbox_field($row['variable'], $data['title'], $value, false, $required);
+                    echo TP_Enrollments::get_form_checkbox_field($row['variable'], $data['title'], $value, false, $required);
                 }
                 elseif ( $data['type'] === 'RADIO' ) {
-                    echo tp_enrollments::get_form_radio_field($row['variable'], $data['title'], $value, false, $required);
+                    echo TP_Enrollments::get_form_radio_field($row['variable'], $data['title'], $value, false, $required);
                 }
                 else {
-                    echo tp_enrollments::get_form_text_field($row['variable'], $data['title'], $value, false, $required);
+                    echo TP_Enrollments::get_form_text_field($row['variable'], $data['title'], $value, false, $required);
                 }
             }
             ?>

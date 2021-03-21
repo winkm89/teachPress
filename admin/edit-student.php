@@ -10,7 +10,7 @@
  * This class contains all functions for the show/edit student pages in admin menu
  * @since 6.0.0
  */
-class tp_student_page {
+class TP_Student_Page {
     
     /**
      * Prints a signup table
@@ -22,10 +22,10 @@ class tp_student_page {
     private static function get_signups_table ($student, $mode) {
         
         if ( $mode === 'reg' ) {
-            $row = tp_students::get_signups( array('wp_id' => $student, 'mode' => 'reg'));
+            $row = TP_Students::get_signups( array('wp_id' => $student, 'mode' => 'reg'));
         }
         else {
-            $row = tp_students::get_signups( array('wp_id' => $student, 'mode' => 'wtl'));
+            $row = TP_Students::get_signups( array('wp_id' => $student, 'mode' => 'wtl'));
         }
         
         // return if there is now entry
@@ -105,14 +105,14 @@ class tp_student_page {
      * @since 6.0.0
     */ 
     public static function show_tab ($student, $fields, $search, $curr_page, $url_parameter) {
-        $row3 = tp_students::get_student($student);
-        $row4 = tp_students::get_student_meta($student);
+        $row3 = TP_Students::get_student($student);
+        $row4 = TP_Students::get_student_meta($student);
         
         echo '<div class="wrap">';
         
         // Event handler
         if ( isset( $_GET['delete'] )) {
-             tp_courses::delete_signup($_GET['checkbox']);
+             TP_Courses::delete_signup($_GET['checkbox']);
              $message = __('Enrollment deleted','teachpress');
              get_tp_message($message);
         }
@@ -145,7 +145,7 @@ class tp_student_page {
         echo '<td style="vertical-align:middle;"><a href="admin.php?page=teachpress/teachpress.php&amp;student_id=' . $row3['wp_id'] . '&amp;search=' . $search . '&amp;limit=' . $curr_page . $url_parameter . '&amp;action=mail&amp;single=' . $row3['email'] . '" title="' . __('Send E-Mail to','teachpress') . ' ' . $row3['firstname'] . ' ' . $row3['lastname'] . '">' . $row3['email'] . '</a></td>';
         echo '</tr>';
         foreach ($fields as $row) {
-            $data = tp_db_helpers::extract_column_data($row['value']);
+            $data = TP_DB_Helpers::extract_column_data($row['value']);
             echo '<tr>';
             echo '<td><strong>' . $data['title'] . '</strong></td>';
             foreach ($row4 as $meta) {
@@ -191,7 +191,7 @@ class tp_student_page {
     public static function edit_tab ($student, $fields, $search, $entry_limit, $url_parameter) {
         if ( isset($_POST['tp_change_user'] ) ) {
             // delete old meta data
-            tp_students::delete_student_meta($student);
+            TP_Students::delete_student_meta($student);
 
             $data = array (
                 'firstname' => htmlspecialchars($_POST['firstname']),
@@ -199,8 +199,8 @@ class tp_student_page {
                 'userlogin' => htmlspecialchars($_POST['userlogin']),
                 'email' => htmlspecialchars($_POST['email'])
             );
-            tp_db_helpers::prepare_meta_data($student, $fields, $_POST, 'students');
-            tp_students::change_student($student, $data, false);
+            TP_DB_Helpers::prepare_meta_data($student, $fields, $_POST, 'students');
+            TP_Students::change_student($student, $data, false);
             get_tp_message( __('Saved') );
         }
 
