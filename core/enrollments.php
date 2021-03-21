@@ -11,7 +11,7 @@
  * @package teachpress\core\enrollments
  * @since 5.0.0
  */
-class tp_enrollments {
+class TP_Enrollments {
     
     /**
      * Add signups for a student
@@ -27,7 +27,7 @@ class tp_enrollments {
         for ($n = 0; $n < $max; $n++) {
             $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($checkbox[$n]) . "'");
             if ($row->parent != '0') {
-                $parent = tp_courses::get_course_data($row->parent, 'name');
+                $parent = TP_Courses::get_course_data($row->parent, 'name');
                 $row->name = ( $row->name != $parent ) ? $parent . ' ' . $row->name : $row->name;
             }
             $code = self::add_signup($checkbox[$n], $user_id);
@@ -80,7 +80,7 @@ class tp_enrollments {
        // Check if there is a strict signup
        $row1 = $wpdb->get_row("SELECT `places`, `waitinglist`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '$checkbox'");
        if ( $row1->parent != 0 ) {
-            $check = tp_courses::get_course_data($row1->parent, 'strict_signup');
+            $check = TP_Courses::get_course_data($row1->parent, 'strict_signup');
             if ( $check != 0 ) {
                  $check2 = $wpdb->query("SELECT c.course_id FROM " . TEACHPRESS_COURSES . " c INNER JOIN " . TEACHPRESS_SIGNUP . " s ON s.course_id = c.course_id WHERE c.parent = '$row1->parent' AND s.wp_id = '$wp_id' AND s.waitinglist = '0'");
                  if ( $check2 != NULL ) {
@@ -126,14 +126,14 @@ class tp_enrollments {
          'userlogin' => $user_login,
          'email' => $user_email
         );
-        $ret = tp_students::add_student($user_id, $data);
+        $ret = TP_Students::add_student($user_id, $data);
         if ( $data['firstname'] === '' && $data['lastname'] === '' ) {
             return '<div class="teachpress_message_error"><strong>' . __('Error: Please enter your first- and lastname','teachpress') . '</strong></div>';
         }
         if ( $ret === false ) {
             return '<div class="teachpress_message_error"><strong>' . __('Error: User already exist','teachpress') . '</strong></div>';
         }
-        tp_db_helpers::prepare_meta_data( $user_id, $fields, $post, 'students' );
+        TP_DB_Helpers::prepare_meta_data( $user_id, $fields, $post, 'students' );
         return '<div class="teachpress_message_success"><strong>' . __('Registration successful','teachpress') . '</strong></div>';
     }
 
@@ -185,7 +185,7 @@ class tp_enrollments {
             
             // check if there are users in the waiting list
             if ( $signup->waitinglist == 0 ) {
-                tp_courses::move_up_signup($checkbox[$i]);
+                TP_Courses::move_up_signup($checkbox[$i]);
             }
             $wpdb->query("DELETE FROM " . TEACHPRESS_SIGNUP . " WHERE `con_id` = '$checkbox[$i]'");
             
@@ -492,7 +492,7 @@ class tp_enrollments {
             }
             $rtn .= '<tr>';
             if ( $is_sign_out === true) {
-                $checkbox = ( tp_students::has_assessment($user_id, $row1->course_id) === false ) ? '<input name="checkbox2[]" type="checkbox" value="' . $row1->con_id . '" title="' . $row1->name . '" id="ver_' . $row1->con_id . '"/>' : '';
+                $checkbox = ( TP_Students::has_assessment($user_id, $row1->course_id) === false ) ? '<input name="checkbox2[]" type="checkbox" value="' . $row1->con_id . '" title="' . $row1->name . '" id="ver_' . $row1->con_id . '"/>' : '';
                 $rtn .='<td>' . $checkbox . '</td>';
             }		
             $rtn .= '<td><label for="ver_' . $row1->con_id . '" style="line-height:normal;" title="' . $row1->parent_name . ' ' .  $row1->name . '">' . stripslashes($row1->parent_name) . ' ' .  stripslashes($row1->name) . '</label></td>
@@ -519,7 +519,7 @@ class tp_enrollments {
         $rtn = '<p><strong>' . __('Signed up for','teachpress') . '</strong></p>';
         
         // signups
-        $row1 = tp_students::get_signups( array(
+        $row1 = TP_Students::get_signups( array(
                         'wp_id' => $user_id, 
                         'mode' => 'reg', 
                         'order' => $settings['order_signups']) 
@@ -527,7 +527,7 @@ class tp_enrollments {
         $rtn .= self::create_signups_table($user_id, $row1, $is_sign_out);
         
         // waitinglist entries
-        $row2 = tp_students::get_signups( array(
+        $row2 = TP_Students::get_signups( array(
                         'wp_id' => $user_id, 
                         'mode' => 'wtl',
                         'order' => $settings['order_signups']) 
@@ -572,15 +572,15 @@ class tp_enrollments {
      * @access private
      */
     private static function get_results_details($course_id, $user_id, $url){
-        $course_data = tp_courses::get_course($course_id, ARRAY_A);
-        $assessment = tp_assessments::get_assessments($user_id, '', $course_id);
+        $course_data = TP_Courses::get_course($course_id, ARRAY_A);
+        $assessment = TP_Assessments::get_assessments($user_id, '', $course_id);
         $rtn = '';
         $parent_name = '';
         $rtn .= '<a href="' . $url . 'results" class="teachpress_enr_button">&larr; ' . __('Back','teachpress') . '</a>';
         
         // Handle course name
         if ( $course_data["parent"] != 0 ) {
-            $parent = tp_courses::get_course($course_data["parent"], ARRAY_A);
+            $parent = TP_Courses::get_course($course_data["parent"], ARRAY_A);
             $parent_name = $parent['name'] . ' -';
         }
         $rtn .= '<h3>' . stripslashes($parent_name) . ' ' . stripslashes($course_data['name']) . '</h3>';
@@ -597,9 +597,9 @@ class tp_enrollments {
                     . '</tr>';
         }
         // Artefacts
-        $artefacts = tp_artefacts::get_artefacts($course_id, 0);
+        $artefacts = TP_Artefacts::get_artefacts($course_id, 0);
         foreach ($artefacts as $row) {
-            $assessments = tp_assessments::get_assessments($user_id, $row['artefact_id'], $course_id);
+            $assessments = TP_Assessments::get_assessments($user_id, $row['artefact_id'], $course_id);
             $x = 1;
             foreach ($assessments as $inner_row) {
                 $title = ( $x === 1 ) ? stripslashes($row['title']) : '';
@@ -640,7 +640,7 @@ class tp_enrollments {
                 . '<th>' . __('Result','teachpress') . '</th>'
                 . '<th></th>'
                 . '</tr>';
-        $courses = tp_students::get_signups( array(
+        $courses = TP_Students::get_signups( array(
                 'wp_id' => $user_id, 
                 'mode' => 'reg', 
                 'order' => $settings['order_signups']) 
@@ -651,7 +651,7 @@ class tp_enrollments {
         foreach ($courses as $row) {
             // read assessment
             $result = '';
-            $assessment = tp_assessments::get_assessments($user_id, '', $row->course_id);
+            $assessment = TP_Assessments::get_assessments($user_id, '', $row->course_id);
             if ( count($assessment) !== 0 ) {
                 $result = $assessment[0]['value'];
             }
@@ -693,7 +693,7 @@ class tp_enrollments {
         }
 
         // Select all user information
-        $row = tp_students::get_student($user_id);
+        $row = TP_Students::get_student($user_id);
         // Menu
         $rtn .= self::get_menu($tab, $row);
 
@@ -789,7 +789,7 @@ class tp_enrollments {
         // define some course variables
         $date1 = $row->start;
         $date2 = $row->end;
-        $free_places = tp_courses::get_free_places($row->course_id, $row->places);
+        $free_places = TP_Courses::get_free_places($row->course_id, $row->places);
         if ( $free_places < 0 ) {
             $free_places = 0;
         }
@@ -888,8 +888,8 @@ class tp_enrollments {
  * @version 2 (since 5.0.0)
  */
 function tp_registration_form ($user_input, $mode = 'register') {
-    $user = ( $mode !== 'register' ) ? tp_students::get_student($user_input) : '';
-    $user_meta = ( $mode !== 'register' ) ? tp_students::get_student_meta($user_input) : array( array('meta_key' => '', 'meta_value' => '') );
+    $user = ( $mode !== 'register' ) ? TP_Students::get_student($user_input) : '';
+    $user_meta = ( $mode !== 'register' ) ? TP_Students::get_student_meta($user_input) : array( array('meta_key' => '', 'meta_value' => '') );
     $fields = get_tp_options('teachpress_stud','`setting_id` ASC', ARRAY_A);
     $rtn = '';
     $rtn .= '<form id="tp_registration_form" method="post">';
@@ -902,25 +902,25 @@ function tp_registration_form ($user_input, $mode = 'register') {
     
     // Show default fields
     if ( $mode === 'admin' ) {
-        $rtn .= tp_enrollments::get_form_text_field('wp_id', __('WordPress User-ID','teachpress'), $user['wp_id'], true);
+        $rtn .= TP_Enrollments::get_form_text_field('wp_id', __('WordPress User-ID','teachpress'), $user['wp_id'], true);
     }
     
     $firstname = ( $mode === 'register' ) ? '' : stripslashes($user['firstname']);
-    $rtn .= tp_enrollments::get_form_text_field('firstname', __('First name','teachpress'), $firstname, false, true);
+    $rtn .= TP_Enrollments::get_form_text_field('firstname', __('First name','teachpress'), $firstname, false, true);
  
     $lastname = ( $mode === 'register' ) ? '' : stripslashes($user['lastname']);
-    $rtn .= tp_enrollments::get_form_text_field('lastname', __('Last name','teachpress'), $lastname, false, true);
+    $rtn .= TP_Enrollments::get_form_text_field('lastname', __('Last name','teachpress'), $lastname, false, true);
     
     $userlogin = ( is_array( $user_input ) ) ? $user_input['userlogin'] : $user['userlogin'];
-    $rtn .= tp_enrollments::get_form_text_field('userlogin', __('User account','teachpress'), $userlogin, true);
+    $rtn .= TP_Enrollments::get_form_text_field('userlogin', __('User account','teachpress'), $userlogin, true);
     
     $readonly = !isset($user['email']) ? false : true;
     $email = isset($user['email']) ? stripslashes($user['email']) : '';
-    $rtn .= tp_enrollments::get_form_text_field('email', __('E-Mail'), $email, $readonly);
+    $rtn .= TP_Enrollments::get_form_text_field('email', __('E-Mail'), $email, $readonly);
     
     // Show custom fields
     foreach ($fields as $row) {
-        $data = tp_db_helpers::extract_column_data($row['value']);
+        $data = TP_DB_Helpers::extract_column_data($row['value']);
         $required = ( $data['required'] === 'true' ) ? true : false; 
         $value = '';
         foreach ( $user_meta as $row_meta ) {
@@ -930,31 +930,31 @@ function tp_registration_form ($user_input, $mode = 'register') {
             }
         }
         if ( $data['visibility'] === 'hidden' ) {
-            $rtn .= tp_enrollments::get_form_hidden_field($row['variable'], $value);
+            $rtn .= TP_Enrollments::get_form_hidden_field($row['variable'], $value);
         }
         else if ( $data['type'] === 'SELECT' ) {
-            $rtn .= tp_enrollments::get_form_select_field($row['variable'], $data['title'], $value, false, $required);
+            $rtn .= TP_Enrollments::get_form_select_field($row['variable'], $data['title'], $value, false, $required);
         }
         elseif ( $data['type'] === 'TEXTAREA' ) {
-            $rtn .= tp_enrollments::get_form_textarea_field($row['variable'], $data['title'], $value, $required);
+            $rtn .= TP_Enrollments::get_form_textarea_field($row['variable'], $data['title'], $value, $required);
         }
         elseif ( $data['type'] === 'DATE' ) {
-            $rtn .= tp_enrollments::get_form_date_field($row['variable'], $data['title'], $value);
+            $rtn .= TP_Enrollments::get_form_date_field($row['variable'], $data['title'], $value);
         }
         elseif ( $data['type'] === 'INT' ) {
             $data['min'] = ( $data['min'] !== 'false' ) ? intval($data['min']) : 0;
             $data['max'] = ( $data['max'] !== 'false' ) ? intval($data['max']) : 999;
             $data['step'] = ( $data['step'] !== 'false' ) ? intval($data['step']) : 1;
-            $rtn .= tp_enrollments::get_form_int_field($row['variable'], $data['title'], $value, $data['min'], $data['max'], $data['step'], false, $required);
+            $rtn .= TP_Enrollments::get_form_int_field($row['variable'], $data['title'], $value, $data['min'], $data['max'], $data['step'], false, $required);
         }
         elseif ( $data['type'] === 'CHECKBOX' ) {
-            $rtn .= tp_enrollments::get_form_checkbox_field($row['variable'], $data['title'], $value, false, $required);
+            $rtn .= TP_Enrollments::get_form_checkbox_field($row['variable'], $data['title'], $value, false, $required);
         }
         elseif ( $data['type'] === 'RADIO' ) {
-            $rtn .= tp_enrollments::get_form_radio_field($row['variable'], $data['title'], $value, false, $required);
+            $rtn .= TP_Enrollments::get_form_radio_field($row['variable'], $data['title'], $value, false, $required);
         }
         else {
-            $rtn .= tp_enrollments::get_form_text_field($row['variable'], $data['title'], $value, false, $required);
+            $rtn .= TP_Enrollments::get_form_text_field($row['variable'], $data['title'], $value, false, $required);
         }
     }
     $rtn .= '</table>';
@@ -1028,21 +1028,21 @@ function tp_enrollments_shortcode($atts) {
           'userlogin' => htmlspecialchars($_POST['userlogin']),
           'email' => htmlspecialchars($_POST['email'])
         );
-        tp_students::delete_student_meta($user_ID);
-        $rtn .= tp_students::change_student($user_ID, $data2, true);
-        tp_db_helpers::prepare_meta_data( $user_ID, $fields, $_POST, 'students' );
+        TP_Students::delete_student_meta($user_ID);
+        $rtn .= TP_Students::change_student($user_ID, $data2, true);
+        TP_DB_Helpers::prepare_meta_data( $user_ID, $fields, $_POST, 'students' );
     }
     // delete signup
     if ( isset( $_POST['austragen'] ) && $checkbox2 != '' ) {
-        $rtn .= tp_enrollments::delete_signup($checkbox2);
+        $rtn .= TP_Enrollments::delete_signup($checkbox2);
     }
     // add signups
     if ( isset( $_POST['einschreiben'] ) && $checkbox != '' ) {
-        $rtn .= tp_enrollments::add_signups($user_ID, $checkbox);
+        $rtn .= TP_Enrollments::add_signups($user_ID, $checkbox);
     }
     // add new user
     if ( isset( $_POST['tp_add_user'] ) ) {
-        $rtn .= tp_enrollments::add_student( $user_ID, $user_login, $user_email, $fields, filter_input_array(INPUT_POST, $_POST) );
+        $rtn .= TP_Enrollments::add_student( $user_ID, $user_login, $user_email, $fields, filter_input_array(INPUT_POST, $_POST) );
     } 
 
     /*
@@ -1050,15 +1050,15 @@ function tp_enrollments_shortcode($atts) {
     */
     $user_exists = false;
     if ( is_user_logged_in() ) {
-       $user_exists = ( tp_students::is_student($user_ID) === false ) ? false : true;
-       $rtn .= tp_enrollments::get_interface_for_users($user_ID, $user_login, $user_email, $user_exists, $tab, $settings);
+       $user_exists = ( TP_Students::is_student($user_ID) === false ) ? false : true;
+       $rtn .= TP_Enrollments::get_interface_for_users($user_ID, $user_login, $user_email, $user_exists, $tab, $settings);
     }
     
    /*
     * Enrollments
    */
    if ($tab === '' || $tab === 'current') {
-       $rtn .= tp_enrollments::get_enrollments_tab($sem, $settings, $user_exists);
+       $rtn .= TP_Enrollments::get_enrollments_tab($sem, $settings, $user_exists);
    }
    $rtn .= '</form>';
    $rtn .= '</div>';
