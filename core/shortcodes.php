@@ -11,7 +11,7 @@
  * @since 5.0.0
  * @package teachpress\core\shortcodes
  */
-class tp_shortcodes {
+class TP_Shortcodes {
     
     /**
      * Returns a table headline for a course document list
@@ -99,7 +99,7 @@ class tp_shortcodes {
         // handle childs
         if ( $row->visible == 2 ) {
             $div_cl_com = "_c";
-            $row2 = tp_courses::get_courses( array('semester' => $sem, 'parent' => $row->course_id, 'visibility' => '1,2') );
+            $row2 = TP_Courses::get_courses( array('semester' => $sem, 'parent' => $row->course_id, 'visibility' => '1,2') );
             foreach ( $row2 as $row2 ) {
                 $childs .= '<p><a href="' . get_permalink($row2->rel_page) . '" title="' . $row2->name . '">' . $row2->name . '</a></p>'; 
             }
@@ -138,9 +138,9 @@ class tp_shortcodes {
      */
     public static function get_coursemeta_line ($course_id, $fields) {
         $return = '';
-        $course_meta = tp_courses::get_course_meta($course_id);
+        $course_meta = TP_Courses::get_course_meta($course_id);
         foreach ($fields as $row) {
-            $col_data = tp_db_helpers::extract_column_data($row['value']);
+            $col_data = TP_DB_Helpers::extract_column_data($row['value']);
             if ( $col_data['visibility'] !== 'normal' ) {
                 continue;
             }
@@ -171,7 +171,7 @@ class tp_shortcodes {
 
         // year filter
         if ( $mode === 'year' ) {
-            $row = tp_publications::get_years( array( 'user' => $filter_parameter['user_preselect'], 
+            $row = TP_Publications::get_years( array( 'user' => $filter_parameter['user_preselect'], 
                                                       'type' => $filter_parameter['type_preselect'],
                                                       'include' => $filter_parameter['year_preselect'],
                                                       'order' => 'DESC', 
@@ -183,7 +183,7 @@ class tp_shortcodes {
         
         // type filter
         if ( $mode === 'type' ) {
-            $row = tp_publications::get_used_pubtypes( array( 'user' => $filter_parameter['user_preselect'], 
+            $row = TP_Publications::get_used_pubtypes( array( 'user' => $filter_parameter['user_preselect'], 
                                                               'include' => $filter_parameter['type_preselect'],
                                                               'exclude' => isset($sql_parameter['exclude_types']) ? $sql_parameter['exclude_types'] : '') );
             $id = 'type';
@@ -196,7 +196,7 @@ class tp_shortcodes {
             // Use the visible filter o the SQL parameter
             $author_id = ($filter_parameter['show_in_author_filter'] !== '') ? $filter_parameter['show_in_author_filter'] : $filter_parameter['author_preselect'];
             
-            $row = tp_authors::get_authors( array( 'user' => $sql_parameter['user'],
+            $row = TP_Authors::get_authors( array( 'user' => $sql_parameter['user'],
                                                    'author_id' => $author_id,
                                                    'output_type' => ARRAY_A, 
                                                    'group_by' => true ) );
@@ -207,7 +207,7 @@ class tp_shortcodes {
         
         // user filter
         if ( $mode === 'user' ) {
-            $row = tp_publications::get_pub_users( array('output_type' => ARRAY_A) );
+            $row = TP_Publications::get_pub_users( array('output_type' => ARRAY_A) );
             $id = 'usr';
             $index = 'user';
             $title = __('All users','teachpress');
@@ -215,7 +215,7 @@ class tp_shortcodes {
         
         // tag filter
         if ( $mode === 'tag' ) {
-            $row = tp_tags::get_tags( array( 'output_type' => ARRAY_A, 
+            $row = TP_Tags::get_tags( array( 'output_type' => ARRAY_A, 
                                              'group_by' => true, 
                                              'order' => 'ASC', 
                                              'exclude' => $sql_parameter['exclude_tags'] ) );
@@ -262,7 +262,7 @@ class tp_shortcodes {
                 $text = tp_translate_pub_type($row['type'], 'pl');
             }
             else if ( $mode === 'author' ) {
-                $text = tp_bibtex::parse_author($row['name'], '', $settings['author_name']);
+                $text = TP_Bibtex::parse_author($row['name'], '', $settings['author_name']);
             }
             else if ( $mode === 'user' ) {
                 $user_info = get_userdata( $row['user'] );
@@ -319,7 +319,7 @@ class tp_shortcodes {
                 $value = $row['type'];
             }
             else if ( $mode === 'author' ) {
-                $text = tp_bibtex::parse_author($row['name'], '', $settings['author_name']);
+                $text = TP_Bibtex::parse_author($row['name'], '', $settings['author_name']);
                 $value = $row['author_id'];
             }
             else if ( $mode === 'user' ) {
@@ -407,17 +407,17 @@ class tp_shortcodes {
             foreach( $args['years'] as $row ) {
                 $headlines[$row['year']] = '';
             }
-            $pubs = tp_shortcodes::sort_pub_table( $tparray, $template, $headlines , $args );
+            $pubs = TP_Shortcodes::sort_pub_table( $tparray, $template, $headlines , $args );
         }
         elseif ( $args['headline'] == 2 ) {
-            $pub_types = tp_publications::get_used_pubtypes( array('user' => $args['user'] ) );
+            $pub_types = TP_Publications::get_used_pubtypes( array('user' => $args['user'] ) );
             foreach( $pub_types as $row ) {
                 $headlines[$row['type']] = '';
             }
-            $pubs = tp_shortcodes::sort_pub_table( $tparray, $template, $headlines, $args );
+            $pubs = TP_Shortcodes::sort_pub_table( $tparray, $template, $headlines, $args );
         }
         else {
-            $pubs = tp_shortcodes::sort_pub_table( $tparray, $template, '', $args );
+            $pubs = TP_Shortcodes::sort_pub_table( $tparray, $template, '', $args );
         }
         return $template->get_body($pubs, $args);
     }
@@ -434,7 +434,7 @@ class tp_shortcodes {
      * @access public
      */
     public static function generate_tag_cloud ($user, $cloud_settings, $filter_parameter, $sql_parameter, $settings){
-        $temp = tp_tags::get_tag_cloud( array('user' => $user, 
+        $temp = TP_Tags::get_tag_cloud( array('user' => $user, 
                                         'type' => $sql_parameter['type'],
                                         'exclude' => $cloud_settings['hide_tags'],
                                         'number_tags' => $cloud_settings['tag_limit'],
@@ -498,15 +498,15 @@ class tp_shortcodes {
 
         // with headlines
         if ( $args['headline'] === 1 || $args['headline'] === 2 ) {
-            $publications = tp_shortcodes::sort_pub_by_type_or_year($tparray, $template, $tpz, $args, $headlines);
+            $publications = TP_Shortcodes::sort_pub_by_type_or_year($tparray, $template, $tpz, $args, $headlines);
         }
         // with headlines grouped by year then by type
         else if ($args['headline'] === 3) {
-            $publications = tp_shortcodes::sort_pub_by_year_type($tparray, $template, $tpz, $args);
+            $publications = TP_Shortcodes::sort_pub_by_year_type($tparray, $template, $tpz, $args);
         }
         // with headlines grouped by type then by year
         else if ($args['headline'] === 4) {
-            $publications = tp_shortcodes::sort_pub_by_type_year($tparray, $template, $tpz, $args);
+            $publications = TP_Shortcodes::sort_pub_by_type_year($tparray, $template, $tpz, $args);
         }
         // without headlines
         else {
@@ -647,10 +647,10 @@ class tp_shortcodes {
      */
     public static function set_publication ($param, $tp_single_publication) {
         if ( $param['key'] != '' ) {
-            return tp_publications::get_publication_by_key($param['key'], ARRAY_A);
+            return TP_Publications::get_publication_by_key($param['key'], ARRAY_A);
         } 
         elseif ( $param['id'] != 0 ) {
-            return tp_publications::get_publication($param['id'], ARRAY_A);
+            return TP_Publications::get_publication($param['id'], ARRAY_A);
         } 
         else {
             return $tp_single_publication;
@@ -758,10 +758,10 @@ function tp_courselist_shortcode($atts) {
            <input type="submit" name="start" value="' . __('Show','teachpress') . '" id="teachpress_submit" class="button-secondary"/>
     </div>';
     $rtn2 = '';
-    $row = tp_courses::get_courses( array('semester' => $sem, 'parent' => 0, 'visibility' => '1,2') );
+    $row = TP_Courses::get_courses( array('semester' => $sem, 'parent' => 0, 'visibility' => '1,2') );
     if ( count($row) != 0 ){
         foreach($row as $row) {
-            $rtn2 .= tp_shortcodes::get_courselist_line ($row, $image, $image_size, $sem);
+            $rtn2 .= TP_Shortcodes::get_courselist_line ($row, $image, $image_size, $sem);
         } 
     }
     else {
@@ -802,7 +802,7 @@ function tp_coursedocs_shortcode($atts) {
     $show_date = intval($param['show_date']);
     $numbered = intval($param['numbered']);
     $upload_dir = wp_upload_dir();
-    $documents = tp_documents::get_documents($course_id);
+    $documents = TP_Documents::get_documents($course_id);
     
     if ( $headline === 1 ) {
         $a = '<div class="tp_course_headline">' . __('Documents','teachpress') . '</div>';
@@ -817,11 +817,11 @@ function tp_coursedocs_shortcode($atts) {
     foreach ( $documents as $row ) {
         $body .= '<tr>';
         if ( $row['path'] === '' ) {
-            $body .= tp_shortcodes::get_coursedocs_headline($row, $numbered, $show_date);
+            $body .= TP_Shortcodes::get_coursedocs_headline($row, $numbered, $show_date);
             $num = 1;
         }
         else {
-            $body .= tp_shortcodes::get_coursedocs_line($row, $upload_dir, $link_class, $date_format, $numbered, $num, $show_date);
+            $body .= TP_Shortcodes::get_coursedocs_line($row, $upload_dir, $link_class, $date_format, $numbered, $num, $show_date);
             $num++;
         }
         $body .= '</tr>';
@@ -853,7 +853,7 @@ function tp_courseinfo_shortcode($atts) {
         return;
     }
     
-    $course = tp_courses::get_course($id);
+    $course = TP_Courses::get_course($id);
     $fields = get_tp_options('teachpress_courses','`setting_id` ASC', ARRAY_A);
     $v_test = $course->name;
     $body = '';
@@ -866,14 +866,14 @@ function tp_courseinfo_shortcode($atts) {
     $head .= '<p>' . stripslashes($course->date) . ' ' . stripslashes($course->room) . '</p>';
     $head .= '<p>' . stripslashes(nl2br($course->comment)) . '</p>';
     if ( $show_meta === 1 ) {
-        $head .= tp_shortcodes::get_coursemeta_line($id, $fields);
+        $head .= TP_Shortcodes::get_coursemeta_line($id, $fields);
     }
     $head .= '</td>';
     $head .= '<td clas="tp_courseinfo_lecturer">' . stripslashes($course->lecturer) . '</td>';
     $head .= '</tr>';
     
     // Search the child courses
-    $row = tp_courses::get_courses( array('parent' => $id, 'visible' => '1,2', 'order' => 'name, course_id') );
+    $row = TP_Courses::get_courses( array('parent' => $id, 'visible' => '1,2', 'order' => 'name, course_id') );
     foreach($row as $row) {
         // if parent name = child name
         if ($v_test == $row->name) {
@@ -885,7 +885,7 @@ function tp_courseinfo_shortcode($atts) {
         $body .= '<p>' . stripslashes($row->date) . ' ' . stripslashes($row->room) . '</p>';
         $body .= '<p>' . stripslashes($row->comment) . '</p>';
         if ( $show_meta === 1 ) {
-            $body .= tp_shortcodes::get_coursemeta_line($id, $fields);
+            $body .= TP_Shortcodes::get_coursemeta_line($id, $fields);
         }
         $body .= '</td>';
         $body .= '<td class="tp_courseinfo_lecturer">' . stripslashes($row->lecturer) . '</td>';
@@ -914,15 +914,15 @@ function tp_cite_shortcode ($atts) {
     
     // Load cite object
     if ( !isset($tp_cite_object) ) {
-        $tp_cite_object = new tp_cite_object;
+        $tp_cite_object = new TP_Cite_Object;
     }
     
     // Check parameter
     if ( $param['key'] != '' ) {
-        $publication = tp_publications::get_publication_by_key($param['key'], ARRAY_A);
+        $publication = TP_Publications::get_publication_by_key($param['key'], ARRAY_A);
     }
     else {
-        $publication = tp_publications::get_publication($param['id'], ARRAY_A);
+        $publication = TP_Publications::get_publication($param['id'], ARRAY_A);
     }
     
     // Count ref number
@@ -981,7 +981,7 @@ function tp_ref_shortcode($atts) {
     $ret = '<h3 class="teachpress_ref_headline">' . __('References','teachpress') . '</h3>';
     $ret .= '<ol>';
     foreach ( $references as $row ) {
-        $ret .= '<li id="tp_cite_' . $row['pub_id'] . '" class="tp_cite_entry"><span class="tp_single_author">' . stripslashes($row['author']) . '</span><span class="tp_single_year"> (' . $row['year'] . ')</span>: <span class="tp_single_title">' . tp_html_publication_template::prepare_publication_title($row, $settings, 1) . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($row, $settings) . '</span></li>';
+        $ret .= '<li id="tp_cite_' . $row['pub_id'] . '" class="tp_cite_entry"><span class="tp_single_author">' . stripslashes($row['author']) . '</span><span class="tp_single_year"> (' . $row['year'] . ')</span>: <span class="tp_single_title">' . TP_HTML_Publication_Template::prepare_publication_title($row, $settings, 1) . '</span>. <span class="tp_single_additional">' . TP_HTML::get_publication_meta_row($row, $settings) . '</span></li>';
     }
     $ret .= '</ol>';
     return $ret;
@@ -1033,19 +1033,19 @@ function tp_single_shortcode ($atts) {
     
     // Set publication
     if ( $param['key'] != '' ) {
-        $publication = tp_publications::get_publication_by_key($param['key'], ARRAY_A);
+        $publication = TP_Publications::get_publication_by_key($param['key'], ARRAY_A);
     }
     else {
-        $publication = tp_publications::get_publication($param['id'], ARRAY_A);
+        $publication = TP_Publications::get_publication($param['id'], ARRAY_A);
     }
     $tp_single_publication = $publication;
     
     // Set author name
     if ( $publication['type'] === 'collection' || $publication['type'] === 'periodical' || ( $publication['author'] === '' && $publication['editor'] !== '' ) ) {
-        $author = tp_bibtex::parse_author($publication['editor'], $settings['author_separator'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+        $author = TP_Bibtex::parse_author($publication['editor'], $settings['author_separator'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
     }
     else {
-        $author = tp_bibtex::parse_author($publication['author'], $settings['author_separator'], $settings['author_name'] );
+        $author = TP_Bibtex::parse_author($publication['author'], $settings['author_separator'], $settings['author_name'] );
     }
     
     $image_size = intval($param['image_size']);
@@ -1064,12 +1064,12 @@ function tp_single_shortcode ($atts) {
         $url = explode(chr(13) . chr(10), $publication['url']);
         $parts = explode(', ',$url[0]);
         $parts[0] = trim( $parts[0] );
-        $title = '<a href="' . $parts[0] . '">' . tp_html::prepare_title($publication['title'], 'decode') . '</a>';
+        $title = '<a href="' . $parts[0] . '">' . TP_HTML::prepare_title($publication['title'], 'decode') . '</a>';
     }
     else {
-        $title = tp_html::prepare_title($publication['title'], 'decode');
+        $title = TP_HTML::prepare_title($publication['title'], 'decode');
     }
-    $asg .= '<span class="tp_single_author">' . stripslashes($author) . ': </span> <span class="tp_single_title">' . $title . '</span>. <span class="tp_single_additional">' . tp_html::get_publication_meta_row($publication, $settings) . '</span>';
+    $asg .= '<span class="tp_single_author">' . stripslashes($author) . ': </span> <span class="tp_single_title">' . $title . '</span>. <span class="tp_single_additional">' . TP_HTML::get_publication_meta_row($publication, $settings) . '</span>';
     $asg .= '</div>';
     return $asg;
 }
@@ -1095,11 +1095,11 @@ function tp_bibtex_shortcode ($atts) {
     ), $atts);
     
     $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
-    $publication = tp_shortcodes::set_publication($param, $tp_single_publication);
+    $publication = TP_Shortcodes::set_publication($param, $tp_single_publication);
     
-    $tags = tp_tags::get_tags( array('pub_id' => $publication['pub_id'], 'output_type' => ARRAY_A) );
+    $tags = TP_Tags::get_tags( array('pub_id' => $publication['pub_id'], 'output_type' => ARRAY_A) );
     
-    return '<h2 class="tp_bibtex">BibTeX (<a href="' . home_url() . '?feed=tp_pub_bibtex&amp;key=' . $publication['bibtex'] . '">Download</a>)</h2><pre class="tp_bibtex">' . tp_bibtex::get_single_publication_bibtex($publication, $tags, $convert_bibtex) . '</pre>';
+    return '<h2 class="tp_bibtex">BibTeX (<a href="' . home_url() . '?feed=tp_pub_bibtex&amp;key=' . $publication['bibtex'] . '">Download</a>)</h2><pre class="tp_bibtex">' . TP_Bibtex::get_single_publication_bibtex($publication, $tags, $convert_bibtex) . '</pre>';
 }
 
 /** 
@@ -1122,10 +1122,10 @@ function tp_abstract_shortcode ($atts) {
        'key' => '',
     ), $atts);
 
-    $publication = tp_shortcodes::set_publication($param, $tp_single_publication);
+    $publication = TP_Shortcodes::set_publication($param, $tp_single_publication);
 
     if ( isset($publication['abstract']) ) {
-        return '<h2 class="tp_abstract">' . __('Abstract','teachpress') . '</h2><p class="tp_abstract">' . tp_html::prepare_text($publication['abstract']) . '</p>';
+        return '<h2 class="tp_abstract">' . __('Abstract','teachpress') . '</h2><p class="tp_abstract">' . TP_HTML::prepare_text($publication['abstract']) . '</p>';
     }
     return;
 }
@@ -1150,10 +1150,10 @@ function tp_links_shortcode ($atts) {
        'key' => '',
     ), $atts);
     
-    $publication = tp_shortcodes::set_publication($param, $tp_single_publication);
+    $publication = TP_Shortcodes::set_publication($param, $tp_single_publication);
     
     if ( isset($publication['url']) ) {
-        return '<h2 class="tp_links">' . __('Links','teachpress') . '</h2><p class="tp_abstract">' . tp_html_publication_template::prepare_url($publication['url'], $publication['doi'], 'list') . '</p>';
+        return '<h2 class="tp_links">' . __('Links','teachpress') . '</h2><p class="tp_abstract">' . TP_HTML_Publication_Template::prepare_url($publication['url'], $publication['doi'], 'list') . '</p>';
     } 
     return;
 }
@@ -1302,7 +1302,7 @@ function tp_publist_shortcode ($atts) {
    
     // Handle limits for pagination   
     $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
-    $pagination_limits = tp_shortcodes::generate_pagination_limits($settings['pagination'], $settings['entries_per_page'], $form_limit);
+    $pagination_limits = TP_Shortcodes::generate_pagination_limits($settings['pagination'], $settings['entries_per_page'], $form_limit);
 
     // ignore hide_tags if exclude_tags is given 
     if ( $sql_parameter['exclude_tags'] != '' ) {
@@ -1314,7 +1314,7 @@ function tp_publist_shortcode ($atts) {
     /*************/
     $tag_cloud = '';
     if ( $cloud_settings['show_tags_as'] === 'cloud' ) {
-        $tag_cloud = tp_shortcodes::generate_tag_cloud($atts['user'], $cloud_settings, $filter_parameter, $sql_parameter, $settings);
+        $tag_cloud = TP_Shortcodes::generate_tag_cloud($atts['user'], $cloud_settings, $filter_parameter, $sql_parameter, $settings);
     }
     
     /****************/
@@ -1341,30 +1341,30 @@ function tp_publist_shortcode ($atts) {
     // Filter year
     if ( ( $atts['year'] == '' || strpos($atts['year'], ',') !== false ) && 
             $settings['show_year_filter'] === true ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 2,'year');
+        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 2,'year');
     }
 
     // Filter type
     if ( ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) && 
             $settings['show_type_filter'] === true ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 3, 'type');
+        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 3, 'type');
     }
     
     // Filter tag
     if ( $cloud_settings['show_tags_as'] === 'pulldown' ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 4,'tag');
+        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 4,'tag');
     }
 
     // Filter author
     if ( ( $atts['author'] == '' || strpos($atts['author'], ',') !== false ) && 
             $settings['show_author_filter'] === true ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 5,'author');
+        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 5,'author');
     }
     
     // Filter user
     if ( ( $atts['user'] == '' || strpos($atts['user'], ',') !== false ) &&
             $settings['show_user_filter'] === true ) {
-        $filter .= tp_shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 6,'user');
+        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 6,'user');
     }
 
     // Show all link
@@ -1451,15 +1451,15 @@ function tp_publist_shortcode ($atts) {
         'limit' => $pagination_limits['limit'],
         'output_type' => ARRAY_A);
 
-    $all_tags = tp_tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
-    $number_entries = tp_publications::get_publications($args, true);
-    $row = tp_publications::get_publications( $args );
+    $all_tags = TP_Tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
+    $number_entries = TP_Publications::get_publications($args, true);
+    $row = TP_Publications::get_publications( $args );
     $tpz = 0;
     $count = count($row);
     $tparray = array();
     
     // colspan setup
-    $colspan = tp_shortcodes::set_colspan($settings);
+    $colspan = TP_Shortcodes::set_colspan($settings);
     if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut'] == true) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
     }
@@ -1472,11 +1472,11 @@ function tp_publist_shortcode ($atts) {
     
     // Create array of publications
     foreach ($row as $row) {
-        $number = tp_html_publication_template::prepare_publication_number($number_entries, $tpz, $pagination_limits['entry_limit'], $atts['style']);
+        $number = TP_HTML_Publication_Template::prepare_publication_number($number_entries, $tpz, $pagination_limits['entry_limit'], $atts['style']);
         $tparray[$tpz][0] = $row['year'] ;
         
         // teachPress style
-        $tparray[$tpz][1] = tp_html_publication_template::get_single($row, $all_tags, $settings, $template, $number);
+        $tparray[$tpz][1] = TP_HTML_Publication_Template::get_single($row, $all_tags, $settings, $template, $number);
         
         if ( 2 <= $settings['headline'] && $settings['headline'] <= 4 ) {
             $tparray[$tpz][2] = $row['type'] ;
@@ -1499,13 +1499,13 @@ function tp_publist_shortcode ($atts) {
                                                                        'before' => '<div class="tablenav">',
                                                                        'after' => '</div>')) : '';
         $part2 .= $menu;
-        $row_year = tp_publications::get_years( 
+        $row_year = TP_Publications::get_years( 
                         array( 'user' => $sql_parameter['user'], 
                                'type' => $sql_parameter['type'], 
                                'order' => 'DESC', 
                                'output_type' => ARRAY_A ) );
         
-        $part2 .= tp_shortcodes::generate_pub_table( 
+        $part2 .= TP_Shortcodes::generate_pub_table( 
                         $tparray, 
                         $template, 
                         array( 'number_publications' => $tpz, 
@@ -1727,7 +1727,7 @@ function tp_search_shortcode ($atts) {
 function tp_post_shortcode ($atts, $content) {
     $param = shortcode_atts(array('id' => 0), $atts);
     $id = intval($param['id']);
-    $test = tp_courses::is_student_subscribed($id, true);
+    $test = TP_Courses::is_student_subscribed($id, true);
     if ( $test === true ) {
         return $content;
     }

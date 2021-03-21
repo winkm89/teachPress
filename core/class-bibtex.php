@@ -13,7 +13,7 @@
  * @package teachpress\core\bibtex
  * @since 3.0.0
  */
-class tp_bibtex {
+class TP_Bibtex {
 
     /**
      * Gets a single publication in bibtex format
@@ -40,7 +40,7 @@ class tp_bibtex {
         for ( $i = 2; $i < count($pub_fields); $i++ ) {
             // replace html chars
             if ( $pub_fields[$i] === 'author' || $pub_fields[$i] === 'title' ) {
-                $row[$pub_fields[$i]] = tp_html::convert_special_chars($row[$pub_fields[$i]]);
+                $row[$pub_fields[$i]] = TP_HTML::convert_special_chars($row[$pub_fields[$i]]);
             }
             // go to the next if there is nothing
             if ( !isset( $row[$pub_fields[$i]] ) || $row[$pub_fields[$i]] == '' || $row[$pub_fields[$i]] == '0000-00-00'  ) {
@@ -54,7 +54,7 @@ class tp_bibtex {
             // year
             elseif ( $pub_fields[$i] === 'date' ) {
                 $string .= 'year  = {' . $row['year'] . '},' . chr(13) . chr(10);
-                $string .= tp_bibtex::prepare_bibtex_line($row[$pub_fields[$i]],$pub_fields[$i]);
+                $string .= TP_Bibtex::prepare_bibtex_line($row[$pub_fields[$i]],$pub_fields[$i]);
             }
             // techtype
             elseif ( $pub_fields[$i] === 'techtype' ) {
@@ -66,11 +66,11 @@ class tp_bibtex {
             }
             // abstract
             elseif ( $pub_fields[$i] === 'abstract' || $pub_fields[$i] === 'title' ) {
-                $string .= tp_bibtex::prepare_text($row[$pub_fields[$i]], $pub_fields[$i]);
+                $string .= TP_Bibtex::prepare_text($row[$pub_fields[$i]], $pub_fields[$i]);
             }
             // normal case
             else {
-                $string .= tp_bibtex::prepare_bibtex_line($row[$pub_fields[$i]],$pub_fields[$i]);
+                $string .= TP_Bibtex::prepare_bibtex_line($row[$pub_fields[$i]],$pub_fields[$i]);
             }
             
         }
@@ -104,33 +104,6 @@ class tp_bibtex {
             $string = self::convert_utf8_to_bibtex($string);
         }
         return $string;
-    }
-
-    /**
-     * Gets a single publication in html format
-     * @param array $row        The publication array (used keys: title, image_url, ...)
-     * @param array $all_tags   Array of tags (used_keys: pub_id, tag_id, name)
-     * @param array $settings   Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
-     * @param int $tpz          the counter for numbered publications (default: 0)
-     * @return string
-     * @since 3.0.0
-     * @deprecated since version 6.0.0
-     * @todo Delete this function with a later major release
-    */
-    public static function get_single_publication_html ($row, $all_tags, $settings, $tpz = 0) {
-        // Warning
-        trigger_error( __('The function is deprecated since teachpress 6.0 Use tp_html_publication_template::get_single() instead.','teachpress') );
-        
-        // Define style type
-        if ( $settings['style'] === 'simple' || $settings['style'] === 'numbered' || $settings['style'] === 'numbered_desc' ) {
-            $template = tp_load_template('tp_template_orig_s');
-        }
-        else {
-            $template = tp_load_template('tp_template_orig');
-        }
-        
-        $a = tp_html_publication_template::get_single ($row, $all_tags, $settings, $template, $tpz);    
-        return $a;
     }
 
     /**
@@ -333,13 +306,7 @@ class tp_bibtex {
                           '\begin{enumerate}', '\end{enumerate} . "\n"',
                           '\item ', '');
         $text = preg_replace($search, $replace, $text);
-        /* Add wordwrap if necessary
-         * Disabled since 4.2.1
-            if (strpos($text, "\n") === false ) {
-                $text = wordwrap($text, 80, "\r\n");
-            } 
-         */
-        return tp_bibtex::prepare_bibtex_line($text, $fieldname, false);
+        return TP_Bibtex::prepare_bibtex_line($text, $fieldname, false);
     }
 
    /**

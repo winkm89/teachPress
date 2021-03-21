@@ -53,6 +53,9 @@ function tp_show_publications_page() {
     // WordPress User informations
     $current_user = wp_get_current_user();
     
+    // teachPress Publication Types
+    global $tp_publication_types;
+    
     // Get screen options
     $screen = get_current_screen();
     $screen_option = $screen->get_option('per_page', 'option');
@@ -87,17 +90,19 @@ function tp_show_publications_page() {
     
     echo '<div class="wrap">';
     
+    $publication_types = $tp_publication_types->get();
+    
     // test if teachpress database is up to date
-    tp_admin::database_test();
+    TP_Admin::database_test();
     
     // Add a bookmark for the publication
     if ( isset( $_GET['add_id'] ) ) {
-        tp_bookmarks::add_bookmark( $_GET['add_id'], $current_user->ID );
+        TP_Bookmarks::add_bookmark( $_GET['add_id'], $current_user->ID );
     }
     
     // Delete bookmark for the publication
     if ( isset( $_GET['del_id'] ) ) {
-        tp_bookmarks::delete_bookmark( $_GET['del_id'] );
+        TP_Bookmarks::delete_bookmark( $_GET['del_id'] );
     }
     
     // Add a bookmark for the publication (bulk version)
@@ -105,9 +110,9 @@ function tp_show_publications_page() {
         $max = count( $array_variables['checkbox'] );
         for( $i = 0; $i < $max; $i++ ) {
             $array_variables['checkbox'][$i] = intval($array_variables['checkbox'][$i]);
-            $test = tp_bookmarks::bookmark_exists($array_variables['checkbox'][$i], $current_user->ID);
+            $test = TP_Bookmarks::bookmark_exists($array_variables['checkbox'][$i], $current_user->ID);
             if ( $test === false ) {
-                tp_bookmarks::add_bookmark( $array_variables['checkbox'][$i], $current_user->ID );
+                TP_Bookmarks::add_bookmark( $array_variables['checkbox'][$i], $current_user->ID );
             }
         }
         get_tp_message( __('Publications added','teachpress') );
@@ -115,7 +120,7 @@ function tp_show_publications_page() {
     
     // delete publications - part 2
     if ( isset($_GET['delete_ok']) ) {
-        tp_publications::delete_publications($array_variables['checkbox']);
+        TP_Publications::delete_publications($array_variables['checkbox']);
         get_tp_message( __('Removing successful','teachpress') );
     }
     
@@ -124,16 +129,16 @@ function tp_show_publications_page() {
         $mass_edit = ( isset($_GET['mass_edit']) ) ? $_GET['mass_edit'] : '';
         $tags = ( isset($_GET['add_tags']) ) ? $_GET['add_tags'] : '';
         $delbox = ( isset($_GET['delbox']) ) ? $_GET['delbox'] : array();
-        tp_tags::change_tag_relations($mass_edit, $tags, $delbox);
+        TP_Tags::change_tag_relations($mass_edit, $tags, $delbox);
         get_tp_message( __('Bulk edit executed','teachpress') );
     }
     
     // Show page
     if ( $array_variables['action'] === 'bibtex' ) {
-        tp_publications_page::get_bibtex_screen($array_variables);
+        TP_Publications_Page::get_bibtex_screen($array_variables);
     }
     else {
-        tp_publications_page::get_tab($user, $array_variables);
+        TP_Publications_Page::get_tab($user, $array_variables);
     }
     
     echo '</div>';
@@ -144,7 +149,7 @@ function tp_show_publications_page() {
  * @package teachpress\admin\publications
  * @since 5.0.0
  */
-class tp_publications_page {
+class TP_Publications_Page {
     
     /**
      * bibtex mode for show publications page
@@ -164,17 +169,17 @@ class tp_publications_page {
             $max = count ($array_variables['checkbox']);
             for ($i=0; $i < $max; $i++) {
                 $pub = intval($array_variables['checkbox'][$i]);
-                $row = tp_publications::get_publication( $pub, ARRAY_A );
-                $tags = tp_tags::get_tags( array('output_type' => ARRAY_A, 'pub_id' => $pub) );
-                echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+                $row = TP_Publications::get_publication( $pub, ARRAY_A );
+                $tags = TP_Tags::get_tags( array('output_type' => ARRAY_A, 'pub_id' => $pub) );
+                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
                 $sel = ( $sel !== '' ) ? $sel . ',' . $pub : $pub;
             }
         }
         else {
-            $row = tp_publications::get_publications( array('output_type' => ARRAY_A) );
+            $row = TP_Publications::get_publications( array('output_type' => ARRAY_A) );
             foreach ( $row as $row ) {
-                $tags = tp_tags::get_tags( array('output_type' => ARRAY_A, 'pub_id' => $row['pub_id']) );
-                echo tp_bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+                $tags = TP_Tags::get_tags( array('output_type' => ARRAY_A, 'pub_id' => $row['pub_id']) );
+                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
             }
         }
 
@@ -200,87 +205,87 @@ class tp_publications_page {
     * @param array $array_variables
     * @since 5.0.0
     */
-   public static function get_bulk_edit_screen($array_variables) {
-       $selected_publications = '';
-       $max = count($array_variables['checkbox']);
-       for ( $i = 0; $i < $max; $i++ ) {
-           $selected_publications = ( $selected_publications === '' ) ? $array_variables['checkbox'][$i] : $selected_publications . ',' . $array_variables['checkbox'][$i];
-       }
-       echo '<tr class="inline-edit-row" id="tp-inline-edit-row" style="display:table-row;">';
-       echo '<td colspan="8" class="colspanchange" style="padding-bottom:7px;">';
-       echo '<h4>' . __('Bulk editing','teachpress') . '</h4>';
-       echo '<div id="bulk-titles" style="width:30%; float:left;">';
-       echo '<ul>';
-       $list = tp_publications::get_publications( array('include' => $selected_publications, 'output_type' => ARRAY_A) );
-       foreach ( $list as $row ) {
-           echo '<li><input type="checkbox" name="mass_edit[]" id="mass_edit_'. $row['pub_id'] . '" value="'. $row['pub_id'] . '" checked="checked"/> <label for="mass_edit_'. $row['pub_id'] . '">'. $row['title'] . '</label></li>';
-       }
-       echo '</ul>';
-       echo '</div>';
-       echo '<div class="tp_mass_edit_right">';
-       echo '<p><b>' . __('Delete current tags','teachpress') . '</b></p>';
-       $used_tags = tp_tags::get_tags( array('pub_id' => $selected_publications, 'output_type' => ARRAY_A, 'group_by' => true) );
-       $s = "'";
-       echo '<p>';
-       foreach ( $used_tags as $row ) {
-           echo'<input name="delbox[]" type="checkbox" value="' . $row['tag_id'] . '" id="checkbox_' . $row['tag_id']. '" onclick="teachpress_change_label_color(' . $s . $row['tag_id'] . $s . ')"/> <label for="checkbox_' . $row['tag_id'] . '" title="Tag &laquo;' . $row['name'] . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row['tag_id'] . '">' . $row['name'] . '</label> | ';
-       }
-       echo '</p>';
-       echo '<p><label for="add_tags"><b>' . __('New (separate by comma)','teachpress') . '</b></label></p> <p><input name="add_tags" id="add_tags" type="text" style="width:70%;"/></p>';
-       echo '</div>';
-       echo '<p class="submit inline-edit-save"><a accesskey="c" onclick="teachpress_showhide(' . $s . 'tp-inline-edit-row' . $s . ')" class="button-secondary cancel alignleft">' . __('Cancel') . '</a> <input type="submit" name="bulk_edit" id="bulk_edit" class="button button-primary alignright" value="' . __('Save') . '" accesskey="s"></p>';
-       echo '</td>';
-       echo '</tr>';
-          ?>
-          <script type="text/javascript" charset="utf-8">
-          jQuery(document).ready(function($) {
-              var availableTags = [
-                  <?php
-                  $sql = tp_tags::get_tags( array('group_by' => true) );
-                  foreach ($sql as $row) {
-                      echo '"' . $row->name . '",';        
-                  } ?>
-              ];
-              function split( val ) {
-                  return val.split( /,\s*/ );
-              }
-              function extractLast( term ) {
-                  return split( term ).pop();
-              }
+    public static function get_bulk_edit_screen($array_variables) {
+        $selected_publications = '';
+        $max = count($array_variables['checkbox']);
+        for ( $i = 0; $i < $max; $i++ ) {
+            $selected_publications = ( $selected_publications === '' ) ? $array_variables['checkbox'][$i] : $selected_publications . ',' . $array_variables['checkbox'][$i];
+        }
+        echo '<tr class="inline-edit-row" id="tp-inline-edit-row" style="display:table-row;">';
+        echo '<td colspan="8" class="colspanchange" style="padding-bottom:7px;">';
+        echo '<h4>' . __('Bulk editing','teachpress') . '</h4>';
+        echo '<div id="bulk-titles" style="width:30%; float:left;">';
+        echo '<ul>';
+        $list = TP_Publications::get_publications( array('include' => $selected_publications, 'output_type' => ARRAY_A) );
+        foreach ( $list as $row ) {
+            echo '<li><input type="checkbox" name="mass_edit[]" id="mass_edit_'. $row['pub_id'] . '" value="'. $row['pub_id'] . '" checked="checked"/> <label for="mass_edit_'. $row['pub_id'] . '">'. $row['title'] . '</label></li>';
+        }
+        echo '</ul>';
+        echo '</div>';
+        echo '<div class="tp_mass_edit_right">';
+        echo '<p><b>' . __('Delete current tags','teachpress') . '</b></p>';
+        $used_tags = TP_Tags::get_tags( array('pub_id' => $selected_publications, 'output_type' => ARRAY_A, 'group_by' => true) );
+        $s = "'";
+        echo '<p>';
+        foreach ( $used_tags as $row ) {
+            echo'<input name="delbox[]" type="checkbox" value="' . $row['tag_id'] . '" id="checkbox_' . $row['tag_id']. '" onclick="teachpress_change_label_color(' . $s . $row['tag_id'] . $s . ')"/> <label for="checkbox_' . $row['tag_id'] . '" title="Tag &laquo;' . $row['name'] . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row['tag_id'] . '">' . $row['name'] . '</label> | ';
+        }
+        echo '</p>';
+        echo '<p><label for="add_tags"><b>' . __('New (separate by comma)','teachpress') . '</b></label></p> <p><input name="add_tags" id="add_tags" type="text" style="width:70%;"/></p>';
+        echo '</div>';
+        echo '<p class="submit inline-edit-save"><a accesskey="c" onclick="teachpress_showhide(' . $s . 'tp-inline-edit-row' . $s . ')" class="button-secondary cancel alignleft">' . __('Cancel') . '</a> <input type="submit" name="bulk_edit" id="bulk_edit" class="button button-primary alignright" value="' . __('Save') . '" accesskey="s"></p>';
+        echo '</td>';
+        echo '</tr>';
+        ?>
+        <script type="text/javascript" charset="utf-8">
+        jQuery(document).ready(function($) {
+          var availableTags = [
+              <?php
+              $sql = TP_Tags::get_tags( array('group_by' => true) );
+              foreach ($sql as $row) {
+                  echo '"' . $row->name . '",';        
+              } ?>
+          ];
+          function split( val ) {
+              return val.split( /,\s*/ );
+          }
+          function extractLast( term ) {
+              return split( term ).pop();
+          }
 
-              $( "#add_tags" )
-                  // don't navigate away from the field on tab when selecting an item
-                  .bind( "keydown", function( event ) {
-                      if ( event.keyCode === $.ui.keyCode.TAB && $( this ).data( "autocomplete" ).menu.active ) {
-                          event.preventDefault();
-                      }
-                  })
-                  .autocomplete({
-                      minLength: 0,
-                      source: function( request, response ) {
-                          // delegate back to autocomplete, but extract the last term
-                          response( $.ui.autocomplete.filter(
-                              availableTags, extractLast( request.term ) ) );
-                      },
-                      focus: function() {
-                          // prevent value inserted on focus
-                          return false;
-                      },
-                      select: function( event, ui ) {
-                          var terms = split( this.value );
-                          // remove the current input
-                          terms.pop();
-                          // add the selected item
-                          terms.push( ui.item.value );
-                          // add placeholder to get the comma-and-space at the end
-                          terms.push( "" );
-                          this.value = terms.join( ", " );
-                          return false;
-                      }
-                  });
-          });
-          </script>
-          <?php
+          $( "#add_tags" )
+              // don't navigate away from the field on tab when selecting an item
+              .bind( "keydown", function( event ) {
+                  if ( event.keyCode === $.ui.keyCode.TAB && $( this ).data( "autocomplete" ).menu.active ) {
+                      event.preventDefault();
+                  }
+              })
+              .autocomplete({
+                  minLength: 0,
+                  source: function( request, response ) {
+                      // delegate back to autocomplete, but extract the last term
+                      response( $.ui.autocomplete.filter(
+                          availableTags, extractLast( request.term ) ) );
+                  },
+                  focus: function() {
+                      // prevent value inserted on focus
+                      return false;
+                  },
+                  select: function( event, ui ) {
+                      var terms = split( this.value );
+                      // remove the current input
+                      terms.pop();
+                      // add the selected item
+                      terms.push( ui.item.value );
+                      // add placeholder to get the comma-and-space at the end
+                      terms.push( "" );
+                      this.value = terms.join( ", " );
+                      return false;
+                  }
+              });
+        });
+        </script>
+        <?php
     }
     
     /**
@@ -295,8 +300,8 @@ class tp_publications_page {
      * @access private
      */
     private static function get_publication_row ($row, $array_variables, $bookmarks, $tags, $tr_class, $get_string) {
-        echo '<tr ' . $tr_class . '>';
-        echo '<td style="font-size:20px; padding-top:8px; padding-bottom:0px; padding-right:0px;">';
+        TP_HTML::line('<tr ' . $tr_class . '>');
+        TP_HTML::line('<td style="font-size:20px; padding-top:8px; padding-bottom:0px; padding-right:0px;">');
         // check if the publication is already in users publication list
         $test2 = false;
         foreach ( $bookmarks as $bookmark ) {
@@ -315,7 +320,7 @@ class tp_publications_page {
            // Delete from your own list icon
            echo '<a href="admin.php?page=' . $array_variables['page'] .'&amp;del_id='. $test2 . $get_string . '" title="' . __('Delete from your own list','teachpress') . '">&laquo;</a>';
         }
-        echo '</td>';
+        TP_HTML::line('</td>');
         
         $checked = '';
         if ( ( $array_variables['action'] === "delete" || $array_variables['action'] === "edit" ) && is_array($array_variables['checkbox']) ) { 
@@ -326,27 +331,27 @@ class tp_publications_page {
                 } 
             } 
         }
-        echo '<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row->pub_id . '" /></th>';
-        echo '<td>';
-        echo '<a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . tp_html::prepare_title($row->title, 'decode') . '</strong></a>';
+        TP_HTML::line('<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row->pub_id . '" /></th>');
+        TP_HTML::line('<td>');
+        echo '<a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . TP_HTML::prepare_title($row->title, 'decode') . '</strong></a>';
         if ( $row->status === 'forthcoming' ) {
             echo '<span class="tp_pub_label_status">' . __('Forthcoming','teachpress') . '</span>';
         }
         echo '<div class="tp_row_actions"><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&cite_id=' . $row->pub_id . '" class="teachpress_cite_pub teachpress_link">' . __('Cite', 'teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=' . $array_variables['page']  .'&amp;checkbox%5B%5D=' . $row->pub_id . '&amp;action=delete' . $get_string . '" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
-        echo '</td>';
-        echo '<td>' . $row->pub_id . '</td>';
-        echo '<td>' . tp_translate_pub_type($row->type) . '</td>';
+        TP_HTML::line('</td>');
+        TP_HTML::line('<td>' . $row->pub_id . '</td>');
+        TP_HTML::line('<td>' . tp_translate_pub_type($row->type) . '</td>');
         if ( $row->type === 'collection' || ( $row->author === '' && $row->editor !== '' ) ) {
-            echo '<td>' . tp_bibtex::parse_author_simple($row->editor) . ' (' . __('Ed.','teachpress') . ')</td>';
+            TP_HTML::line('<td>' . TP_Bibtex::parse_author_simple($row->editor) . ' (' . __('Ed.','teachpress') . ')</td>');
         }
         else {
-            echo '<td>' . tp_bibtex::parse_author_simple($row->author) . '</td>';
+            TP_HTML::line('<td>' . TP_Bibtex::parse_author_simple($row->author) . '</td>');
         }
-        echo '<td>';
-        echo tp_publications_page::get_tags_for_single_row($row->pub_id, $tags, $array_variables);
-        echo '</td>';
-        echo '<td>' . $row->year . '</td>';
-        echo '</tr>';
+        TP_HTML::line('<td>');
+        echo TP_Publications_Page::get_tags_for_single_row($row->pub_id, $tags, $array_variables);
+        TP_HTML::line('</td>');
+        TP_HTML::line('<td>' . $row->year . '</td>');
+        TP_HTML::line('</tr>');
         
     }
     
@@ -382,17 +387,17 @@ class tp_publications_page {
      * @access private
      */
     private static function get_tag_filter ($array_variables, $user) {
-        $array_tags = tp_tags::get_tags( array(
+        $array_tags = TP_Tags::get_tags( array(
                         'user' => ($array_variables['page'] == 'publications.php') ? '' : $user, 
                         'group_by' => true, 
                         'order' => 'ASC' ) );
-        echo '<select name="tag">';
-        echo '<option value="0">- ' . __('All tags','teachpress') . ' -</option>';      
+        TP_HTML::line('<select name="tag">');
+        TP_HTML::line('<option value="0">- ' . __('All tags','teachpress') . ' -</option>');      
         foreach ( $array_tags as $row ) {
             $selected = ( $array_variables['tag_id'] == $row->tag_id ) ? 'selected="selected"' : '';
-            echo '<option value="' . $row->tag_id . '" ' . $selected . '>' . $row->name . '</option>';
+            TP_HTML::line('<option value="' . $row->tag_id . '" ' . $selected . '>' . $row->name . '</option>');
         }      
-        echo '</select>';
+        TP_HTML::line('</select>');
     }
     
     /**
@@ -403,16 +408,16 @@ class tp_publications_page {
      * @access private
      */
     private static function get_type_filter ($array_variables, $user) {
-        $array_types = tp_publications::get_used_pubtypes( array(
+        $array_types = TP_Publications::get_used_pubtypes( array(
              'user' => ($array_variables['page'] == 'publications.php') ? '' : $user ) );
         
-        echo '<select name="filter">';
-        echo '<option value="0">- ' . __('All types','teachpress') . ' -</option>';
+        TP_HTML::line('<select name="filter">');
+        TP_HTML::line('<option value="0">- ' . __('All types','teachpress') . ' -</option>');
         foreach ( $array_types as $row ) {
             $selected = ( $array_variables['type'] === $row['type'] ) ? 'selected="selected"' : '';
-            echo '<option value="' . $row['type'] . '" ' . $selected . '>' . tp_translate_pub_type($row['type'],'pl') . '</option>';
+            TP_HTML::line('<option value="' . $row['type'] . '" ' . $selected . '>' . tp_translate_pub_type($row['type'],'pl') . '</option>');
         }
-        echo '</select>';        
+        TP_HTML::line('</select>');    
     }
     
     /**
@@ -423,17 +428,17 @@ class tp_publications_page {
      * @access private
      */
     private static function get_year_filter ($array_variables, $user) {
-        $array_years = tp_publications::get_years( array(
+        $array_years = TP_Publications::get_years( array(
             'order' => 'DESC', 
             'user' => ($array_variables['page'] == 'publications.php') ? '' : $user) );
         
-        echo '<select name="tp_year">';
-        echo '<option value="0">- ' . __('All years','teachpress') . ' -</option>';
+        TP_HTML::line('<select name="tp_year">');
+        TP_HTML::line('<option value="0">- ' . __('All years','teachpress') . ' -</option>');
         foreach ( $array_years as $row ) {
             $selected = ( $array_variables['year'] == $row->year ) ? 'selected="selected"' : '';
-            echo '<option value="' . $row->year . '" ' . $selected . '>' . $row->year . '</option>';
+            TP_HTML::line('<option value="' . $row->year . '" ' . $selected . '>' . $row->year . '</option>');
         }        
-        echo '</select>';
+        TP_HTML::line('</select>');
     }
    
     /**
@@ -466,11 +471,11 @@ class tp_publications_page {
                       'type' => $array_variables['type'],
                       'order' => 'date DESC, title ASC'
                      );
-        $test = tp_publications::get_publications($args, true);
+        $test = TP_Publications::get_publications($args, true);
         // Load tags
-        $tags = tp_tags::get_tags( array('output_type' => ARRAY_A) );
+        $tags = TP_Tags::get_tags( array('output_type' => ARRAY_A) );
         // Load bookmarks
-        $bookmarks = tp_bookmarks::get_bookmarks( array('user'=> $user, 'output_type' => ARRAY_A) );
+        $bookmarks = TP_Bookmarks::get_bookmarks( array('user'=> $user, 'output_type' => ARRAY_A) );
         ?>
         
         <div id="tp_searchbox">
@@ -495,9 +500,9 @@ class tp_publications_page {
             </div>
             <div class="alignleft actions">
               <?php
-               tp_publications_page::get_type_filter($array_variables, $user);
-               tp_publications_page::get_year_filter($array_variables, $user);
-               tp_publications_page::get_tag_filter($array_variables, $user);
+               TP_Publications_Page::get_type_filter($array_variables, $user);
+               TP_Publications_Page::get_year_filter($array_variables, $user);
+               TP_Publications_Page::get_tag_filter($array_variables, $user);
               ?>       
               <input name="filter-ok" value="<?php _e('Limit selection','teachpress'); ?>" type="submit" class="button-secondary"/>
             </div>
@@ -528,15 +533,15 @@ class tp_publications_page {
            <?php
            // Bulk edit
            if ( $array_variables['action'] === 'edit' && $array_variables['checkbox'] !== '' ) {
-               tp_publications_page::get_bulk_edit_screen($array_variables);
+               TP_Publications_Page::get_bulk_edit_screen($array_variables);
            }
 
            if ($test === 0) {
-               echo '<tr><td colspan="7"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
+               TP_HTML::line('<tr><td colspan="7"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>');
            }
 
            else {
-                $row = tp_publications::get_publications($args);
+                $row = TP_Publications::get_publications($args);
                 $class_alternate = true;
                 $get_string = '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;site=' . $array_variables['page'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'];
                 foreach ($row as $row) { 
@@ -548,7 +553,7 @@ class tp_publications_page {
                         $tr_class = '';
                         $class_alternate = true;
                     }
-                    tp_publications_page::get_publication_row($row, $array_variables, $bookmarks, $tags, $tr_class, $get_string);
+                    TP_Publications_Page::get_publication_row($row, $array_variables, $bookmarks, $tags, $tr_class, $get_string);
                 }
             }
                 ?>
@@ -577,7 +582,7 @@ class tp_publications_page {
         echo '</div></div>';
         
         // print_scripts
-        tp_publications_page::print_scripts();
+        TP_Publications_Page::print_scripts();
         
         echo '</form>';
     } 

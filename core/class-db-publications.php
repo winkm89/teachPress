@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_publications {
+class TP_Publications {
     
     /**
      * Returns a single publication
@@ -87,11 +87,7 @@ class tp_publications {
             'search' => '',
             'output_type' => OBJECT
         );
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args, EXTR_SKIP );
-
-        $order_all = esc_sql($order);
-
+        $atts = wp_parse_args( $args, $defaults );
         global $wpdb;
         
         // define all things for meta data integration
@@ -111,50 +107,32 @@ class tp_publications {
         // define basics
         $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn, p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.image_target, p.image_ext, p.doi, p.rel_page, p.status, p.added, p.modified, p.import_id $selects FROM " . TEACHPRESS_PUB . " p $joins ";
         $join = '';
-        $where = '';
-        $order = '';
-        $having ='';
-        $output_type = esc_sql($output_type);
-        $search = esc_sql(stripslashes($search));
-        $limit = esc_sql($limit);
 
         // exclude publications via tag_id
-        if ( $exclude_tags != '' ) {
+        if ( $atts['exclude_tags'] != '' ) {
             $extend = '';
-            $exclude_tags = tp_db_helpers::generate_where_clause($exclude_tags , "tag_id", "OR", "=");
+            $exclude_tags = TP_DB_Helpers::generate_where_clause($atts['exclude_tags'], "tag_id", "OR", "=");
             $exclude_publications = $wpdb->get_results("SELECT DISTINCT pub_id FROM " . TEACHPRESS_RELATION . " WHERE $exclude_tags ORDER BY pub_id ASC", ARRAY_A);
             foreach ($exclude_publications as $row) {
                 $extend .= $row['pub_id'] . ',';
             }
-            $exclude = $extend . $exclude;
+            $atts['exclude'] = $extend . $atts['exclude'];
         }
-
-        // define where, having and limit clause
-        $exclude = tp_db_helpers::generate_where_clause($exclude, "p.pub_id", "AND", "!=");
-        $exclude_types = tp_db_helpers::generate_where_clause($exclude_types , "p.type", "AND", "!=");
-        $include = tp_db_helpers::generate_where_clause($include, "p.pub_id", "OR", "=");
-        $type = tp_db_helpers::generate_where_clause($type, "p.type", "OR", "=");
-        $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
-        $tag = tp_db_helpers::generate_where_clause($tag, "b.tag_id", "OR", "=");
-        $author_id = tp_db_helpers::generate_where_clause($author_id, "r.author_id", "OR", "=");
-        $import_id = tp_db_helpers::generate_where_clause($import_id, "p.import_id", "OR", "=");
-        $year = tp_db_helpers::generate_where_clause($year, "year", "OR", "=");
-        $author = tp_db_helpers::generate_where_clause($author, "p.author", "OR", "LIKE", '%');
-        $editor = tp_db_helpers::generate_where_clause($editor, "p.editor", "OR", "LIKE", '%');
 
         // additional joins
-        if ( $user != '' ) {
+        if ( $atts['user'] != '' ) {
             $join .= "INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id = p.pub_id ";
         }
-        if ( $tag != '' ) {
+        if ( $atts['tag'] != '' ) {
             $join .= "INNER JOIN " . TEACHPRESS_RELATION . " b ON p.pub_id = b.pub_id INNER JOIN " . TEACHPRESS_TAGS . " t ON t.tag_id = b.tag_id ";
         }
-        if ( $author_id != '' ) {
+        if ( $atts['author_id'] != '' ) {
             $join .= "INNER JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON p.pub_id = r.pub_id ";
         }
 
         // define order_by clause
-        $array = explode(",",$order_all);
+        $order = '';
+        $array = explode(",", esc_sql( $atts['order'] ) );
         foreach($array as $element) {
             $element = trim($element);
             // order by year
@@ -172,58 +150,35 @@ class tp_publications {
         }
 
         // define global search
+        $search = esc_sql(htmlspecialchars(stripslashes($atts['search'])));
         if ( $search != '' ) {
             $search = "p.title LIKE '%$search%' OR p.author LIKE '%$search%' OR p.editor LIKE '%$search%' OR p.isbn LIKE '%$search%' OR p.booktitle LIKE '%$search%' OR p.issuetitle LIKE '%$search%' OR p.journal LIKE '%$search%' OR p.date LIKE '%$search%' OR p.abstract LIKE '%$search%' OR p.note LIKE '%$search%'";
         }
-
-        if ( $exclude != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $exclude ) " : " ( $exclude ) ";
+        
+        // WHERE clause
+        $nwhere = array();
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['exclude'], "p.pub_id", "AND", "!=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['exclude_types'], "p.type", "AND", "!=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['include'], "p.pub_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['type'], "p.type", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['tag'], "b.tag_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['import_id'], "p.import_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['editor'], "p.editor", "OR", "LIKE", '%');
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author'], "p.author", "OR", "LIKE", '%');
+        $nwhere[] = ( $atts['author_id'] != '' && $atts['include_editor_as_author'] === false) ? " AND ( r.is_author = 1 ) " : null;
+        $nwhere[] = ( $search != '') ? $search : null;
+        $where = TP_DB_Helpers::compose_clause($nwhere);
+        
+        // HAVING clause
+        $having = '';
+        if ( $atts['year'] != '' && $atts['year'] !== '0' ) {
+            $having = ' HAVING ' . TP_DB_Helpers::generate_where_clause($atts['year'], "year", "OR", "=");
         }
-        if ( $exclude_types != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $exclude_types ) " : " ( $exclude_types) ";
-        }
-        if ( $include != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $include ) " : " ( $include ) ";
-        }
-        if ( $type != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $type ) " : " ( $type ) ";
-        }
-        if ( $user != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $user ) " : " ( $user ) ";
-        }
-        if ( $tag != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $tag ) " : " ( $tag ) ";
-        }
-        if ( $author_id != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $author_id ) " : " ( $author_id ) ";
-        }
-        if ( $author_id != '' && $include_editor_as_author === false) {
-            $where .= " AND ( r.is_author = 1 ) ";
-        }
-        if ( $import_id != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $import_id ) " : " ( $import_id ) ";
-        }
-        if ( $author != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $author ) " : " ( $author ) ";
-        }
-        if ( $editor != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $editor ) " : " ( $editor ) ";
-        }
-        if ( $search != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $search ) " : " ( $search ) " ;
-        }
-        if ( $where != '' ) {
-            $where = " WHERE $where";
-        }
-        if ( $year != '' && $year !== '0' ) {
-            $having = " HAVING $year";
-        }
-        if ( $limit != '' ) {
-            $limit = "LIMIT $limit";
-        }
-        else {
-            $limit = '';
-        }
+        
+        // LIMIT clause
+        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
 
         // End
         if ( $count !== true ) {
@@ -235,7 +190,7 @@ class tp_publications {
         
         // print_r($args);
         // get_tp_message($sql,'red');
-        $sql = ( $count != true ) ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
+        $sql = ( $count != true ) ? $wpdb->get_results($sql, $atts['output_type']): $wpdb->get_var($sql);
         return $sql;
     }
     
@@ -270,13 +225,10 @@ class tp_publications {
         $defaults = array(
             'output_type' => OBJECT
         ); 
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args, EXTR_SKIP );
+        $atts = wp_parse_args( $args, $defaults );
 
         global $wpdb;
-        $output_type = esc_sql($output_type);
-
-        $result = $wpdb->get_results("SELECT DISTINCT user FROM " . TEACHPRESS_USER, $output_type);
+        $result = $wpdb->get_results("SELECT DISTINCT user FROM " . TEACHPRESS_USER, $atts['output_type']);
 
         return $result;
     }
@@ -301,27 +253,26 @@ class tp_publications {
             'exclude' => '',
             'output_type' => ARRAY_A
         ); 
-        $args = wp_parse_args( $args, $defaults );
+        $atts = wp_parse_args( $args, $defaults );
 
         global $wpdb;
-        $output_type = esc_sql($args['output_type']);
-        $include = tp_db_helpers::generate_where_clause($args['include'], "type", "OR", "=");
-        $exclude = tp_db_helpers::generate_where_clause($args['exclude'], "type", "OR", "!=");
-        $user = tp_db_helpers::generate_where_clause($args['user'], "u.user", "OR", "=");
+        $output_type = esc_sql($atts['output_type']);
+        $include = TP_DB_Helpers::generate_where_clause($atts['include'], "type", "OR", "=");
+        $exclude = TP_DB_Helpers::generate_where_clause($atts['exclude'], "type", "OR", "!=");
+        $user = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
         
         $having = ( $include != '' || $exclude != '' ) ? " HAVING $include $exclude " : "";
         
         if ( $user == '' ) {
-            $result = $wpdb->get_results("SELECT DISTINCT p.type FROM " .TEACHPRESS_PUB . " p $having ORDER BY p.type ASC", $output_type);
-        }    
-        else {
-            $result = $wpdb->get_results("SELECT DISTINCT p.type AS type from " .TEACHPRESS_PUB . " p 
-                                          INNER JOIN " .TEACHPRESS_USER . " u ON u.pub_id=p.pub_id 
-                                          WHERE $user 
-                                          $having
-                                          ORDER BY p.type ASC", $output_type);
+            return $wpdb->get_results("SELECT DISTINCT p.type FROM " .TEACHPRESS_PUB . " p $having ORDER BY p.type ASC", $output_type);
         }
-        return $result;
+        
+        return $wpdb->get_results("SELECT DISTINCT p.type AS type from " .TEACHPRESS_PUB . " p 
+                                    INNER JOIN " .TEACHPRESS_USER . " u ON u.pub_id=p.pub_id 
+                                    WHERE $user 
+                                    $having
+                                    ORDER BY p.type ASC", $output_type);
+       
     }
     
     /**
@@ -345,34 +296,28 @@ class tp_publications {
             'order' => 'ASC',
             'output_type' => OBJECT
         ); 
-        $args = wp_parse_args( $args, $defaults );
+        $atts = wp_parse_args( $args, $defaults );
 
         global $wpdb;
 
-        $join = '';
-        $where = '';
-        $having= '';
-        $order = esc_sql($args['order']);
-        $output_type = esc_sql($args['output_type']);
-        $type = tp_db_helpers::generate_where_clause($args['type'], "p.type", "OR", "=");
-        $user = tp_db_helpers::generate_where_clause($args['user'], "u.user", "OR", "=");
-        $year = tp_db_helpers::generate_where_clause($args['include'], "year", "OR", "=");
-
-        if ( $type != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $type ) " : " ( $type ) ";
-        }
-        if ( $user != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $user ) " : " ( $user ) ";
-            $join = "INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id = p.pub_id";
-        }
-        if ( $where != '' ) {
-            $where = " WHERE $where";
-        }
-        if ( $year != '' ) {
-            $having = " HAVING $year ";
+        // JOIN
+        $join = ( $atts['user']) ? "INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id = p.pub_id" : '';
+        
+        // WHERE clause
+        $nwhere = array();
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['type'], "p.type", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
+        $where = TP_DB_Helpers::compose_clause($nwhere);
+        
+        // HAVING clause
+        $having = '';
+        if ( $atts['include'] != '' && $atts['include'] !== '0' ) {
+            $having = ' HAVING ' . TP_DB_Helpers::generate_where_clause($atts['include'], "year", "OR", "=");
         }
 
-        $result = $wpdb->get_results("SELECT DISTINCT DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $join $where $having ORDER BY year $order", $output_type);
+        // END
+        $order = esc_sql($atts['order']);
+        $result = $wpdb->get_results("SELECT DISTINCT DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $join $where $having ORDER BY year $order", $atts['output_type']);
         return $result;
     }
     
@@ -396,7 +341,7 @@ class tp_publications {
         $date = ( $date == 'JJJJ-MM-TT' ) ? '0000-00-00' : $date;
         
         // generate bibtex key
-        $bibtex = tp_publications::generate_unique_bibtex_key($bibtex);
+        $bibtex = TP_Publications::generate_unique_bibtex_key($bibtex);
         
         // check last chars of author/editor fields
         if ( substr($author, -5) === ' and ' ) {
@@ -436,19 +381,19 @@ class tp_publications {
             $max = count( $bookmark );
             for( $i = 0; $i < $max; $i++ ) {
                if ($bookmark[$i] != '' || $bookmark[$i] != 0) {
-                   tp_bookmarks::add_bookmark($pub_id, $bookmark[$i]);
+                   TP_Bookmarks::add_bookmark($pub_id, $bookmark[$i]);
                }
             }
         }
         
         // Tags
-        tp_publications::add_relation($pub_id, $tags);
+        TP_Publications::add_relation($pub_id, $tags);
         
         // Authors
-        tp_publications::add_relation($pub_id, $author, ' and ', 'authors');
+        TP_Publications::add_relation($pub_id, $author, ' and ', 'authors');
         
         // Editors
-        tp_publications::add_relation($pub_id, $editor, ' and ', 'editors');
+        TP_Publications::add_relation($pub_id, $editor, ' and ', 'editors');
         
         return $pub_id;
     }
@@ -524,26 +469,26 @@ class tp_publications {
             $max = count( $bookmark );
             for( $i = 0; $i < $max; $i++ ) {
                 if ($bookmark[$i] != '' || $bookmark[$i] != 0) {
-                    tp_bookmarks::add_bookmark($pub_id, $bookmark[$i]);
+                    TP_Bookmarks::add_bookmark($pub_id, $bookmark[$i]);
                 }
             }
         }
         
         // Handle tag relations
         if ( $delbox != '' ) {
-            tp_tags::delete_tag_relation($delbox);
+            TP_Tags::delete_tag_relation($delbox);
         }
         if ( $tags != '' ) {
-            tp_publications::add_relation($pub_id, $tags);
+            TP_Publications::add_relation($pub_id, $tags);
         }
         
         // Handle author/editor relations
-        tp_authors::delete_author_relations($pub_id);
+        TP_Authors::delete_author_relations($pub_id);
         if ( $data['author'] != '' ) {
-            tp_publications::add_relation($pub_id, $data['author'], ' and ', 'authors');
+            TP_Publications::add_relation($pub_id, $data['author'], ' and ', 'authors');
         }
         if ( $data['editor'] != '' ) {
-            tp_publications::add_relation($pub_id, $data['editor'], ' and ', 'editors');
+            TP_Publications::add_relation($pub_id, $data['editor'], ' and ', 'editors');
         }
     }
     
@@ -594,16 +539,16 @@ class tp_publications {
         
         // Add new tags
         if ( $tags != '' ) {
-            tp_publications::add_relation($search_pub['pub_id'], $tags);
+            TP_Publications::add_relation($search_pub['pub_id'], $tags);
         }
         
         // Handle author/editor relations
-        tp_authors::delete_author_relations($search_pub['pub_id']);
+        TP_Authors::delete_author_relations($search_pub['pub_id']);
         if ( $data['author'] != '' ) {
-            tp_publications::add_relation($search_pub['pub_id'], $data['author'], ' and ', 'authors');
+            TP_Publications::add_relation($search_pub['pub_id'], $data['author'], ' and ', 'authors');
         }
         if ( $data['editor'] != '' ) {
-            tp_publications::add_relation($search_pub['pub_id'], $data['editor'], ' and ', 'editors');
+            TP_Publications::add_relation($search_pub['pub_id'], $data['editor'], ' and ', 'editors');
         }
         
         return $search_pub['pub_id'];
@@ -655,9 +600,9 @@ class tp_publications {
         $pub_id = intval($pub_id);
         
         // Make sure, that there are no slashes or double htmlspecialchar encodes in the input
-        $input_string = stripslashes( htmlspecialchars( htmlspecialchars_decode($input_string) ) );
+        $input = stripslashes( htmlspecialchars( htmlspecialchars_decode($input_string) ) );
         
-        $array = explode($delimiter, $input_string);
+        $array = explode($delimiter, $input);
         foreach($array as $element) {
             $element = trim($element);
             
@@ -676,14 +621,14 @@ class tp_publications {
             
             // if element not exists
             if ( $check === NULL ){
-                $check = ( $rel_type === 'tags' ) ? tp_tags::add_tag($element) : tp_authors::add_author( $element, tp_bibtex::get_lastname($element) );
+                $check = ( $rel_type === 'tags' ) ? TP_Tags::add_tag($element) : TP_Authors::add_author( $element, TP_Bibtex::get_lastname($element) );
             }
             
             // check if relation exists, if not add relation
             if ( $rel_type === 'tags' ) {
                 $test = $wpdb->query("SELECT `pub_id` FROM " . TEACHPRESS_RELATION . " WHERE `pub_id` = '$pub_id' AND `tag_id` = '$check'");
                 if ( $test === 0 ) {
-                    tp_tags::add_tag_relation($pub_id, $check);
+                    TP_Tags::add_tag_relation($pub_id, $check);
                 }
             }
             else {
@@ -691,7 +636,7 @@ class tp_publications {
                 if ( $test === 0 ) {
                     $is_author = ( $rel_type === 'authors' ) ? 1 : 0;
                     $is_editor = ( $rel_type === 'editors' ) ? 1 : 0;
-                    tp_authors::add_author_relation($pub_id, $check, $is_author, $is_editor);
+                    TP_Authors::add_author_relation($pub_id, $check, $is_author, $is_editor);
                 }
             }
         }
@@ -780,3 +725,82 @@ class tp_publications {
     }
 }
 
+/**
+ * Contains functions for getting, adding and deleting publication imports
+ * @package teachpress
+ * @subpackage database
+ * @since 6.1.0
+ */
+class tp_publication_imports {
+    
+    /**
+     * Returns a single row of the import information
+     * @param int $id               ID of the table row
+     * @param string $output_type     The output type, default is: ARRAY_A
+     * @return array|object
+     * @since 6.1
+     */
+    public static function get_import ($id, $output_type = ARRAY_A) {
+        global $wpdb;
+        $result = $wpdb->get_row("SELECT * FROM " . TEACHPRESS_PUB_IMPORTS . " WHERE `id` = '" . intval($id) . "'", $output_type);
+        return $result;
+    }
+    
+    /**
+     * Returns the imports
+     * @param int $wp_id            The WordPress user ID, default is: 0
+     * @param string $output_type   The output type, default is: ARRAY_A
+     * @return array|object
+     * @since 6.1
+     */
+    public static function get_imports ($wp_id = 0, $output_type = ARRAY_A) {
+        global $wpdb;
+        
+        // search only for a single user
+        $where = '';
+        if ( $wp_id !== 0 ) {
+            $where = " WHERE `wp_id` = '" . intval($wp_id) . "'";
+        }
+        
+        $result = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_PUB_IMPORTS . $where . " ORDER BY date DESC", $output_type);
+        return $result;
+    }
+    
+    /**
+     * Adds the import information
+     * return int
+     * @since 6.1
+     */
+    public static function add_import () {
+        global $wpdb;
+        $time = current_time('mysql',0);
+        $id = get_current_user_id();
+        $wpdb->insert( TEACHPRESS_PUB_IMPORTS, array( 'wp_id' => $id, 
+                                                      'date' => $time ), 
+                                               array( '%d', '%s') );
+        return $wpdb->insert_id;
+    }
+    
+    /**
+     * Deletes the selected import information
+     * @param array $checkbox       The IDs of the table rows
+     * @since 6.1
+     */
+    public static function delete_import($checkbox) {
+        global $wpdb;
+        for( $i = 0; $i < count( $checkbox ); $i++ ) {
+            $checkbox[$i] = intval($checkbox[$i]);
+            $wpdb->query( "DELETE FROM " . TEACHPRESS_PUB_IMPORTS . " WHERE `id` = '$checkbox[$i]'" );
+        }
+    }
+    
+    /**
+     * Returns an array with the number of publications for each import
+     * @return array
+     * @since 6.1
+     */
+    public static function count_publications () {
+        global $wpdb;
+        return $wpdb->get_results("SELECT COUNT(`pub_id`) AS number, import_id FROM " . TEACHPRESS_PUB . " WHERE import_ID > 0 GROUP BY import_id ORDER BY import_id ASC", ARRAY_A);
+    }
+}
