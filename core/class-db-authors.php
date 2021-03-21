@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_authors  {
+class TP_Authors  {
    /**
     * Returns an array/object of authors/editors of publications
     * 
@@ -50,73 +50,46 @@ class tp_authors  {
            'group_by' => false, 
            'output_type' => OBJECT
         ); 
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args, EXTR_SKIP );
+        $atts = wp_parse_args( $args, $defaults );
 
         global $wpdb;
-        $limit = esc_sql($limit);
-        $order = esc_sql($order);
-        $author_id = tp_db_helpers::generate_where_clause($author_id, "r.author_id", "OR", "=");
-        $pub_id = tp_db_helpers::generate_where_clause($pub_id, "r.pub_id", "OR", "=");
-        $user = tp_db_helpers::generate_where_clause($user, "u.user", "OR", "=");
-        $exclude = tp_db_helpers::generate_where_clause($exclude, "r.author_id", "AND", "!=");
-        $output_type = esc_sql($output_type);
-        $search = esc_sql(htmlspecialchars(stripslashes($search)));
 
         // Define basics
         $select = "SELECT DISTINCT a.name, r.author_id, r.pub_id, r.con_id, r.is_author, r.is_editor FROM " . TEACHPRESS_REL_PUB_AUTH . " r INNER JOIN " . TEACHPRESS_AUTHORS . " a ON a.author_id = r.author_id";
         $join = '';
-        $where = '';
-
-        // define global search
-        if ( $search != '' ) {
-            $search = "a.name like '%$search%'";
-        }
+        $order = esc_sql($atts['order']);
 
         // if the user needs only the number of rows
-        if ( $count === true ) {
+        if ( $atts['count'] === true ) {
             $select = "SELECT COUNT(a.`author_id`) AS `count` FROM " . TEACHPRESS_AUTHORS . " a";
         }
 
         // Additional tables
-        if ( $user != '' ) {
+        if ( $atts['user'] != '' ) {
             $join .= " INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id = r.pub_id ";
         }
 
         // WHERE clause
-        if ( $author_id != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $author_id )" : " ( $author_id ) ";
-        }
-        if ( $pub_id != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $pub_id )" : " ( $pub_id ) ";
-        }
-        if ( $user != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $user )" : " ( $user ) ";
-        }
-        if ( $search != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $search )" : " ( $search ) " ;
-        }
-        if ( $exclude != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $exclude )" : " ( $exclude ) ";
-        }
-        if ( $include_editors === false ) {
-            $where = ( $where != '' ) ? $where . " AND ( r.is_editor = '0' )" : "r.is_editor = '0'";
-        }
-        if ( $where != '' ) {
-            $where = " WHERE $where";
-        }
+        $search = esc_sql(htmlspecialchars(stripslashes($atts['search'])));
+        $nwhere = array();
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['pub_id'], "r.pub_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['exclude'], "r.author_id", "AND", "!=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
+        $nwhere[] = ( $search != '' ) ? "a.name like '%$search%'" : null;
+        $nwhere[] = ( $atts['include_editors'] === false ) ? "r.is_editor = '0'" : null;
+        
+        $where = TP_DB_Helpers::compose_clause($nwhere);
 
         // LIMIT clause
-        if ( $limit != '' ) {
-            $limit = "LIMIT $limit";
-        }
+        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
 
         // GROUP BY clause
-        $group_by = ( $group_by === true ) ? " GROUP BY a.name" : '';
+        $group_by = ( $atts['group_by'] === true ) ? " GROUP BY a.name" : '';
 
         // End
         $sql = $select . $join . $where . $group_by . " ORDER BY a.sort_name $order, a.name $order $limit";
-        $sql = ( $count == false ) ? $wpdb->get_results($sql, $output_type): $wpdb->get_var($sql);
+        $sql = ( $atts['count'] == false ) ? $wpdb->get_results($sql, $atts['output_type']): $wpdb->get_var($sql);
         // echo get_tp_message($wpdb->last_query);
         return $sql;
     }
@@ -164,20 +137,14 @@ class tp_authors  {
      */
     public static function count_authors ( $search = '', $limit = '', $output_type = ARRAY_A ) {
         global $wpdb;
-        $search = esc_sql(stripslashes($search));
-        $limit = esc_sql($limit);
         
         // define global search
-        if ( $search != '' ) {
-            $search = "WHERE a.`name` like '%$search%'";
-        }
+        $s = ( $search != '' ) ? "WHERE a.`name` like '%" . esc_sql(stripslashes($search)) . "%'" : '';
         
         // LIMIT clause
-        if ( $limit != '' ) {
-            $limit = "LIMIT $limit";
-        }
+        $l = ( $limit != '' ) ? 'LIMIT ' . esc_sql($limit) : '';
         
-        return $wpdb->get_results("SELECT DISTINCT a.name, a.author_id, count(r.author_id) AS count FROM " . TEACHPRESS_AUTHORS . " a LEFT JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON a.author_id = r.author_id $search GROUP BY a.name ORDER BY a.name ASC $limit", $output_type);
+        return $wpdb->get_results("SELECT DISTINCT a.name, a.author_id, count(r.author_id) AS count FROM " . TEACHPRESS_AUTHORS . " a LEFT JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON a.author_id = r.author_id $s GROUP BY a.name ORDER BY a.name ASC $l", $output_type);
     }
     
     /**
@@ -212,7 +179,11 @@ class tp_authors  {
     */
    public static function get_related_publications($author_id, $output_type = ARRAY_A){
        global $wpdb;
-       return $wpdb->get_results("SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.rel_page, r.is_author, r.is_editor FROM " . TEACHPRESS_PUB .  " p INNER JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON p.pub_id = r.pub_id WHERE r.author_id = '" . intval($author_id) . "' ORDER BY year DESC", $output_type);
+       return $wpdb->get_results("SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn , p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.rel_page, r.is_author, r.is_editor 
+            FROM " . TEACHPRESS_PUB .  " p 
+            INNER JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON p.pub_id = r.pub_id 
+            WHERE r.author_id = '" . intval($author_id) . "' 
+            ORDER BY year DESC", $output_type);
        
    }
     

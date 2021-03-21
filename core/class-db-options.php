@@ -35,10 +35,12 @@ class TP_Options {
     */
     public static function add_option($variable, $value, $category) { 
         global $wpdb;
-        $variable = htmlspecialchars(stripslashes($variable));
-        $value = htmlspecialchars($value);
-        $category = htmlspecialchars($category);
-        $wpdb->insert( TEACHPRESS_SETTINGS, array( 'variable' => $variable, 'value' => $value, 'category' => $category ), array( '%s', '%s', '%s' ) );
+        $wpdb->insert( TEACHPRESS_SETTINGS, 
+            array( 
+                'variable' => htmlspecialchars(stripslashes($variable)), 
+                'value' => htmlspecialchars($value), 
+                'category' => htmlspecialchars($category) ), 
+            array( '%s', '%s', '%s' ) );
         return $wpdb->insert_id;
     }
     
@@ -51,12 +53,12 @@ class TP_Options {
      */
     public static function change_option ($variable, $value, $type = 'normal') {
         global $wpdb;
-        $variable = esc_sql($variable);
-        $value = esc_sql($value);
+        $var = esc_sql($variable);
+        $val = esc_sql($value);
         if ( $type === 'checkbox' ) {
-            $value = ( $value !== '' ) ? 1 : 0;
+            $val = ( $val !== '' ) ? 1 : 0;
         }
-        $wpdb->query( "UPDATE " . TEACHPRESS_SETTINGS . " SET `value` = '$value' WHERE `variable` = '$variable'" );
+        $wpdb->query( "UPDATE " . TEACHPRESS_SETTINGS . " SET `value` = '$val' WHERE `variable` = '$var'" );
     }
     
     /** 
