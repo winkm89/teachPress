@@ -12,7 +12,7 @@
  * teachPress Books widget class 
  * @since 0.40.0
  */
-class tp_books_widget extends WP_Widget {
+class TP_Books_Widget extends WP_Widget {
     /** 
      * constructor 
      */
@@ -35,7 +35,7 @@ class tp_books_widget extends WP_Widget {
         $books = $instance['books'];
         $random_id = rand(0, count($books) - 1);
         $pub_id = $books[$random_id];
-        $row = tp_publications::get_publication($pub_id);
+        $row = TP_Publications::get_publication($pub_id);
         echo $before_widget;
         if ( $title ) {
             echo $before_title . $title . $after_title;
@@ -68,7 +68,7 @@ class tp_books_widget extends WP_Widget {
 
         echo '<p><label for="' . $this->get_field_id('books') . '">' . __('Books', 'teachpress') . ': <select class="widefat" id="' . $this->get_field_id('books') . '" name="' . $this->get_field_name('books') . '[]" style="height:auto; max-height:25em" multiple="multiple" size="10">';
 
-        $row = tp_publications::get_publications( array('type' => 'book', 'order' => 'title DESC') );
+        $row = TP_Publications::get_publications( array('type' => 'book', 'order' => 'title DESC') );
         foreach ($row as $row) {
             $selected = ( in_array($row->pub_id, $books) ) ? '" selected="selected"' : '';
             echo '<option value="' . $row->pub_id . '" ' . $selected . '>(ID: ' . $row->pub_id . ') ' . $row->title . ' </option>';  

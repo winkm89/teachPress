@@ -17,7 +17,7 @@ GitHub Branch: master
 /*
    LICENCE
 
-    Copyright 2008-2020 Michael Winkler
+    Copyright 2008-2021 Michael Winkler
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,61 +41,63 @@ GitHub Branch: master
 define('TEACHPRESS_GLOBAL_PATH', plugin_dir_path(__FILE__));
 
 // Loads contstants
-include_once("core/constants.php");
+include_once('core/constants.php');
 
 // Core functions
-include_once("core/admin.php");
-include_once("core/class-ajax.php");
-include_once("core/class-bibtex.php");
-include_once("core/class-bibtex-import.php");
-include_once("core/class-bibtex-macros.php");
-include_once("core/class-cite-object.php");
-include_once("core/class-document-manager.php");
-include_once("core/class-export.php");
-include_once("core/class-html.php");
-include_once("core/class-icons.php");
-include_once("core/class-mail.php");
-include_once("core/class-db-artefacts.php");
-include_once("core/class-db-assessments.php");
-include_once("core/class-db-authors.php");
-include_once("core/class-db-bookmarks.php");
-include_once("core/class-db-courses.php");
-include_once("core/class-db-documents.php");
-include_once("core/class-db-helpers.php");
-include_once("core/class-db-options.php");
-include_once("core/class-db-publications.php");
-include_once("core/class-db-students.php");
-include_once("core/class-db-tags.php");
-include_once("core/deprecated.php");
-include_once("core/enrollments.php");
-include_once("core/feeds.php");
-include_once("core/general.php");
-include_once("core/shortcodes.php");
-include_once("core/templates.php");
-include_once("core/widgets.php");
+include_once('core/admin.php');
+include_once('core/ajax-callback.php');
+include_once('core/class-ajax.php');
+include_once('core/class-bibtex.php');
+include_once('core/class-bibtex-import.php');
+include_once('core/class-bibtex-macros.php');
+include_once('core/class-cite-object.php');
+include_once('core/class-document-manager.php');
+include_once('core/class-export.php');
+include_once('core/class-html.php');
+include_once('core/class-icons.php');
+include_once('core/class-mail.php');
+include_once('core/class-db-artefacts.php');
+include_once('core/class-db-assessments.php');
+include_once('core/class-db-authors.php');
+include_once('core/class-db-bookmarks.php');
+include_once('core/class-db-courses.php');
+include_once('core/class-db-documents.php');
+include_once('core/class-db-helpers.php');
+include_once('core/class-db-options.php');
+include_once('core/class-db-publications.php');
+include_once('core/class-db-students.php');
+include_once('core/class-db-tags.php');
+include_once('core/class-publication-type.php');
+include_once('core/deprecated.php');
+include_once('core/enrollments.php');
+include_once('core/feeds.php');
+include_once('core/general.php');
+include_once('core/shortcodes.php');
+include_once('core/templates.php');
+include_once('core/widgets.php');
 
 // Admin menus
 if ( is_admin() ) {
-    include_once("admin/add-course.php");
-    include_once("admin/add-publication.php");
-    include_once("admin/add-students.php");
-    include_once("admin/create-lists.php");
-    include_once("admin/edit-student.php");
-    include_once("admin/edit-tags.php");
-    include_once("admin/import-publications.php");
-    include_once("admin/mail.php");
-    include_once("admin/settings.php");
-    include_once("admin/show-authors.php");
-    include_once("admin/show-courses.php");
-    include_once("admin/show-publications.php");
-    include_once("admin/show-single-course.php");
-    include_once("admin/show-students.php");
+    include_once('admin/add-course.php');
+    include_once('admin/add-publication.php');
+    include_once('admin/add-students.php');
+    include_once('admin/create-lists.php');
+    include_once('admin/edit-student.php');
+    include_once('admin/edit-tags.php');
+    include_once('admin/import-publications.php');
+    include_once('admin/mail.php');
+    include_once('admin/settings.php');
+    include_once('admin/show-authors.php');
+    include_once('admin/show-courses.php');
+    include_once('admin/show-publications.php');
+    include_once('admin/show-single-course.php');
+    include_once('admin/show-students.php');
 }
 
 // BibTeX Parse v2.5
 if ( !class_exists( 'BIBTEXPARSE' ) ) {
-    include_once("includes/bibtexParse/BIBTEXPARSE.php");
-    include_once("includes/bibtexParse/BIBTEXCREATORPARSE.php");
+    include_once('includes/bibtexParse/BIBTEXPARSE.php');
+    include_once('includes/bibtexParse/BIBTEXCREATORPARSE.php');
 }
 
 /*********/
@@ -174,7 +176,7 @@ function tp_add_menu_settings() {
  * @return string
 */
 function get_tp_version() {
-    return '7.1.3';
+    return '7.2a';
 }
 
 /**
@@ -207,16 +209,12 @@ function tp_advanced_registration() {
             'userlogin' => $user->user_login,
             'email' => $user->user_email
         );
-        tp_students::add_student($user->ID, $data );
+        TP_Students::add_student($user->ID, $data );
     }
 }
 
-/**********************/
-/* RSS feed functions */
-/**********************/
-
 /**
- * Adds publication feeds
+ * Adds the publication feeds
  * @since 6.0.0
  */
 function tp_feed_init(){
@@ -234,9 +232,9 @@ function tp_feed_init(){
  * @since 4.2.0
  */
 function tp_db_update() {
-   require_once("core/class-tables.php");
+   require_once('core/class-tables.php');
    require_once('core/class-update.php');
-   tp_update_db::force_update();
+   TP_Update::force_update();
 }
 
 /**
@@ -245,13 +243,13 @@ function tp_db_update() {
  * @since 5.0.0
  */
 function tp_db_sync($table) {
-    require_once("core/class-tables.php");
+    require_once('core/class-tables.php');
     require_once('core/class-update.php');
     if ( $table === 'authors' ) {
-        tp_update_db::fill_table_authors();
+        TP_Update::fill_table_authors();
     }
     if ( $table === 'stud_meta' ) {
-        tp_update_db::fill_table_stud_meta();
+        TP_Update::fill_table_stud_meta();
     }
 }
 
@@ -292,16 +290,16 @@ function tp_activation_error_reporting () {
  * Installation manager
  */
 function tp_install() {
-    require_once 'core/class-tables.php';
-    tp_tables::create();
+    require_once('core/class-tables.php');
+    TP_Tables::create();
 }
 
 /**
  * Uninstallation manager
  */
 function tp_uninstall() {
-    require_once 'core/class-tables.php';
-    tp_tables::remove();
+    require_once('core/class-tables.php');
+    TP_Tables::remove();
 }
 
 /****************************/
@@ -453,6 +451,7 @@ function tp_plugin_link($links, $file){
 register_activation_hook( __FILE__, 'tp_activation');
 add_action('init', 'tp_language_support');
 add_action('init', 'tp_feed_init');
+add_action('init', 'tp_register_all_publication_types');
 add_action('wp_ajax_teachpress', 'tp_ajax_callback');
 add_action('wp_ajax_teachpressdocman', 'tp_ajax_doc_manager_callback');
 add_action('admin_menu', 'tp_add_menu_settings');
@@ -486,7 +485,7 @@ if ( TEACHPRESS_COURSE_MODULE === true ) {
 // register publication module
 if ( TEACHPRESS_PUBLICATION_MODULE === true ) {
     add_action('admin_menu', 'tp_add_menu2');
-    add_action('widgets_init', function(){ register_widget( 'tp_books_widget' ); });
+    add_action('widgets_init', function(){ register_widget( 'TP_Books_Widget' ); });
     add_shortcode('tpcloud', 'tp_cloud_shortcode');
     add_shortcode('tplist', 'tp_list_shortcode');
     add_shortcode('tpsingle', 'tp_single_shortcode');

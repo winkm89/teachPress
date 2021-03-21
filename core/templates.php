@@ -7,10 +7,76 @@
  */
 
 /**
+ * Detects template files and returns an array with available templates
+ * @return array
+ * @since 6.0.0
+ */
+function tp_detect_templates() {
+    $folder = TEACHPRESS_TEMPLATE_PATH;
+    $files = scandir($folder);
+    
+    if ( $files === false ) {
+        return array();
+    }
+    
+    $return = array();
+    foreach ( $files as $file ) {
+        $infos = pathinfo($folder.$file);
+        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
+            $return[$infos['filename']] = $folder.$file;
+        }
+    }
+    return $return;
+}
+
+/**
+ * Returns an array with the data of all available templates
+ * @return array
+ * @since 6.0.0
+ */
+function tp_list_templates () {
+    $folder = TEACHPRESS_TEMPLATE_PATH;
+    $files = scandir($folder);
+    $return = array();
+    foreach ( $files as $file ) {
+        $infos = pathinfo($folder.$file);
+        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
+            $return[] = $infos['filename'];
+        }
+    }
+    return $return;
+}
+
+/**
+ * Loads a template and returns the template object or false, if the template doesn't exist
+ * @param string $slug
+ * @return object|boolean
+ * @since 6.0.0
+ */
+function tp_load_template($slug) {
+    if ( $slug === '' ) {
+        return false;
+    }
+    
+    $slug = esc_attr($slug);
+    $templates = tp_detect_templates();
+    
+    // load template file
+    if ( array_key_exists($slug, $templates) ) {
+        include_once $templates[$slug];
+        wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . $slug. '.css');
+        return new $slug();
+    }
+    
+    return false;
+
+}
+
+/**
  * Interface for the template classes
  * @since 6.0.0
  */
-interface tp_publication_template {
+interface TP_Publication_Template {
     /**
      * Returns the settings of the template
      * @return array
@@ -58,7 +124,7 @@ interface tp_publication_template {
  * Contains all interface functions for publication templates
  * @since 6.0.0
  */
-class tp_publication_interface {
+class TP_Publication_Template_API {
     protected $data;
     
     /**
@@ -168,7 +234,7 @@ class tp_publication_interface {
      * @access public
      */
     public function get_meta () {
-        return tp_html::get_publication_meta_row($this->data['row'], $this->data['settings']);
+        return TP_HTML::get_publication_meta_row($this->data['row'], $this->data['settings']);
     }
     
     /**
@@ -257,20 +323,20 @@ class tp_publication_interface {
 
         // div altmetric
         if ( $settings['show_altmetric_entry']  && $row['doi'] != '' ) {
-            $content .= tp_html_publication_template::get_info_container( tp_html_publication_template::prepare_altmetric($row['doi']), 'altmetric', $container_id );
+            $content .= TP_HTML_Publication_Template::get_info_container( TP_HTML_Publication_Template::prepare_altmetric($row['doi']), 'altmetric', $container_id );
         }
 
         // div bibtex
-        $content .= tp_html_publication_template::get_info_container( nl2br( tp_bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ), 'bibtex', $container_id );
+        $content .= TP_HTML_Publication_Template::get_info_container( nl2br( TP_Bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ), 'bibtex', $container_id );
         
         // div abstract
         if ( $row['abstract'] != '' ) {
-            $content .= tp_html_publication_template::get_info_container( tp_html::prepare_text($row['abstract']), 'abstract', $container_id );
+            $content .= TP_HTML_Publication_Template::get_info_container( TP_HTML::prepare_text($row['abstract']), 'abstract', $container_id );
         }
         
         // div links
         if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
-            $content .= tp_html_publication_template::get_info_container( tp_html_publication_template::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
+            $content .= TP_HTML_Publication_Template::get_info_container( TP_HTML_Publication_Template::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
         }
 
         return $content;
@@ -280,12 +346,11 @@ class tp_publication_interface {
                         
 }
 
-
 /**
  * This class contains all functions related to the HTML publication template generator
  * @since 6.0.0
  */
-class tp_html_publication_template {
+class TP_HTML_Publication_Template {
     
     /**
      * Gets a single publication in html format
@@ -322,10 +387,10 @@ class tp_html_publication_template {
         
         // parse author names for teachPress style
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = tp_bibtex::parse_author($row['editor'], $settings['author_separator'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = TP_Bibtex::parse_author($row['editor'], $settings['author_separator'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = tp_bibtex::parse_author($row['author'], $settings['author_separator'], $settings['author_name'] );
+            $all_authors = TP_Bibtex::parse_author($row['author'], $settings['author_separator'], $settings['author_name'] );
         }
 
         // if the publication has a doi -> altmetric
@@ -379,7 +444,7 @@ class tp_html_publication_template {
             'template_settings' => $template_settings
         );
         
-        $interface = new tp_publication_interface();
+        $interface = new TP_Publication_Template_API();
         $interface->set_data($interface_data);
         
         // load entry template
@@ -457,25 +522,25 @@ class tp_html_publication_template {
         
         // for inline style
         elseif ( ($row['url'] != '' || $row['doi'] != '') && $settings['link_style'] === 'inline' ) {
-            return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
+            return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . TP_HTML::prepare_title($row['title'], 'decode') . '</a>';
         }
         
         // for direct style (if a DOI numer exists)
         elseif ( $row['doi'] != '' && $settings['link_style'] === 'direct' ) {
             $doi_url = TEACHPRESS_DOI_RESOLVER . $row['doi'];
-            $title = tp_html::prepare_title($row['title'], 'decode');
+            $title = TP_HTML::prepare_title($row['title'], 'decode');
             return '<a class="tp_title_link" href="' . $doi_url . '" title="' . $title . '" target="blank">' . $title . '</a>'; 
         }
         
         // for direct style (use the first available URL)
         elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) { 
-            $parts = tp_bibtex::explode_url($row['url']); 
-            return '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . tp_html::prepare_title($row['title'], 'decode') . '</a>'; 
+            $parts = TP_Bibtex::explode_url($row['url']); 
+            return '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . TP_HTML::prepare_title($row['title'], 'decode') . '</a>'; 
         } 
         
         // if there is no link
         else {
-            return tp_html::prepare_title($row['title'], 'decode');
+            return TP_HTML::prepare_title($row['title'], 'decode');
         }
 
     }
@@ -490,10 +555,10 @@ class tp_html_publication_template {
      */
     private static function prepare_title_link_to_abstracts($row, $container_id) {
         if ( $row['abstract'] != '' ) {
-            return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_abstract' . "'" . ')" style="cursor:pointer;">' . tp_html::prepare_title($row['title'], 'decode') . '</a>';
+            return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_abstract' . "'" . ')" style="cursor:pointer;">' . TP_HTML::prepare_title($row['title'], 'decode') . '</a>';
         }
         else {
-            return tp_html::prepare_title($row['title'], 'decode');
+            return TP_HTML::prepare_title($row['title'], 'decode');
         }
     }
     
@@ -526,11 +591,11 @@ class tp_html_publication_template {
                 if ( $length > 80 ) {
                     $parts[1] .= '[...]';
                 }
-                $end .= '<li><i class="' . tp_icons::get_class( $parts[0] ).'"></i><a class="tp_pub_list" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank">' . $parts[1] . '</a></li>';
+                $end .= '<li><i class="' . TP_Icons::get_class( $parts[0] ).'"></i><a class="tp_pub_list" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank">' . $parts[1] . '</a></li>';
             }
             // enumeration mode
             else {
-                $end .= '<a class="tp_pub_link" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank"><i class="' . tp_icons::get_class( $parts[0] ).'"></i></a>';
+                $end .= '<a class="tp_pub_link" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank"><i class="' . TP_Icons::get_class( $parts[0] ).'"></i></a>';
             }
         }
         
@@ -542,10 +607,10 @@ class tp_html_publication_template {
             $doi_url = TEACHPRESS_DOI_RESOLVER . $doi;
             if (in_array($doi_url, $url_displayed) == False){
                 if ( $mode === 'list' ) {
-                    $end .= '<li><i class="' . tp_icons::get_class( 'doi' ).'"></i><a class="tp_pub_list" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
+                    $end .= '<li><i class="' . TP_Icons::get_class( 'doi' ).'"></i><a class="tp_pub_list" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank">doi:' . $doi . '</a></li>';
                 }
                 else {
-                    $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><i class="' . tp_icons::get_class( 'doi').'"></i></a>';
+                    $end .= '<a class="tp_pub_link" href="' . $doi_url . '" title="' . __('Follow DOI:','teachpress') . $doi . '" target="_blank"><i class="' . TP_Icons::get_class( 'doi').'"></i></a>';
                 }
             }
         }
@@ -556,9 +621,6 @@ class tp_html_publication_template {
         
         return $end;
     }
-
-
-
 
     /**
      * Prepares an altmetric info block 
@@ -579,7 +641,6 @@ class tp_html_publication_template {
 
             $end .= '<div data-badge-details="right" data-badge-type="large-donut" data-doi="'.$doi .'" data-condensed="true" class="altmetric-embed"></div>';
         }
-        
         
         return $end;
     }
@@ -632,11 +693,11 @@ class tp_html_publication_template {
         
         // general html output
         if ( $row['image_url'] !== '' ) {
-            $image = '<img name="' . tp_html::prepare_title($row['title'], 'replace') . '" src="' . $row['image_url'] . '" ' . $width . ' alt="' . tp_html::prepare_title($row['title'], 'replace') . '" />';
+            $image = '<img name="' . TP_HTML::prepare_title($row['title'], 'replace') . '" src="' . $row['image_url'] . '" ' . $width . ' alt="' . TP_HTML::prepare_title($row['title'], 'replace') . '" />';
         }
         
         // image link
-        $image = tp_html_publication_template::handle_image_link ($image, $row, $settings);
+        $image = TP_HTML_Publication_Template::handle_image_link ($image, $row, $settings);
         
         // Altmetric donut
         $altmetric = '';
@@ -695,4 +756,3 @@ class tp_html_publication_template {
     }
     
 }
-
