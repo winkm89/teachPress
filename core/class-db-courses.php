@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_courses {
+class TP_Courses {
     
     /**
      * Returns the capability ("owner" or "approved") of an user for a course. For courses with no capabilities "owner" is returned.
@@ -24,9 +24,11 @@ class tp_courses {
     public static function get_capability ($course_id, $wp_id){
         global $wpdb;
         $test = $wpdb->get_var("SELECT `use_capabilites` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($course_id) . "'");
+        
         if ( intval($test) === 1 ){
             return $wpdb->get_var("SELECT `capability` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "'");
         }
+        
         // Return owner if the course has no capabilities
         return 'owner';
     }
@@ -56,9 +58,11 @@ class tp_courses {
        if ( $course_id === 0 || $wp_id === 0 || $capability === '' ) {
            return false;
        }
-       if ( !tp_courses::has_capability($course_id, $wp_id, $capability) ) {
+       
+       if ( !TP_Courses::has_capability($course_id, $wp_id, $capability) ) {
            $wpdb->insert(TEACHPRESS_COURSE_CAPABILITES, array('course_id' => $course_id, 'wp_id' => $wp_id, 'capability' => $capability), array('%d', '%d', '%s'));
        }
+       
        return $wpdb->insert_id;
    }
    
@@ -84,13 +88,17 @@ class tp_courses {
    public static function has_capability ($course_id, $wp_id, $capability) {
        global $wpdb;
        $where = '';
+       
        if ( $capability !== '' ) {
            $where = "AND `capability` = '" . esc_sql($capability). "'";
        }
+       
        $test = $wpdb->query("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "' $where");
+       
        if ( $test === 1 ) {
            return true;
        }
+       
        return false;
    }
    
@@ -103,9 +111,11 @@ class tp_courses {
    public static function is_owner ($course_id) {
        global $wpdb;
        $test = $wpdb->get_var("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `capability` = 'owner'");
+       
        if ( $test === NULL ){
            return false;
        }
+       
        return intval($test);
        
    }
@@ -119,9 +129,11 @@ class tp_courses {
    public static function is_used_as_related_content($post_id) {
        global $wpdb;
        $post_id = intval($post_id);
+       
        if ( $post_id === 0 ) {
            return false;
        }
+       
        return $wpdb->get_var("SELECT `course_id` FROM `" . TEACHPRESS_COURSES . "` WHERE `rel_page` = '$post_id' ");
    }
 
@@ -181,9 +193,9 @@ class tp_courses {
         $limit = esc_sql($limit);
         $output_type = esc_sql($output_type);
         $search = esc_sql(htmlspecialchars(stripslashes($search)));
-        $exclude = tp_db_helpers::generate_where_clause($exclude, "p.pub_id", "AND", "!=");
-        $semester = tp_db_helpers::generate_where_clause($semester, "semester", "OR", "=");
-        $visibility = tp_db_helpers::generate_where_clause($visibility, "visible", "OR", "=");
+        $exclude = TP_DB_Helpers::generate_where_clause($exclude, "p.pub_id", "AND", "!=");
+        $semester = TP_DB_Helpers::generate_where_clause($semester, "semester", "OR", "=");
+        $visibility = TP_DB_Helpers::generate_where_clause($visibility, "visible", "OR", "=");
 
         // define global search
         if ( $search != '' ) {
@@ -244,7 +256,7 @@ class tp_courses {
         global $wpdb;
         $row = $wpdb->get_row("SELECT `name`, `parent` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($course_id) . "'");
         if ($row->parent != '0') {
-            $parent = tp_courses::get_course_data($row->parent, 'name');
+            $parent = TP_Courses::get_course_data($row->parent, 'name');
             $row->name = ( $row->name != $parent ) ? $parent . ' ' . $row->name : $row->name;
         }
         return $row->name;
@@ -348,10 +360,10 @@ class tp_courses {
         $course_id = $wpdb->insert_id;
         // add capability
         global $current_user;
-        tp_courses::add_capability($course_id, $current_user->ID, 'owner');
+        TP_Courses::add_capability($course_id, $current_user->ID, 'owner');
         // create rel_page
         if ($data['rel_page_alter'] !== 0 ) {
-            $data['rel_page'] = tp_courses::add_rel_page($course_id, $data);
+            $data['rel_page'] = TP_Courses::add_rel_page($course_id, $data);
             // Update rel_page
             $wpdb->update( TEACHPRESS_COURSES, array( 'rel_page' => $data['rel_page'] ), array( 'course_id' => $course_id ), array( '%d', ), array( '%d' ) );
         }
@@ -361,7 +373,7 @@ class tp_courses {
         }
         // create sub courses
         if ( $sub['number'] !== 0 ) {
-            tp_courses::add_sub_courses($course_id, $data, $sub);
+            TP_Courses::add_sub_courses($course_id, $data, $sub);
         }
         return $course_id;
     }
@@ -405,7 +417,7 @@ class tp_courses {
         $options = array('number' => 0);
         for ( $i = 1; $i <= $sub['number']; $i++ ) {
             $sub_data['name'] = $sub['type'] . ' ' . $i;
-            tp_courses::add_course($sub_data, $options);
+            TP_Courses::add_course($sub_data, $options);
         }
     }
     
@@ -420,7 +432,7 @@ class tp_courses {
         global $wpdb;
         $course_id = intval($course_id);
         global $current_user;
-        $old_places = tp_courses::get_course_data ($course_id, 'places');
+        $old_places = TP_Courses::get_course_data ($course_id, 'places');
 
         // If the number of places is raised up
         if ( $data['places'] > $old_places ) {
@@ -458,7 +470,7 @@ class tp_courses {
             $checkbox[$i] = intval($checkbox[$i]);
             
             // capability check
-            $capability = tp_courses::get_capability($checkbox[$i], $user_ID);
+            $capability = TP_Courses::get_capability($checkbox[$i], $user_ID);
             if ($capability !== 'owner' ) {
                 continue;
             }
@@ -539,7 +551,7 @@ class tp_courses {
         $where = '';
         $i = 1;
         foreach ($fields as $row) {
-            $settings = tp_db_helpers::extract_column_data($row->value);
+            $settings = TP_DB_Helpers::extract_column_data($row->value);
             if ( $settings['visibility'] !== $meta_visibility || $meta_visibility === 'all' ) {
                 continue;
             }
@@ -596,7 +608,7 @@ class tp_courses {
             $name = self::get_course_name($course_id);
             
             // Send notification
-            tp_enrollments::send_notification(201, $wp_id, $name);
+            TP_Enrollments::send_notification(201, $wp_id, $name);
             
             return true;
         }
@@ -693,7 +705,7 @@ class tp_courses {
             $name = self::get_course_name($course_id);
             
             // Send notification
-            tp_enrollments::send_notification(201, $signup->wp_id, $name);
+            TP_Enrollments::send_notification(201, $signup->wp_id, $name);
         }	
         
     }
@@ -775,7 +787,7 @@ class tp_courses {
                 $name = self::get_course_name($course_id);
 
                 // Send notification
-                tp_enrollments::send_notification(201, $waitinglist["wp_id"], $name);
+                TP_Enrollments::send_notification(201, $waitinglist["wp_id"], $name);
             }
             else {
                 break;

@@ -11,7 +11,7 @@
  * @package teachpress\core\icons
  * @since 7.0
  */
-class tp_icons {
+class TP_Icons {
     
     /**
      * Returns the suitable icon classes for a given file_path or URL

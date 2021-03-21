@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_documents {
+class TP_Documents {
     
     /**
      * Returns the data of a document

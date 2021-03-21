@@ -11,7 +11,7 @@
  * @package teachpress\core\ajax
  * @since 5.0.0
  */
-class tp_document_manager {
+class TP_Document_Manager {
     
     /**
      * Inits the document manager
@@ -80,7 +80,7 @@ class tp_document_manager {
             </div>
             <ul class="tp_filelist" id="tp_sortable">
                 <?php
-                $documents = tp_documents::get_documents($course_id);
+                $documents = TP_Documents::get_documents($course_id);
                 $upload_dir = wp_upload_dir();
                 foreach ($documents as $row) {
                     $class = 'tp_file tp_file_headline';
@@ -89,7 +89,7 @@ class tp_document_manager {
                     $name = '<span class="tp_file_name">' . stripslashes($row['name']) . '</span>';
                     if ( $row['path'] !== '' ) {
                         $class = 'tp_file';
-                        $name = '<span class="tp_file_name"><i class="' . tp_icons::get_class( $row['path'] ) . '"></i>' . stripslashes($row['name']) . '</span>';
+                        $name = '<span class="tp_file_name"><i class="' . TP_Icons::get_class( $row['path'] ) . '"></i>' . stripslashes($row['name']) . '</span>';
                         $size = '<span class="tp_file_size">' . tp_convert_file_size($row['size']) . '</span>';
                     }
                     if ( $mode === 'tinyMCE' && $row['path'] !== '' ) {
@@ -364,7 +364,7 @@ class tp_document_manager {
         // List of courses
         $semester = get_tp_options('semester', '`setting_id` DESC');
         foreach ( $semester as $row ) {
-            $courses = tp_courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
+            $courses = TP_Courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
             if ( count($courses) !== 0 ) {
                 echo '<optgroup label="' . $row->value . '">';
             }
@@ -414,11 +414,11 @@ class tp_document_manager {
 
             // default
             if ( $post_id !== 0 && $course_id === 0 ) {
-                $course_id = intval (tp_courses::is_used_as_related_content($post_id) );
+                $course_id = intval (TP_Courses::is_used_as_related_content($post_id) );
             }
             // For user's selection
             else if ( $course_id !== 0 ) {
-                $post_id = tp_courses::get_course_data($course_id, 'rel_page');
+                $post_id = TP_Courses::get_course_data($course_id, 'rel_page');
             }
             
             echo '<body>';
@@ -428,13 +428,13 @@ class tp_document_manager {
             self::get_course_selector($course_id);
             
             if ( $course_id !== 0 ) { 
-                $capability = tp_courses::get_capability($course_id, $current_user->ID);
+                $capability = TP_Courses::get_capability($course_id, $current_user->ID);
                 // check capabilities
                 if ( $capability !== 'owner' && $capability !== 'approved' ) {
                     get_tp_message(__('You have no capabilites to use this course','teachpress'), 'red');
                 }
                 else {
-                    tp_document_manager::init($course_id, 'tinyMCE');
+                    TP_Document_Manager::init($course_id, 'tinyMCE');
                 }
             } 
             

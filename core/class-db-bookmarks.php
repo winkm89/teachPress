@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_bookmarks {
+class TP_Bookmarks {
     
     /**
      * Returns an arrayor object of bookmarks of an user
@@ -30,14 +30,13 @@ class tp_bookmarks {
             'user' => '',
             'output_type' => OBJECT
         ); 
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args, EXTR_SKIP );
+        $atts = wp_parse_args( $args, $defaults );
 
         global $wpdb;
-        $user = intval($user);
+        $user = intval($atts['user']);
 
         $sql = "SELECT `bookmark_id`, `pub_id` FROM " . TEACHPRESS_USER . " WHERE `user` = '$user'";
-        return $wpdb->get_results($sql, $output_type);
+        return $wpdb->get_results($sql, $atts['output_type']);
     }
     
     /** 

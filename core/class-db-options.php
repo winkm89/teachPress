@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_options {
+class TP_Options {
     
     /**
      * Returns an option by ID

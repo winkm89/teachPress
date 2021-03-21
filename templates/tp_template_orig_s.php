@@ -6,7 +6,7 @@
  * @since 6.0.0
  */
 
-class tp_template_orig_s implements tp_publication_template {
+class TP_Template_Orig_S implements TP_Publication_Template {
     
     public function get_settings() {
         return array ('name'                => 'teachPress original small',

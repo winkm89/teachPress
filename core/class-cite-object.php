@@ -3,7 +3,7 @@
  * The citation object class
  * @since 5.2.0
  */
-class tp_cite_object {
+class TP_Cite_Object {
     
     // stores the citations
     var $cite_object = array();

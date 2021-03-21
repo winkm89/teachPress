@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_assessments {
+class TP_Assessments {
     
     /**
      * Returns an assessment by id
@@ -41,7 +41,7 @@ class tp_assessments {
             $artefacts = "course_id = '" . intval($course_id) . "'"; 
         }
         else {
-            $artefacts = tp_db_helpers::generate_where_clause($artefact_id, "artefact_id", "OR", "=");
+            $artefacts = TP_DB_Helpers::generate_where_clause($artefact_id, "artefact_id", "OR", "=");
         }
         return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `wp_id` = '" . intval($wp_id) . "' AND $artefacts", $output_type);
     }

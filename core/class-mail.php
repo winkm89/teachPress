@@ -11,7 +11,7 @@
  * @package teachpress\core\mail
  * @since 3.0.0
  */
-class tp_mail {
+class TP_Mail {
      
     /**
      * Send an e-mail

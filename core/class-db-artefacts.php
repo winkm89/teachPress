@@ -13,7 +13,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_artefacts {
+class TP_Artefacts {
     
     /**
      * Returns an artefact by ID

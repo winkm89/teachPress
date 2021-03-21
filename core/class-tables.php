@@ -12,7 +12,7 @@
  * @package teachpress\core\installation
  * @since 5.0.0
  */
-class tp_tables {
+class TP_Tables {
     
     /**
      * Install teachPress database tables

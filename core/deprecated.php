@@ -55,7 +55,7 @@ function tp_admin_page_menu ($number_entries, $entries_per_page, $current_page, 
  */
 function get_tp_course ( $id, $output_type = OBJECT) {
     trigger_error( __('get_tp_course() is deprecated since teachpress 5.0.0. Use tp_courses::get_course() instead.','teachpress') );
-    return tp_courses::get_course($id, $output_type);
+    return TP_Courses::get_course($id, $output_type);
 }
 
 /**
@@ -68,7 +68,7 @@ function get_tp_course ( $id, $output_type = OBJECT) {
  */
 function get_tp_courses ( $args = array() ) {
     trigger_error( __('get_tp_courses() is deprecated since teachpress 5.0.0. Use tp_courses::get_courses() instead.','teachpress') );
-    return tp_courses::get_courses($args);
+    return TP_Courses::get_courses($args);
 }
 
 /**
@@ -82,7 +82,7 @@ function get_tp_courses ( $args = array() ) {
  */
 function get_tp_course_free_places($course_id, $places) {
     trigger_error( __('get_tp_course_free_places() is deprecated since teachpress 5.0.0. tp_courses::get_free_places() instead.','teachpress') );
-    return tp_courses::get_free_places($course_id, $places);
+    return TP_Courses::get_free_places($course_id, $places);
 }
 
 /**
@@ -95,7 +95,7 @@ function get_tp_course_free_places($course_id, $places) {
  */
 function get_tp_tags( $args = array() ) {
     trigger_error( __('get_tp_tags() is deprecated since teachpress 5.0.0. Use tp_tags::get_tags() instead.','teachpress') );
-    return tp_tags::get_tags($args);
+    return TP_Tags::get_tags($args);
 }
 
 /**
@@ -107,7 +107,7 @@ function get_tp_tags( $args = array() ) {
  */
 function get_tp_tag_cloud ( $args = array() ) {
     trigger_error( __('get_tp_tag_cloud() is deprecated since teachpress 5.0.0. Use tp_tags::get_tag_cloud() instead.','teachpress') );
-    return tp_tags::get_tag_cloud($args);
+    return TP_Tags::get_tag_cloud($args);
 }
 
 /**
@@ -121,7 +121,7 @@ function get_tp_tag_cloud ( $args = array() ) {
  */
 function get_tp_publication ($id, $output_type = OBJECT) {
     trigger_error( __('get_tp_publication() is deprecated since teachpress 5.0.0. Use tp_publications::get_publication() instead.','teachpress') );
-    return tp_publications::get_publication($id, $output_type);
+    return TP_Publications::get_publication($id, $output_type);
 }
 
 /**
@@ -135,7 +135,7 @@ function get_tp_publication ($id, $output_type = OBJECT) {
 */
 function get_tp_publications($args = array(), $count = false) {
     trigger_error( __('get_tp_publications() is deprecated since teachpress 5.0.0. Use tp_publications::get_publications() instead.','teachpress') );
-    return tp_publications::get_publications($args, $count);
+    return TP_Publications::get_publications($args, $count);
 }
 
 /**
@@ -149,7 +149,7 @@ function get_tp_publications($args = array(), $count = false) {
  */
 function tp_is_user_subscribed ($course_id, $consider_childcourses = false) {
     trigger_error( __('tp_is_user_subscribed() is deprecated since teachpress 5.0.0. Use tp_courses::is_student_subscribed() instead.','teachpress') );
-    return tp_courses::is_student_subscribed($course_id, $consider_childcourses);
+    return TP_Courses::is_student_subscribed($course_id, $consider_childcourses);
 }
 
 /**
@@ -164,5 +164,5 @@ function tp_is_user_subscribed ($course_id, $consider_childcourses = false) {
  */
 function tp_check_bookmark ($pub_id, $user_id) {
     trigger_error( __('tp_check_bookmark() is deprecated since teachpress 5.0.0. Use tp_bookmarks::bookmark_exists() instead.','teachpress') );
-    return tp_bookmarks::bookmark_exists($pub_id, $user_id);
+    return TP_Bookmarks::bookmark_exists($pub_id, $user_id);
 }

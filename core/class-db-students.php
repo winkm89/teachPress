@@ -12,7 +12,7 @@
  * @subpackage database
  * @since 5.0.0
  */
-class tp_students {
+class TP_Students {
     
     /**
      * Returns data of a student
@@ -323,7 +323,7 @@ class tp_students {
     */
     public static function has_assessment ($wp_id, $course_id) {
         global $wpdb;
-        $artefacts = tp_artefacts::get_artefact_ids($course_id, 0);
+        $artefacts = TP_Artefacts::get_artefact_ids($course_id, 0);
 
         // Define where clause
         $where = '';

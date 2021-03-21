@@ -6,7 +6,7 @@
  * @since 6.0.0
  */
 
-class tp_template_2016 implements tp_publication_template {
+class TP_Template_2016 implements TP_Publication_Template {
     /**
      * Returns the settings of the template
      * @return array
