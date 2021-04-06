@@ -334,64 +334,47 @@ class TP_Publications {
         $defaults = self::get_default_fields();
         $post_time = current_time('mysql',0);
         $data = wp_parse_args( $data, $defaults );
+        extract( $data, EXTR_SKIP );
+        
+        // intercept wrong values for dates
+        $urldate = ( $urldate == 'JJJJ-MM-TT' ) ? '0000-00-00' : $urldate;
+        $date = ( $date == 'JJJJ-MM-TT' ) ? '0000-00-00' : $date;
+        
+        // generate bibtex key
+        $bibtex = TP_Publications::generate_unique_bibtex_key($bibtex);
         
         // check last chars of author/editor fields
-        if ( substr($data['author'], -5) === ' and ' ) {
-            $data['author'] = substr($data['author'] ,0 , strlen($data['author']) - 5);
+        if ( substr($author, -5) === ' and ' ) {
+            $author = substr($author ,0 , strlen($author) - 5);
         }
-        if ( substr($data['editor'], -5) === ' and ' ) {
-            $data['editor'] = substr($data['editor'] ,0 , strlen($data['editor']) - 5);
+        if ( substr($editor, -5) === ' and ' ) {
+            $editor = substr($editor ,0 , strlen($editor) - 5);
         }
         
         // replace double spaces from author/editor fields
-        $data['author'] = str_replace('  ', ' ', $data['author']);
-        $data['editor'] = str_replace('  ', ' ', $data['editor']);
+        $author = str_replace('  ', ' ', $author);
+        $editor = str_replace('  ', ' ', $editor);
+        
+        // prevent possible double escapes
+        $title = stripslashes($title);
+        $bibtex = stripslashes($bibtex);
+        $author = stripslashes($author);
+        $editor = stripslashes($editor);
+        $booktitle = stripslashes($booktitle);
+        $issuetitle = stripslashes($issuetitle);
+        $journal = stripslashes($journal);
+        $publisher = stripslashes($publisher);
+        $address = stripslashes($address);
+        $institution = stripslashes($institution);
+        $organization = stripslashes($organization);
+        $school = stripslashes($school);
+        $abstract = stripslashes($abstract);
+        $comment = stripslashes($comment);
+        $note =  stripslashes($note);
+        $status = stripslashes($status);
 
-        $wpdb->insert( 
-            TEACHPRESS_PUB, 
-            array( 
-                'title' => ( $data['title'] === '' ) ? '[' . __('No title','teachpress') . ']' : stripslashes($data['title']), 
-                'type' => $data['type'], 
-                'bibtex' => stripslashes( TP_Publications::generate_unique_bibtex_key($data['bibtex']) ), 
-                'author' => stripslashes($data['author']), 
-                'editor' => stripslashes($data['editor']), 
-                'isbn' => $data['isbn'], 
-                'url' => $data['url'], 
-                'date' => ( $data['date'] == 'JJJJ-MM-TT' ) ? '0000-00-00' : $data['date'], 
-                'urldate' => ( $data['urldate'] == 'JJJJ-MM-TT' ) ? '0000-00-00' : $data['urldate'], 
-                'booktitle' => stripslashes($data['booktitle']), 
-                'issuetitle' => stripslashes($data['issuetitle']), 
-                'journal' => stripslashes($data['journal']), 
-                'volume' => $data['volume'], 
-                'number' => $data['$number'], 
-                'pages' => $data['pages'], 
-                'publisher' => stripslashes($data['publisher']), 
-                'address' => stripslashes($data['address']), 
-                'edition' => $data['edition'], 
-                'chapter' => $data['chapter'], 
-                'institution' => stripslashes($data['institution']), 
-                'organization' => stripslashes($data['organization']), 
-                'school' => stripslashes($data['school']), 
-                'series' => $data['series'], 
-                'crossref' => $data['crossref'], 
-                'abstract' => stripslashes($data['abstract']), 
-                'howpublished' => stripslashes($data['howpublished']), 
-                'key' => $data['key'], 
-                'techtype' => stripslashes($data['techtype']), 
-                'comment' => stripslashes($data['comment']), 
-                'note' => stripslashes($data['note']), 
-                'image_url' => $data['image_url'], 
-                'image_target' => $data['image_target'], 
-                'image_ext' => $data['image_ext'], 
-                'doi' => $data['doi'], 
-                'is_isbn' => $data['is_isbn'], 
-                'rel_page' => $data['rel_page'], 
-                'status' => stripslashes($data['status']), 
-                'added' => $post_time, 
-                'modified' => $post_time, 
-                'import_id' => $data['import_id'] ), 
-            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
-        $pub_id = $wpdb->insert_id;
+        $wpdb->insert( TEACHPRESS_PUB, array( 'title' => $title, 'type' => $type, 'bibtex' => $bibtex, 'author' => $author, 'editor' => $editor, 'isbn' => $isbn, 'url' => $url, 'date' => $date, 'urldate' => $urldate, 'booktitle' => $booktitle, 'issuetitle' => $issuetitle, 'journal' => $journal, 'volume' => $volume, 'number' => $number, 'pages' => $pages , 'publisher' => $publisher, 'address' => $address, 'edition' => $edition, 'chapter' => $chapter, 'institution' => $institution, 'organization' => $organization, 'school' => $school, 'series' => $series, 'crossref' => $crossref, 'abstract' => $abstract, 'howpublished' => $howpublished, 'key' => $key, 'techtype' => $techtype, 'comment' => $comment, 'note' => $note, 'image_url' => $image_url, 'image_target' => $image_target, 'image_ext' => $image_ext, 'doi' => $doi, 'is_isbn' => $is_isbn, 'rel_page' => $rel_page, 'status' => $status, 'added' => $post_time, 'modified' => $post_time, 'import_id' => $import_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
+         $pub_id = $wpdb->insert_id;
 
         // Bookmarks
         if ( $bookmark != '' ) {
@@ -407,10 +390,10 @@ class TP_Publications {
         TP_Publications::add_relation($pub_id, $tags);
         
         // Authors
-        TP_Publications::add_relation($pub_id, $data['author'], ' and ', 'authors');
+        TP_Publications::add_relation($pub_id, $author, ' and ', 'authors');
         
         // Editors
-        TP_Publications::add_relation($pub_id, $data['editor'], ' and ', 'editors');
+        TP_Publications::add_relation($pub_id, $editor, ' and ', 'editors');
         
         return $pub_id;
     }
@@ -458,56 +441,31 @@ class TP_Publications {
         $data['author'] = str_replace('  ', ' ', $data['author']);
         $data['editor'] = str_replace('  ', ' ', $data['editor']);
         
+        // prevent double escapes
+        $data['title'] = stripslashes($data['title']);
+        $data['bibtex'] = stripslashes($data['bibtex']);
+        $data['author'] = stripslashes($data['author']);
+        $data['editor'] = stripslashes($data['editor']);
+        $data['booktitle'] = stripslashes($data['booktitle']);
+        $data['issuetitle'] = stripslashes($data['issuetitle']);
+        $data['journal'] = stripslashes($data['journal']);
+        $data['publisher'] = stripslashes($data['publisher']);
+        $data['address'] = stripslashes($data['address']);
+        $data['institution'] = stripslashes($data['institution']);
+        $data['organization'] = stripslashes($data['organization']);
+        $data['school'] = stripslashes($data['school']);
+        $data['abstract'] = stripslashes($data['abstract']);
+        $data['comment'] = stripslashes($data['comment']);
+        $data['note'] =  stripslashes($data['note']);
+        $data['status'] =  stripslashes($data['status']);
+        
         // update row
-        $wpdb->update( 
-                TEACHPRESS_PUB, 
-                array( 
-                    'title' => stripslashes($data['title']), 
-                    'type' => $data['type'], 
-                    'bibtex' => stripslashes($data['bibtex']), 
-                    'author' => stripslashes($data['author']), 
-                    'editor' => stripslashes($data['editor']), 
-                    'isbn' => $data['isbn'], 
-                    'url' => $data['url'], 
-                    'date' => $data['date'], 
-                    'urldate' => $data['urldate'], 
-                    'booktitle' => stripslashes($data['booktitle']), 
-                    'issuetitle' => stripslashes($data['issuetitle']), 
-                    'journal' => stripslashes($data['journal']), 
-                    'volume' => $data['volume'], 
-                    'number' => $data['number'], 
-                    'pages' => $data['pages'], 
-                    'publisher' => stripslashes($data['publisher']), 
-                    'address' => stripslashes($data['address']), 
-                    'edition' => $data['edition'], 
-                    'chapter' => $data['chapter'], 
-                    'institution' => stripslashes($data['institution']), 
-                    'organization' => stripslashes($data['organization']), 
-                    'school' => stripslashes($data['school']), 
-                    'series' => $data['series'], 
-                    'crossref' => $data['crossref'], 
-                    'abstract' => stripslashes($data['abstract']), 
-                    'howpublished' => stripslashes($data['howpublished']), 
-                    'key' => $data['key'], 
-                    'techtype' => stripslashes($data['techtype']), 
-                    'comment' => stripslashes($data['comment']), 
-                    'note' => stripslashes($data['note']), 
-                    'image_url' => $data['image_url'], 
-                    'image_target' => $data['image_target'], 
-                    'image_ext' => $data['image_ext'], 
-                    'doi' => $data['doi'], 
-                    'is_isbn' => $data['is_isbn'], 
-                    'rel_page' => $data['rel_page'], 
-                    'status' => stripslashes($data['status']), 
-                    'modified' => $post_time ), 
-                array( 'pub_id' => $pub_id ), 
-                array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), 
-                array( '%d' ) );
+        $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'image_target' => $data['image_target'], 'image_ext' => $data['image_ext'],  'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => $data['status'], 'modified' => $post_time ), array( 'pub_id' => $pub_id ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
         
         // get_tp_message($wpdb->last_query);
         
         // Bookmarks
-        if ( $bookmark != '' ) {
+        if ($bookmark != '') {
             $max = count( $bookmark );
             for( $i = 0; $i < $max; $i++ ) {
                 if ($bookmark[$i] != '' || $bookmark[$i] != 0) {
@@ -535,26 +493,46 @@ class TP_Publications {
     }
     
     /**
-     * Update a publication by key (import option); Returns FALSE if there is no publication with the given key
+     * Update a publication by key (import option); Returns FALSE if no publication with the given key was found
      * @param string $key       The BibTeX key
-     * @param array $input_data An associative array of publication data
+     * @param array $data       An associative array of publication data
      * @param string $tags      An associative array of tags
      * @return boolean|int
      * @since 5.0.0
-     * @version 2
      */
     public static function change_publication_by_key($key, $input_data, $tags) {
         global $wpdb;
-
-        // Search if there is a publication with the given bibtex key
+        $post_time = current_time('mysql',0);
         $search_pub = self::get_publication_by_key($key, ARRAY_A);
         if ( $search_pub === NULL ) {
             return false;
         }
-        
-        // Update publication
         $data = wp_parse_args( $input_data, $search_pub );
-        self::change_publication($search_pub['pub_id'], $data, '', '', '');
+        
+        // check if bibtex key has no spaces
+        if ( strpos($data['bibtex'], ' ') !== false ) {
+            $data['bibtex'] = str_replace(' ', '', $data['bibtex']);
+        }
+        
+        // prevent double escapes
+        $data['title'] = stripslashes($data['title']);
+        $data['author'] = stripslashes($data['author']);
+        $data['editor'] = stripslashes($data['editor']);
+        $data['booktitle'] = stripslashes($data['booktitle']);
+        $data['issuetitle'] = stripslashes($data['issuetitle']);
+        $data['journal'] = stripslashes($data['journal']);
+        $data['publisher'] = stripslashes($data['publisher']);
+        $data['address'] = stripslashes($data['address']);
+        $data['institution'] = stripslashes($data['institution']);
+        $data['organization'] = stripslashes($data['organization']);
+        $data['school'] = stripslashes($data['school']);
+        $data['abstract'] = stripslashes($data['abstract']);
+        $data['comment'] = stripslashes($data['comment']);
+        $data['note'] =  stripslashes($data['note']);
+        $data['status'] =  stripslashes($data['status']);
+        
+        // update row
+    $wpdb->update( TEACHPRESS_PUB, array( 'title' => $data['title'], 'type' => $data['type'], 'bibtex' => $data['bibtex'], 'author' => $data['author'], 'editor' => $data['editor'], 'isbn' => $data['isbn'], 'url' => $data['url'], 'date' => $data['date'], 'urldate' => $data['urldate'], 'booktitle' => $data['booktitle'], 'issuetitle' => $data['issuetitle'], 'journal' => $data['journal'], 'volume' => $data['volume'], 'number' => $data['number'], 'pages' => $data['pages'] , 'publisher' => $data['publisher'], 'address' => $data['address'], 'edition' => $data['edition'], 'chapter' => $data['chapter'], 'institution' => $data['institution'], 'organization' => $data['organization'], 'school' => $data['school'], 'series' => $data['series'], 'crossref' => $data['crossref'], 'abstract' => $data['abstract'], 'howpublished' => $data['howpublished'], 'key' => $data['key'], 'techtype' => $data['techtype'], 'comment' => $data['comment'], 'note' => $data['note'], 'image_url' => $data['image_url'], 'image_target' => $data['image_target'], 'image_ext' => $data['image_ext'], 'doi' => $data['doi'], 'is_isbn' => $data['is_isbn'], 'rel_page' => $data['rel_page'], 'status' => $data['status'], 'modified' => $post_time ), array( 'pub_id' => $search_pub['pub_id'] ), array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), array( '%d' ) );
         
         // Delete existing tags
         $wpdb->query( "DELETE FROM " . TEACHPRESS_RELATION . " WHERE `pub_id` = " . $search_pub['pub_id'] );
@@ -563,7 +541,16 @@ class TP_Publications {
         if ( $tags != '' ) {
             TP_Publications::add_relation($search_pub['pub_id'], $tags);
         }
-
+        
+        // Handle author/editor relations
+        TP_Authors::delete_author_relations($search_pub['pub_id']);
+        if ( $data['author'] != '' ) {
+            TP_Publications::add_relation($search_pub['pub_id'], $data['author'], ' and ', 'authors');
+        }
+        if ( $data['editor'] != '' ) {
+            TP_Publications::add_relation($search_pub['pub_id'], $data['editor'], ' and ', 'editors');
+        }
+        
         return $search_pub['pub_id'];
     }
     
@@ -665,7 +652,7 @@ class TP_Publications {
         global $wpdb;
         
         if ( $bibtex_key == '' ) {
-            return 'nokey';
+            return '';
         }
         
         // check if bibtex key has no spaces
