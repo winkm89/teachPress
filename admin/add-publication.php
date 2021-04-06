@@ -253,9 +253,8 @@ class TP_Publication_Page {
         TP_HTML::line('<div id="major-publishing-actions">');
         TP_HTML::line('<div style="text-align: center;"> ');
         if ( $pub_id === 0 ) { 
-            $onclick = "teachpress_validateForm('tags','','R','title','','R','bibtex','','R');return document.teachpress_returnValue;";
             TP_HTML::line('<input type="reset" name="Reset" value="' . __('Reset','teachpress') . '" id="teachpress_reset" class="button-secondary" style="padding-right: 30px;">');
-            TP_HTML::line('<input name="create_pub" type="submit" class="button-primary" id="create_publication_submit" onclick="' . $onclick . '" value="' . __('Create','teachpress') . '">');
+            TP_HTML::line('<input name="create_pub" type="submit" class="button-primary" id="create_publication_submit" value="' . __('Create','teachpress') . '">');
         }
         else { 
             TP_HTML::line('<input type="submit" name="speichern" id="save_publication_submit" value="' . __('Save') . '" class="button-primary" title="' . __('Save') . '">');
