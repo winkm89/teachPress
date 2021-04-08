@@ -6,17 +6,17 @@
  * @since 6.0.0
  */
 
-class TP_Template_2016 implements TP_Publication_Template {
+class TP_Template_2021 implements TP_Publication_Template {
     /**
      * Returns the settings of the template
      * @return array
      */
     public function get_settings() {
-        return array ('name' => 'teachPress 2016',
-                      'description' => 'A new 4 line style template for publication lists.',
-                      'author' => 'Michael Winkler',
-                      'version'=> '1.2',
-                      'button_separator' => ' | ',
+        return array ('name'                => 'teachPress 2021',
+                      'description'         => 'A new mobile friendly 4 line style template for publication lists.',
+                      'author'              => 'Michael Winkler',
+                      'version'             => '1.0',
+                      'button_separator'    => ' | ',
                       'citation_style'      => 'teachPress'
         );
     }
@@ -28,7 +28,7 @@ class TP_Template_2016 implements TP_Publication_Template {
      * @return string
      */
     public function get_body ($content, $args = array() ) {
-        return '<table class="teachpress_publication_list">' . $content . '</table>';
+        return '<div class="teachpress_publication_list">' . $content . '</div>';
     }
     
     /**
@@ -38,25 +38,17 @@ class TP_Template_2016 implements TP_Publication_Template {
      * @return string
      */
     public function get_headline ($content, $args = array()) {
-        return '<tr>
-                    <td' . $args['colspan'] . '>
-                        <h3 class="tp_h3" id="tp_h3_' . esc_attr($content) .'">' . $content . '</h3>
-                    </td>
-                </tr>';
+        return '<h3 class="tp_h3" id="tp_h3_' . esc_attr($content) .'">' . $content . '</h3>';
     }
     
     /**
      * Returns the headline (second level) for a publication list or a part of that
-     * @param type $content     The content of the headline
-     * @param type $args        An array with some basic settings for the publication list (source: shortcode settings)
+     * @param string $content     The content of the headline
+     * @param array $args         An array with some basic settings for the publication list (source: shortcode settings)
      * @return string
      */
     public function get_headline_sl ($content, $args = array()) {
-        return '<tr>
-                    <td' . $args['colspan'] . '>
-                        <h4 class="tp_h4" id="tp_h4_' . esc_attr($content) .'">' . $content . '</h4>
-                    </td>
-                </tr>';
+        return '<h4 class="tp_h4" id="tp_h4_' . esc_attr($content) .'">' . $content . '</h4>';
     }
     
     /**
@@ -65,10 +57,9 @@ class TP_Template_2016 implements TP_Publication_Template {
      * @param string $position              The image position: left, right or buttom
      * @param string $optional_attributes   Optional attributes for the framing container element
      * @return string
-     * @since 7.2
      */
     public function get_image($content, $position, $optional_attributes = '') {
-        return '<td class="tp_pub_image_' . $position . '" ' . $optional_attributes . '>' . $content . '</td>';
+        return '<div class="tp_pub_image_' . $position . '">' . $content . '</div>';
     }
     
     /**
@@ -90,33 +81,20 @@ class TP_Template_2016 implements TP_Publication_Template {
      * @return string
      */
     public function get_entry ($interface) {
-        // Get the data
-        $data = $interface->get_data();
-        $label1 = '';
-        $label2 = '';
-        
-        // Define the labels
-        if ( strpos($data['row']['tp_meta_pub_custom_label'], 'Open Access') !== false ) { 
-           $label1 = '<span class="tp_pub_type" style="background-color:red;">Open Access</span>'; 
-        }
-        if ( strpos($data['row']['tp_meta_pub_custom_label'], 'Second Label') !== false ) { 
-           $label2 = '<span class="tp_pub_type" style="background-color:red;">Second Label</span>'; 
-        }
-        
         $class = ' tp_publication_' . $interface->get_type('');
-        $s = '<tr class="tp_publication' . $class . '">';
-        $s .= $interface->get_number('<td class="tp_pub_number">', '.</td>');
+        $s = '<div class="tp_publication' . $class . '">';
+        $s .= $interface->get_number('<div class="tp_pub_number">', '.</div>');
         $s .= $interface->get_images('left');
-        $s .= '<td class="tp_pub_info">';
+        $s .= '<div class="tp_pub_info">';
         $s .= $interface->get_author('<p class="tp_pub_author">', '</p>');
-        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . ' ' . $interface->get_label('status', array('forthcoming') ) . $label1 . $label2 . '</p>';
+        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . ' ' . $interface->get_label('status', array('forthcoming') ) . '</p>';
         $s .= '<p class="tp_pub_additional">' . $interface->get_meta() . '</p>';
         $s .= '<p class="tp_pub_tags">' . $interface->get_tag_line() . '</p>';
         $s .= $interface->get_infocontainer();
         $s .= $interface->get_images('bottom');
-        $s .= '</td>';
+        $s .= '</div>';
         $s .= $interface->get_images('right');
-        $s .= '</tr>';
+        $s .= '</div>';
         return $s;
     }
 }

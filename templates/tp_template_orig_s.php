@@ -12,7 +12,7 @@ class TP_Template_Orig_S implements TP_Publication_Template {
         return array ('name'                => 'teachPress original small',
                       'description'         => 'The original 1-line style template for publication lists.',
                       'author'              => 'Michael Winkler',
-                      'version'             => '1.1',
+                      'version'             => '1.2',
                       'button_separator'    => ' | ',
                       'citation_style'      => 'teachPress_small'
         );
@@ -54,6 +54,18 @@ class TP_Template_Orig_S implements TP_Publication_Template {
                         <h4 class="tp_h4" id="tp_h4_' . esc_attr($content) .'">' . $content . '</h4>
                     </td>
                 </tr>';
+    }
+    
+    /**
+     * Returns the container for publication images
+     * @param string $content               The image element
+     * @param string $position              The image position: left, right or buttom
+     * @param string $optional_attributes   Optional attributes for the framing container element
+     * @return string
+     * @since 7.2
+     */
+    public function get_image($content, $position, $optional_attributes = '') {
+        return '<td class="tp_pub_image_' . $position . '" ' . $optional_attributes . '>' . $content . '</td>';
     }
     
     /**

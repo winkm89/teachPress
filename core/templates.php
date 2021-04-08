@@ -105,11 +105,21 @@ interface TP_Publication_Template {
     /**
      * Returns the headline (second level) for a publication list or a part of that
      * @param string $content     The content of the headline
-     * @param array $args        An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
+     * @param array $args         An array with some basic settings for the publication list (colspan, user, sort_list, headline, number_publications, years)
      * @return string
      * @since 6.0.0
      */
     public function get_headline_sl($content, $args = array());
+    
+    /**
+     * Returns the container for publication images
+     * @param string $content               The image element
+     * @param string $position              The image position: left, right or buttom
+     * @param string $optional_attributes   Optional attributes for the framing container element
+     * @return string
+     * @since 7.2
+     */
+    public function get_image($content, $position, $optional_attributes = '');
     
     /**
      * Returns the single entry of a publication list
@@ -367,7 +377,7 @@ class TP_HTML_Publication_Template {
         $template_settings = $template->get_settings();
         $separator = $template_settings['button_separator'];
         $name = self::prepare_publication_title($row, $settings, $container_id);
-        $images = self::handle_images($row, $settings);
+        $images = self::handle_images($row, $settings, $template);
         $abstract = '';
         $url = '';
         $bibtex = '';
@@ -478,7 +488,12 @@ class TP_HTML_Publication_Template {
      */
     public static function get_info_container ($content, $type, $container_id) {
         $s = '<div class="tp_' . $type . '" id="tp_' . $type . '_' . $container_id . '" style="display:none;">';
-        $s .= '<div class="tp_' . $type . '_entry">' . $content . '</div>';
+        if ( $type === 'bibtex' ) {
+            $s .= '<div class="tp_' . $type . '_entry"><pre>' . $content . '</pre></div>';
+        }
+        else {
+            $s .= '<div class="tp_' . $type . '_entry">' . $content . '</div>';
+        }
         $s .= '<p class="tp_close_menu"><a class="tp_close" onclick="teachpress_pub_showhide(' . "'" . $container_id . "','tp_" . $type . "'" . ')">' . __('Close','teachpress') . '</a></p>';
         $s .= '</div>';
         return $s;
@@ -676,7 +691,7 @@ class TP_HTML_Publication_Template {
      * @return string
      * @since 6.0.0
      */
-    public static function handle_images ($row, $settings) {
+    public static function handle_images ($row, $settings, $template) {
         $return = array('bottom' => '',
                         'left' => '',
                         'right' => '');
@@ -706,17 +721,17 @@ class TP_HTML_Publication_Template {
         }
         // left position
         if ( $settings['image'] === 'left' ) {
-            $return['left'] = '<td class="tp_pub_image_left" width="' . $settings['pad_size'] . '">' . $image . $altmetric . '</td>';
+            $return['left'] = $template->get_image($image . $altmetric, 'left', 'width="' . $settings['pad_size'] . '"');
         }
         
         // right position
         if ( $settings['image'] === 'right' ) {
-            $return['right'] = '<td class="tp_pub_image_right" width="' . $settings['pad_size']  . '">' . $image . $altmetric . '</td>';
+            $return['right'] = $template->get_image($image . $altmetric, 'right', 'width="' . $settings['pad_size'] . '"');
         }
         
         // bottom position
         if ( $settings['image'] === 'bottom' ) {
-          $return['bottom'] = '<div class="tp_pub_image_bottom">' . $image . '</div>'. $altmetric;
+            $return['bottom'] = $template->get_image($image . $altmetric, 'bottom');
         }
         
         return $return;
