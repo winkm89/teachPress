@@ -136,6 +136,20 @@ function tp_register_all_publication_types() {
             'html_meta_row'     => '{school}{address}{year}{isbn}{note}' 
         ) );
     
+    /**
+     * Media
+     * @link https://github.com/winkm89/teachPress/issues/110 
+     */
+    tp_register_publication_type(
+        array(
+            'type_slug'         => 'media',
+            'bibtex_key_ext'    => 'misc',
+            'i18n_singular'     => __('Medium','teachpress'),
+            'i18n_plural'       => __('Media','teachpress'), 
+            'default_fields'    => array('publisher', 'address', 'howpublished'), 
+            'html_meta_row'     => '{publisher}{address}{howpublished}{year}{urldate}{note}' 
+        ) );
+    
     // Misc
     tp_register_publication_type(
         array(
