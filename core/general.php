@@ -411,12 +411,25 @@ function get_tp_publication_type_options ($selected, $mode = 'sng') {
     global $tp_publication_types;
     $types = '';
     $pub_types = $tp_publication_types->get();
+    usort($pub_types, 'sort_tp_publication_type_options');
     foreach ( $pub_types as $row ) {
         $title = ($mode === 'sng') ? $row['i18n_singular'] : $row['i18n_plural'];
         $current = ( $row['type_slug'] == $selected && $selected != '' ) ? 'selected="selected"' : '';
         $types = $types . '<option value="' . $row['type_slug'] . '" ' . $current . '>' . $title . '</option>';  
     }
    return $types;
+}
+
+/**
+ * Sort function helper for get_tp_publication_type_options()
+ * Sorts the publication types after the i18n_singular string
+ * @param string $a
+ * @param string $b
+ * @return int
+ * @since 7.2
+ */
+function sort_tp_publication_type_options ($a, $b) {
+    return strcmp($a['i18n_singular'], $b['i18n_singular']);
 }
 
 /**
