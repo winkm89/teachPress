@@ -130,9 +130,9 @@ function tp_register_all_publication_types() {
         array(
             'type_slug'         => 'mastersthesis',
             'bibtex_key_ext'    => 'mastersthesis',
-            'i18n_singular'     => __('Masters Thesis','teachpress'),
-            'i18n_plural'       => __('Masters Theses','teachpress'),
-            'default_fields'    => array('address', 'school', 'techtype'),
+            'i18n_singular'     => __('Masters Thesis','teachpress'), 
+            'i18n_plural'       => __('Masters Theses','teachpress'),   
+            'default_fields'    => array('address', 'school', 'techtype'),   
             'html_meta_row'     => '{school}{address}{year}{isbn}{note}' 
         ) );
     
@@ -168,7 +168,7 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'online',
             'i18n_singular'     => __('Online','teachpress'),
             'i18n_plural'       => __('Online','teachpress'), 
-            'default_fields'    => array('organization', 'urldate'), 
+            'default_fields'    => array('howpublished'), 
             'html_meta_row'     => '{editor}{organization}{year}{urldate}{note}' 
         ) );
     
@@ -179,7 +179,7 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'patent',
             'i18n_singular'     => __('Patent','teachpress'),
             'i18n_plural'       => __('Patents','teachpress'), 
-            'default_fields'    => array('number'), 
+            'default_fields'    => array('howpublished'), 
             'html_meta_row'     => '{number}{year}{note}' 
         ) );
     
@@ -190,7 +190,7 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'periodical',
             'i18n_singular'     => __('Periodical','teachpress'),
             'i18n_plural'       => __('Periodicals','teachpress'), 
-            'default_fields'    => array('issuetitle', 'series', 'volume', 'number'), 
+            'default_fields'    => array('howpublished'), 
             'html_meta_row'     => '{issuetitle}{series}{volume}{number}{year}{urldate}{isbn}{note}' 
         ) );
     
@@ -201,8 +201,8 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'phdthesis',
             'i18n_singular'     => __('PhD Thesis','teachpress'),
             'i18n_plural'       => __('PhD Theses','teachpress'), 
-            'default_fields'    => array('address', 'school'), 
-            'html_meta_row'     => '{school}{address}{year}{isbn}{note}' 
+            'default_fields'    => array('howpublished'), 
+            'html_meta_row'     => '{school}{year}{isbn}{note}' 
         ) );
     
     // Presentation
@@ -212,7 +212,7 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'presentation',
             'i18n_singular'     => __('Presentation','teachpress'),
             'i18n_plural'       => __('Presentations','teachpress'), 
-            'default_fields'    => array('howpublished', 'address'), 
+            'default_fields'    => array('howpublished'), 
             'html_meta_row'     => '{howpublished}{address}{date}{isbn}{note}' 
         ) );
     
@@ -223,7 +223,7 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'proceedings',
             'i18n_singular'     => __('Proceeding','teachpress'),
             'i18n_plural'       => __('Proceedings','teachpress'), 
-            'default_fields'    => array('howpublished', 'organization', 'publisher', 'address', 'volume', 'number'), 
+            'default_fields'    => array('howpublished'), 
             'html_meta_row'     => '{howpublished}{organization}{publisher}{address}{volume}{number}{year}{isbn}{note}' 
         ) );
     
@@ -234,7 +234,7 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'techreport',
             'i18n_singular'     => __('Technical Report','teachpress'),
             'i18n_plural'       => __('Technical Reports','teachpress'), 
-            'default_fields'    => array('institution', 'address', 'techtype', 'number'), 
+            'default_fields'    => array('howpublished'), 
             'html_meta_row'     => '{institution}{address}{techtype}{number}{year}{isbn}{note}' 
         ) );
     
@@ -256,7 +256,7 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'workshop',
             'i18n_singular'     => __('Workshop','teachpress'),
             'i18n_plural'       => __('Workshops','teachpress'),
-            'default_fields'    => array('address'), 
+            'default_fields'    => array('howpublished'), 
             'html_meta_row'     => '{booktitle}{volume}{number}{series}{organization}{publisher}{address}{year}{isbn}{note}' 
         ) );
 
