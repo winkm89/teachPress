@@ -1000,7 +1000,7 @@ function tp_ref_shortcode($atts) {
  *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y
  *      image (STRING)          none, left or right; default: none
  *      image_size (STRING)     image width in px; default: 0
- *      link (STRING)           Set it to "true" if you want to show a link in addition of the publication title. If there are more than one link, the first one is used.                 
+ *      link (STRING)           Set it to "true" if you want to show a link in addition of the publication title. If there are more than one link, the first one is used.
  * 
  * @param array $atts
  * @return string
@@ -1201,7 +1201,7 @@ function tp_publist_shortcode ($atts) {
         'author_separator' => ';',          // The separator for author names
         'editor_separator' => ';',          // The separator for editor names
         'style' => 'none',                  // numbered, numbered_desc or none, default: none
-        'template' => 'tp_template_2016',   // the key of the template, default: tp_template_2016
+        'template' => 'tp_template_2021',   // the key of the template, default: tp_template_2016
         'title_ref' => 'links',             // links or abstract, default: links
         'link_style' => 'inline',           // inline, direct or images, default: inline
         'date_format' => 'd.m.Y',           //  the format for date; needed for the types: presentations, online; default: d.m.Y
@@ -1467,7 +1467,7 @@ function tp_publist_shortcode ($atts) {
     // Load template
     $template = tp_load_template($settings['template']);
     if ( $template === false ) {
-        $template = tp_load_template('tp_template_orig');
+        $template = tp_load_template('tp_template_2021');
     }
     
     // Create array of publications
@@ -1572,7 +1572,7 @@ function tp_cloud_shortcode($atts) {
         'author_separator' => ';',
         'editor_separator' => ';',
         'style' => 'none',
-        'template' => 'tp_template_2016',
+        'template' => 'tp_template_2021',
         'title_ref' => 'links',
         'link_style' => 'inline',
         'date_format' => 'd.m.Y',
@@ -1630,7 +1630,7 @@ function tp_list_shortcode($atts){
        'author_separator' => ';',
        'editor_separator' => ';',
        'style' => 'none',
-       'template' => 'tp_template_2016',
+       'template' => 'tp_template_2021',
        'title_ref' => 'links',
        'link_style' => 'inline',
        'date_format' => 'd.m.Y',
@@ -1687,7 +1687,7 @@ function tp_search_shortcode ($atts) {
        'author_separator' => ';',
        'editor_separator' => ';',
        'style' => 'numbered',
-       'template' => 'tp_template_orig_s',
+       'template' => 'tp_template_2021',
        'title_ref' => 'links',
        'link_style' => 'inline',
        'date_format' => 'd.m.Y',
