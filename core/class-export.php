@@ -275,7 +275,7 @@ class TP_Export {
         else {
             $all_authors = TP_Bibtex::parse_author($row['author'], ';', $settings['author_name'] );
         }
-        $meta = TP_HTML::get_publication_meta_row($row, $settings);
+        $meta = TP_HTML_Publication_Template::get_publication_meta_row($row, $settings);
         $line = $all_authors . ': ' . TP_HTML::prepare_title($row['title'], 'replace') . '. ' . $meta;
         $line = str_replace('  ', ' ', $line);
         $line = utf8_decode(self::decode($line));
@@ -303,7 +303,7 @@ class TP_Export {
         else {
             $all_authors = TP_Bibtex::parse_author($row['author'], ';', $settings['author_name'] );
         }
-        $meta = TP_HTML::get_publication_meta_row($row, $settings);
+        $meta = TP_HTML_Publication_Template::get_publication_meta_row($row, $settings);
         $line = $all_authors . ': ' . TP_HTML::prepare_title($row['title'], 'replace') . '. ' . $meta;
         $line = str_replace('  ', ' ', $line);
         return trim($line);
