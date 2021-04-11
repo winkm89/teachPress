@@ -48,7 +48,12 @@ class TP_Bookmarks {
     */
    public static function add_bookmark($pub_id, $user) {
         global $wpdb;
-        $wpdb->insert(TEACHPRESS_USER, array('pub_id' => $pub_id, 'user' => $user), array('%d', '%d'));
+        $wpdb->insert(
+                TEACHPRESS_USER, 
+                array(
+                    'pub_id' => $pub_id, 
+                    'user' => $user), 
+                array('%d', '%d') );
         return $wpdb->insert_id;
     }
     

@@ -108,7 +108,13 @@ class TP_Authors  {
         $name = stripslashes($name);
         $sort_name = stripslashes($sort_name);
         
-        $wpdb->insert(TEACHPRESS_AUTHORS, array('name' => $name, 'sort_name' => $sort_name), array('%s', '%s'));
+        $wpdb->insert(
+                TEACHPRESS_AUTHORS, 
+                array(
+                    'name' => $name, 
+                    'sort_name' => $sort_name
+                ), 
+                array('%s', '%s') );
         return $wpdb->insert_id;
     }
     
@@ -123,7 +129,14 @@ class TP_Authors  {
      */
     public static function add_author_relation ($pub_id, $author_id, $is_author, $is_editor){
         global $wpdb;
-        $wpdb->insert(TEACHPRESS_REL_PUB_AUTH, array('pub_id' => $pub_id, 'author_id' => $author_id, 'is_author' => $is_author, 'is_editor' => $is_editor), array('%d', '%d', '%d', '%d'));
+        $wpdb->insert(
+                TEACHPRESS_REL_PUB_AUTH, 
+                array(
+                    'pub_id' => $pub_id, 
+                    'author_id' => $author_id, 
+                    'is_author' => $is_author, 
+                    'is_editor' => $is_editor), 
+                array('%d', '%d', '%d', '%d') );
         return $wpdb->insert_id;
     }
     

@@ -356,7 +356,27 @@ class TP_Courses {
         
         $data['start'] = $data['start'] . ' ' . $data['start_hour'] . ':' . $data['start_minute'] . ':00';
         $data['end'] = $data['end'] . ' ' . $data['end_hour'] . ':' . $data['end_minute'] . ':00';
-        $wpdb->insert( TEACHPRESS_COURSES, array( 'name' => $data['name'], 'type' => $data['type'], 'room' => $data['room'], 'lecturer' => $data['lecturer'], 'date' => $data['date'], 'places' => $data['places'], 'start' => $data['start'], 'end' => $data['end'], 'semester' => $data['semester'], 'comment' => $data['comment'], 'rel_page' => $data['rel_page'], 'parent' => $data['parent'], 'visible' => $data['visible'], 'waitinglist' => $data['waitinglist'], 'image_url' => $data['image_url'], 'strict_signup' => $data['strict_signup'], 'use_capabilites' => $data['use_capabilites'] ), array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ) );
+        $wpdb->insert( 
+                TEACHPRESS_COURSES, 
+                array( 
+                    'name' => $data['name'], 
+                    'type' => $data['type'], 
+                    'room' => $data['room'], 
+                    'lecturer' => $data['lecturer'], 
+                    'date' => $data['date'], 
+                    'places' => $data['places'], 
+                    'start' => $data['start'], 
+                    'end' => $data['end'], 
+                    'semester' => $data['semester'], 
+                    'comment' => $data['comment'], 
+                    'rel_page' => $data['rel_page'], 
+                    'parent' => $data['parent'], 
+                    'visible' => $data['visible'], 
+                    'waitinglist' => $data['waitinglist'], 
+                    'image_url' => $data['image_url'], 
+                    'strict_signup' => $data['strict_signup'], 
+                    'use_capabilites' => $data['use_capabilites'] ), 
+                array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ) );
         $course_id = $wpdb->insert_id;
         // add capability
         global $current_user;
@@ -365,7 +385,12 @@ class TP_Courses {
         if ($data['rel_page_alter'] !== 0 ) {
             $data['rel_page'] = TP_Courses::add_rel_page($course_id, $data);
             // Update rel_page
-            $wpdb->update( TEACHPRESS_COURSES, array( 'rel_page' => $data['rel_page'] ), array( 'course_id' => $course_id ), array( '%d', ), array( '%d' ) );
+            $wpdb->update( 
+                    TEACHPRESS_COURSES, 
+                    array( 'rel_page' => $data['rel_page'] ), 
+                    array( 'course_id' => $course_id ), 
+                    array( '%d', ), 
+                    array( '%d' ) );
         }
         // test if creation was successful
         if ( $data['rel_page'] === false ) {
@@ -454,7 +479,29 @@ class TP_Courses {
 
         $data['start'] = $data['start'] . ' ' . $data['start_hour'] . ':' . $data['start_minute'] . ':00';
         $data['end'] = $data['end'] . ' ' . $data['end_hour'] . ':' . $data['end_minute'] . ':00';
-        return $wpdb->update( TEACHPRESS_COURSES, array( 'name' => $data['name'], 'type' => $data['type'], 'room' => $data['room'], 'lecturer' => $data['lecturer'], 'date' => $data['date'], 'places' => $data['places'], 'start' => $data['start'], 'end' => $data['end'], 'semester' => $data['semester'], 'comment' => $data['comment'], 'rel_page' => $data['rel_page'], 'parent' => $data['parent'], 'visible' => $data['visible'], 'waitinglist' => $data['waitinglist'], 'image_url' => $data['image_url'], 'strict_signup' => $data['strict_signup'], 'use_capabilites' => $data['use_capabilites'] ), array( 'course_id' => $course_id ), array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ), array( '%d' ) );
+        return $wpdb->update( 
+                TEACHPRESS_COURSES, 
+                array( 
+                    'name' => $data['name'], 
+                    'type' => $data['type'], 
+                    'room' => $data['room'], 
+                    'lecturer' => $data['lecturer'], 
+                    'date' => $data['date'], 
+                    'places' => $data['places'], 
+                    'start' => $data['start'], 
+                    'end' => $data['end'], 
+                    'semester' => $data['semester'], 
+                    'comment' => $data['comment'], 
+                    'rel_page' => $data['rel_page'], 
+                    'parent' => $data['parent'], 
+                    'visible' => $data['visible'], 
+                    'waitinglist' => $data['waitinglist'], 
+                    'image_url' => $data['image_url'], 
+                    'strict_signup' => $data['strict_signup'], 
+                    'use_capabilites' => $data['use_capabilites'] ), 
+                array( 'course_id' => $course_id ), 
+                array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ), 
+                array( '%d' ) );
     }
     
     /**
