@@ -69,6 +69,7 @@ function tp_pub_rss_feed_func () {
             'editor_name'       => 'simple',
             'editor_separator'  => ',',
             'style'             => 'simple',
+            'meta_label_in'     => __('In','teachpress') . ': ',
             'use_span'          => false
         );
         echo '

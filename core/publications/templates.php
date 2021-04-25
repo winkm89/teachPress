@@ -255,7 +255,7 @@ class TP_Publication_Template_API {
      * @since 6.0.0
      * @access public
      */
-    public function get_tag_line ($before = '', $after = '') {
+    public function get_menu_line ($before = '', $after = '') {
         $tag_string = $this->data['tag_line'];
         $separator = $this->data['template_settings']['button_separator'];
         
@@ -362,6 +362,26 @@ class TP_Publication_Template_API {
  */
 class TP_HTML_Publication_Template {
     
+    public static function load_settings($template) {
+        // default values
+        $settings = array(
+            'name'                  => '', 
+            'description'           => '', 
+            'author'                => '', 
+            'version'               => '0.0',
+            'button_separator'      => ' | ',
+            'menu_label_tags'       => __('Tags') . ': ',
+            'menu_label_links'      => __('Links','teachpress') . ': ',
+            'meta_label_in'         => __('In','teachpress') . ': ',
+            'citation_style'        => 'teachPress'
+        );
+        // overwrite defaults
+        if ( method_exists($template, 'get_settings') ) {
+            $settings = shortcode_atts( $settings, $template->get_settings() );
+        }
+        return $settings;
+    }
+    
     /**
      * Gets a single publication in html format
      * @param array $row        The publication array (used keys: title, image_url, ...)
@@ -372,9 +392,8 @@ class TP_HTML_Publication_Template {
      * @return string
      * @since 6.0.0
     */
-    public static function get_single ($row, $all_tags, $settings, $template, $pub_count = 0) {
+    public static function get_single ($row, $all_tags, $settings, $template, $template_settings, $pub_count = 0) {
         $container_id = ( $settings['container_suffix'] != '' ) ? $row['pub_id'] . '_' . $settings['container_suffix'] : $row['pub_id'];
-        $template_settings = $template->get_settings();
         $separator = $template_settings['button_separator'];
         $name = self::prepare_publication_title($row, $settings, $container_id);
         $images = self::handle_images($row, $settings, $template);
@@ -382,6 +401,7 @@ class TP_HTML_Publication_Template {
         $url = '';
         $bibtex = '';
         $settings['use_span'] = true;
+        $settings['meta_label_in'] = $template_settings['meta_label_in'];
         $tag_string = '';
         $keywords = '';
         $all_authors = '';
@@ -392,7 +412,7 @@ class TP_HTML_Publication_Template {
         if ( $settings['with_tags'] == 1 ) {
             $generated = self::get_tags($row, $all_tags, $settings);
             $keywords = $generated['keywords'];
-            $tag_string = __('Tags') . ': ' . $generated['tags'];
+            $tag_string = '<span class="tp_pub_tags_label">' . $template_settings['menu_label_tags'] . '</span>' . $generated['tags'];
         }
         
         // parse author names for teachPress style
@@ -422,7 +442,7 @@ class TP_HTML_Publication_Template {
                 $is_button = true;
             }
             else {
-                $url = '<span class="tp_resource_link">' . $separator . __('Links','teachpress') . ': ' . self::prepare_url($row['url'], $row['doi'], 'enumeration') . '</span>';
+                $url = '<span class="tp_resource_link">' . $separator . '<span class="tp_pub_links_label">' . $template_settings['menu_label_links'] . '</span>' . self::prepare_url($row['url'], $row['doi'], 'enumeration') . '</span>';
             }
         }
         
@@ -536,12 +556,7 @@ class TP_HTML_Publication_Template {
         }
         
         // special cases for article/incollection/inbook/inproceedings
-        $in = '';
-        if ( $settings['style'] === 'simple' || $settings['style'] === 'numbered' ) {
-            if ( $row['type'] === 'article' || $row['type'] === 'inbook' || $row['type'] === 'incollection' || $row['type'] === 'inproceedings') {
-                $in = __('In','teachpress') . ': ';
-            }
-        }
+        $in = '<span class="tp_pub_additional_in">' . $settings['meta_label_in'] . '</span>';
         
         // end formator
         $type = $tp_publication_types->get_data($row['type']);

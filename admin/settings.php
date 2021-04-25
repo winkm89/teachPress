@@ -679,14 +679,7 @@ class TP_Settings_Page {
             // load template
             include_once $templates[$key];
             $template = new $key();
-            
-            // default values
-            $settings = array('name' => '', 'description' => '', 'author' => '', 'version' => '0.0');
-            
-            // overwrite defaults
-            if ( method_exists($template, 'get_settings') ) {
-                $settings = shortcode_atts( $settings, $template->get_settings() );
-            }
+            $settings = TP_HTML_Publication_Template::load_settings($template);
             
             $s .= '<tr ' . $tr_class . '>';
             $s .= '<td>' . esc_html($settings['name']) . '</td>';

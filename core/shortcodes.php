@@ -48,12 +48,15 @@ class TP_Shortcodes {
     public static function get_coursedocs_line ($row, $upload_dir, $link_class, $date_format, $numbered, $num, $show_date) {
         $return = '';
         $date = date( $date_format, strtotime($row['added']) );
+        
         if ( $numbered === 1 ) {
             $return .= '<td>' . $num . '</td>';
         }
+        
         if ( $show_date === 1 ) {
             $return .= '<td><span title="' . __('Published on','teachpress') . ' ' . $date . '">' . $date . '</span></td>';
         }
+        
         $return .= '<td><a href="' . $upload_dir['baseurl'] . $row['path'] . '" class="' . $link_class . '">' . stripcslashes($row['name']) . '</a></td>';
         return $return;
     }
@@ -954,25 +957,26 @@ function tp_ref_shortcode($atts) {
     
     // shortcode parameter defaults
     $param = shortcode_atts(array(
-       'author_name' => 'simple',
-       'editor_name' => 'initials',
-       'author_separator' => ',',
-       'editor_separator' => ';',
-       'date_format' => 'd.m.Y',
-       'show_links'=> 0
+       'author_name'        => 'simple',
+       'editor_name'        => 'initials',
+       'author_separator'   => ',',
+       'editor_separator'   => ';',
+       'date_format'        => 'd.m.Y',
+       'show_links'         => 0
     ), $atts);
     
     // define settings
     $settings = array(
-       'author_name' => htmlspecialchars($param['author_name']),
-       'editor_name' => htmlspecialchars($param['editor_name']),
-       'author_separator' => htmlspecialchars($param['author_separator']),
-       'editor_separator' => htmlspecialchars($param['editor_separator']),
-       'date_format' => htmlspecialchars($param['date_format']),
-       'style' => 'simple',
-       'title_ref' => 'links',
-       'link_style' => ($param['show_links'] == 1) ? 'direct' : 'none',
-       'use_span' => false
+       'author_name'        => htmlspecialchars($param['author_name']),
+       'editor_name'        => htmlspecialchars($param['editor_name']),
+       'author_separator'   => htmlspecialchars($param['author_separator']),
+       'editor_separator'   => htmlspecialchars($param['editor_separator']),
+       'date_format'        => htmlspecialchars($param['date_format']),
+       'style'              => 'simple',
+       'title_ref'          => 'links',
+       'link_style'         => ($param['show_links'] == 1) ? 'direct' : 'none',
+       'meta_label_in'      => __('In','teachpress') . ': ',
+       'use_span'           => false
     );
     
     // define reference part
@@ -1009,26 +1013,28 @@ function tp_ref_shortcode($atts) {
 function tp_single_shortcode ($atts) {
     global $tp_single_publication;
     $param = shortcode_atts(array(
-       'id' => 0,
-       'key' => '',
-       'author_name' => 'simple',
-       'author_separator' => ',',
-       'editor_separator' => ';',
-       'editor_name' => 'last',
-       'date_format' => 'd.m.Y',
-       'image' => 'none',
-       'image_size' => 0,
-       'link' => ''
+       'id'                 => 0,
+       'key'                => '',
+       'author_name'        => 'simple',
+       'author_separator'   => ',',
+       'editor_separator'   => ';',
+       'editor_name'        => 'last',
+       'date_format'        => 'd.m.Y',
+       'image'              => 'none',
+       'image_size'         => 0,
+       'meta_label_in'      => __('In','teachpress') . ': ',
+       'link'               => ''
     ), $atts);
 
     $settings = array(
-       'author_name' => htmlspecialchars($param['author_name']),
-       'editor_name' => htmlspecialchars($param['editor_name']),
-       'author_separator' => htmlspecialchars($param['author_separator']),
-       'editor_separator' => htmlspecialchars($param['editor_separator']),
-       'date_format' => htmlspecialchars($param['date_format']),
-       'style' => 'simple',
-       'use_span' => true
+       'author_name'        => htmlspecialchars($param['author_name']),
+       'editor_name'        => htmlspecialchars($param['editor_name']),
+       'author_separator'   => htmlspecialchars($param['author_separator']),
+       'editor_separator'   => htmlspecialchars($param['editor_separator']),
+       'date_format'        => htmlspecialchars($param['date_format']),
+       'style'              => 'simple',
+       'meta_label_in'      => htmlspecialchars($param['meta_label_in']),
+       'use_span'           => true
     );
     
     // Set publication
@@ -1469,6 +1475,7 @@ function tp_publist_shortcode ($atts) {
     if ( $template === false ) {
         $template = tp_load_template('tp_template_2021');
     }
+    $template_settings = TP_HTML_Publication_Template::load_settings($template);
     
     // Create array of publications
     foreach ($row as $row) {
@@ -1476,7 +1483,7 @@ function tp_publist_shortcode ($atts) {
         $tparray[$tpz][0] = $row['year'] ;
         
         // teachPress style
-        $tparray[$tpz][1] = TP_HTML_Publication_Template::get_single($row, $all_tags, $settings, $template, $number);
+        $tparray[$tpz][1] = TP_HTML_Publication_Template::get_single($row, $all_tags, $settings, $template, $template_settings, $number);
         
         if ( 2 <= $settings['headline'] && $settings['headline'] <= 4 ) {
             $tparray[$tpz][2] = $row['type'] ;

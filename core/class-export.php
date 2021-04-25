@@ -267,6 +267,7 @@ class TP_Export {
             'editor_name'       => 'initials',
             'editor_separator'  => ';',
             'style'             => 'simple',
+            'meta_label_in'     => __('In','teachpress') . ': ',
             'use_span'          => false
         );
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
@@ -295,6 +296,7 @@ class TP_Export {
             'editor_name'       => 'initials',
             'editor_separator'  => ';',
             'style'             => 'simple',
+            'meta_label_in'     => __('In','teachpress') . ': ',
             'use_span'          => false
         );
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
