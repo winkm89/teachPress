@@ -11,20 +11,20 @@ td.tp_pub_info_simple {
 .tp_pub_title_simple, #content span.tp_pub_title_simple {
     font-weight:bold;}
 .tp_pub_additional_simple, #content span.tp_pub_additional_simple {}
-.tp_pub_tags_simple, #content span.tp_pub_tags_simple  {
+.tp_pub_menu_simple, #content span.tp_pub_menu_simple  {
     color:#AAAAAA;}
-.tp_pub_tags_simple a {
+.tp_pub_menu_simple a {
     color:#AAAAAA; 
     text-decoration:underline; 
     box-shadow: none;}
-.tp_pub_tags_simple a:hover {
+.tp_pub_menu_simple a:hover {
     color:#AAAAAA; 
     text-decoration:none;}
 .tp_pub_type_simple {}
 .tp_pub_link_image {
     max-width: 2em; 
     max-height: 2em;}
-.tp_pub_tags_simple i {
+.tp_pub_menu_simple i {
     padding-left: 2px; 
     padding-right: 2px; 
     font-size: 110%; 

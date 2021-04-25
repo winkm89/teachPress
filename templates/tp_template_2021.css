@@ -50,16 +50,16 @@ div.tp_pub_number {
     font-size:0.9rem; 
     margin-top:1px; 
     margin-bottom:1px;}
-.tp_pub_tags, #content p.tp_pub_tags  {
+.tp_pub_menu, #content p.tp_pub_menu  {
     font-size:0.9rem; 
     margin-top:1px; 
     margin-bottom:1px; 
     color:#AAAAAA;}
-.tp_pub_tags a {
+.tp_pub_menu a {
     color:#AAAAAA; 
     text-decoration:underline; 
     box-shadow: none;}
-.tp_pub_tags a:hover {
+.tp_pub_menu a:hover {
     color:#AAAAAA; 
     text-decoration:none;}
 .tp_pub_type {

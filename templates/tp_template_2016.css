@@ -20,16 +20,16 @@ td.tp_pub_info {
     font-size:0.9rem; 
     margin-top:1px; 
     margin-bottom:1px;}
-.tp_pub_tags, #content p.tp_pub_tags  {
+.tp_pub_menu, #content p.tp_pub_menu  {
     font-size:0.9rem; 
     margin-top:1px; 
     margin-bottom:1px; }
-.tp_pub_tags a {
+.tp_pub_menu a {
     text-decoration:underline; 
     box-shadow: none; }
-.tp_pub_tags a:hover {
+.tp_pub_menu a:hover {
     text-decoration:none;}
-.tp_pub_tags i {
+.tp_pub_menu i {
     padding-left: 2px; 
     padding-right: 2px; 
     font-size: 140%; 

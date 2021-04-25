@@ -82,7 +82,7 @@ class TP_Template_Orig implements TP_Publication_Template {
         $s .= $interface->get_author('<p class="tp_pub_author">', '</p>');
         $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' (' . $interface->get_type() . ')</p>';
         $s .= '<p class="tp_pub_additional">' . $interface->get_meta() . '</p>';
-        $s .= '<p class="tp_pub_tags">' . $interface->get_tag_line('(', ')') . '</p>';
+        $s .= '<p class="tp_pub_menu">' . $interface->get_menu_line('(', ')') . '</p>';
         $s .= $interface->get_infocontainer();
         $s .= $interface->get_images('bottom');
         $s .= '</td>';

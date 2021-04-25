@@ -83,7 +83,7 @@ class TP_Template_Orig_S implements TP_Publication_Template {
         // $s .= '<span class="tp_pub_year_simple"> (' . $interface->get_year() . ')</span>: ';
         $s .= '<span class="tp_pub_title_simple">' . $interface->get_title() . '</span>. ';
         $s .= '<span class="tp_pub_additional_simple">' . $interface->get_meta() . '</span> ';
-        $s .= '<span class="tp_pub_tags_simple">(' . __('Type','teachpress') . ': ' . $interface->get_type() . ' | ' . $interface->get_tag_line() . ')</span>';
+        $s .= '<span class="tp_pub_menu_simple">(' . __('Type','teachpress') . ': ' . $interface->get_type() . ' | ' . $interface->get_menu_line() . ')</span>';
         $s .= $interface->get_infocontainer();
         $s .= $interface->get_images('bottom');
         $s .= '</td>';
