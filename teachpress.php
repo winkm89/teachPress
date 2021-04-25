@@ -1,17 +1,18 @@
 <?php
-/*
-Plugin Name: teachPress
-Plugin URI: http://mtrv.wordpress.com/teachpress/
-Description: With teachPress you can easy manage courses, enrollments and publications.
-Version: 7.1.3
-Author: Michael Winkler
-Author URI: http://mtrv.wordpress.com/
-Min WP Version: 3.9
-Max WP Version: 5.5
-Text Domain: teachpress
-Domain Path: /languages
-GitHub Plugin URI: https://github.com/winkm89/teachPress
-GitHub Branch: master
+/**
+ * Plugin Name:         teachPress
+ * Plugin URI:          http://mtrv.wordpress.com/teachpress/
+ * Description:         With teachPress you can easy manage courses, enrollments and publications.
+ * Author:              Michael Winkler
+ * Author URI:          http://mtrv.wordpress.com/
+ * Version:             7.2 beta
+ * Requires at least:   3.9
+ * Text Domain:         teachpress
+ * Domain Path:         /languages
+ * License:             GPL v2 or later
+ * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
+ * GitHub Plugin URI:   https://github.com/winkm89/teachPress
+ * GitHub Branch:       master
 */
 
 /*
@@ -119,9 +120,28 @@ function tp_add_menu() {
 
     $logo = (version_compare($wp_version, '3.8', '>=')) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
 
-    $tp_admin_show_courses_page = add_menu_page(__('Course','teachpress'), __('Course','teachpress'),'use_teachpress_courses', __FILE__, 'tp_show_courses_page', $logo, $pos);
-    $tp_admin_add_course_page = add_submenu_page('teachpress/teachpress.php',__('Add new','teachpress'), __('Add new', 'teachpress'),'use_teachpress_courses','teachpress/add_course.php','tp_add_course_page');
-    add_submenu_page('teachpress/teachpress.php',__('Students','teachpress'), __('Students','teachpress'),'use_teachpress_courses', 'teachpress/students.php', 'tp_students_page');
+    $tp_admin_show_courses_page = add_menu_page(
+            __('Course','teachpress'), 
+            __('Course','teachpress'),
+            'use_teachpress_courses', 
+            __FILE__, 
+            'tp_show_courses_page', 
+            $logo, 
+            $pos);
+    $tp_admin_add_course_page = add_submenu_page(
+            'teachpress/teachpress.php',
+            __('Add new','teachpress'), 
+            __('Add new', 'teachpress'),
+            'use_teachpress_courses',
+            'teachpress/add_course.php',
+            'tp_add_course_page');
+    add_submenu_page(
+            'teachpress/teachpress.php',
+            __('Students','teachpress'), 
+            __('Students','teachpress'),
+            'use_teachpress_courses', 
+            'teachpress/students.php', 
+            'tp_students_page');
     add_action("load-$tp_admin_add_course_page", 'tp_add_course_page_help');
     add_action("load-$tp_admin_show_courses_page", 'tp_show_course_page_help');
     add_action("load-$tp_admin_show_courses_page", 'tp_show_course_page_screen_options');
@@ -144,12 +164,49 @@ function tp_add_menu2() {
     $logo = ( version_compare($wp_version, '3.8', '>=') ) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
     $pos = TEACHPRESS_MENU_POSITION;
 
-    $tp_admin_all_pub_page = add_menu_page (__('Publications','teachpress'), __('Publications','teachpress'), 'use_teachpress', 'publications.php', 'tp_show_publications_page', $logo, $pos);
-    $tp_admin_your_pub_page = add_submenu_page('publications.php',__('Your publications','teachpress'), __('Your publications','teachpress'),'use_teachpress','teachpress/publications.php','tp_show_publications_page');
-    $tp_admin_add_pub_page = add_submenu_page('publications.php',__('Add new', 'teachpress'), __('Add new','teachpress'),'use_teachpress','teachpress/addpublications.php','tp_add_publication_page');
-    $tp_admin_import_page = add_submenu_page('publications.php',__('Import/Export'), __('Import/Export'), 'use_teachpress', 'teachpress/import.php','tp_show_import_publication_page');
-    $tp_admin_show_authors_page = add_submenu_page('publications.php',__('Authors', 'teachpress'),__('Authors', 'teachpress'),'use_teachpress','teachpress/authors.php','tp_show_authors_page');
-    $tp_admin_edit_tags_page = add_submenu_page('publications.php',__('Tags'),__('Tags'),'use_teachpress','teachpress/tags.php','tp_tags_page');
+    $tp_admin_all_pub_page = add_menu_page (
+            __('Publications','teachpress'), 
+            __('Publications','teachpress'), 
+            'use_teachpress', 
+            'publications.php', 
+            'tp_show_publications_page', 
+            $logo, 
+            $pos);
+    $tp_admin_your_pub_page = add_submenu_page(
+            'publications.php',
+            __('Your publications','teachpress'),
+            __('Your publications','teachpress'),
+            'use_teachpress',
+            'teachpress/publications.php',
+            'tp_show_publications_page');
+    $tp_admin_add_pub_page = add_submenu_page(
+            'publications.php',
+            __('Add new', 'teachpress'), 
+            __('Add new','teachpress'),
+            'use_teachpress',
+            'teachpress/addpublications.php',
+            'tp_add_publication_page');
+    $tp_admin_import_page = add_submenu_page(
+            'publications.php',
+            __('Import/Export'), 
+            __('Import/Export'), 
+            'use_teachpress', 
+            'teachpress/import.php',
+            'tp_show_import_publication_page');
+    $tp_admin_show_authors_page = add_submenu_page(
+            'publications.php',
+            __('Authors', 'teachpress'),
+            __('Authors', 'teachpress'),
+            'use_teachpress',
+            'teachpress/authors.php',
+            'tp_show_authors_page');
+    $tp_admin_edit_tags_page = add_submenu_page(
+            'publications.php',
+            __('Tags'),
+            __('Tags'),
+            'use_teachpress',
+            'teachpress/tags.php',
+            'tp_tags_page');
 
     add_action("load-$tp_admin_all_pub_page", 'tp_show_publications_page_help');
     add_action("load-$tp_admin_all_pub_page", 'tp_show_publications_page_screen_options');

@@ -4,9 +4,9 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 5.5
-Requires PHP: 5.3
-Stable tag: 7.1.3
+Tested up to: 5.7
+Requires PHP: 5.4
+Stable tag: 7.2
 
 Manage your courses and publications with teachPress 
 
@@ -118,13 +118,31 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 == Upgrade Notice ==
 
+= 7.2 =
+Please note that custom publication templates now requires the method get_image()!
+
 = 6.0.1 =
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
 
-= x.x.x =
-* Changed: Update bibtexParse to v2.5 
+= 7.2.0 =
+* New: New default publication template teachPress 2021 added (mobile friendly flexible layout) (#161)
+* New: Flexible publication type registration added (#150)
+* New: Publication types added: media (#110) and diploma thesis (#160)
+* New: Adding DOI-Link to feedlist (#158)
+* Changed: Update bibtexParse to v2.5 (#147)
+* Changed: Font sizes in publication templates defined in rem
+* Changed: Remove field requirements (tags, bibtex key) for adding publications (#159)
+* Changed: Sort publication types in select menus after their localization name instead of the type key (#162)
+* Changed: Class names follows WordPress Naming Conventions. Example: tp_publication_template is now TP_Publication_Template
+* Changed: For custom templates: get_image() method for publication templates added (and is required for all templates!) (#161)
+* Changed: For custom templates: $interface->get_tag_line() renames to $interface->get_menu_line()
+* Bugfix: Punctation lost after import publications (#145)
+
+= 7.1.4 (27.02.2021) = 
+* Bugfix: Options for metadata fields not visible (#152)
+* Bugfix: Replace deprecated (PHP 7.4+) syntax in PARSEENTRIES.php (#144) (Thanks to yanus)
 
 = 7.1.3 (04.11.2020) = 
 * Bugfix: Adding image URL no longer working with WordPress 5.5
