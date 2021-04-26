@@ -77,7 +77,9 @@ class TP_Bibtex_Import {
             }
             
             // for author / editor
-            $entries[$i]['author'] = tp_bibtex_import_author::init($entries[$i], 'author', $settings['author_format']);
+            if ( array_key_exists('author', $entries[$i]) ) { 
+                $entries[$i]['author'] = tp_bibtex_import_author::init($entries[$i], 'author', $settings['author_format']);
+            }
             if ( array_key_exists('editor', $entries[$i]) ) { 
                 $entries[$i]['editor'] = tp_bibtex_import_author::init($entries[$i], 'editor', $settings['author_format']);
             }
