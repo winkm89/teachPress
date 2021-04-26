@@ -221,6 +221,12 @@ class TP_Import_Publication_Page {
 
         // WordPress User informations
         $current_user = wp_get_current_user();
+        
+        // Debug info
+        if ( TEACHPRESS_DEBUG === true ) {
+            global $wpdb;
+            get_tp_message('Queries: ' . $wpdb->num_queries . ' | Time: ' . timer_stop() . 's');
+        }
 
         echo '<div class="wrap">';
         if ( $mode !== 'history' ) {
