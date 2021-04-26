@@ -363,7 +363,7 @@ class TP_Publications {
                 'issuetitle'    => stripslashes($data['issuetitle']), 
                 'journal'       => stripslashes($data['journal']), 
                 'volume'        => $data['volume'], 
-                'number'        => $data['$number'], 
+                'number'        => $data['number'], 
                 'pages'         => $data['pages'], 
                 'publisher'     => stripslashes($data['publisher']), 
                 'address'       => stripslashes($data['address']), 
