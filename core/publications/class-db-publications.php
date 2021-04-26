@@ -674,7 +674,7 @@ class TP_Publications {
         }
         
         // Check if the key is unique
-        $check = $wpdb->get_var("SELECT COUNT('pub_id') FROM " . TEACHPRESS_PUB . " WHERE `bibtex` LIKE '%" . esc_sql($bibtex_key) . "%'");
+        $check = $wpdb->get_var("SELECT COUNT('pub_id') FROM " . TEACHPRESS_PUB . " WHERE `bibtex` = '" . esc_sql($bibtex_key) . "'");
         if ( intval($check) > 0 ) {
             $alphabet = range('a', 'z');
             if ( $check <= 25 ) {
