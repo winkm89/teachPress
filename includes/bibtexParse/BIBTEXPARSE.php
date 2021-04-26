@@ -617,11 +617,14 @@ class BIBTEXPARSE {
         // Ignore the first line
         for ( $i = 1; $i < $max; $i++ ) {
             $line_before = mb_substr(trim( $line_array[$i-1] ), -2, 2);
+            
+            // Fix blank lines at the end of the entry
+            $line_end = ( isset($line_array[$i][0]) ) ? $line_array[$i][0] : '';
 
             if ( strpos($line_array[$i], '@') === false &&  // No '@' in the line
                  strpos($line_array[$i], '=') === false &&  // No '=' in the line
                  $line_before !== '},' &&                   // No '},' at the end of the line before
-                 $line_array[$i][0] !== '}'                 // No '}' at the beginning of the line
+                 $line_end !== '}'                          // No '}' at the beginning of the line
                 ) {
                 $line_array[$i] = '<LineBreak>' . $line_array[$i];
             }
