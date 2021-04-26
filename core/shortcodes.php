@@ -437,11 +437,12 @@ class TP_Shortcodes {
      * @access public
      */
     public static function generate_tag_cloud ($user, $cloud_settings, $filter_parameter, $sql_parameter, $settings){
-        $temp = TP_Tags::get_tag_cloud( array('user' => $user, 
-                                        'type' => $sql_parameter['type'],
-                                        'exclude' => $cloud_settings['hide_tags'],
-                                        'number_tags' => $cloud_settings['tag_limit'],
-                                        'output_type' => ARRAY_A) );
+        $temp = TP_Tags::get_tag_cloud( array(
+                                        'user'          => $user, 
+                                        'type'          => $sql_parameter['type'],
+                                        'exclude'       => $cloud_settings['hide_tags'],
+                                        'number_tags'   => $cloud_settings['tag_limit'],
+                                        'output_type'   => ARRAY_A ) );
        $min = $temp["info"]->min;
        $max = $temp["info"]->max;
        // level out the min
