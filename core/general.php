@@ -9,8 +9,8 @@
 
 /** 
  * teachPress Page Menu
- * 
- * possible values for array $atts:
+ *      
+ * @param array $atts {
  *      @type int number_entries       Number of all available entries
  *      @type int entries_per_page     Number of entries per page
  *      @type int current_page         current displayed page
@@ -19,23 +19,23 @@
  *      @type string link_atrributes   the url attributes for get parameters
  *      @type string container_suffix  The optional suffix from the shortcode container 
  *      @type string mode              top or bottom, default: top
- * @param array $atts
+ * }
  * @return string
  * @since 5.0.0
 */
 function tp_page_menu ($atts) {
     $atts = shortcode_atts(array(
-       'number_entries' => 0,
-       'entries_per_page' => 50,
-       'current_page' => 1,
-       'entry_limit' => 0,
-       'page_link' => '',
-       'link_attributes' => '',
-       'container_suffix' => '',
-       'mode' => 'top',
-       'class' => 'tablenav-pages',
-       'before' => '',
-       'after' => ''
+       'number_entries'     => 0,
+       'entries_per_page'   => 50,
+       'current_page'       => 1,
+       'entry_limit'        => 0,
+       'page_link'          => '',
+       'link_attributes'    => '',
+       'container_suffix'   => '',
+       'mode'               => 'top',
+       'class'              => 'tablenav-pages',
+       'before'             => '',
+       'after'              => ''
     ), $atts);
     
     $number_entries = intval($atts['number_entries']);
@@ -185,68 +185,68 @@ function sort_tp_publication_type_options ($a, $b) {
 function get_tp_var_types($type) {
     if ( $type == 'course_array' ) {
         $ret = array( 
-            'course_id' => '',
-            'name' => '',
-            'type' => '',
-            'room' => '',
-            'lecturer' => '',
-            'date' => '',
-            'places' => '',
-            'start' => '',
-            'end' => '',
-            'semester' => '',
-            'comment' => '',
-            'rel_page' => '',
-            'parent' => '',
-            'visible' => '',
-            'waitinglist' => '',
-            'image_url' => '',
-            'strict_signup' => '',
-            'use_capabilites' => '');
+            'course_id'         => '',
+            'name'              => '',
+            'type'              => '',
+            'room'              => '',
+            'lecturer'          => '',
+            'date'              => '',
+            'places'            => '',
+            'start'             => '',
+            'end'               => '',
+            'semester'          => '',
+            'comment'           => '',
+            'rel_page'          => '',
+            'parent'            => '',
+            'visible'           => '',
+            'waitinglist'       => '',
+            'image_url'         => '',
+            'strict_signup'     => '',
+            'use_capabilites'   => '');
     }
     if ( $type == 'publication_array' ) {
         $ret = array( 
-            'pub_id' => '',
-            'title' => '',
-            'type' => '',
-            'bibtex' => '',
-            'author' => '',
-            'editor' => '',
-            'isbn' => '',
-            'url' => '',
-            'date' => '',
-            'urldate' => '',
-            'booktitle' => '',
-            'issuetitle' => '',
-            'journal' => '',
-            'volume' => '',
-            'number' => '',
-            'pages' => '',
-            'publisher' => '',
-            'address' => '',
-            'edition' => '',
-            'chapter' => '',
-            'institution' => '',
-            'organization' => '',
-            'school' => '',
-            'series' => '',
-            'crossref' => '',
-            'abstract' => '',
-            'howpublished' => '',
-            'key' => '',
-            'techtype' => '',
-            'comment' => '',
-            'note' => '',
-            'image_url' => '',
-            'image_target' => '',
-            'image_ext' => '',
-            'doi' => '',
-            'is_isbn' => '',
-            'rel_page' => '',
-            'status' => '',
-            'added' => '',
-            'modified' => '',
-            'import_id' => 0);
+            'pub_id'            => '',
+            'title'             => '',
+            'type'              => '',
+            'bibtex'            => '',
+            'author'            => '',
+            'editor'            => '',
+            'isbn'              => '',
+            'url'               => '',
+            'date'              => '',
+            'urldate'           => '',
+            'booktitle'         => '',
+            'issuetitle'        => '',
+            'journal'           => '',
+            'volume'            => '',
+            'number'            => '',
+            'pages'             => '',
+            'publisher'         => '',
+            'address'           => '',
+            'edition'           => '',
+            'chapter'           => '',
+            'institution'       => '',
+            'organization'      => '',
+            'school'            => '',
+            'series'            => '',
+            'crossref'          => '',
+            'abstract'          => '',
+            'howpublished'      => '',
+            'key'               => '',
+            'techtype'          => '',
+            'comment'           => '',
+            'note'              => '',
+            'image_url'         => '',
+            'image_target'      => '',
+            'image_ext'         => '',
+            'doi'               => '',
+            'is_isbn'           => '',
+            'rel_page'          => '',
+            'status'            => '',
+            'added'             => '',
+            'modified'          => '',
+            'import_id'         => 0);
     }
     return $ret;
 }

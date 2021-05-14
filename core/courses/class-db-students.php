@@ -28,28 +28,27 @@ class TP_Students {
     }
     
     /**
-     * Returns the data of all students
+     * Returns the data of all students         
      * 
-     * Possible values for the array $args:
-     *       search (STRING)                A normal search string
-     *       meta_search (ARRAY)            An associative array of search strings for meta data
-     *       order (STRING)                 Default is s.lastname ASC, s.firstname ASC
-     *       limit (STRING)                 The sql search limit, example: 0,30
-     *       output type (STRING)           OBJECT, ARRAY_A, ARRAY_N, default is OBJECT
-     *       count (BOOLEAN)                Set it to true if you only need an number of authors which will be returned by your selection (default: false)
-     * 
-     * @param array $args
+     * @param array $args {
+     *      @type string $search        A normal search string
+     *      @type string $meta_search   An associative array of search strings for meta data
+     *      @type string $order         Default is s.lastname ASC, s.firstname ASC
+     *      @type string $limit         The sql search limit, example: 0,30
+     *      @type string $output_type   OBJECT, ARRAY_A, ARRAY_N, default is OBJECT
+     *      @type boolean $count        Set it to true if you only need the numbe of entries in your selection (default: false)
+     * }
      * @return object or array
      * @since 5.0.0
      */
     public static function get_students ( $args = array() ) {
         $defaults = array(
-            'search' => '',
-            'meta_search' => '',
-            'order' => 's.lastname ASC, s.firstname ASC',
-            'limit' => '',
-            'output_type' => OBJECT,
-            'count' => false
+            'search'        => '',
+            'meta_search'   => '',
+            'order'         => 's.lastname ASC, s.firstname ASC',
+            'limit'         => '',
+            'output_type'   => OBJECT,
+            'count'         => false
         );
         $args = wp_parse_args( $args, $defaults );
         extract( $args, EXTR_SKIP );
@@ -247,26 +246,25 @@ class TP_Students {
     }
     
     /**
-     * Returns an array or object of all signups of a student
+     * Returns an array or object of all signups of a student 
      * 
-     * possible values for $args:
-     *      wp_id (INT)             The user ID
-     *      mode (STRING)           all, reg or wtl. Default is: all
-     *      course_id (INT)         The course ID. Set it and the function searches only in sub courses
-     *      order (STRING)          Default is: con_id DESC
-     *      output_type (STRING)    OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
-     * 
-     * @param array $args
+     * @param array $args {
+     *      @type int $wp_id            The user ID
+     *      @type string $mode          all, reg or wtl. Default is: all
+     *      @type int $course_id        The course ID. Set it and the function searches only in sub courses
+     *      @type string $order         Default is: con_id DESC
+     *      @type string $output_type   OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
+     * }
      * @return array|object 
      * @since 5.0.0
      */
     public static function get_signups ( $args = array()) {
         $defaults = array(
-            'wp_id' => 0,
-            'mode' => 'all',
-            'course_id' => 0,
-            'order' => 'con_id DESC',
-            'output_type' => OBJECT
+            'wp_id'         => 0,
+            'mode'          => 'all',
+            'course_id'     => 0,
+            'order'         => 'con_id DESC',
+            'output_type'   => OBJECT
         );
         $args = wp_parse_args( $args, $defaults );
         extract( $args, EXTR_SKIP );
@@ -284,7 +282,11 @@ class TP_Students {
             $where = "WHERE c.parent = '$course_id' ";
         }
 
-        $sql = "SELECT con_id, wp_id, course_id, waitinglist, name, type, room, date, semester, parent_name, timestamp FROM (SELECT s.con_id as con_id, s.wp_id as wp_id, s.course_id as course_id, s.waitinglist as waitinglist, c.name as name, c.type as type, c.room as room, c.date as date, c.semester as semester, c2.name as parent_name, s.date as timestamp FROM " . TEACHPRESS_SIGNUP . " s INNER JOIN " . TEACHPRESS_COURSES . " c ON s.course_id = c.course_id LEFT JOIN " . TEACHPRESS_COURSES . " c2 ON c.parent = c2.course_id $where) AS temp WHERE `wp_id` = '$wp_id'";
+        $sql = "SELECT con_id, wp_id, course_id, waitinglist, name, type, room, date, semester, parent_name, timestamp FROM (SELECT s.con_id as con_id, s.wp_id as wp_id, s.course_id as course_id, s.waitinglist as waitinglist, c.name as name, c.type as type, c.room as room, c.date as date, c.semester as semester, c2.name as parent_name, s.date as timestamp 
+            FROM " . TEACHPRESS_SIGNUP . " s 
+            INNER JOIN " . TEACHPRESS_COURSES . " c ON s.course_id = c.course_id 
+            LEFT JOIN " . TEACHPRESS_COURSES . " c2 ON c.parent = c2.course_id $where) AS temp 
+            WHERE `wp_id` = '$wp_id'";
         if ( $mode === 'reg' ) {
             $sql .= " AND `waitinglist` = '0'";
         }

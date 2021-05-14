@@ -37,15 +37,15 @@ class TP_Tags {
      */
     public static function get_tags( $args = array() ) {
         $defaults = array(
-            'pub_id' => '',
-            'user' => '',
-            'exclude' => '',
-            'order' => 'ASC',
-            'limit' => '',
-            'search' => '',
-            'count' => false,
-            'group_by' => false, 
-            'output_type' => OBJECT
+            'pub_id'        => '',
+            'user'          => '',
+            'exclude'       => '',
+            'order'         => 'ASC',
+            'limit'         => '',
+            'search'        => '',
+            'count'         => false,
+            'group_by'      => false, 
+            'output_type'   => OBJECT
         ); 
         $atts = wp_parse_args( $args, $defaults );
 
@@ -250,11 +250,11 @@ class TP_Tags {
     */
     public static function get_tag_cloud ( $args = array() ) {
         $defaults = array(
-            'user' => '',
-            'type' => '',
-            'number_tags' => '',
-            'exclude' => '',
-            'output_type' => OBJECT
+            'user'          => '',
+            'type'          => '',
+            'number_tags'   => '',
+            'exclude'       => '',
+            'output_type'   => OBJECT
         ); 
         $atts = wp_parse_args( $args, $defaults );
 

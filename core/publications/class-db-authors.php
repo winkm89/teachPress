@@ -38,17 +38,17 @@ class TP_Authors  {
     */
     public static function get_authors ( $args = array() ) {
         $defaults = array(
-           'author_id' => '',
-           'pub_id' => '',
-           'user' => '',
-           'exclude' => '',
-           'order' => 'ASC',
-           'limit' => '',
-           'search' => '',
-           'include_editors' => false,
-           'count' => false,
-           'group_by' => false, 
-           'output_type' => OBJECT
+           'author_id'          => '',
+           'pub_id'             => '',
+           'user'               => '',
+           'exclude'            => '',
+           'order'              => 'ASC',
+           'limit'              => '',
+           'search'             => '',
+           'include_editors'    => false,
+           'count'              => false,
+           'group_by'           => false, 
+           'output_type'        => OBJECT
         ); 
         $atts = wp_parse_args( $args, $defaults );
 
@@ -71,6 +71,7 @@ class TP_Authors  {
 
         // WHERE clause
         $search = esc_sql(htmlspecialchars(stripslashes($atts['search'])));
+        
         $nwhere = array();
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['pub_id'], "r.pub_id", "OR", "=");

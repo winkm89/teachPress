@@ -69,23 +69,23 @@ class TP_Publications {
     */
     public static function get_publications($args = array(), $count = false) {
         $defaults = array(
-            'user' => '',
-            'type' => '',
-            'tag' => '',
-            'author_id' => '', 
-            'import_id' => '',
-            'year' => '',
-            'author' => '',
-            'editor' => '',
-            'include' => '',
-            'include_editor_as_author' => true,
-            'exclude' => '',
-            'exclude_tags' => '',
-            'exclude_types' => '',
-            'order' => 'date DESC',
-            'limit' => '',
-            'search' => '',
-            'output_type' => OBJECT
+            'user'                      => '',
+            'type'                      => '',
+            'tag'                       => '',
+            'author_id'                 => '', 
+            'import_id'                 => '',
+            'year'                      => '',
+            'author'                    => '',
+            'editor'                    => '',
+            'include'                   => '',
+            'include_editor_as_author'  => true,
+            'exclude'                   => '',
+            'exclude_tags'              => '',
+            'exclude_types'             => '',
+            'order'                     => 'date DESC',
+            'limit'                     => '',
+            'search'                    => '',
+            'output_type'               => OBJECT
         );
         $atts = wp_parse_args( $args, $defaults );
         global $wpdb;
@@ -248,10 +248,10 @@ class TP_Publications {
      */
     public static function get_used_pubtypes( $args = array() ) {
         $defaults = array(
-            'user' => '',
-            'include' => '',
-            'exclude' => '',
-            'output_type' => ARRAY_A
+            'user'          => '',
+            'include'       => '',
+            'exclude'       => '',
+            'output_type'   => ARRAY_A
         ); 
         $atts = wp_parse_args( $args, $defaults );
 
@@ -290,11 +290,11 @@ class TP_Publications {
      */
     public static function get_years( $args = array() ) {
         $defaults = array(
-            'type' => '',
-            'user' => '',
-            'include' => '',
-            'order' => 'ASC',
-            'output_type' => OBJECT
+            'type'          => '',
+            'user'          => '',
+            'include'       => '',
+            'order'         => 'ASC',
+            'output_type'   => OBJECT
         ); 
         $atts = wp_parse_args( $args, $defaults );
 
@@ -696,44 +696,44 @@ class TP_Publications {
      */
     public static function get_default_fields () {
         return array(
-            'title' => '',
-            'type' => '',
-            'bibtex' => '',
-            'author' => '',
-            'editor' => '',
-            'isbn' => '',
-            'url' => '',
-            'date' => '',
-            'urldate' => '', 
-            'booktitle' => '',
-            'issuetitle' => '',
-            'journal' => '',
-            'volume' => '',
-            'number' => '',
-            'pages' => '',
-            'publisher' => '',
-            'address' => '',
-            'edition' => '',
-            'chapter' => '',
-            'institution' => '',
-            'organization' => '',
-            'school' => '',
-            'series' => '',
-            'crossref' => '',
-            'abstract' => '',
-            'howpublished' => '',
-            'key' => '',
-            'techtype' => '',
-            'comment' => '',
-            'note' => '',
-            'image_url' => '',
-            'image_target' => '',
-            'image_ext' => '',
-            'doi' => '',
-            'is_isbn' => '',
-            'rel_page' => '',
-            'status' => 'published',
-            'import_id' => 0
+            'title'             => '',
+            'type'              => '',
+            'bibtex'            => '',
+            'author'            => '',
+            'editor'            => '',
+            'isbn'              => '',
+            'url'               => '',
+            'date'              => '',
+            'urldate'           => '', 
+            'booktitle'         => '',
+            'issuetitle'        => '',
+            'journal'           => '',
+            'volume'            => '',
+            'number'            => '',
+            'pages'             => '',
+            'publisher'         => '',
+            'address'           => '',
+            'edition'           => '',
+            'chapter'           => '',
+            'institution'       => '',
+            'organization'      => '',
+            'school'            => '',
+            'series'            => '',
+            'crossref'          => '',
+            'abstract'          => '',
+            'howpublished'      => '',
+            'key'               => '',
+            'techtype'          => '',
+            'comment'           => '',
+            'note'              => '',
+            'image_url'         => '',
+            'image_target'      => '',
+            'image_ext'         => '',
+            'doi'               => '',
+            'is_isbn'           => '',
+            'rel_page'          => '',
+            'status'            => 'published',
+            'import_id'         => 0
         );
     }
 }

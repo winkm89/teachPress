@@ -792,12 +792,12 @@ function tp_courselist_shortcode($atts) {
  */
 function tp_coursedocs_shortcode($atts) {
     $param = shortcode_atts(array(
-       'id' => '',
-       'link_class' => 'linksecure',
-       'date_format' => 'd.m.Y',
-       'show_date' => 1,
-       'numbered' => 0,
-       'headline' => 1
+       'id'             => '',
+       'link_class'     => 'linksecure',
+       'date_format'    => 'd.m.Y',
+       'show_date'      => 1,
+       'numbered'       => 0,
+       'headline'       => 1
     ), $atts);
     $course_id = intval($param['id']);
     $headline = intval($param['headline']);
@@ -847,8 +847,8 @@ function tp_coursedocs_shortcode($atts) {
 */
 function tp_courseinfo_shortcode($atts) {
     $param = shortcode_atts(array(
-       'id' => 0,
-       'show_meta' => 1
+       'id'         => 0,
+       'show_meta'  => 1
     ), $atts);
     $id = intval($param['id']);
     $show_meta = intval($param['show_meta']);
@@ -1177,116 +1177,162 @@ function tp_links_shortcode ($atts) {
  *      $tsr (STRING)           Full text search
  * 
  * 
- * @param array $atts
+ * @param array $atts {
+ *      @type string $user                  the WordPress IDs of on or more users (separated by comma)
+ *      @type string $tag                   tag IDs (separated by comma)
+ *      @type string $type                  the publication types you want to show (separated by comma)
+ *      @type string $author                author IDs (separated by comma)
+ *      @type string $year                  one or more years (separated by comma)
+ *      @type string $exclude               one or more IDs of publications you don't want to show (separated by comma)
+ *      @type string $include               one or more IDs of publications you want to show (separated by comma)
+ *      @type string $include_editor_as_author  0 (false) or 1 (true), default: 1
+ *      @type string $order                 title, year, bibtex or type, default: date DESC
+ *      @type int $headline                 show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
+ *      @type int $maxsinze                 maximal font size for the tag cloud, default: 35
+ *      @type int $minsize                  minimal font size for the tag cloud, default: 11
+ *      @type int $tag_limit                number of tags, default: 30
+ *      @type string $hide_tags             ids of the tags you want to hide from your users (separated by comma)
+ *      @type string $exclude_tags          similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
+ *      @type string $exclude_types         name of the publication types you want to exclude (separated by comma)
+ *      @type string $image                 none, left, right or bottom, default: none 
+ *      @type int $image_size               max. Image size, default: 0
+ *      @type string $image_link            none, self, rel_page or external (defalt: none)
+ *      @type string $author_name           Author name style options: simple, last, initials or old, default: initials
+ *      @type string $editor_name           Editor name style options: simple, last, initials or old, default: initials
+ *      @type string $author_separator      The separator for author names
+ *      @type string $editor_separator      The separator for author names
+ *      @type string $style                 List style options: numbered, numbered_desc or none, default: none
+ *      @type string $template              The key of the used template, default: tp_template_2021
+ *      @type string $title_ref             Defines the target for the title link. Options: links or abstract, default: links
+ *      @type string $link_style            Defines the style of the publication links. Options: inline, direct or images, default: inline
+ *      @type string $date_format           The format for date, needed for the types: presentations, online; default: d.m.Y
+ *      @type int $pagination               Activates pagination (1) or not (0), default: 1
+ *      @type int $entries_per_page         Number of publications per page (pagination must be set to 1), default: 50
+ *      @type string $sort_list             A list of publication types (separated by comma) which overwrites the default sort order for headline = 2
+ *      @type string $show_tags_as          Style option for the tag filter: cloud, pulldown or none, default: cloud
+ *      @type int $show_author_filter       0 (false) or 1 (true), default: 1
+ *      @type string $show_in_author_filter Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
+ *      @type int $show_type_filter         0 (false) or 1 (true), default: 1
+ *      @type int $show_user_filter         0 (false) or 1 (true), default: 1
+ *      @type int $show_search_filter       0 (false) or 1 (true), default: 1
+ *      @type int $show_year_filter         0 (false) or 1 (true), default: 1
+ *      @type int $show_bibtex              Show bibtex container under each entry (1) or not (0), default: 1
+ *      @type string $container_suffix      a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
+ *      @type string $filter_class          The CSS class for filter/select menus, default: default
+ *      @type int $show_altmetric_donut     0 (false) or 1 (true), default: 0
+ *      @type int $show_altmetric_entrx     0 (false) or 1 (true), default: 0
+ *      @type int $use_jumpmenu             Use filter as jumpmenu (1) or not (0), default: 1
+ *      @type int $use_as_filter            Show all entries by default (1) o not (0), default 1
+ * }
  * @return string
  * @since 7.0.0
  */
 function tp_publist_shortcode ($atts) {
     $atts = shortcode_atts(array(
-        'user' => '',                       // the WordPress IDs of on or more users (separated by comma)
-        'tag' => '',                        // tag IDs (separated by comma)
-        'type' => '',                       // the publication types you want to show (separated by comma)
-        'author' => '',                     // author IDs (separated by comma)
-        'year' => '',                       // one or more years (separated by comma)
-        'exclude' => '',                    // one or more IDs of publications you don't want to show (separated by comma)
-        'include' => '',                    // one or more IDs of publications you want to show (separated by comma)
-        'include_editor_as_author' => 1,    // 0 (false) or 1 (true), default: 1
-        'order' => 'date DESC',             // title, year, bibtex or type, default: date DESC
-        'headline' => 1,                    // show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
-        'maxsize' => 35,                    // maximal font size for the tag cloud, default: 35
-        'minsize' => 11,                    // minimal font size for the tag cloud, default: 11
-        'tag_limit' => 30,                  // number of tags, default: 30
-        'hide_tags' => '',                  // ids of the tags you want to hide from your users (separated by comma)
-        'exclude_tags' => '',               // similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
-        'exclude_types' => '',              // name of the publication types you want to exclude (separated by comma)
-        'image' => 'none',                  // none, left, right or bottom, default: none 
-        'image_size' => 0,                  // max. Image size, default: 0
-        'image_link' => 'none',             // none, self, rel_page or external (defalt: none)
-        'anchor' => 1,                      // 0 (false) or 1 (true), default: 1
-        'author_name' => 'initials',        // simple, last, initials or old, default: last
-        'editor_name' => 'initials',        // simple, last, initials or old, default: last
-        'author_separator' => ';',          // The separator for author names
-        'editor_separator' => ';',          // The separator for editor names
-        'style' => 'none',                  // numbered, numbered_desc or none, default: none
-        'template' => 'tp_template_2021',   // the key of the template, default: tp_template_2016
-        'title_ref' => 'links',             // links or abstract, default: links
-        'link_style' => 'inline',           // inline, direct or images, default: inline
-        'date_format' => 'd.m.Y',           //  the format for date; needed for the types: presentations, online; default: d.m.Y
-        'pagination' => 1,                  // activate pagination (1) or not (0), default: 1
-        'entries_per_page' => 50,           // number of publications per page (pagination must be set to 1), default: 50
-        'sort_list' => '',                  // a list of publication types (separated by comma) which overwrites the default sort order for headline = 2
-        'show_tags_as' => 'cloud',          // cloud, pulldown or none, default: cloud
-        'show_author_filter' => 1,          // 0 (false) or 1 (true), default: 1
-        'show_in_author_filter' => '',      // Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
-        'show_type_filter' => 1,            // 0 (false) or 1 (true), default: 1
-        'show_user_filter' => 1,            // 0 (false) or 1 (true), default: 1
-        'show_search_filter' => 1,          // 0 (false) or 1 (true), default: 1
-        'show_year_filter' => 1,            // 0 (false) or 1 (true), default: 1
-        'show_bibtex' => 1,                 // 0 (false) or 1 (true), default: 1
-        'container_suffix' => '',           // a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
-        'filter_class' => 'default',        // The CSS class for filter/select menus
-        'show_altmetric_donut' => 0,        // 0 (false) or 1 (true), default: 0
-        'show_altmetric_entry' => 0,        // 0 (false) or 1 (true), default: 0
-        'use_jumpmenu' => 1,                // 0 (false) or 1 (true), default: 1
-        'use_as_filter' => 1                // The old as_filter value from [tpsearch]
+        'user'                  => '',
+        'tag'                   => '',
+        'type'                  => '',
+        'author'                => '',
+        'year'                  => '',
+        'exclude'               => '',
+        'include'               => '',
+        'include_editor_as_author' => 1,
+        'order'                 => 'date DESC',
+        'headline'              => 1,
+        'maxsize'               => 35,
+        'minsize'               => 11,
+        'tag_limit'             => 30,
+        'hide_tags'             => '',
+        'exclude_tags'          => '',
+        'exclude_types'         => '',
+        'image'                 => 'none',
+        'image_size'            => 0,
+        'image_link'            => 'none',
+        'anchor'                => 1,                   
+        'author_name'           => 'initials',
+        'editor_name'           => 'initials',
+        'author_separator'      => ';',
+        'editor_separator'      => ';',
+        'style'                 => 'none',
+        'template'              => 'tp_template_2021',
+        'title_ref'             => 'links',
+        'link_style'            => 'inline',
+        'date_format'           => 'd.m.Y',
+        'pagination'            => 1,
+        'entries_per_page'      => 50,
+        'sort_list'             => '',
+        'show_tags_as'          => 'cloud',
+        'show_author_filter'    => 1,
+        'show_in_author_filter' => '',
+        'show_type_filter'      => 1,
+        'show_user_filter'      => 1,
+        'show_search_filter'    => 1,
+        'show_year_filter'      => 1,
+        'show_bibtex'           => 1,
+        'container_suffix'      => '',
+        'filter_class'          => 'default',
+        'show_altmetric_donut'  => 0,
+        'show_altmetric_entry'  => 0,
+        'use_jumpmenu'          => 1,
+        'use_as_filter'         => 1
     ), $atts);
     
     $settings = array(
-        'author_name' => htmlspecialchars($atts['author_name']),
-        'editor_name' => htmlspecialchars($atts['editor_name']),
-        'author_separator' => htmlspecialchars($atts['author_separator']),
-        'editor_separator' => htmlspecialchars($atts['editor_separator']),
-        'headline' => intval($atts['headline']),
-        'style' => htmlspecialchars($atts['style']),
-        'template' => htmlspecialchars($atts['template']),
-        'image' => htmlspecialchars($atts['image']),
-        'image_link' => htmlspecialchars($atts['image_link']),
-        'link_style' => htmlspecialchars($atts['link_style']),
-        'title_ref' => htmlspecialchars($atts['title_ref']),
-        'html_anchor' => ( $atts['anchor'] == '1' ) ? '#tppubs' . htmlspecialchars($atts['container_suffix']) : '',
-        'date_format' => htmlspecialchars($atts['date_format']),
-        'permalink' => ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;",
-        'convert_bibtex' => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
-        'pagination' => intval($atts['pagination']),
-        'entries_per_page' => intval($atts['entries_per_page']),
-        'sort_list' => htmlspecialchars($atts['sort_list']),
-        'show_author_filter' => ( $atts['show_author_filter'] == '1' ) ? true : false,
-        'show_type_filter' => ( $atts['show_type_filter'] == '1' ) ? true : false,
-        'show_user_filter' => ( $atts['show_user_filter'] == '1' ) ? true : false,
-        'show_year_filter' => ( $atts['show_year_filter'] == '1' ) ? true : false,
-        'show_search_filter' => ( $atts['show_search_filter'] == '1' ) ? true : false,
-        'show_bibtex' => ( $atts['show_bibtex'] == '1' ) ? true : false,
-        'with_tags' => ( $atts['show_tags_as'] == 'none' ) ? 0 : 1,
-        'container_suffix' => htmlspecialchars($atts['container_suffix']),
-        'filter_class' => htmlspecialchars($atts['filter_class']),
-        'show_altmetric_entry' => ($atts['show_altmetric_entry'] == '1') ? true : false,
-        'show_altmetric_donut' => ($atts['show_altmetric_donut'] == '1') ? true : false,
-        'use_jumpmenu' => ( $atts['use_jumpmenu'] == '1' ) ? true : false
+        'author_name'           => htmlspecialchars($atts['author_name']),
+        'editor_name'           => htmlspecialchars($atts['editor_name']),
+        'author_separator'      => htmlspecialchars($atts['author_separator']),
+        'editor_separator'      => htmlspecialchars($atts['editor_separator']),
+        'headline'              => intval($atts['headline']),
+        'style'                 => htmlspecialchars($atts['style']),
+        'template'              => htmlspecialchars($atts['template']),
+        'image'                 => htmlspecialchars($atts['image']),
+        'image_link'            => htmlspecialchars($atts['image_link']),
+        'link_style'            => htmlspecialchars($atts['link_style']),
+        'title_ref'             => htmlspecialchars($atts['title_ref']),
+        'html_anchor'           => ( $atts['anchor'] == '1' ) ? '#tppubs' . htmlspecialchars($atts['container_suffix']) : '',
+        'date_format'           => htmlspecialchars($atts['date_format']),
+        'permalink'             => ( get_option('permalink_structure') ) ? get_permalink() . "?" : get_permalink() . "&amp;",
+        'convert_bibtex'        => ( get_tp_option('convert_bibtex') == '1' ) ? true : false,
+        'pagination'            => intval($atts['pagination']),
+        'entries_per_page'      => intval($atts['entries_per_page']),
+        'sort_list'             => htmlspecialchars($atts['sort_list']),
+        'show_author_filter'    => ( $atts['show_author_filter'] == '1' ) ? true : false,
+        'show_type_filter'      => ( $atts['show_type_filter'] == '1' ) ? true : false,
+        'show_user_filter'      => ( $atts['show_user_filter'] == '1' ) ? true : false,
+        'show_year_filter'      => ( $atts['show_year_filter'] == '1' ) ? true : false,
+        'show_search_filter'    => ( $atts['show_search_filter'] == '1' ) ? true : false,
+        'show_bibtex'           => ( $atts['show_bibtex'] == '1' ) ? true : false,
+        'with_tags'             => ( $atts['show_tags_as'] == 'none' ) ? 0 : 1,
+        'container_suffix'      => htmlspecialchars($atts['container_suffix']),
+        'filter_class'          => htmlspecialchars($atts['filter_class']),
+        'show_altmetric_entry'  => ($atts['show_altmetric_entry'] == '1') ? true : false,
+        'show_altmetric_donut'  => ($atts['show_altmetric_donut'] == '1') ? true : false,
+        'use_jumpmenu'          => ( $atts['use_jumpmenu'] == '1' ) ? true : false
     );
 
     // Settings for the tag cloud
     $cloud_settings = array (
-        'show_tags_as' => htmlspecialchars($atts['show_tags_as']),
-        'tag_limit' => intval($atts['tag_limit']),
-        'hide_tags' => htmlspecialchars($atts['hide_tags']),
-        'maxsize' => intval($atts['maxsize']),
-        'minsize' => intval($atts['minsize'])
+        'show_tags_as'          => htmlspecialchars($atts['show_tags_as']),
+        'tag_limit'             => intval($atts['tag_limit']),
+        'hide_tags'             => htmlspecialchars($atts['hide_tags']),
+        'maxsize'               => intval($atts['maxsize']),
+        'minsize'               => intval($atts['minsize'])
     );
     
     // Settings for and from form fields
     $filter_parameter = array(
-        'tag' => ( isset ($_GET['tgid']) && $_GET['tgid'] != '' ) ? intval($_GET['tgid']) : '',
-        'year' => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
-        'type' => isset ($_GET['type']) ? htmlspecialchars( $_GET['type'] ) : '',
-        'author' => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
-        'user' => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : '',
-        'search' => isset ($_GET['tsr']) ? htmlspecialchars( $_GET['tsr'] ) : '',
+        'tag'                   => ( isset ($_GET['tgid']) && $_GET['tgid'] != '' ) ? intval($_GET['tgid']) : '',
+        'year'                  => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
+        'type'                  => isset ($_GET['type']) ? htmlspecialchars( $_GET['type'] ) : '',
+        'author'                => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
+        'user'                  => ( isset ($_GET['usr']) && $_GET['usr'] != '' ) ? intval($_GET['usr']) : '',
+        'search'                => isset ($_GET['tsr']) ? htmlspecialchars( $_GET['tsr'] ) : '',
         'show_in_author_filter' => htmlspecialchars($atts['show_in_author_filter']),
-        'tag_preselect' => htmlspecialchars($atts['tag']),
-        'year_preselect' => htmlspecialchars($atts['year']),
-        'author_preselect' => htmlspecialchars($atts['author']),
-        'type_preselect' => htmlspecialchars($atts['type']),
-        'user_preselect' => htmlspecialchars($atts['user']),
+        'tag_preselect'         => htmlspecialchars($atts['tag']),
+        'year_preselect'        => htmlspecialchars($atts['year']),
+        'author_preselect'      => htmlspecialchars($atts['author']),
+        'type_preselect'        => htmlspecialchars($atts['type']),
+        'user_preselect'        => htmlspecialchars($atts['user']),
     );
     
     /*
@@ -1296,15 +1342,15 @@ function tp_publist_shortcode ($atts) {
      * Can be overwritten with filter_parameter
      */
     $sql_parameter = array (
-        'user' => ( $filter_parameter['user'] !== '' ) ? $filter_parameter['user'] : htmlspecialchars($atts['user']),
-        'type' => ( $filter_parameter['type'] !== '' ) ? $filter_parameter['type'] : htmlspecialchars($atts['type']),
-        'author' => ( $filter_parameter['author'] !== '' ) ? $filter_parameter['author'] : htmlspecialchars($atts['author']),
-        'year' => ( $filter_parameter['year'] !== '' ) ? $filter_parameter['year'] : htmlspecialchars($atts['year']),
-        'tag' => ( $filter_parameter['tag'] !== '' ) ? $filter_parameter['tag'] : htmlspecialchars($atts['tag']),
-        'exclude' => htmlspecialchars($atts['exclude']),
-        'exclude_tags' => htmlspecialchars($atts['exclude_tags']),
+        'user'          => ( $filter_parameter['user'] !== '' ) ? $filter_parameter['user'] : htmlspecialchars($atts['user']),
+        'type'          => ( $filter_parameter['type'] !== '' ) ? $filter_parameter['type'] : htmlspecialchars($atts['type']),
+        'author'        => ( $filter_parameter['author'] !== '' ) ? $filter_parameter['author'] : htmlspecialchars($atts['author']),
+        'year'          => ( $filter_parameter['year'] !== '' ) ? $filter_parameter['year'] : htmlspecialchars($atts['year']),
+        'tag'           => ( $filter_parameter['tag'] !== '' ) ? $filter_parameter['tag'] : htmlspecialchars($atts['tag']),
+        'exclude'       => htmlspecialchars($atts['exclude']),
+        'exclude_tags'  => htmlspecialchars($atts['exclude_tags']),
         'exclude_types' => htmlspecialchars($atts['exclude_types']),
-        'order' => htmlspecialchars($atts['order']),
+        'order'         => htmlspecialchars($atts['order']),
     );
    
     // Handle limits for pagination   
@@ -1443,20 +1489,20 @@ function tp_publist_shortcode ($atts) {
     
     // Parameters for returning publications
     $args = array(
-        'tag' => $sql_parameter['tag'], 
-        'year' => $sql_parameter['year'], 
-        'type' => $sql_parameter['type'], 
-        'user' => $sql_parameter['user'], 
-        'search' => $filter_parameter['search'],
-        'author_id' => $sql_parameter['author'],
-        'order' => $sql_parameter['order'], 
-        'exclude' => $sql_parameter['exclude'],
-        'exclude_tags' => $sql_parameter['exclude_tags'],
-        'exclude_types' => $sql_parameter['exclude_types'],
-        'include' => $atts['include'], 
-        'include_editor_as_author' => ($atts['include_editor_as_author'] == 1) ? true : false,
-        'limit' => $pagination_limits['limit'],
-        'output_type' => ARRAY_A);
+        'tag'                       => $sql_parameter['tag'], 
+        'year'                      => $sql_parameter['year'], 
+        'type'                      => $sql_parameter['type'], 
+        'user'                      => $sql_parameter['user'], 
+        'search'                    => $filter_parameter['search'],
+        'author_id'                 => $sql_parameter['author'],
+        'order'                     => $sql_parameter['order'], 
+        'exclude'                   => $sql_parameter['exclude'],
+        'exclude_tags'              => $sql_parameter['exclude_tags'],
+        'exclude_types'             => $sql_parameter['exclude_types'],
+        'include'                   => $atts['include'], 
+        'include_editor_as_author'  => ($atts['include_editor_as_author'] == 1) ? true : false,
+        'limit'                     => $pagination_limits['limit'],
+        'output_type'               => ARRAY_A);
 
     $all_tags = TP_Tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
     $number_entries = TP_Publications::get_publications($args, true);
@@ -1497,31 +1543,40 @@ function tp_publist_shortcode ($atts) {
     if ( $tpz != 0 ) {
         $part2 = '';
         $link_attributes = 'tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '&amp;tsr=' . $filter_parameter['search'] . $settings['html_anchor'];
-        $menu = ( $settings['pagination'] === 1 ) ? tp_page_menu(array('number_entries' => $number_entries,
-                                                                       'entries_per_page' => $settings['entries_per_page'],
-                                                                       'current_page' => $pagination_limits['current_page'],
-                                                                       'entry_limit' => $pagination_limits['entry_limit'],
-                                                                       'page_link' => $settings['permalink'],
-                                                                       'link_attributes' => $link_attributes,
-                                                                       'mode' => 'bottom',
-                                                                       'before' => '<div class="tablenav">',
-                                                                       'after' => '</div>')) : '';
+        
+        // Define page menu
+        $menu = '';
+        if ( $settings['pagination'] === 1 ) {
+            $menu = tp_page_menu(
+                        array( 'number_entries'     => $number_entries,
+                               'entries_per_page'   => $settings['entries_per_page'],
+                               'current_page'       => $pagination_limits['current_page'],
+                               'entry_limit'        => $pagination_limits['entry_limit'],
+                               'page_link'          => $settings['permalink'],
+                               'link_attributes'    => $link_attributes,
+                               'mode'               => 'bottom',
+                               'before'             => '<div class="tablenav">',
+                               'after'              => '</div>')
+                    );
+        }
+        
+        
         $part2 .= $menu;
         $row_year = TP_Publications::get_years( 
-                        array( 'user' => $sql_parameter['user'], 
-                               'type' => $sql_parameter['type'], 
-                               'order' => 'DESC', 
-                               'output_type' => ARRAY_A ) );
+                        array( 'user'               => $sql_parameter['user'], 
+                               'type'               => $sql_parameter['type'], 
+                               'order'              => 'DESC', 
+                               'output_type'        => ARRAY_A ) );
         
         $part2 .= TP_Shortcodes::generate_pub_table( 
                         $tparray, 
                         $template, 
-                        array( 'number_publications' => $tpz, 
-                               'headline' => $settings['headline'],
-                               'years' => $row_year,
-                               'colspan' => $colspan,
-                               'user' => $atts['user'],
-                               'sort_list' => $settings['sort_list'] ) );
+                        array( 'number_publications'    => $tpz, 
+                               'headline'               => $settings['headline'],
+                               'years'                  => $row_year,
+                               'colspan'                => $colspan,
+                               'user'                   => $atts['user'],
+                               'sort_list'              => $settings['sort_list'] ) );
         $part2 .= $menu;
     }
     // If there are no publications founded
@@ -1555,52 +1610,52 @@ function tp_publist_shortcode ($atts) {
 */
 function tp_cloud_shortcode($atts) {
     $atts = shortcode_atts(array(
-        'user' => '',
-        'tag' => '',
-        'type' => '',
-        'author' => '',
-        'year' => '',
-        'exclude' => '', 
-        'include' => '',
-        'include_editor_as_author' => 1,
-        'order' => 'date DESC',
-        'headline' => 1, 
-        'maxsize' => 35,
-        'minsize' => 11,
-        'tag_limit' => 30,
-        'hide_tags' => '',
-        'exclude_tags' => '',
-        'exclude_types' => '',
-        'image' => 'none',
-        'image_size' => 0,
-        'image_link' => 'none',
-        'anchor' => 1,
-        'author_name' => 'initials',
-        'editor_name' => 'initials',
-        'author_separator' => ';',
-        'editor_separator' => ';',
-        'style' => 'none',
-        'template' => 'tp_template_2021',
-        'title_ref' => 'links',
-        'link_style' => 'inline',
-        'date_format' => 'd.m.Y',
-        'pagination' => 1,
-        'entries_per_page' => 50,
-        'sort_list' => '',
-        'show_tags_as' => 'cloud',
-        'show_author_filter' => 1,
-        'show_in_author_filter' => '',
-        'show_type_filter' => 1,
-        'show_user_filter' => 1,
-        'show_search_filter' => 0,
-        'show_year_filter' => 1, 
-        'show_bibtex' => 1,
-        'container_suffix' => '',
-        'show_altmetric_donut' => 0,
-        'show_altmetric_entry' => 0,
-        'use_jumpmenu' => 1,
-        'use_as_filter' => 1,
-        'filter_class' => 'default'
+        'user'                      => '',
+        'tag'                       => '',
+        'type'                      => '',
+        'author'                    => '',
+        'year'                      => '',
+        'exclude'                   => '', 
+        'include'                   => '',
+        'include_editor_as_author'  => 1,
+        'order'                     => 'date DESC',
+        'headline'                  => 1, 
+        'maxsize'                   => 35,
+        'minsize'                   => 11,
+        'tag_limit'                 => 30,
+        'hide_tags'                 => '',
+        'exclude_tags'              => '',
+        'exclude_types'             => '',
+        'image'                     => 'none',
+        'image_size'                => 0,
+        'image_link'                => 'none',
+        'anchor'                    => 1,
+        'author_name'               => 'initials',
+        'editor_name'               => 'initials',
+        'author_separator'          => ';',
+        'editor_separator'          => ';',
+        'style'                     => 'none',
+        'template'                  => 'tp_template_2021',
+        'title_ref'                 => 'links',
+        'link_style'                => 'inline',
+        'date_format'               => 'd.m.Y',
+        'pagination'                => 1,
+        'entries_per_page'          => 50,
+        'sort_list'                 => '',
+        'show_tags_as'              => 'cloud',
+        'show_author_filter'        => 1,
+        'show_in_author_filter'     => '',
+        'show_type_filter'          => 1,
+        'show_user_filter'          => 1,
+        'show_search_filter'        => 0,
+        'show_year_filter'          => 1, 
+        'show_bibtex'               => 1,
+        'container_suffix'          => '',
+        'show_altmetric_donut'      => 0,
+        'show_altmetric_entry'      => 0,
+        'use_jumpmenu'              => 1,
+        'use_as_filter'             => 1,
+        'filter_class'              => 'default'
     ), $atts);
    
     return tp_publist_shortcode($atts);
@@ -1617,48 +1672,48 @@ function tp_cloud_shortcode($atts) {
 */
 function tp_list_shortcode($atts){
     $atts = shortcode_atts(array(
-       'user' => '',
-       'tag' => '',
-       'type' => '',
-       'author' => '',
-       'year' => '',
-       'exclude' => '',
-       'include' => '',
-       'include_editor_as_author' => 1,
-       'exclude_tags' => '',
-       'exclude_types' => '',
-       'order' => 'date DESC',
-       'headline' => 1,
-       'image' => 'none',
-       'image_size' => 0,
-       'image_link' => 'none',
-       'anchor' => 1,
-       'author_name' => 'initials',
-       'editor_name' => 'initials',
-       'author_separator' => ';',
-       'editor_separator' => ';',
-       'style' => 'none',
-       'template' => 'tp_template_2021',
-       'title_ref' => 'links',
-       'link_style' => 'inline',
-       'date_format' => 'd.m.Y',
-       'pagination' => 1,
-       'entries_per_page' => 50,
-       'sort_list' => '',
-       'show_bibtex' => 1,
-       'show_type_filter' => 0,
-       'show_author_filter' => 0,
-       'show_in_author_filter' => '',
-       'show_search_filter' => 0,
-       'show_user_filter' => 0, 
-       'show_year_filter' => 0, 
-       'show_tags_as' => 'none',
-       'container_suffix' => '',
-       'show_altmetric_donut' => 0,
-       'show_altmetric_entry' => 0,
-       'use_jumpmenu' => 1,
-       'use_as_filter' => 1,
-       'filter_class' => 'default'
+       'user'                       => '',
+       'tag'                        => '',
+       'type'                       => '',
+       'author'                     => '',
+       'year'                       => '',
+       'exclude'                    => '',
+       'include'                    => '',
+       'include_editor_as_author'   => 1,
+       'exclude_tags'               => '',
+       'exclude_types'              => '',
+       'order'                      => 'date DESC',
+       'headline'                   => 1,
+       'image'                      => 'none',
+       'image_size'                 => 0,
+       'image_link'                 => 'none',
+       'anchor'                     => 1,
+       'author_name'                => 'initials',
+       'editor_name'                => 'initials',
+       'author_separator'           => ';',
+       'editor_separator'           => ';',
+       'style'                      => 'none',
+       'template'                   => 'tp_template_2021',
+       'title_ref'                  => 'links',
+       'link_style'                 => 'inline',
+       'date_format'                => 'd.m.Y',
+       'pagination'                 => 1,
+       'entries_per_page'           => 50,
+       'sort_list'                  => '',
+       'show_bibtex'                => 1,
+       'show_type_filter'           => 0,
+       'show_author_filter'         => 0,
+       'show_in_author_filter'      => '',
+       'show_search_filter'         => 0,
+       'show_user_filter'           => 0, 
+       'show_year_filter'           => 0, 
+       'show_tags_as'               => 'none',
+       'container_suffix'           => '',
+       'show_altmetric_donut'       => 0,
+       'show_altmetric_entry'       => 0,
+       'use_jumpmenu'               => 1,
+       'use_as_filter'              => 1,
+       'filter_class'               => 'default'
     ), $atts);
 
     return tp_publist_shortcode($atts);
@@ -1674,48 +1729,48 @@ function tp_list_shortcode($atts){
  */
 function tp_search_shortcode ($atts) {
     $atts = shortcode_atts(array(
-       'user' => '',
-       'tag' => '',
-       'type' => '',
-       'author' => '',
-       'year' => '',
-       'exclude' => '',
-       'include' => '',
-       'include_editor_as_author' => 1,
-       'order' => 'date DESC',
-       'headline' => 0,
-       'exclude_tags' => '',
-       'exclude_types' => '',
-       'image' => 'none',
-       'image_size' => 0,
-       'image_link' => 'none',
-       'anchor' => 0,
-       'author_name' => 'initials',
-       'editor_name' => 'initials',
-       'author_separator' => ';',
-       'editor_separator' => ';',
-       'style' => 'numbered',
-       'template' => 'tp_template_2021',
-       'title_ref' => 'links',
-       'link_style' => 'inline',
-       'date_format' => 'd.m.Y',
-       'pagination' => 1,
-       'entries_per_page' => 20,
-       'sort_list' => '',
-       'show_bibtex' => 1,
-       'show_tags_as' => 'none',
-       'show_author_filter' => 0,
-       'show_in_author_filter' => '',
-       'show_type_filter' => 0,
-       'show_user_filter' => 0,
-       'show_search_filter' => 1,
-       'show_year_filter' => 0,
-       'container_suffix' => '',
-       'show_altmetric_donut' => 0,
-       'show_altmetric_entry' => 0,
-       'use_jumpmenu' => 0,
-       'use_as_filter' => 1,
-       'filter_class' => 'block'
+       'user'                       => '',
+       'tag'                        => '',
+       'type'                       => '',
+       'author'                     => '',
+       'year'                       => '',
+       'exclude'                    => '',
+       'include'                    => '',
+       'include_editor_as_author'   => 1,
+       'order'                      => 'date DESC',
+       'headline'                   => 0,
+       'exclude_tags'               => '',
+       'exclude_types'              => '',
+       'image'                      => 'none',
+       'image_size'                 => 0,
+       'image_link'                 => 'none',
+       'anchor'                     => 0,
+       'author_name'                => 'initials',
+       'editor_name'                => 'initials',
+       'author_separator'           => ';',
+       'editor_separator'           => ';',
+       'style'                      => 'numbered',
+       'template'                   => 'tp_template_2021',
+       'title_ref'                  => 'links',
+       'link_style'                 => 'inline',
+       'date_format'                => 'd.m.Y',
+       'pagination'                 => 1,
+       'entries_per_page'           => 20,
+       'sort_list'                  => '',
+       'show_bibtex'                => 1,
+       'show_tags_as'               => 'none',
+       'show_author_filter'         => 0,
+       'show_in_author_filter'      => '',
+       'show_type_filter'           => 0,
+       'show_user_filter'           => 0,
+       'show_search_filter'         => 1,
+       'show_year_filter'           => 0,
+       'container_suffix'           => '',
+       'show_altmetric_donut'       => 0,
+       'show_altmetric_entry'       => 0,
+       'use_jumpmenu'               => 0,
+       'use_as_filter'              => 1,
+       'filter_class'               => 'block'
     ), $atts); 
     
     return tp_publist_shortcode($atts);

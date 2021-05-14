@@ -169,67 +169,50 @@ class TP_Courses {
      */
     public static function get_courses ( $args = array() ) {
         $defaults = array(
-            'semester' => '',
-            'visibility' => '',
-            'parent' => '',
-            'search' => '',
-            'exclude' => '',
-            'order' => 'semester DESC, name',
-            'limit' => '',
-            'output_type' => OBJECT
+            'semester'      => '',
+            'visibility'    => '',
+            'parent'        => '',
+            'search'        => '',
+            'exclude'       => '',
+            'order'         => 'semester DESC, name',
+            'limit'         => '',
+            'output_type'   => OBJECT
         ); 
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args, EXTR_SKIP );
+        $atts = wp_parse_args( $args, $defaults );
 
         global $wpdb;
 
         // Define basics
         $sql = "SELECT course_id, name, type, lecturer, date, room, places, start, end, semester, parent, visible, rel_page, comment, image_url, strict_signup, use_capabilites, parent_name
                 FROM ( SELECT t.course_id AS course_id, t.name AS name, t.type AS type, t.lecturer AS lecturer, t.date AS date, t.room As room, t.places AS places, t.start AS start, t.end As end, t.semester AS semester, t.parent As parent, t.visible AS visible, t.rel_page AS rel_page, t.comment AS comment, t.image_url AS image_url, t.strict_signup AS strict_signup, t.use_capabilites AS use_capabilites, p.name AS parent_name 
-                    FROM " . TEACHPRESS_COURSES . " t 
-                    LEFT JOIN " . TEACHPRESS_COURSES . " p ON t.parent = p.course_id ) AS temp";
-        $where = '';
-        $order = esc_sql($order);
-        $limit = esc_sql($limit);
-        $output_type = esc_sql($output_type);
-        $search = esc_sql(htmlspecialchars(stripslashes($search)));
-        $exclude = TP_DB_Helpers::generate_where_clause($exclude, "p.pub_id", "AND", "!=");
-        $semester = TP_DB_Helpers::generate_where_clause($semester, "semester", "OR", "=");
-        $visibility = TP_DB_Helpers::generate_where_clause($visibility, "visible", "OR", "=");
-
+                FROM " . TEACHPRESS_COURSES . " t 
+                LEFT JOIN " . TEACHPRESS_COURSES . " p ON t.parent = p.course_id ) AS temp";
+        
         // define global search
+        $search = esc_sql(htmlspecialchars(stripslashes($atts['search'])));
         if ( $search != '' ) {
             $search = "`name` like '%$search%' OR `parent_name` like '%$search%' OR `lecturer` like '%$search%' OR `date` like '%$search%' OR `room` like '%$search%' OR `course_id` = '$search'";
         }
-
-        if ( $exclude != '' ) {
-            $where = ( $where != '' ) ? $where . " AND ( $exclude ) " : " ( $exclude ) ";
-        }
-        if ( $semester != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $semester ) " : " ( $semester ) ";
-        }
-        if ( $visibility != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $visibility ) " : " ( $visibility ) ";
-        }
-        if ( $search != '') {
-            $where = ( $where != '' ) ? $where . " AND ( $search ) " : " ( $search ) ";
-        }
-        if ( $parent !== '' ) {
-            $parent = intval($parent);
-            $where = ( $where != '' ) ? $where . " AND ( `parent` = '$parent' ) " : "`parent` = '$parent'" ;
-        }
-        if ( $where != '' ) {
-            $where = " WHERE $where";
-        }
-        if ( $limit != '' ) {
-            $limit = " LIMIT $limit";
-        }
+        
+        // WHERE clause
+        $nwhere = array();
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['exclude'], "p.pub_id", "AND", "!=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['semester'], "semester", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['visibility'], "visible", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['parent'], "parent", "OR", "=");
+        $nwhere[] = ( $search != '') ? $search : null;
+        
+        $where = TP_DB_Helpers::compose_clause($nwhere);
+        
+        // LIMIT clause
+        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
 
         // define order
+        $order = esc_sql($atts['order']);
         if ( $order != '' ) {
             $order = " ORDER BY $order";
         }
-        $result = $wpdb->get_results($sql . $where . $order . $limit, $output_type);
+        $result = $wpdb->get_results($sql . $where . $order . $limit, $atts['output_type']);
         return $result;
     }
     
@@ -359,23 +342,23 @@ class TP_Courses {
         $wpdb->insert( 
                 TEACHPRESS_COURSES, 
                 array( 
-                    'name' => $data['name'], 
-                    'type' => $data['type'], 
-                    'room' => $data['room'], 
-                    'lecturer' => $data['lecturer'], 
-                    'date' => $data['date'], 
-                    'places' => $data['places'], 
-                    'start' => $data['start'], 
-                    'end' => $data['end'], 
-                    'semester' => $data['semester'], 
-                    'comment' => $data['comment'], 
-                    'rel_page' => $data['rel_page'], 
-                    'parent' => $data['parent'], 
-                    'visible' => $data['visible'], 
-                    'waitinglist' => $data['waitinglist'], 
-                    'image_url' => $data['image_url'], 
-                    'strict_signup' => $data['strict_signup'], 
-                    'use_capabilites' => $data['use_capabilites'] ), 
+                    'name'              => $data['name'], 
+                    'type'              => $data['type'], 
+                    'room'              => $data['room'], 
+                    'lecturer'          => $data['lecturer'], 
+                    'date'              => $data['date'], 
+                    'places'            => $data['places'], 
+                    'start'             => $data['start'], 
+                    'end'               => $data['end'], 
+                    'semester'          => $data['semester'], 
+                    'comment'           => $data['comment'], 
+                    'rel_page'          => $data['rel_page'], 
+                    'parent'            => $data['parent'], 
+                    'visible'           => $data['visible'], 
+                    'waitinglist'       => $data['waitinglist'], 
+                    'image_url'         => $data['image_url'], 
+                    'strict_signup'     => $data['strict_signup'], 
+                    'use_capabilites'   => $data['use_capabilites'] ), 
                 array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ) );
         $course_id = $wpdb->insert_id;
         // add capability
@@ -415,10 +398,10 @@ class TP_Courses {
         $post = get_post($data['rel_page_alter']);
         $content = str_replace('[course_id]', 'id="' . $course_id . '"', $post->post_content );
         $postarr = array ( 
-            'post_title'   => $data['name'],
-            'post_content' => $content,
-            'post_type'    => $post->post_type,
-            'post_author'  => $post->post_author,
+            'post_title'    => $data['name'],
+            'post_content'  => $content,
+            'post_type'     => $post->post_type,
+            'post_author'   => $post->post_author,
             'post_status'   => 'publish'
         );
         return wp_insert_post($postarr);
@@ -482,23 +465,23 @@ class TP_Courses {
         return $wpdb->update( 
                 TEACHPRESS_COURSES, 
                 array( 
-                    'name' => $data['name'], 
-                    'type' => $data['type'], 
-                    'room' => $data['room'], 
-                    'lecturer' => $data['lecturer'], 
-                    'date' => $data['date'], 
-                    'places' => $data['places'], 
-                    'start' => $data['start'], 
-                    'end' => $data['end'], 
-                    'semester' => $data['semester'], 
-                    'comment' => $data['comment'], 
-                    'rel_page' => $data['rel_page'], 
-                    'parent' => $data['parent'], 
-                    'visible' => $data['visible'], 
-                    'waitinglist' => $data['waitinglist'], 
-                    'image_url' => $data['image_url'], 
-                    'strict_signup' => $data['strict_signup'], 
-                    'use_capabilites' => $data['use_capabilites'] ), 
+                    'name'              => $data['name'], 
+                    'type'              => $data['type'], 
+                    'room'              => $data['room'], 
+                    'lecturer'          => $data['lecturer'], 
+                    'date'              => $data['date'], 
+                    'places'            => $data['places'], 
+                    'start'             => $data['start'], 
+                    'end'               => $data['end'], 
+                    'semester'          => $data['semester'], 
+                    'comment'           => $data['comment'], 
+                    'rel_page'          => $data['rel_page'], 
+                    'parent'            => $data['parent'], 
+                    'visible'           => $data['visible'], 
+                    'waitinglist'       => $data['waitinglist'], 
+                    'image_url'         => $data['image_url'], 
+                    'strict_signup'     => $data['strict_signup'], 
+                    'use_capabilites'   => $data['use_capabilites'] ), 
                 array( 'course_id' => $course_id ), 
                 array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ), 
                 array( '%d' ) );

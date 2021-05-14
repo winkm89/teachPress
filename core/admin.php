@@ -129,7 +129,19 @@ class TP_Admin {
         $day = ( $value != '' ) ? $b[0][2] : '01';
         $month = ( $value != '' ) ? $b[0][1] : '01';
         $year = ( $value != '' ) ? $b[0][0] : '19xx';
-        $months = array ( __('Jan','teachpress'), __('Feb','teachpress'), __('Mar','teachpress'), __('Apr','teachpress'), __('May','teachpress'), __('Jun','teachpress'), __('Jul','teachpress'), __('Aug','teachpress'), __('Sep','teachpress'), __('Oct','teachpress'), __('Nov','teachpress'), __('Dec','teachpress') );
+        $months = array ( 
+            __('Jan','teachpress'), 
+            __('Feb','teachpress'), 
+            __('Mar','teachpress'), 
+            __('Apr','teachpress'), 
+            __('May','teachpress'), 
+            __('Jun','teachpress'), 
+            __('Jul','teachpress'), 
+            __('Aug','teachpress'), 
+            __('Sep','teachpress'), 
+            __('Oct','teachpress'), 
+            __('Nov','teachpress'), 
+            __('Dec','teachpress') );
         $return = '';
         $return .= '<p><b>' . stripslashes($label) . '</b></p>';
         $return .= '<input name="' . $field_name . '_day" id="' . $field_name . '_day" type="text" title="Day" size="2" value="' . $day . '"/>';
@@ -274,14 +286,14 @@ class TP_Admin {
      */
     public static function get_form_field ($atts) {
         $param = shortcode_atts(array(
-            'name' => '',
-            'title' => '',
-            'label' => '',
-            'type' => '',
-            'value' => '',
-            'tabindex' => '',
-            'display' => 'block',
-            'style' => ''
+            'name'      => '',
+            'title'     => '',
+            'label'     => '',
+            'type'      => '',
+            'value'     => '',
+            'tabindex'  => '',
+            'display'   => 'block',
+            'style'     => ''
         ), $atts);
         
         if ( $param['type'] === 'textarea' ) {
@@ -792,14 +804,14 @@ function tp_add_publication_as_post ($title, $bibtex_key, $date, $post_type = 'p
     $content = str_replace('[key]', 'key="' . $bibtex_key . '"', get_tp_option('rel_content_template') );
      
     $post_id = wp_insert_post(array(
-      'post_title' => $title,
-      'post_content' => $content,
-      'tags_input' => $tags,
-      'post_date' => $date . " 12:00:00",
-      'post_date_gmt' => $date . " 12:00:00",
-      'post_type' => $post_type,
-      'post_status' => 'publish',
-      'post_category' => $category,
+      'post_title'      => $title,
+      'post_content'    => $content,
+      'tags_input'      => $tags,
+      'post_date'       => $date . " 12:00:00",
+      'post_date_gmt'   => $date . " 12:00:00",
+      'post_type'       => $post_type,
+      'post_status'     => 'publish',
+      'post_category'   => $category,
       ));
     return $post_id;
 }

@@ -27,8 +27,8 @@ class TP_Bookmarks {
      */
     public static function get_bookmarks( $args = array() ) {
         $defaults = array(
-            'user' => '',
-            'output_type' => OBJECT
+            'user'          => '',
+            'output_type'   => OBJECT
         ); 
         $atts = wp_parse_args( $args, $defaults );
 
