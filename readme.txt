@@ -129,7 +129,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 = 7.2.0 =
 * New: New default publication template teachPress 2021 added (mobile friendly flexible layout) (#161)
 * New: Flexible publication type registration added (#150)
-* New: Publication types added: media (#110) and diploma thesis (#160)
+* New: Publication types added: media (#110), bachelor and diploma thesis (#160)
 * New: Adding DOI-Link to feedlist (#158)
 * Changed: Update bibtexParse to v2.5 (#147)
 * Changed: Font sizes in publication templates defined in rem
@@ -139,6 +139,11 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Changed: For custom templates: get_image() method for publication templates added (and is required for all templates!) (#161)
 * Changed: For custom templates: $interface->get_tag_line() renames to $interface->get_menu_line()
 * Bugfix: Punctation lost after import publications (#145)
+* Bugfix: BibTeX import: Uninitialized string offset: 0 notice if bibtex entries are separated with empty lines (#163)
+* Bugfix: BibTeX import: Undefined index: author notice if the author field is not set (#163)
+
+= 7.1.5 (27.04.2021) =
+* Bugfix: Fixed a bug in the unique bibtex key check, which is used if a publication is added by the importer (#101)
 
 = 7.1.4 (27.02.2021) = 
 * Bugfix: Options for metadata fields not visible (#152)
