@@ -60,6 +60,20 @@ function tp_register_all_publication_types() {
         ) );
     
     /**
+     * Bachelor Thesis
+     * Note: We use mastersthesis as bibtex key for compatibility reasons
+     */
+    tp_register_publication_type(
+        array(
+            'type_slug'         => 'bachelorthesis',
+            'bibtex_key_ext'    => 'thesis',
+            'i18n_singular'     => __('Bachelor Thesis','teachpress'), 
+            'i18n_plural'       => __('Bachelor Theses','teachpress'),   
+            'default_fields'    => array('address', 'school', 'techtype'),   
+            'html_meta_row'     => '{school}{address}{year}{isbn}{note}' 
+        ) );
+    
+    /**
      * Diploma Thesis
      * Note: We use mastersthesis as bibtex key for compatibility reasons
      */
