@@ -143,6 +143,15 @@ class TP_Import_Publication_Page {
             $entries = TP_Bibtex_Import::init($bibtex, $settings);
         }
         
+        // import from PubMed
+        elseif ( isset($post['tp_pmid']) ) {
+            // TP_PubMed_Import only cares about overwrite.
+            $settings = array(
+                'overwrite' => isset( $post['overwrite'] )
+            );
+            $entries = TP_PubMed_Import::init($post['tp_pmid'], $settings);
+        }
+        
         // if there is no import
         else {
             $tp_entries = ( isset($post['tp_entries']) ) ? htmlspecialchars($post['tp_entries'] ) : '0';
@@ -168,6 +177,11 @@ class TP_Import_Publication_Page {
                     <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
                 </div>
                 <textarea name="bibtex_area" id="bibtex_area" rows="20" style="width:100%;" title="<?php _e('Insert your BibTeX entries here','teachpress'); ?>"></textarea>
+                <div style="text-align: center;">
+                    <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
+                    <label for="tp_pmid">PMID</label>
+                    <input name="tp_pmid" id="tp_pmid" title="<?php _e('Comma-separated list of PubMed identifiers','teachpress'); ?>" type="text">
+                </div>
             </div>
             <div class="tp_postcontent_right">
                 <div class="postbox">

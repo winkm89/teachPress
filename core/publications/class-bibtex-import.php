@@ -138,7 +138,7 @@ class TP_Bibtex_Import {
      * @since 5.0.0
      * @access private
      */
-    private static function import_publication_to_database ($entry, $tags, $settings) {
+    protected static function import_publication_to_database ($entry, $tags, $settings) {
         $check = true;
         if ( $settings['overwrite'] === true ) {
             $entry['entry_id'] = TP_Publications::change_publication_by_key($entry['bibtex'], $entry, $tags);
@@ -173,7 +173,7 @@ class TP_Bibtex_Import {
      * @since 5.0.0
      * @acces private
      */
-    private static function set_date_of_publishing ($entry) {
+    protected static function set_date_of_publishing ($entry) {
         $entry['month'] = array_key_exists('month', $entry) === true ? self::parse_month($entry['month']) : '';
         $entry['day'] = array_key_exists('day', $entry) === true ? $entry['day'] : '';
         // if complete date is given

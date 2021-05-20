@@ -74,6 +74,7 @@ include_once('core/publications/class-db-bookmarks.php');
 include_once('core/publications/class-db-publications.php');
 include_once('core/publications/class-db-tags.php');
 include_once('core/publications/class-publication-type.php');
+include_once('core/publications/class-pubmed-import.php');
 include_once('core/publications/default-publication-types.php');
 include_once('core/publications/templates.php');
 include_once('core/publications/class-books-widget.php');
