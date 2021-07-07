@@ -181,6 +181,7 @@ class TP_Import_Publication_Page {
                     <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
                     <label for="tp_pmid">PMID</label>
                     <input name="tp_pmid" id="tp_pmid" title="<?php _e('Comma-separated list of PubMed identifiers','teachpress'); ?>" type="text">
+                    <p style="text-align: center; font-size: small;"><a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a></p>
                 </div>
             </div>
             <div class="tp_postcontent_right">

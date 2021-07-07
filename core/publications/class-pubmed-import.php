@@ -6,6 +6,11 @@
 
 /**
  * This class contains functions which are used for a PubMed import
+ *
+ * NCBI policies restrict the rate of requests to three per second.
+ * Since requests are triggered by a human from the WordPress web
+ * interface, this class is highly unlikely to approach that limit.
+ *
  * @package teachpress\core\PubMed
  */
 class TP_PubMed_Import extends TP_Bibtex_Import {
