@@ -12,11 +12,10 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
    /**
     * Imports a PubMed string
     * @global class $PARSEENTRIES
-    * @param string $input      String of PMIDs, separated by any non-numeric character (PMIDs are all-numeric)
-    * @param array $settings    With index names: keyword_separator, author_format, overwrite
+    * @param string $input      String of PMIDs, separated by a positive number of non-numeric characters (PMIDs are all-numeric)
+    * @param array $settings    With index names: overwrite
     * @param string $test       Set it to true for test mode. This mode disables the inserting of publications into database
     * @return $array            An array with the inserted publication entries
-    * @since 3.0.0
     */
     public static function init ($input, $settings, $test = false) {
         // Try to set the time limit for the script
@@ -74,7 +73,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             // use 'pmidN' for the BibTeX identifier, where N is the
             // eight-digit PMID.  Could also use $article->ELocationID
             // for the DOI.  IdType='pmc' is also of potential
-            // interest here.
+            // interest here; could be used with db=pmc.
             foreach ( $pubmed_article
                       ->PubmedData->ArticleIdList->ArticleId as $id ) {
                 switch ( $id['IdType'] ) {
@@ -93,7 +92,6 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             $entry['journal'] = (string)$article->Journal->ISOAbbreviation;
             $entry['volume'] = (string)$article->Journal->JournalIssue->Volume;
             $entry['number'] = (string)$article->Journal->JournalIssue->Issue;
-
             $entry['abstract'] = $article->Abstract->AbstractText;
 
 
@@ -130,7 +128,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
 
 
             // Use LaTeX syntax for en-dash ('--') in the page range
-            // and convert e.g. "349-60" to "349-360".
+            // and convert e.g. "349-60" to "349--360".
             $pages = explode('-', (string)$article->Pagination->MedlinePgn);
             if ( count($pages) === 2 ) {
                 $missing_digits = strlen($pages[0]) - strlen($pages[1]);
@@ -144,7 +142,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
 
             // Add the string to database.  Since there are no
             // keywords in PubMed (except possibly the MeshHeading),
-            // there will also be no tags.
+            // there will be no tags.
             if ( $test === false ) {
                 $entry['import_id'] = $import_id;
                 $entry['entry_id'] = self::import_publication_to_database(
