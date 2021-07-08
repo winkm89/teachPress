@@ -91,11 +91,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
 
         $entries = array();
         foreach ( $object->PubmedArticle as $pubmed_article ) {
-            // Although PubMed does have references to book chapters
-            // or book sections (i.e. 'inbook'), they appear to be
-            // indistinguishable from regular articles.
             $entry = array();
-            $entry['type'] = 'article';
 
 
             // As in TexMed (https://www.bioinformatics.org/texmed),
@@ -167,6 +163,18 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
                 }
             }
             $entry['pages'] = implode('--', $pages);
+
+
+            // Although PubMed does have references to book chapters
+            // or book sections (i.e. 'inbook'), they appear to be
+            // indistinguishable from regular articles.
+            foreach ( $article->PublicationTypeList->PublicationType
+                      as $type ) {
+                if ( (string)$publication_type === "Journal Article" ) {
+                    $entry['type'] = 'article';
+                    break;
+                }
+            }
 
 
             // Add the string to database.  Since there are no
