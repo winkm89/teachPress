@@ -31,38 +31,62 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
         $import_id = $test === false ? tp_publication_imports::add_import() : 0;
 
 
-        // Make a comma-separated list of numeric PMIDs from the
+        // Make a comma-separated list of eight-digit PMIDs from the
         // provided $input.  With retmode=xml, efetch will return the
-        // whole schmear.
-        $query = http_build_query([
-            'db'      => 'pubmed',
-            'id'      => preg_replace('/[^0-9]+/', ',', $input),
-            'retmode' => 'xml',
-            'tool'    => 'teachPress',
-            'email'   => 'johan@hattne.se']);
-        $reply = file_get_contents(
-            'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?'
-            . $query);
-        if ( $reply === false ) {
+        // whole schmear.  According to
+        // https://www.ncbi.nlm.nih.gov/books/NBK25499, if more than
+        // about 200 UIDs are provided, the request should be made
+        // using the HTTP POST method.
+        $pmids = array();
+        preg_match_all( '/[0-9]{8}/', $input, $pmids );
+        if ( count( $pmids[0] ) < 1 ) {
+            get_tp_message(
+                __("Error: No PMIDs in $input",
+                   'teachpress'));
+            return null;
+
+        }
+
+        $body = array( 'db'      => 'pubmed',
+                       'id'      => implode( ',', $pmids[0] ),
+                       'retmode' => 'xml',
+                       'tool'    => 'teachPress',
+                       'email'   => 'johan@hattne.se' );
+
+        if ( count( $pmids[0] ) <= 200 ) {
+            $response = wp_remote_get(
+                'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?' .
+                build_query( $body )
+            );
+        } else {
+            $response = wp_remote_post(
+                'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi',
+                array( 'body' => $body )
+            );
+        }
+
+        if ( is_wp_error( $response ) || intdiv(
+            wp_remote_retrieve_response_code( $response ), 100) !== 2 ) {
             get_tp_message(
                 __("Error: Failed to get PMID $input from PubMed",
                    'teachpress'));
             return null;
         }
-        
-        $object = simplexml_load_string($reply);
+
+        $object = simplexml_load_string(
+            wp_remote_retrieve_body ( $response ) );
         if ( $object === false ) {
             get_tp_message(
                 __("Error: Failed to parse PubMed XML", 'teachpress'));
             return null;
         }
 
-        // Debug: dump the raw XML reply.
-        //echo "<pre>" . htmlentities($reply) . "</pre>";
+        // Debug: dump the raw XML response.
+        //echo "<pre>" . htmlentities( wp_remote_retrieve_body( $response ) ) . "</pre>";
 
         // Debug: round-trip via JSON into PHP array and dump.
         //echo "<pre>";
-        //print_r(json_decode(json_encode($object), true));
+        //print_r( json_decode( json_encode( $object ), true ) );
         //echo "</pre>";
 
         $entries = array();
@@ -76,9 +100,9 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
 
             // As in TexMed (https://www.bioinformatics.org/texmed),
             // use 'pmidN' for the BibTeX identifier, where N is the
-            // eight-digit PMID.  Could also use $article->ELocationID
-            // for the DOI.  IdType='pmc' is also of potential
-            // interest here; could be used with db=pmc.
+            // PMID.  Could also use $article->ELocationID for the
+            // DOI.  IdType='pmc' is also of potential interest here;
+            // could be used with db=pmc.
             foreach ( $pubmed_article
                       ->PubmedData->ArticleIdList->ArticleId as $id ) {
                 switch ( $id['IdType'] ) {
@@ -97,7 +121,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             $entry['journal'] = (string)$article->Journal->ISOAbbreviation;
             $entry['volume'] = (string)$article->Journal->JournalIssue->Volume;
             $entry['number'] = (string)$article->Journal->JournalIssue->Issue;
-            $entry['abstract'] = $article->Abstract->AbstractText;
+            $entry['abstract'] = (string)$article->Abstract->AbstractText;
 
 
             // Also have $author->Initials (which is just the ForeName
