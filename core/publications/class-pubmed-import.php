@@ -90,7 +90,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
         //echo "</pre>";
 
         $entries = array();
-        foreach ( $object->PubmedArticle as $pubmed_article ) {
+        foreach ( $object->PubmedArticle as $article ) {
             $entry = array();
 
 
@@ -99,8 +99,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             // PMID.  Could also use $article->ELocationID for the
             // DOI.  IdType='pmc' is also of potential interest here;
             // could be used with db=pmc.
-            foreach ( $pubmed_article
-                      ->PubmedData->ArticleIdList->ArticleId as $id ) {
+            foreach ( $article->PubmedData->ArticleIdList->ArticleId as $id ) {
                 switch ( $id['IdType'] ) {
                 case 'doi':
                     $entry['doi'] = (string)$id;
@@ -111,20 +110,40 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
                 }
             }
 
-            $article = $pubmed_article->MedlineCitation->Article;
-            $entry['title'] = (string)$article->ArticleTitle;
+            $citation = $article->MedlineCitation->Article;
 
-            $entry['journal'] = (string)$article->Journal->ISOAbbreviation;
-            $entry['volume'] = (string)$article->Journal->JournalIssue->Volume;
-            $entry['number'] = (string)$article->Journal->JournalIssue->Issue;
-            $entry['abstract'] = (string)$article->Abstract->AbstractText;
+
+            // Zap the trailing period in PubMed article titles.
+            $entry['title'] = preg_replace(
+                '/\.$/', '', (string)$citation->ArticleTitle );
+
+            $entry['journal'] = (string)$citation->Journal->ISOAbbreviation;
+            $entry['volume'] = (string)$citation->Journal->JournalIssue->Volume;
+            $entry['number'] = (string)$citation->Journal->JournalIssue->Issue;
+
+            $entry['abstract'] = "";
+            foreach ( $citation->Abstract->AbstractText as $text ) {
+                // Does $entry['abstract'] support HTML?  If so, the
+                // label should probably be emphasized with e.g. bold
+                // and each text should be made its own paragraph.
+                // There does not appear to be any other markup in the
+                // abstract or the title (italic, bold, etc).
+                if ( $entry['abstract'] !== "" )
+                    $entry['abstract'] .= "\n\n";
+                if ( $text['Label']
+                     && strcasecmp( $text['Label'], "UNLABELLED") !== 0 ) {
+                    $entry['abstract'] .= $text['Label'] . ": " . $text;
+                } else {
+                    $entry['abstract'] .= $text;
+                }
+            }
 
 
             // Also have $author->Initials (which is just the ForeName
             // concatenated in my case: "P C" => "PC") and
             // $author->AffiliationInfo.
             $separator = "";
-            foreach ( $article->AuthorList->Author as $author ) {
+            foreach ( $citation->AuthorList->Author as $author ) {
                 if ( $author['ValidYN'] != 'Y' )
                     continue;
                 $entry['author'] .= $separator
@@ -133,20 +152,20 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
                 $separator = " and ";
             }
 
-            if ( $article->Journal->ISSN ) {
+            if ( $citation->Journal->ISSN ) {
                 $entry['is_isbn'] = 0;
-                $entry['isbn'] = (string)$article->Journal->ISSN;
+                $entry['isbn'] = (string)$citation->Journal->ISSN;
             }
 
 
             // For the date of publishing, PubMed appears to only
             // provide month and year.  For articles published by
-            // other means, $article->ArticleDate may provide finer
+            // other means, $citation->ArticleDate may provide finer
             // granularity (e.g. electronic publication ahead of print
             // where ArticleDate['DateType'] == 'Electronic'.
-            $entry['month'] = (string)$article
+            $entry['month'] = (string)$citation
                             ->Journal->JournalIssue->PubDate->Month;
-            $entry['year'] = (string)$article
+            $entry['year'] = (string)$citation
                            ->Journal->JournalIssue->PubDate->Year;
             $entry['date'] = self::set_date_of_publishing($entry);
 
@@ -154,7 +173,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
 
             // Use LaTeX syntax for en-dash ('--') in the page range
             // and convert e.g. "349-60" to "349--360".
-            $pages = explode('-', (string)$article->Pagination->MedlinePgn);
+            $pages = explode('-', (string)$citation->Pagination->MedlinePgn);
             if ( count($pages) === 2 ) {
                 $missing_digits = strlen($pages[0]) - strlen($pages[1]);
                 if ( $missing_digits > 0 ) {
@@ -168,9 +187,9 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             // Although PubMed does have references to book chapters
             // or book sections (i.e. 'inbook'), they appear to be
             // indistinguishable from regular articles.
-            foreach ( $article->PublicationTypeList->PublicationType
-                      as $type ) {
-                if ( (string)$publication_type === "Journal Article" ) {
+            foreach ( $citation
+                      ->PublicationTypeList->PublicationType as $type ) {
+                if ( (string)$type === "Journal Article" ) {
                     $entry['type'] = 'article';
                     break;
                 }
