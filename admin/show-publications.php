@@ -67,10 +67,10 @@ function tp_show_publications_page() {
     $array_variables['checkbox'] = isset( $_GET['checkbox'] ) ? $_GET['checkbox'] : '';
     $array_variables['action'] = isset( $_GET['action'] ) ? $_GET['action'] : '';
     $array_variables['page'] = isset( $_GET['page'] ) ? htmlspecialchars($_GET['page']) : '';
-    $array_variables['type'] = ( isset( $_GET['filter'] ) && $_GET['filter'] != '0' ) ? htmlspecialchars($_GET['filter']) : '';
-    $array_variables['year'] = isset( $_GET['tp_year'] ) ? intval($_GET['tp_year']) : '';
+    $array_variables['type'] = ( isset( $_GET['type'] ) && $_GET['type'] != '0' ) ? tp_convert_array_to_string($_GET['type']) : '';
+    $array_variables['year'] = isset( $_GET['tp_year'] ) ? tp_convert_array_to_string($_GET['tp_year'], 'int') : '';
     $array_variables['search'] = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
-    $array_variables['tag_id'] = isset( $_GET['tag'] ) ? intval($_GET['tag']) : '';
+    $array_variables['tag_id'] = isset( $_GET['tag'] ) ? tp_convert_array_to_string($_GET['tag'], 'int') : '';
     $user = $current_user->ID;
 
     // Page menu
@@ -89,8 +89,6 @@ function tp_show_publications_page() {
     }
     
     echo '<div class="wrap">';
-    
-    $publication_types = $tp_publication_types->get();
     
     // test if teachpress database is up to date
     TP_Admin::database_test();
@@ -185,7 +183,7 @@ class TP_Publications_Page {
 
         echo '</textarea>';
         echo '</form>';
-        echo '<script type="text/javascript">
+        echo '<script>
                document.form1.bibtex_area.focus();
                document.form1.bibtex_area.select();
                </script>';
@@ -237,7 +235,7 @@ class TP_Publications_Page {
         echo '</td>';
         echo '</tr>';
         ?>
-        <script type="text/javascript" charset="utf-8">
+        <script>
         jQuery(document).ready(function($) {
           var availableTags = [
               <?php
@@ -331,7 +329,7 @@ class TP_Publications_Page {
                 } 
             } 
         }
-        TP_HTML::line('<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row->pub_id . '" /></th>');
+        TP_HTML::line('<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row->pub_id . '" title="' . __('Select the entry','teachpress') . '" /></th>');
         TP_HTML::line('<td>');
         echo '<a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . TP_HTML::prepare_title($row->title, 'decode') . '</strong></a>';
         if ( $row->status === 'forthcoming' ) {
@@ -366,10 +364,10 @@ class TP_Publications_Page {
     private static function get_tags_for_single_row ($pub_id, $tags, $array_variables) {
         $tag_string = '';
         foreach ($tags as $temp) {
-            if ($temp["pub_id"] != $pub_id) {
+            if ( $temp["pub_id"] != $pub_id ) {
                continue;
             }
-            if ($temp["tag_id"] == $array_variables['tag_id']) {
+            if ( $temp["tag_id"] == $array_variables['tag_id'] ) {
                $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;tp_year=' . $array_variables['year'] . '" title="' . __('Delete tag as filter','teachpress') . '"><strong>' . stripslashes($temp["name"]) . '</strong></a>, ';
             }
             else {
@@ -388,14 +386,16 @@ class TP_Publications_Page {
      */
     private static function get_tag_filter ($array_variables, $user) {
         $array_tags = TP_Tags::get_tags( array(
-                        'user' => ($array_variables['page'] == 'publications.php') ? '' : $user, 
-                        'group_by' => true, 
-                        'order' => 'ASC' ) );
-        TP_HTML::line('<select name="tag">');
-        TP_HTML::line('<option value="0">- ' . __('All tags','teachpress') . ' -</option>');      
+                        'user'          => ($array_variables['page'] == 'publications.php') ? '' : $user, 
+                        'group_by'      => true, 
+                        'order'         => 'ASC',
+                        'output_type'   => ARRAY_A) );
+        TP_HTML::line('<select id="tag_filter" name="tag[]" multiple>');
+        TP_HTML::line('<option data-placeholder="true">- ' . __('All tags','teachpress') . ' -</option>');
+        $haystack = ( $array_variables['tag_id'] != '' ) ? explode(',', $array_variables['tag_id'] ): array();
         foreach ( $array_tags as $row ) {
-            $selected = ( $array_variables['tag_id'] == $row->tag_id ) ? 'selected="selected"' : '';
-            TP_HTML::line('<option value="' . $row->tag_id . '" ' . $selected . '>' . $row->name . '</option>');
+            $selected = ( in_array($row['tag_id'], $haystack) ) ? 'selected="selected"' : '';
+            TP_HTML::line('<option value="' . $row['tag_id'] . '" ' . $selected . '>' . $row['name'] . '</option>');
         }      
         TP_HTML::line('</select>');
     }
@@ -403,18 +403,18 @@ class TP_Publications_Page {
     /**
      * Gets the filter box for publication types
      * @param array $array_variables    An associative array
-     * @param int $user                 The ueser ID
+     * @param int $user                 The user ID
      * @since 5.0.0
      * @access private
      */
     private static function get_type_filter ($array_variables, $user) {
         $array_types = TP_Publications::get_used_pubtypes( array(
              'user' => ($array_variables['page'] == 'publications.php') ? '' : $user ) );
-        
-        TP_HTML::line('<select name="filter">');
-        TP_HTML::line('<option value="0">- ' . __('All types','teachpress') . ' -</option>');
+        TP_HTML::line('<select id="type_filter" name="type[]" multiple>');
+        TP_HTML::line('<option data-placeholder="true">- ' . __('All types','teachpress') . ' -</option>');
+        $haystack = ( $array_variables['type'] != '' ) ? explode(',', $array_variables['type'] ): array();
         foreach ( $array_types as $row ) {
-            $selected = ( $array_variables['type'] === $row['type'] ) ? 'selected="selected"' : '';
+            $selected = ( in_array($row['type'], $haystack)  ) ? 'selected="selected"' : '';
             TP_HTML::line('<option value="' . $row['type'] . '" ' . $selected . '>' . tp_translate_pub_type($row['type'],'pl') . '</option>');
         }
         TP_HTML::line('</select>');    
@@ -429,14 +429,16 @@ class TP_Publications_Page {
      */
     private static function get_year_filter ($array_variables, $user) {
         $array_years = TP_Publications::get_years( array(
-            'order' => 'DESC', 
-            'user' => ($array_variables['page'] == 'publications.php') ? '' : $user) );
+            'order'         => 'DESC', 
+            'user'          => ($array_variables['page'] == 'publications.php') ? '' : $user,
+            'output_type'   => ARRAY_A ) );
         
-        TP_HTML::line('<select name="tp_year">');
-        TP_HTML::line('<option value="0">- ' . __('All years','teachpress') . ' -</option>');
+        TP_HTML::line('<select id="year_filter" name="tp_year[]" multiple>');
+        TP_HTML::line('<option data-placeholder="true">- ' . __('All years','teachpress') . ' -</option>');
+        $haystack = ( $array_variables['year'] != '' ) ? explode(',', $array_variables['year'] ): array();
         foreach ( $array_years as $row ) {
-            $selected = ( $array_variables['year'] == $row->year ) ? 'selected="selected"' : '';
-            TP_HTML::line('<option value="' . $row->year . '" ' . $selected . '>' . $row->year . '</option>');
+            $selected = ( in_array( $row['year'], $haystack) ) ? 'selected="selected"' : '';
+            TP_HTML::line('<option value="' . $row['year']. '" ' . $selected . '>' . $row['year'] . '</option>');
         }        
         TP_HTML::line('</select>');
     }
@@ -452,7 +454,6 @@ class TP_Publications_Page {
         TP_HTML::line('<h2>' . $title . '<a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Add new','teachpress') . '</a></h2>');
         TP_HTML::line('<form id="show_publications_form" name="form1" method="get" action="admin.php">');
         TP_HTML::line('<input type="hidden" name="page" id="page" value="' . $array_variables['page'] . '" />');
-        TP_HTML::line('<input type="hidden" name="tag" id="tag" value="' . $array_variables['tag_id'] . '" />');
 
         // Delete publications - part 1
         if ( $array_variables['action'] == "delete" ) {
@@ -463,13 +464,13 @@ class TP_Publications_Page {
                   </div>');
         }
         
-        $args = array('search' => $array_variables['search'],
-                      'user' => ($array_variables['page'] == 'publications.php') ? '' : $user,
-                      'tag' => $array_variables['tag_id'],
-                      'year' => $array_variables['year'],
-                      'limit' => $array_variables['entry_limit'] . ',' .  $array_variables['per_page'],
-                      'type' => $array_variables['type'],
-                      'order' => 'date DESC, title ASC'
+        $args = array('search'  => $array_variables['search'],
+                      'user'    => ($array_variables['page'] == 'publications.php') ? '' : $user,
+                      'tag'     => $array_variables['tag_id'],
+                      'year'    => $array_variables['year'],
+                      'limit'   => $array_variables['entry_limit'] . ',' .  $array_variables['per_page'],
+                      'type'    => $array_variables['type'],
+                      'order'   => 'date DESC, title ASC'
                      );
         $test = TP_Publications::get_publications($args, true);
         
@@ -505,21 +506,22 @@ class TP_Publications_Page {
         TP_HTML::div_close('alignleft actions');
         
         // Filters
-        TP_HTML::div_open('alignleft actions');
+        TP_HTML::div_open('alignleft actions slim-select');
         TP_Publications_Page::get_type_filter($array_variables, $user);
         TP_Publications_Page::get_year_filter($array_variables, $user);
         TP_Publications_Page::get_tag_filter($array_variables, $user);
-        TP_HTML::line('<input name="filter-ok" value="' . __('Limit selection','teachpress') . '" type="submit" class="button-secondary"/>');
+        TP_HTML::line('<button class="button-secondary" name="filter-ok" type="submit" >' . __('Limit selection','teachpress') . '</button>');
+        // TP_HTML::line('<input name="filter-ok" value="' . __('Limit selection','teachpress') . '" type="submit" class="button-secondary"/>');
         TP_HTML::div_close('alignleft actions');
            
         // Page Menu
         $link = 'search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'];
-        echo tp_page_menu(array('number_entries' => $test,
-                                'entries_per_page' => $array_variables['per_page'],
-                                'current_page' => $array_variables['curr_page'],
-                                'entry_limit' => $array_variables['entry_limit'],
-                                'page_link' => 'admin.php?page=' . $array_variables['page'] . '&amp;',
-                                'link_attributes' => $link));
+        echo tp_page_menu(array('number_entries'    => $test,
+                                'entries_per_page'  => $array_variables['per_page'],
+                                'current_page'      => $array_variables['curr_page'],
+                                'entry_limit'       => $array_variables['entry_limit'],
+                                'page_link'         => 'admin.php?page=' . $array_variables['page'] . '&amp;',
+                                'link_attributes'   => $link));
         TP_HTML::div_close('tablenav');
         
         // Publication table
@@ -543,8 +545,8 @@ class TP_Publications_Page {
             TP_Publications_Page::get_bulk_edit_screen($array_variables);
         }
 
-        if ($test === 0) {
-            TP_HTML::line('<tr><td colspan="7"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>');
+        if ( intval($test) === 0 ) {
+            TP_HTML::line('<tr><td colspan="8"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>');
         }
 
         else {
@@ -569,13 +571,13 @@ class TP_Publications_Page {
         TP_HTML::line('<div class="tablenav"><div class="tablenav-pages" style="float:right;">');
         
         if ( $test > $array_variables['per_page'] ) {
-            echo tp_page_menu(array('number_entries' => $test,
-                                    'entries_per_page' => $array_variables['per_page'],
-                                    'current_page' => $array_variables['curr_page'],
-                                    'entry_limit' => $array_variables['entry_limit'],
-                                    'page_link' => 'admin.php?page=' . $array_variables['page'] . '&amp;',
-                                    'link_attributes' => $link,
-                                    'mode' => 'bottom'));
+            echo tp_page_menu(array('number_entries'    => $test,
+                                    'entries_per_page'  => $array_variables['per_page'],
+                                    'current_page'      => $array_variables['curr_page'],
+                                    'entry_limit'       => $array_variables['entry_limit'],
+                                    'page_link'         => 'admin.php?page=' . $array_variables['page'] . '&amp;',
+                                    'link_attributes'   => $link,
+                                    'mode'              => 'bottom'));
         } 
         else {
             if ($test === 1) {
@@ -600,13 +602,32 @@ class TP_Publications_Page {
      */
     public static function print_scripts () {
         ?>
-        <script type="text/javascript" charset="utf-8">
+        <script>
+            // SELECT fields
+            new SlimSelect({
+                select: '#type_filter',
+                allowDeselect: true,
+                closeOnSelect: false
+            });
+            new SlimSelect({
+                select: '#year_filter',
+                allowDeselect: true,
+                closeOnSelect: false
+            });
+            new SlimSelect({
+                select: '#tag_filter',
+                allowDeselect: true,
+                closeOnSelect: false
+            });
+        </script>
+        <script>
+            // Cite methods
             jQuery(document).ready(function($){
                 // Start cite publication window
                 $(".teachpress_cite_pub").each(function() {
                     var $link = $(this);
                     var $dialog = $('<div></div>')
-                        .load($link.attr('href') + ' #content')
+                        .load($link.attr('href') + ' .content')
                         .dialog({
                                 autoOpen: false,
                                 title: '<?php _e('Cite publication','teachpress'); ?>',

@@ -212,12 +212,12 @@ class TP_Ajax {
 	echo '<title>teachPress - cite publication</title>';
         echo '</head>';
         echo '<body>';
-        echo '<div id="content">';
+        echo '<div class="content">';
         echo '<div class="wrap">';
         echo '<h3 class="nav-tab-wrapper"><a class="nav-tab nav-tab-active tp_cite_text" id="tp_cite_text_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('Text','teachpress') . '</a> <a class="nav-tab tp_cite_bibtex" id="tp_cite_bibtex_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('BibTeX','teachpress') . '</a></h3>';
         echo '<form name="form_cite" method="post">';
         echo '<input name="tp_cite_id" type="hidden" value="' . '"/>';
-        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="7" style="width:100%; border-top:none;">' . TP_Export::text_row($publication) . '</textarea>';
+        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="7" style="width:100%; border-top:none;" title="' . __('Publication entry','teachpress') . '">' . TP_Export::text_row($publication) . '</textarea>';
         echo '</form>';
         echo '</div>';
         echo '</div>';

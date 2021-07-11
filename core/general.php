@@ -314,6 +314,41 @@ function tp_convert_file_size ($bytes) {
 }
 
 /**
+ * Converts an array in a comma separated string
+ * @param array|string $input
+ * @param string $type  The type of the elements: string, int, float
+ * @return string
+ * @since 8.0.0
+ */
+function tp_convert_array_to_string($input, $type = 'string') {
+    if (is_array($input) ) {
+        $array = $input;
+    }
+    else {
+        $array[] = $input;
+    }
+
+    $max = count( $array );
+    $string = '';
+    
+    for( $i = 0; $i < $max; $i++ ) {
+        // Prepare element
+        switch ( $type ) :
+            case 'int':
+                $element = intval($array[$i]);
+                break;
+            case 'float':
+                $element = floatval($array[$i]);
+                break;
+            default:
+                $element = htmlspecialchars($array[$i]);
+        endswitch;
+        $string = ($string === '') ? $element : $string . ',' .$element;
+    }
+    return $string;
+}
+
+/**
  * Writes data for the teachPress tinyMCE plugin in Javascript objects
  * @since 5.0.0
  */
