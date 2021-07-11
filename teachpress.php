@@ -418,33 +418,41 @@ function tp_backend_scripts() {
     $version = get_tp_version();
     $page = isset($_GET['page']) ? $_GET['page'] : '';
     
-    wp_enqueue_style('teachpress-print-css', plugins_url() . '/teachpress/styles/print.css', false, $version, 'print');
     // Load scripts only, if it's a teachpress page
-    if ( strpos($page, 'teachpress') !== false || strpos($page, 'publications') !== false ) {
-        wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
-        wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css', false, $version);
-        wp_enqueue_script('media-upload');
-        add_thickbox();
-        
-        /* academicons v1.8.6 */
-        if ( TEACHPRESS_LOAD_ACADEMICONS === true ) {
-            wp_enqueue_style('academicons', plugins_url() . '/teachpress/includes/academicons/css/academicons.min.css');
-        }
+    if ( strpos($page, 'teachpress') === false && strpos($page, 'publications') === false ) {
+        return;
+    }
+    
+    wp_enqueue_style('teachpress-print-css', plugins_url() . '/teachpress/styles/print.css', false, $version, 'print');
+    wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
+    wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css', false, $version);
+    wp_enqueue_script('media-upload');
+    add_thickbox();
 
-        /* Font Awesome Free 5.10.1 */
-        if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
-            wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css'); 
-        }
-        
-        // Load jQuery + ui plugins + plupload
-        wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
-        wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
-        wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
-        $current_lang = ( version_compare( tp_get_wp_version() , '4.0', '>=') ) ? get_option('WPLANG') : WPLANG;
-        $array_lang = array('de_DE','it_IT','es_ES', 'sk_SK');
-        if ( in_array( $current_lang , $array_lang) ) {
-            wp_enqueue_script('teachpress-datepicker-de', plugins_url() . '/teachpress/js/datepicker/jquery.ui.datepicker-' . $current_lang . '.js');
-        }
+    /* academicons v1.8.6 */
+    if ( TEACHPRESS_LOAD_ACADEMICONS === true ) {
+        wp_enqueue_style('academicons', plugins_url() . '/teachpress/includes/academicons/css/academicons.min.css');
+    }
+
+    /* Font Awesome Free v5.10.1 */
+    if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
+        wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css'); 
+    }
+    
+    /* SlimSelect v1.27 */
+    wp_enqueue_script('slim-select', plugins_url() . '/teachpress/includes/slim-select/slimselect.min.js');
+    wp_enqueue_style('slim-select.css', plugins_url() . '/teachpress/includes/slim-select/slimselect.min.css'); 
+    
+    // Load jQuery + ui plugins + plupload
+    wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
+    wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
+    wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
+    
+    // Languages for plugins
+    $current_lang = ( version_compare( tp_get_wp_version() , '4.0', '>=') ) ? get_option('WPLANG') : WPLANG;
+    $array_lang = array('de_DE','it_IT','es_ES', 'sk_SK');
+    if ( in_array( $current_lang , $array_lang) ) {
+        wp_enqueue_script('teachpress-datepicker-de', plugins_url() . '/teachpress/js/datepicker/jquery.ui.datepicker-' . $current_lang . '.js');
     }
 }
 

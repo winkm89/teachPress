@@ -28,6 +28,7 @@ td.tp_course_child {padding-left:25px; background: url(../images/child.png) no-r
 #tp_searchbox {float:right; padding-bottom: 5px;}
 a.tp_search_cancel {font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;}
 .tp_pub_label_status {background-color: orange; color: #fff; display: inline-block; padding: 3px 4px; margin-left: 5px; font-size: 10px; font-weight: bold; line-height: 1; border-radius: 2px; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);}
+.slim-select select {display: none;}
 
 /* Action menus */
 .tp_row_actions {visibility: hidden;padding: 2px 0 0; color:#ddd;}
@@ -36,6 +37,7 @@ tr:hover .tp_row_actions {visibility: visible;}
 .tp_row_actions-visible {padding: 2px 0 0;cursor: pointer;}
 a.tp_row_delete, a.tp_file_delete {color:#a00;}
 a.tp_row_delete:hover, a.tp_file_delete:hover {color:red;}
+.ss-main {padding-bottom: 5px;}
 
 /* cite screen */
 .tp_cite_text { cursor: pointer; }
