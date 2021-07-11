@@ -556,7 +556,7 @@ class TP_HTML_Publication_Template {
         }
         
         // special cases for article/incollection/inbook/inproceedings
-        $in = '<span class="tp_pub_additional_in">' . $settings['meta_label_in'] . '</span>';
+        $in = ( $use_span === true ) ? '<span class="tp_pub_additional_in">' . $settings['meta_label_in'] . '</span>' : $settings['meta_label_in'];
         
         // end formator
         $type = $tp_publication_types->get_data($row['type']);
