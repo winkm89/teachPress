@@ -26,11 +26,12 @@ This plugin unites a course management system (with modules for enrollments, doc
 = Supported Languages =
 * English
 * German
+* French (o)
 * Italian (o)
 * Portuguese (Brazil) (o)
 * Slovak (o)
 * Slovenian (o)
-* Spanish
+* Spanish (o)
 
 (o) Incomplete language files
 
@@ -129,8 +130,10 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 = 8.0.0 =
 * New: New default publication template teachPress 2021 added (mobile friendly flexible layout) (#161)
 * New: Flexible publication type registration added (#150)
+* New: Multi value publication filters for the backend added (#148)
 * New: Publication types added: media (#110), bachelor and diploma thesis (#160)
 * New: Adding DOI-Link to feedlist (#158)
+* New: For custom templates: Add the ability to disable (or customize) currently hardcoded text (#164)
 * Changed: Update bibtexParse to v2.5 (#147)
 * Changed: Font sizes in publication templates defined in rem
 * Changed: Remove field requirements (tags, bibtex key) for adding publications (#159)
@@ -141,6 +144,9 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Bugfix: Punctation lost after import publications (#145)
 * Bugfix: BibTeX import: Uninitialized string offset: 0 notice if bibtex entries are separated with empty lines (#163)
 * Bugfix: BibTeX import: Undefined index: author notice if the author field is not set (#163)
+
+7.1.6 (02.05.2021)
+* Changed: Update for french language files (Thanks to Frederic Connes) (#166)
 
 = 7.1.5 (27.04.2021) =
 * Bugfix: Fixed a bug in the unique bibtex key check, which is used if a publication is added by the importer (#101)
