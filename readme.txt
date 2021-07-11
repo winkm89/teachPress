@@ -4,9 +4,9 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.2
+Stable tag: 8.0
 
 Manage your courses and publications with teachPress 
 
@@ -118,7 +118,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 == Upgrade Notice ==
 
-= 7.2 =
+= 8.0 =
 Please note that custom publication templates now requires the method get_image()!
 
 = 6.0.1 =
@@ -126,7 +126,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 7.2.0 =
+= 8.0.0 =
 * New: New default publication template teachPress 2021 added (mobile friendly flexible layout) (#161)
 * New: Flexible publication type registration added (#150)
 * New: Publication types added: media (#110), bachelor and diploma thesis (#160)

@@ -5,7 +5,7 @@
  * Description:         With teachPress you can easy manage courses, enrollments and publications.
  * Author:              Michael Winkler
  * Author URI:          http://mtrv.wordpress.com/
- * Version:             7.2 beta
+ * Version:             8.0 beta
  * Requires at least:   3.9
  * Text Domain:         teachpress
  * Domain Path:         /languages
@@ -235,7 +235,7 @@ function tp_add_menu_settings() {
  * @return string
 */
 function get_tp_version() {
-    return '7.2a';
+    return '8.0beta';
 }
 
 /**
