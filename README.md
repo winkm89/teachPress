@@ -3,8 +3,11 @@ teachPress
 
 This is the offical development repository of teachPress, a plugin for WordPress which unites a course management system (with modules for enrollments and assessments) and a powerful BibTeX compatible publication management. Both modules can be operated independently. You can use it with WordPress 3.9.0 or higher.
 
-Offical teachPress versions are available in the WordPress Plugin Directory: https://wordpress.org/plugins/teachpress/
-Pre-Releases and the offical versions are available in the Release-Section: https://github.com/winkm89/teachPress/releases
+Offical teachPress versions are available in the WordPress Plugin Directory:
+https://wordpress.org/plugins/teachpress/
+
+Pre-Releases and the offical versions are available in the Release-Section:
+https://github.com/winkm89/teachPress/releases
 
 Documentation : https://github.com/winkm89/teachPress/wiki
 
