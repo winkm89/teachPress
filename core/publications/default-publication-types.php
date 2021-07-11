@@ -66,7 +66,7 @@ function tp_register_all_publication_types() {
     tp_register_publication_type(
         array(
             'type_slug'         => 'bachelorthesis',
-            'bibtex_key_ext'    => 'thesis',
+            'bibtex_key_ext'    => 'mastersthesis',
             'i18n_singular'     => __('Bachelor Thesis','teachpress'), 
             'i18n_plural'       => __('Bachelor Theses','teachpress'),   
             'default_fields'    => array('address', 'school', 'techtype'),   
