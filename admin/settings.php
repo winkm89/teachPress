@@ -166,8 +166,8 @@ class TP_Settings_Page {
     private static function get_about_dialog () {
         echo '<div id="dialog" title="About">
                 <div style="text-align: center;">
-                <p><img src="' . plugins_url() . '/teachpress/images/misc/about.jpg" style="border-radius: 130px; width: 250px; height: 250px;" title="Photo by Dilyara Garifullina on Unsplash" /></p>
-                <p><img src="' . plugins_url() . '/teachpress/images/full.png" width="400" /></p>
+                <p><img src="' . plugins_url( 'images/misc/about.jpg', dirname( __FILE__ ) ) . '" style="border-radius: 130px; width: 250px; height: 250px;" title="Photo by Dilyara Garifullina on Unsplash" /></p>
+                <p><img src="' . plugins_url( 'images/full.png', dirname( __FILE__ ) ) . '" width="400" /></p>
                 <p style="font-size: 20px; font-weight: bold; color: #e6bb3a;">' . get_tp_option('db-version') . ' "Apple Pie"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="https://github.com/winkm89/teachPress/">teachPress on GitHub</a> | <a href="https://github.com/winkm89/teachPress/wiki">Dokumentation</a> | <a href="https://github.com/winkm89/teachPress/wiki/Changelog">Changelog</a></p>
                 <p>&copy;2008-2020 by Michael Winkler | License: GPLv2 or later<br/></p>
@@ -422,7 +422,7 @@ class TP_Settings_Page {
         
         echo '<p><input name="einstellungen" type="submit" id="teachpress_settings" value="' . __('Save') . '" class="button-primary" /></p>';
         
-        echo '<script type="text/javascript" src="' . plugins_url() . '/teachpress/js/admin_settings.js"></script>';
+        echo '<script type="text/javascript" src="' . plugins_url( 'js/admin_settings.js', dirname( __FILE__ ) ) . '"></script>';
         self::get_about_dialog();
     }
     
