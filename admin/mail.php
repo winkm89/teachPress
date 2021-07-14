@@ -121,7 +121,7 @@ function tp_show_mail_page() {
         </table>
         <br />
         <input type="submit" class="button-primary" name="send_mail" value="<?php _e('Send','teachpress'); ?>"/>
-        <script type="text/javascript" charset="utf-8" src="<?php echo plugins_url(); ?>/teachpress/js/admin_mail.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<?php echo plugins_url( 'js/admin_mail.js', dirname( __FILE__ ) ); ?>"></script>
         </form>
     </div>
     <?php

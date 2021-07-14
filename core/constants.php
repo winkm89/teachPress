@@ -199,7 +199,7 @@ if ( !defined('TEACHPRESS_TEMPLATE_URL') ) {
      * This value defines the template url
      * @since 6.0.0
     */
-    define('TEACHPRESS_TEMPLATE_URL', plugins_url() . '/teachpress/templates/');}
+    define('TEACHPRESS_TEMPLATE_URL', plugins_url( 'templates/', dirname( __FILE__ ) ) );}
 
 if ( !defined('TEACHPRESS_ALTMETRIC_SUPPORT') ) {
     /**

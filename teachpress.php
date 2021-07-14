@@ -119,7 +119,7 @@ function tp_add_menu() {
     global $tp_admin_add_course_page;
     $pos = TEACHPRESS_MENU_POSITION;
 
-    $logo = (version_compare($wp_version, '3.8', '>=')) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
+    $logo = (version_compare($wp_version, '3.8', '>=')) ? plugins_url( 'images/logo_small.png', __FILE__ ) : plugins_url( 'images/logo_small_black.png', __FILE__ );
 
     $tp_admin_show_courses_page = add_menu_page(
             __('Course','teachpress'), 
@@ -162,7 +162,7 @@ function tp_add_menu2() {
     global $tp_admin_show_authors_page;
     global $tp_admin_edit_tags_page;
 
-    $logo = ( version_compare($wp_version, '3.8', '>=') ) ? plugins_url() . '/teachpress/images/logo_small.png' : plugins_url() . '/teachpress/images/logo_small_black.png';
+    $logo = ( version_compare($wp_version, '3.8', '>=') ) ? plugins_url( 'images/logo_small.png', __FILE__) : plugins_url( 'images/logo_small_black.png', __FILE__ );
     $pos = TEACHPRESS_MENU_POSITION;
 
     $tp_admin_all_pub_page = add_menu_page (
@@ -403,7 +403,7 @@ function tp_register_tinymce_buttons ($buttons) {
  * @since 5.0.0
  */
 function tp_register_tinymce_js ($plugins) {
-    $plugins['teachpress_tinymce'] = plugins_url() . '/teachpress/js/tinymce-plugin.js';
+    $plugins['teachpress_tinymce'] = plugins_url( 'js/tinymce-plugin.js', __FILE__ );
     return $plugins;
 }
 
@@ -423,36 +423,36 @@ function tp_backend_scripts() {
         return;
     }
     
-    wp_enqueue_style('teachpress-print-css', plugins_url() . '/teachpress/styles/print.css', false, $version, 'print');
-    wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
-    wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css', false, $version);
+    wp_enqueue_style('teachpress-print-css', plugins_url( 'styles/print.css', __FILE__ ), false, $version, 'print');
+    wp_enqueue_script('teachpress-standard', plugins_url( 'js/backend.js', __FILE__ ) );
+    wp_enqueue_style('teachpress.css', plugins_url( 'styles/teachpress.css', __FILE__ ), false, $version);
     wp_enqueue_script('media-upload');
     add_thickbox();
 
     /* academicons v1.8.6 */
     if ( TEACHPRESS_LOAD_ACADEMICONS === true ) {
-        wp_enqueue_style('academicons', plugins_url() . '/teachpress/includes/academicons/css/academicons.min.css');
+        wp_enqueue_style('academicons', plugins_url( 'includes/academicons/css/academicons.min.css', __FILE__ ) );
     }
 
     /* Font Awesome Free v5.10.1 */
     if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
-        wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css'); 
+        wp_enqueue_style('font-awesome', plugins_url( 'includes/fontawesome/css/all.min.css', __FILE__ ) );
     }
     
     /* SlimSelect v1.27 */
-    wp_enqueue_script('slim-select', plugins_url() . '/teachpress/includes/slim-select/slimselect.min.js');
-    wp_enqueue_style('slim-select.css', plugins_url() . '/teachpress/includes/slim-select/slimselect.min.css'); 
+    wp_enqueue_script('slim-select', plugins_url( 'includes/slim-select/slimselect.min.js', __FILE__ ) );
+    wp_enqueue_style('slim-select.css', plugins_url( 'includes/slim-select/slimselect.min.css', __FILE__ ) );
     
     // Load jQuery + ui plugins + plupload
     wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
-    wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
+    wp_enqueue_style('teachpress-jquery-ui.css', plugins_url( 'styles/jquery.ui.css', __FILE__ ) );
     wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
     
     // Languages for plugins
     $current_lang = ( version_compare( tp_get_wp_version() , '4.0', '>=') ) ? get_option('WPLANG') : WPLANG;
     $array_lang = array('de_DE','it_IT','es_ES', 'sk_SK');
     if ( in_array( $current_lang , $array_lang) ) {
-        wp_enqueue_script('teachpress-datepicker-de', plugins_url() . '/teachpress/js/datepicker/jquery.ui.datepicker-' . $current_lang . '.js');
+        wp_enqueue_script('teachpress-datepicker-de', plugins_url( 'js/datepicker/jquery.ui.datepicker-' . $current_lang . '.js', __FILE__ ) );
     }
 }
 
@@ -467,12 +467,12 @@ function tp_frontend_scripts() {
     echo PHP_EOL . '<!-- teachPress -->' . PHP_EOL;
 
     /* tp-frontend script */
-    echo '<script' . $type_attr . ' src="' . plugins_url() . '/teachpress/js/frontend.js?ver=' . $version . '"></script>' . PHP_EOL;
+    echo '<script' . $type_attr . ' src="' . plugins_url( 'js/frontend.js?ver=' . $version, __FILE__ ) . '"></script>' . PHP_EOL;
 
     /* tp-frontend style */
     $value = get_tp_option('stylesheet');
     if ($value == '1') {
-        echo '<link type="text/css" href="' . plugins_url() . '/teachpress/styles/teachpress_front.css?ver=' . $version . '" rel="stylesheet" />' . PHP_EOL;
+        echo '<link type="text/css" href="' . plugins_url( 'styles/teachpress_front.css?ver=' . $version, __FILE__ ) . '" rel="stylesheet" />' . PHP_EOL;
     }
 
     /* altmetric support */
@@ -482,12 +482,12 @@ function tp_frontend_scripts() {
 
     /* academicons v1.8.6 */
     if ( TEACHPRESS_LOAD_ACADEMICONS === true ) {
-        wp_enqueue_style('academicons', plugins_url() . '/teachpress/includes/academicons/css/academicons.min.css');
+        wp_enqueue_style('academicons', plugins_url( 'includes/academicons/css/academicons.min.css', __FILE__ ) );
     }
 
     /* Font Awesome Free 5.10.1 */
     if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
-        wp_enqueue_style('font-awesome', plugins_url() . '/teachpress/includes/fontawesome/css/all.min.css');
+        wp_enqueue_style('font-awesome', plugins_url( 'includes/fontawesome/css/all.min.css', __FILE__ ) );
     }
 
     /* END */

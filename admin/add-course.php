@@ -175,7 +175,7 @@ function tp_add_course_page() {
      </div>
       
       </form>
-      <script type="text/javascript" charset="utf-8" src="<?php echo plugins_url(); ?>/teachpress/js/admin_add_course.js"></script>
+      <script type="text/javascript" charset="utf-8" src="<?php echo plugins_url( 'js/admin_add_course.js', dirname( __FILE__ ) ); ?>"></script>
    </div>
 <?php }
 
