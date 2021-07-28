@@ -60,6 +60,8 @@ class TP_Publications {
      *  order (STRING)                  The order of the list
      *  limit (STRING)                  The sql search limit, ie: 0,30
      *  search (STRING)                 The search string
+     *  meta_key_search (ARRAY)         Array which contains the parameters for meta_keys as key=>value pair
+     *                                  Example for an checkbox: array( 'tp_meta_pub_custom_label' => '{Open Access}' ),
      *  output_type (STRING)            OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
      *
      * @since 5.0.0
@@ -85,6 +87,7 @@ class TP_Publications {
             'order'                     => 'date DESC',
             'limit'                     => '',
             'search'                    => '',
+            'meta_key_search'           => array(),
             'output_type'               => OBJECT
         );
         $atts = wp_parse_args( $args, $defaults );
@@ -169,6 +172,22 @@ class TP_Publications {
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author'], "p.author", "OR", "LIKE", '%');
         $nwhere[] = ( $atts['author_id'] != '' && $atts['include_editor_as_author'] === false) ? " AND ( r.is_author = 1 ) " : null;
         $nwhere[] = ( $search != '') ? $search : null;
+        
+        // Where clause for meta fields
+        if ( !empty( $meta_fields ) && !empty( $atts['meta_key_search'] ) ) {
+            $meta_key_search = $atts['meta_key_search'];
+            $i = 1;
+            // Go throw each meta field and if there is a search value for it in meta_key_search[], add it to the WHERE clause
+            foreach ($meta_fields as $field) {
+                $key = $field['variable'];
+                $column_id = 'm' . $i . '.meta_value'; 
+                if (array_key_exists($key, $meta_key_search) ) {
+                    $nwhere[] = TP_DB_Helpers::generate_where_clause($meta_key_search[$key], $column_id, "OR", "=");
+                }
+                $i++;
+            }
+        }
+        
         $where = TP_DB_Helpers::compose_clause($nwhere);
         
         // HAVING clause
