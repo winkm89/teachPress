@@ -345,7 +345,7 @@ class TP_Document_Manager {
                 decimalPoint = ',',
                 isRtl = 0;
             </script>
-            <link rel="stylesheet" id="teachpress-document-manager-css"  href="<?php echo plugins_url(); ?>/teachpress/styles/teachpress_document_manager.css?ver=<?php echo get_tp_version(); ?>" type="text/css" media="all" />
+            <link rel="stylesheet" id="teachpress-document-manager-css"  href="<?php echo plugins_url( 'styles/teachpress_document_manager.css', dirname( __FILE__ ) ) . '?ver=' . get_tp_version(); ?>" type="text/css" media="all" />
         </head>
         <?php
     }
@@ -397,10 +397,10 @@ class TP_Document_Manager {
             wp_enqueue_script('media-upload');
             add_thickbox();
     
-            wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
+            wp_enqueue_script('teachpress-standard', plugins_url( 'js/backend.js', dirname( __FILE__ ) ) );
 
-            wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css');
-            wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
+            wp_enqueue_style('teachpress.css', plugins_url( 'styles/teachpress.css', dirname( __FILE__ ) ) );
+            wp_enqueue_style('teachpress-jquery-ui.css', plugins_url( 'styles/jquery.ui.css', dirname( __FILE__ ) ) );
             wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
 
             do_action( 'admin_print_scripts' );
