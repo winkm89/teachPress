@@ -122,14 +122,16 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             $entry['number'] = (string)$citation->Journal->JournalIssue->Issue;
 
             $entry['abstract'] = "";
+            $entry['author'] = "";
             foreach ( $citation->Abstract->AbstractText as $text ) {
                 // Does $entry['abstract'] support HTML?  If so, the
                 // label should probably be emphasized with e.g. bold
                 // and each text should be made its own paragraph.
                 // There does not appear to be any other markup in the
                 // abstract or the title (italic, bold, etc).
-                if ( $entry['abstract'] !== "" )
+                if ( $entry['abstract'] !== "" ) {
                     $entry['abstract'] .= "\n\n";
+                }
                 if ( $text['Label']
                      && strcasecmp( $text['Label'], "UNLABELLED") !== 0 ) {
                     $entry['abstract'] .= $text['Label'] . ": " . $text;
@@ -144,8 +146,9 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             // $author->AffiliationInfo.
             $separator = "";
             foreach ( $citation->AuthorList->Author as $author ) {
-                if ( $author['ValidYN'] != 'Y' )
+                if ( $author['ValidYN'] != 'Y' ) {
                     continue;
+                }
                 $entry['author'] .= $separator
                                  . (string)$author->ForeName . " "
                                  . (string)$author->LastName;
