@@ -134,8 +134,9 @@ class TP_Import_Publication_Page {
             
             $settings = array(
                 'keyword_separator' => htmlspecialchars($post['keyword_option']),
-                'author_format' => htmlspecialchars($post['author_format']),
-                'overwrite' => isset( $post['overwrite']) ? true : false
+                'author_format'     => htmlspecialchars($post['author_format']),
+                'overwrite'         => isset( $post['overwrite'] ) ? true : false,
+                'ignore_tags'       => isset( $post['ignore_tags'] ) ? true : false,
             );
 
             // echo $bibtex;
@@ -145,9 +146,10 @@ class TP_Import_Publication_Page {
         
         // import from PubMed
         elseif ( isset($post['tp_pmid']) ) {
-            // TP_PubMed_Import only cares about overwrite.
+
             $settings = array(
-                'overwrite' => isset( $post['overwrite'] )
+                'overwrite'         => isset( $post['overwrite'] ),
+                'ignore_tags'       => isset( $post['ignore_tags'] ) ? true : false    
             );
             $entries = TP_PubMed_Import::init($post['tp_pmid'], $settings);
         }
@@ -180,7 +182,7 @@ class TP_Import_Publication_Page {
                 <div style="text-align: center;">
                     <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
                     <label for="tp_pmid">PMID</label>
-                    <input name="tp_pmid" id="tp_pmid" title="<?php _e('Comma-separated list of PubMed identifiers','teachpress'); ?>" type="text">
+                    <input name="tp_pmid" id="tp_pmid" style="width:350px;" title="<?php _e('Comma-separated list of PubMed identifiers','teachpress'); ?>" type="text">
                     <p style="text-align: center; font-size: small;"><a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a></p>
                 </div>
             </div>
@@ -191,6 +193,8 @@ class TP_Import_Publication_Page {
                     <div class="inside">
                         <p><strong><label for="overwrite"><?php _e('Publications','teachpress'); ?></label></strong></p>
                         <?php echo TP_Admin::get_checkbox('overwrite', __('Update existing publications','teachpress'), '', __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress')); ?>
+                        <br/>
+                        <?php echo TP_Admin::get_checkbox('ignore_tags', __('Ignore Tags','teachpress'), '', __('Ignore tags or keywords in the import data.','teachpress'));?>
                     </div>
                     <?php } ?>
                     <div id="major-publishing-actions" style="text-align: center;">

@@ -141,10 +141,11 @@ class TP_Bibtex_Import {
     protected static function import_publication_to_database ($entry, $tags, $settings) {
         $check = true;
         if ( $settings['overwrite'] === true ) {
-            $entry['entry_id'] = TP_Publications::change_publication_by_key($entry['bibtex'], $entry, $tags);
+            $entry['entry_id'] = TP_Publications::change_publication_by_key($entry['bibtex'], $entry, $tags, $settings['ignore_tags']);
             $check = ( $entry['entry_id'] === false ) ? false : true;
         }
         if ( $settings['overwrite'] === false || $check === false ) {
+            $tags = ( $settings['ignore_tags'] === true ) ? '' : $tags;
             $entry['entry_id'] = TP_Publications::add_publication($entry, $tags, '');
         }
         return $entry['entry_id'];

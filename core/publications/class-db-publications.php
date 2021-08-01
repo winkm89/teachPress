@@ -555,14 +555,15 @@ class TP_Publications {
     
     /**
      * Update a publication by key (import option); Returns FALSE if there is no publication with the given key
-     * @param string $key       The BibTeX key
-     * @param array $input_data An associative array of publication data
-     * @param string $tags      An associative array of tags
+     * @param string $key           The BibTeX key
+     * @param array $input_data     An associative array of publication data
+     * @param string $tags          An associative array of tags
+     * @param boolean $ignore_tags  Update the tags o not, default: false
      * @return boolean|int
      * @since 5.0.0
-     * @version 2
+     * @version 3
      */
-    public static function change_publication_by_key($key, $input_data, $tags) {
+    public static function change_publication_by_key($key, $input_data, $tags, $ignore_tags = false) {
         global $wpdb;
 
         // Search if there is a publication with the given bibtex key
@@ -575,12 +576,17 @@ class TP_Publications {
         $data = wp_parse_args( $input_data, $search_pub );
         self::change_publication($search_pub['pub_id'], $data, '', '', '');
         
-        // Delete existing tags
-        $wpdb->query( "DELETE FROM " . TEACHPRESS_RELATION . " WHERE `pub_id` = " . $search_pub['pub_id'] );
+        // Update tags
+        if ( $ignore_tags === false ) {
         
-        // Add new tags
-        if ( $tags != '' ) {
-            TP_Publications::add_relation($search_pub['pub_id'], $tags);
+            // Delete existing tags
+            $wpdb->query( "DELETE FROM " . TEACHPRESS_RELATION . " WHERE `pub_id` = " . $search_pub['pub_id'] );
+
+            // Add new tags
+            if ( $tags != '' ) {
+                TP_Publications::add_relation($search_pub['pub_id'], $tags);
+            }
+        
         }
 
         return $search_pub['pub_id'];
