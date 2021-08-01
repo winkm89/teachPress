@@ -127,13 +127,16 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 8.0.0 =
+= 8.0.0 (xx.xx.2021)=
 * New: New default publication template teachPress 2021 added (mobile friendly flexible layout) (#161)
 * New: Flexible publication type registration added (#150)
 * New: Multi value publication filters for the backend added (#148)
+* New: Publication import: Option for direct import over NCBI PubMed API added (#168) (Thanks to Johan Hattne)
+* New: Publication import: Option for ignoring tags added (#101) 
 * New: Publication types added: media (#110), bachelor and diploma thesis (#160)
 * New: Adding DOI-Link to feedlist (#158)
 * New: For custom templates: Add the ability to disable (or customize) currently hardcoded text (#164)
+* New: API: meta_key_search option to TP_Publications::get_publications() added (#169)
 * Changed: Update bibtexParse to v2.5 (#147)
 * Changed: Font sizes in publication templates defined in rem
 * Changed: Remove field requirements (tags, bibtex key) for adding publications (#159)
@@ -145,7 +148,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Bugfix: BibTeX import: Uninitialized string offset: 0 notice if bibtex entries are separated with empty lines (#163)
 * Bugfix: BibTeX import: Undefined index: author notice if the author field is not set (#163)
 
-7.1.6 (02.05.2021)
+= 7.1.6 (02.05.2021) =
 * Changed: Update for french language files (Thanks to Frederic Connes) (#166)
 
 = 7.1.5 (27.04.2021) =

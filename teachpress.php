@@ -236,7 +236,7 @@ function tp_add_menu_settings() {
  * @return string
 */
 function get_tp_version() {
-    return '8.0beta';
+    return '8.0beta-2';
 }
 
 /**
