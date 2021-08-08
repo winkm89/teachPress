@@ -189,14 +189,25 @@ class TP_Import_Publication_Page {
             <div class="tp_postcontent_right">
                 <div class="postbox">
                     <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
-                    <?php if ( get_tp_option('import_overwrite') === '1' ) { ?>
                     <div class="inside">
-                        <p><strong><label for="overwrite"><?php _e('Publications','teachpress'); ?></label></strong></p>
-                        <?php echo TP_Admin::get_checkbox('overwrite', __('Update existing publications','teachpress'), '', __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress')); ?>
-                        <br/>
-                        <?php echo TP_Admin::get_checkbox('ignore_tags', __('Ignore Tags','teachpress'), '', __('Ignore tags or keywords in the import data.','teachpress'));?>
+                        <?php 
+                        // Overwrite option
+                        if ( get_tp_option('import_overwrite') === '1' ) { 
+                            echo TP_Admin::get_checkbox(
+                                    'overwrite', 
+                                    __('Update existing publications','teachpress'), 
+                                    '', 
+                                    __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress'));
+                            echo '<br/>';
+                        }
+                        
+                        // Ignore tags option
+                        echo TP_Admin::get_checkbox(
+                                'ignore_tags', 
+                                __('Ignore Tags','teachpress'), 
+                                '', 
+                                __('Ignore tags or keywords in the import data.','teachpress')); ?>
                     </div>
-                    <?php } ?>
                     <div id="major-publishing-actions" style="text-align: center;">
                         <input name="tp_submit" type="submit" class="button-primary" value="<?php _e('Import'); ?>"/>
                     </div>
