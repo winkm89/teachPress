@@ -1197,8 +1197,8 @@ function tp_links_shortcode ($atts) {
  *      @type string $image                 none, left, right or bottom, default: none 
  *      @type int $image_size               max. Image size, default: 0
  *      @type string $image_link            none, self, rel_page or external (defalt: none)
- *      @type string $author_name           Author name style options: simple, last, initials or old, default: initials
- *      @type string $editor_name           Editor name style options: simple, last, initials or old, default: initials
+ *      @type string $author_name           Author name style options: simple, last, initials, short or old, default: initials
+ *      @type string $editor_name           Editor name style options: simple, last, initials, short or old, default: initials
  *      @type string $author_separator      The separator for author names
  *      @type string $editor_separator      The separator for author names
  *      @type string $style                 List style options: numbered, numbered_desc or none, default: none

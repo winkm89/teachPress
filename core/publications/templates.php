@@ -384,11 +384,12 @@ class TP_HTML_Publication_Template {
     
     /**
      * Gets a single publication in html format
-     * @param array $row        The publication array (used keys: title, image_url, ...)
-     * @param array $all_tags   Array of tags (used_keys: pub_id, tag_id, name)
-     * @param array $settings   Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
-     * @param object $template  The template object
-     * @param int $pub_count    The counter for numbered publications (default: 0)
+     * @param array $row                The publication array (used keys: title, image_url, ...)
+     * @param array $all_tags           Array of tags (used_keys: pub_id, tag_id, name)
+     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
+     * @param object $template          The template object
+     * @param array $template_settings  Array with the template settings (keys: button_separator, meta_label_in, menu_label_tags, menu_label_links)
+     * @param int $pub_count            The counter for numbered publications (default: 0)
      * @return string
      * @since 6.0.0
     */

@@ -135,6 +135,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * New: Publication import: Option for ignoring tags added (#101) 
 * New: Publication types added: media (#110), bachelor and diploma thesis (#160)
 * New: Adding DOI-Link to feedlist (#158)
+* New: [tplist, tpcloud, tpsearch]: author_name option "short" added (#171)
 * New: For custom templates: Add the ability to disable (or customize) currently hardcoded text (#164)
 * New: API: meta_key_search option to TP_Publications::get_publications() added (#169)
 * Changed: Update bibtexParse to v2.5 (#147)
