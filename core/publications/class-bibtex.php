@@ -378,16 +378,19 @@ class TP_Bibtex {
 
     /**
      * Parses author names
-     * @global $PARSECREATORS
-     * @param string $input     The input string
-     * @param string $separator The separator between the authors (for the output)
-     * @param string $mode       --> values: last, initials, old
+     * @param string $input         The input string
+     * @param string $separator     The separator between the authors (for the output)
+     * @param string $mode          values: last, initials, old
+     * @param string $punctuation   Punctuation after an initial (only used for short mode)
      * @return string
      * @since 3.0.0
     */
-    public static function parse_author ($input, $separator, $mode = '') {
+    public static function parse_author ($input, $separator, $mode = '', $punctuation = '') {
         if ( $mode === 'last' || $mode === 'initials' ) {
             $all_authors = self::parse_author_default($input, $separator, $mode);
+        }
+        elseif ( $mode === 'short' ) {
+            $all_authors = self::parse_author_short($input, $separator, $punctuation);
         }
         elseif ( $mode === 'old' ) {
             $all_authors = self::parse_author_deprecated($input, $separator);
@@ -402,7 +405,7 @@ class TP_Bibtex {
      * This is the default parsing function for author names
      * 
      * Some examples for the parsing:
-     * last:            Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf; van Beethoven, Ludwig
+     * last:        Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf; van Beethoven, Ludwig
      * initials:    Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, Adolf F; van Beethoven, Ludwig
      * 
      * @param string $input     The input string
@@ -415,17 +418,74 @@ class TP_Bibtex {
      */
     public static function parse_author_default ($input, $separator = ';', $mode = 'initials') {
         $creator = new BIBTEXCREATORPARSE();
+        $creator->separateInitials = false;
         $creatorArray = $creator->parse($input);
         $all_authors = '';
         $max = count($creatorArray);
         for ( $i = 0; $i < $max; $i++ ) {
             $one_author = '';
+            /* 
+             * Set the author name together with the parsing result of bibtexParse
+             * 
+             * $creatorArray[][0] => firstname
+             * $creatorArray[][1] => initials
+             * $creatorArray[][2] => surname
+             * $creatorArray[][3] => jr
+             * $creatorArray[][4] => von
+            */
+            if ($creatorArray[$i][4] != '') { $one_author .= trim($creatorArray[$i][4]);}
             if ($creatorArray[$i][3] != '') { $one_author = trim($creatorArray[$i][3]);}
             if ($creatorArray[$i][2] != '') { $one_author .= ' ' .trim($creatorArray[$i][2]) . ',';}
             if ($creatorArray[$i][0] != '') { $one_author .= ' ' .trim($creatorArray[$i][0]);}
             if ( $mode == 'initials' && $creatorArray[$i][1] != '' ) { 
                 $one_author .= ' ' .trim($creatorArray[$i][1]);
             }
+            
+            // Add author to the main result
+            $all_authors .= stripslashes($one_author);
+            if ( $i < count($creatorArray) -1 ) {
+                $all_authors .= $separator . ' ';
+            }
+        }
+        return $all_authors;
+    }
+    
+    /**
+     * Parse author names to the short style
+     * 
+     * Example: 
+     * Adolf F. Weinhold and Ludwig van Beethoven --> Weinhold, A F; van Beethoven, L
+     * 
+     * @param string $input         The input string
+     * @param string $separator     The separator between the authors (for the output)
+     * @param string $punctuation   The optional punctuation after an initial 
+     * @return string
+     * @since 8.0.0
+     * @access public
+     * @uses BIBTEXCREATORPARSE()   This class is a part of bibtexParse
+     */
+    public static function parse_author_short($input, $separator = ';', $punctuation = '') {
+        $all_authors = '';
+        $creator = new BIBTEXCREATORPARSE();
+        $creatorArray = $creator->parse($input);
+        $max = count($creatorArray);
+        for ( $i = 0; $i < $max; $i++ ) {
+            $one_author = '';
+            /* 
+             * Set the author name together with the parsing result of bibtexParse
+             * 
+             * $creatorArray[][0] => firstname
+             * $creatorArray[][1] => initials
+             * $creatorArray[][2] => surname
+             * $creatorArray[][3] => jr
+             * $creatorArray[][4] => von
+            */
+            if ($creatorArray[$i][4] != '') { $one_author .= trim($creatorArray[$i][4]);}
+            if ($creatorArray[$i][2] != '') { $one_author .= ' ' .trim($creatorArray[$i][2]) . '';}
+            $initials = $creator->getInitials($creatorArray[$i][0], $punctuation);
+            $one_author .= ' ' . trim($initials);
+            
+            // Add author to the main result
             $all_authors .= stripslashes($one_author);
             if ( $i < count($creatorArray) -1 ) {
                 $all_authors .= $separator . ' ';
