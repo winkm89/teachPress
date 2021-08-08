@@ -170,23 +170,25 @@ class BIBTEXCREATORPARSE {
         }
     }
     /**
-     * converts a first name to initials -- not currently used
+     * converts a first name to initials
      *
-     * @param string $firstname
+     * @param string $firstname     The firstname string
+     * @param string $punctuation   The punctuation after an initial
      *
      * @return string
      */
-    public function getInitials($firstname) {
+    public function getInitials($firstname, $punctuation = '.') {
         $initials = '';
         $name = explode(' ', $firstname);
         foreach ($name as $part) {
             $size = mb_strlen($part);
             if (self::matchSuffix($part, ".") && ($size < 4)) {
-                $initials .= $part;
+                $part = str_replace('.', '', $part);
+                $initials .= $part . $punctuation . " ";
             }
-            //			elseif (preg_match("/([A-Z])/u", $part, $firstChar))
+            //	elseif (preg_match("/([A-Z])/u", $part, $firstChar))
             elseif (preg_match("/(\\p{Lu})/u", $part, $firstChar)) {
-                $initials .= $firstChar[0] . ". ";
+                $initials .= $firstChar[0] . $punctuation . " ";
             }
         }
 
