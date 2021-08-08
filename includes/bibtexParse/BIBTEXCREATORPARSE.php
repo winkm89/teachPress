@@ -87,8 +87,8 @@ class BIBTEXCREATORPARSE {
 
             $commaAuthor = $this->explodeString(",", $value);
             $size = count($commaAuthor);
-            if ($size == 1) {  
-                //First von Last
+            if ($size == 1) {
+                // First von Last
                 // First: longest sequence of white-space separated words starting with an uppercase and that is not the whole string.
                 // von: longest sequence of whitespace separated words whose last word starts with lower case and that is not the whole string.
                 // Then Last is everything else.
@@ -104,14 +104,13 @@ class BIBTEXCREATORPARSE {
                     $case = $this->getStringCase($author[0]);
                     while ((($case == "upper") || ($case == "none")) && (count($author) > 0)) {
                         $tempFirst[] = array_shift($author);
-                        if (!empty($author))
-                        {
+                        if (!empty($author)) {
                             $case = $this->getStringCase($author[0]);
                         }
                     }
 
                     list($von, $surname) = $this->getVonLast($author);
-
+                    
                     if ($surname == "") {
                         $surname = array_pop($tempFirst);
                     }
@@ -140,7 +139,7 @@ class BIBTEXCREATORPARSE {
                 // Then Last is everything else.
                 // Lastname cannot be empty
                 $author = $this->explodeString(" ", $commaAuthor[0]);
-                if (count($author) == 1) {
+                if ( count($author) == 1 ) {
                     $surname = $author[0];
                 }
                 else {
