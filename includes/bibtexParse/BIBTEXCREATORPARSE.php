@@ -294,30 +294,32 @@ class BIBTEXCREATORPARSE {
      */
     private function getStringCase($string) {
         $caseChar = "";
-        //		$string = preg_replace("/\d/u", "", $string);
-        $string = preg_replace("/\\p{N}/u", "", $string);
+	// $string = preg_replace("/\d/", "", $string);
+	$string = preg_replace("/\\p{N}/u", "", $string);
         if (preg_replace("/{/u", "", $string)) {
             $string = preg_replace("/({[^\\\\.]*})/u", "", $string);
         }
-
-        //		if (preg_replace("/\w/u", $string, $caseChar))
-        if (preg_replace("/\\p{L}/u", $string, $caseChar)) {
+	
+	// if (preg_match("/\w/", $string, $caseChar))
+	if (preg_match("/\\p{L}/u", $string, $caseChar)) {
             if (is_array($caseChar)) {
                 $caseChar = $caseChar[0];
             }
-
-            //			if (preg_replace("/[a-z]/u", $caseChar))
-            if (preg_replace("/\\p{Ll}/u", $caseChar)) {
+	
+            // if (preg_match("/[a-z]/", $caseChar))
+            if (preg_match("/\\p{Ll}/u", $caseChar)) {
                 return "lower";
             }
-
-            //			else if (preg_replace("/[A-Z]/u", $caseChar))
-            elseif (preg_replace("/\\p{Lu}/u", $caseChar)) {
+	
+            // else if (preg_match("/[A-Z]/", $caseChar))
+            else if (preg_match("/\\p{Lu}/u", $caseChar)) {
                 return "upper";
             }
+
             else {
                 return "none";
             }
+
         }
         else {
             return "none";
