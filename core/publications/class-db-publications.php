@@ -48,6 +48,7 @@ class TP_Publications {
      *  user (STRING)                   User IDs (separated by comma)
      *  type (STRING)                   Type name (separated by comma)
      *  tag (STRING)                    Tag IDs (separated by comma)
+     *  key (STRING)                    BibTex keys (separated by comma)
      *  author_id (STRING)              Author IDs (separated by comma)
      *  import_id (STRING)              Import IDs (separated by comma)
      *  year (STRING)                   Years (separated by comma)
@@ -74,6 +75,7 @@ class TP_Publications {
             'user'                      => '',
             'type'                      => '',
             'tag'                       => '',
+            'key'                       => '',
             'author_id'                 => '', 
             'import_id'                 => '',
             'year'                      => '',
@@ -166,6 +168,7 @@ class TP_Publications {
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['type'], "p.type", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['tag'], "b.tag_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['key'], "p.bibtex", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['import_id'], "p.import_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['editor'], "p.editor", "OR", "LIKE", '%');
