@@ -117,7 +117,7 @@ interface TP_Publication_Template {
      * @param string $position              The image position: left, right or buttom
      * @param string $optional_attributes   Optional attributes for the framing container element
      * @return string
-     * @since 7.2
+     * @since 8.0.0
      */
     public function get_image($content, $position, $optional_attributes = '');
     

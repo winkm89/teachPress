@@ -1,7 +1,7 @@
 <?php
 /**
  * The publication object class
- * @since 7.2.0
+ * @since 8.0.0
  */
 class TP_Publication_Type {
     protected $pub_types = array();

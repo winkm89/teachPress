@@ -1,7 +1,7 @@
 <?php
 /**
  * Registers all default publication types
- * @since 7.2.0
+ * @since 8.0.0
  */
 function tp_register_all_publication_types() {
     // Article

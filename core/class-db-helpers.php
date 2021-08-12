@@ -4,7 +4,7 @@
  * @package teachpress
  * @subpackage core
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
- * @since 7.2.0
+ * @since 8.0.0
  */
 
 /**
@@ -75,7 +75,7 @@ class TP_DB_Helpers {
      * @param string $connector     Can be used to change the logical connector between the clause parts. Default: AND
      * @para, string $clause_part   The SQL code word for the part Default: WHERE. Optional: GROUP BY
      * @return string
-     * @since 7.2
+     * @since 8.0.0
      */
     public static function compose_clause( $parts = array(), $connector = 'AND', $clause_part = 'WHERE' ) {
         // If there is nothing to do

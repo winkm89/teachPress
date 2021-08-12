@@ -16,7 +16,7 @@ class TP_HTML {
     /**
      * Prints a simple text line with PHP_EOL at the end
      * @param string $text
-     * @since 7.2
+     * @since 8.0.0
      */
     public static function line ($text) {
         echo $text . PHP_EOL;
@@ -26,7 +26,7 @@ class TP_HTML {
      * Prints a html div init tag
      * @param string $class
      * @param array $args
-     * @since 7.2
+     * @since 8.0.0
      */
     public static function div_open ($class = '', $args = array()) {
         $c = ($class !== '') ? ' class="' . $class . '"' : '';
@@ -36,7 +36,7 @@ class TP_HTML {
     /**
      * Prints a html div close tag
      * @param string $class
-     * @since 7.2
+     * @since 8.0.0
      */
     public static function div_close($class = '') {
         // Print the class name as comment in debug mode

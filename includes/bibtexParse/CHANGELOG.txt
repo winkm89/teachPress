@@ -4,6 +4,7 @@ CHANGELOG
 v2.5
 15/February/2021
 - Code base merged with the the parsing clases of WIKINDX 6.4
+- punctuation option added for BIBTEXCREATORPARSE::getInitials()
 
 v2.4
 07/April/2019 - Michael Winkler

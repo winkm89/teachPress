@@ -171,7 +171,7 @@ function get_tp_publication_type_options ($selected, $mode = 'sng') {
  * @param string $a
  * @param string $b
  * @return int
- * @since 7.2
+ * @since 8.0.0
  */
 function sort_tp_publication_type_options ($a, $b) {
     return strcmp($a['i18n_singular'], $b['i18n_singular']);

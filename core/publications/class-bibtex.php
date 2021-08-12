@@ -380,7 +380,7 @@ class TP_Bibtex {
      * Parses author names
      * @param string $input         The input string
      * @param string $separator     The separator between the authors (for the output)
-     * @param string $mode          values: last, initials, old
+     * @param string $mode          values: last, initials, old, short
      * @param string $punctuation   Punctuation after an initial (only used for short mode)
      * @return string
      * @since 3.0.0
