@@ -137,7 +137,8 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * New: DOI-Link to feedlist added (#158)
 * New: [tplist, tpcloud, tpsearch]: author_name option "short" added (#171)
 * New: For custom templates: Add the ability to disable (or customize) currently hardcoded text (#164)
-* New: API: meta_key_search option to TP_Publications::get_publications() added (#169)
+* New: API: meta_key_search option for TP_Publications::get_publications() added (#169)
+* New: API: bibtex key search option for TP_Publications::get_publications() added (#174)
 * Changed: Update bibtexParse to v2.5 (#147)
 * Changed: Font sizes in publication templates defined in rem
 * Changed: Remove field requirements (tags, bibtex key) for adding publications (#159)
@@ -145,6 +146,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Changed: Class names follows WordPress Naming Conventions. Example: tp_publication_template is now TP_Publication_Template
 * Changed: For custom templates: get_image() method for publication templates added (and is required for all templates!) (#161)
 * Changed: For custom templates: $interface->get_tag_line() renames to $interface->get_menu_line()
+* Changed: A fix for an old name bug changes "capabilites" to "capabilities" over the whole plugin including database tables
 * Bugfix: Punctation lost after import publications (#145)
 * Bugfix: BibTeX import: Uninitialized string offset: 0 notice if bibtex entries are separated with empty lines (#163)
 * Bugfix: BibTeX import: Undefined index: author notice if the author field is not set (#163)
