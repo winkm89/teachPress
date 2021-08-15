@@ -431,7 +431,7 @@ class TP_Document_Manager {
                 $capability = TP_Courses::get_capability($course_id, $current_user->ID);
                 // check capabilities
                 if ( $capability !== 'owner' && $capability !== 'approved' ) {
-                    get_tp_message(__('You have no capabilites to use this course','teachpress'), 'red');
+                    get_tp_message(__('You have no capabilities to use this course','teachpress'), 'red');
                 }
                 else {
                     TP_Document_Manager::init($course_id, 'tinyMCE');

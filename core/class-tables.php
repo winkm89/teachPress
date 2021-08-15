@@ -20,7 +20,7 @@ class TP_Tables {
      */
     public static function create() {
         global $wpdb;
-        self::add_capabilites();
+        self::add_capabilities();
         
         $charset_collate = self::get_charset();
         
@@ -35,7 +35,7 @@ class TP_Tables {
         // Courses
         self::add_table_courses($charset_collate);
         self::add_table_course_meta($charset_collate);
-        self::add_table_course_capabilites($charset_collate);
+        self::add_table_course_capabilities($charset_collate);
         self::add_table_course_documents($charset_collate);
         self::add_table_stud($charset_collate);
         self::add_table_stud_meta($charset_collate);
@@ -46,7 +46,7 @@ class TP_Tables {
         // Publications
         self::add_table_pub($charset_collate);
         self::add_table_pub_meta($charset_collate);
-        self::add_table_pub_capabilites($charset_collate);
+        self::add_table_pub_capabilities($charset_collate);
         self::add_table_pub_documents($charset_collate);
         self::add_table_pub_imports($charset_collate);
         self::add_table_tags($charset_collate);
@@ -72,11 +72,11 @@ class TP_Tables {
                                 `" . TEACHPRESS_ASSESSMENTS . "`, 
                                 `" . TEACHPRESS_AUTHORS . "`, 
                                 `" . TEACHPRESS_COURSES . "`, 
-                                `" . TEACHPRESS_COURSE_CAPABILITES . "`, 
+                                `" . TEACHPRESS_COURSE_CAPABILITIES . "`, 
                                 `" . TEACHPRESS_COURSE_DOCUMENTS . "`, 
                                 `" . TEACHPRESS_COURSE_META . "`, 
                                 `" . TEACHPRESS_PUB . "`, 
-                                `" . TEACHPRESS_PUB_CAPABILITES . "`, 
+                                `" . TEACHPRESS_PUB_CAPABILITIES . "`, 
                                 `" . TEACHPRESS_PUB_DOCUMENTS . "`, 
                                 `" . TEACHPRESS_PUB_META . "`, 
                                 `" . TEACHPRESS_PUB_IMPORTS . "`,
@@ -148,7 +148,7 @@ class TP_Tables {
                     `waitinglist` INT(1),
                     `image_url` VARCHAR(400),
                     `strict_signup` INT(1),
-                    `use_capabilites` INT(1),
+                    `use_capabilities` INT(1),
                     PRIMARY KEY (`course_id`),
                     KEY `semester` (`semester`)
                 ) $charset_collate;");
@@ -158,20 +158,20 @@ class TP_Tables {
     }
     
     /**
-     * Create table course_capabilites
+     * Create table course_capabilities
      * @param string $charset_collate
      * @since 5.0.0
      */
-    public static function add_table_course_capabilites($charset_collate) {
+    public static function add_table_course_capabilities($charset_collate) {
         global $wpdb;
         
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_COURSE_CAPABILITES . "'") == TEACHPRESS_COURSE_CAPABILITES ) {
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_COURSE_CAPABILITIES . "'") == TEACHPRESS_COURSE_CAPABILITIES ) {
             return;
         }
         
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         
-        dbDelta("CREATE TABLE " . TEACHPRESS_COURSE_CAPABILITES . " (
+        dbDelta("CREATE TABLE " . TEACHPRESS_COURSE_CAPABILITIES . " (
                     `cap_id` INT UNSIGNED AUTO_INCREMENT,
                     `wp_id` INT UNSIGNED,
                     `course_id` INT UNSIGNED,
@@ -182,7 +182,7 @@ class TP_Tables {
                 ) $charset_collate;");
         
         // test engine
-        self::change_engine(TEACHPRESS_COURSE_CAPABILITES);
+        self::change_engine(TEACHPRESS_COURSE_CAPABILITIES);
     }
     
     /**
@@ -523,7 +523,7 @@ class TP_Tables {
                     `status` VARCHAR (100) DEFAULT 'published',
                     `added` DATETIME,
                     `modified` DATETIME,
-                    `use_capabilites` INT(1),
+                    `use_capabilities` INT(1),
                     `import_id` INT,
                     PRIMARY KEY (pub_id),
                     KEY `ind_type` (`type`),
@@ -566,20 +566,20 @@ class TP_Tables {
     }
     
         /**
-     * Create table pub_capabilites
+     * Create table pub_capabilities
      * @param string $charset_collate
      * @since 6.0.0
      */
-    public static function add_table_pub_capabilites($charset_collate) {
+    public static function add_table_pub_capabilities($charset_collate) {
         global $wpdb;
         
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_PUB_CAPABILITES . "'") == TEACHPRESS_PUB_CAPABILITES ) {
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_PUB_CAPABILITIES . "'") == TEACHPRESS_PUB_CAPABILITIES ) {
             return;
         }
         
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         
-        dbDelta("CREATE TABLE " . TEACHPRESS_PUB_CAPABILITES . " (
+        dbDelta("CREATE TABLE " . TEACHPRESS_PUB_CAPABILITIES . " (
                     `cap_id` INT UNSIGNED AUTO_INCREMENT,
                     `wp_id` INT UNSIGNED,
                     `pub_id` INT UNSIGNED,
@@ -590,7 +590,7 @@ class TP_Tables {
                 ) $charset_collate;");
         
         // test engine
-        self::change_engine(TEACHPRESS_PUB_CAPABILITES);
+        self::change_engine(TEACHPRESS_PUB_CAPABILITIES);
     }
     
     /**
@@ -786,7 +786,7 @@ class TP_Tables {
      * Add capabilities
      * @since 5.0.0
      */
-    private static function add_capabilites() {
+    private static function add_capabilities() {
         // 
         global $wp_roles;
         $role = $wp_roles->get_role('administrator');

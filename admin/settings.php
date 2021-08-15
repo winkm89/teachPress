@@ -705,11 +705,11 @@ class TP_Settings_Page {
         self::list_db_table_index(TEACHPRESS_ASSESSMENTS);
         self::list_db_table_index(TEACHPRESS_AUTHORS);
         self::list_db_table_index(TEACHPRESS_COURSES);
-        self::list_db_table_index(TEACHPRESS_COURSE_CAPABILITES);
+        self::list_db_table_index(TEACHPRESS_COURSE_CAPABILITIES);
         self::list_db_table_index(TEACHPRESS_COURSE_DOCUMENTS);
         self::list_db_table_index(TEACHPRESS_COURSE_META);
         self::list_db_table_index(TEACHPRESS_PUB);
-        self::list_db_table_index(TEACHPRESS_PUB_CAPABILITES);
+        self::list_db_table_index(TEACHPRESS_PUB_CAPABILITIES);
         self::list_db_table_index(TEACHPRESS_PUB_DOCUMENTS);
         self::list_db_table_index(TEACHPRESS_PUB_IMPORTS);
         self::list_db_table_index(TEACHPRESS_PUB_META);

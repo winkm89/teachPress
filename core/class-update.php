@@ -107,6 +107,12 @@ class TP_Update {
         if ( $db_version[0] === '7' || $update_level === '7' ) {
             TP_Update::upgrade_to_70();
             TP_Update::upgrade_to_71();
+            $update_level = '8';
+        }
+        
+        // force updates to reach structure of teachPress 7.0.0
+        if ( $db_version[0] === '8' || $update_level === '8' ) {
+            TP_Update::upgrade_to_80();
         }
         
         // Add teachPress options
@@ -550,7 +556,7 @@ class TP_Update {
         // add new tables
         TP_Tables::add_table_artefacts($charset);
         TP_Tables::add_table_assessments($charset);
-        TP_Tables::add_table_course_capabilites($charset);
+        TP_Tables::add_table_course_capabilities($charset);
         TP_Tables::add_table_course_documents($charset);
         TP_Tables::add_table_course_meta($charset);
         TP_Tables::add_table_authors($charset);
@@ -558,9 +564,9 @@ class TP_Update {
         TP_Tables::add_table_stud_meta($charset);
         TP_Tables::add_table_pub_meta($charset);
         
-        // add column use_capabilites to table teachpress_courses
-        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_COURSES . " LIKE 'use_capabilites'") == '0') { 
-            $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSES . " ADD `use_capabilites` INT( 1 ) NULL DEFAULT NULL AFTER `strict_signup`");
+        // add column use_capabilities to table teachpress_courses
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_COURSES . " LIKE 'use_capabilities'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSES . " ADD `use_capabilities` INT( 1 ) NULL DEFAULT NULL AFTER `strict_signup`");
         }
         
         // add column doi to table teachpress_pub
@@ -630,18 +636,18 @@ class TP_Update {
         $charset = TP_Tables::get_charset();
         
         // add new tables
-        TP_Tables::add_table_pub_capabilites($charset);
+        TP_Tables::add_table_pub_capabilities($charset);
         TP_Tables::add_table_pub_documents($charset);
         TP_Tables::add_table_pub_imports($charset);
         
-        // add column use_capabilites to table teachpress_courses
-        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'use_capabilites'") == '0') { 
-            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `use_capabilites` INT( 1 ) NULL DEFAULT NULL AFTER `modified`");
+        // add column use_capabilities to table teachpress_courses
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'use_capabilities'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `use_capabilities` INT( 1 ) NULL DEFAULT NULL AFTER `modified`");
         }
         
         // add column import_id to table teachpress_courses
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'import_id'") == '0') { 
-            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `import_id` INT NULL DEFAULT NULL AFTER `use_capabilites`");
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `import_id` INT NULL DEFAULT NULL AFTER `use_capabilities`");
         }
         
         // expand char limit for tp_publications::booktitle
@@ -688,12 +694,12 @@ class TP_Update {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSES . " ADD INDEX `ind_semester` (`semester`)");
         }
         
-        // ADD index to Table TEACHPRESS_COURSE_CAPABILITES
-        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE key_name = 'ind_course_id'") == '0') {
-            $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSE_CAPABILITES . " ADD INDEX `ind_course_id` (`course_id`)");
+        // ADD index to Table TEACHPRESS_COURSE_CAPABILITIES
+        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE key_name = 'ind_course_id'") == '0') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSE_CAPABILITIES . " ADD INDEX `ind_course_id` (`course_id`)");
         }
-        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE key_name = 'ind_wp_id'") == '0') {
-            $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSE_CAPABILITES . " ADD INDEX `ind_wp_id` (`wp_id`)");
+        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE key_name = 'ind_wp_id'") == '0') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSE_CAPABILITIES . " ADD INDEX `ind_wp_id` (`wp_id`)");
         }
         
         // ADD index to Table TEACHPRESS_COURSE_DOCUMENTS
@@ -706,7 +712,7 @@ class TP_Update {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSE_META . " ADD INDEX `ind_course_id` (`course_id`)");
         }
         
-        // ADD index to Table TEACHPRESS_COURSE_META
+        // ADD index to Table TEACHPRESS_PUB
         if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_PUB . " WHERE key_name = 'ind_type'") == '0') {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD INDEX `ind_type` (`type`)");
         }
@@ -726,12 +732,12 @@ class TP_Update {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD INDEX `ind_status` (`status`)");
         }
         
-        // ADD index to Table TEACHPRESS_PUB_CAPABILITES
-        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_PUB_CAPABILITES . " WHERE key_name = 'ind_pub_id'") == '0') {
-            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB_CAPABILITES . " ADD INDEX `ind_pub_id` (`pub_id`)");
+        // ADD index to Table TEACHPRESS_PUB_CAPABILITIES
+        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_PUB_CAPABILITIES . " WHERE key_name = 'ind_pub_id'") == '0') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB_CAPABILITIES . " ADD INDEX `ind_pub_id` (`pub_id`)");
         }
-        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_PUB_CAPABILITES . " WHERE key_name = 'ind_wp_id'") == '0') {
-            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB_CAPABILITES . " ADD INDEX `ind_wp_id` (`wp_id`)");
+        if ($wpdb->query("SHOW INDEX FROM " . TEACHPRESS_PUB_CAPABILITIES . " WHERE key_name = 'ind_wp_id'") == '0') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB_CAPABILITIES . " ADD INDEX `ind_wp_id` (`wp_id`)");
         }
         
         // ADD index to Table TEACHPRESS_PUB_DOCUMENTS
@@ -813,6 +819,50 @@ class TP_Update {
         }
     }
     
+    /**
+     * Database upgrade to teachPress 8.0.0 structure
+     * @since 8.0.0
+     */
+    private static function upgrade_to_80() {
+        global $wpdb; 
+        // Rename teachpress_course_capabilites to teachpress_course_capabilities
+        self::rename_table($wpdb->prefix . 'teachpress_course_capabilites', TEACHPRESS_COURSE_CAPABILITIES);
+        
+        // Rename teachpress_course_capabilites to teachpress_course_capabilities
+        self::rename_table($wpdb->prefix . 'teachpress_pub_capabilites', TEACHPRESS_PUB_CAPABILITIES);
+        
+        // rename column TEACHPRESS_PUB.use_capabilites to use_capabilities
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'use_capabilites'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `use_capabilites` `use_capabilities` INT(1) NULL DEFAULT NULL");
+        }
+        
+        // rename column TEACHPRESS_COURSES.use_capabilites to use_capabilities
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_COURSES . " LIKE 'use_capabilites'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSES . " CHANGE `use_capabilites` `use_capabilities` INT(1) NULL DEFAULT NULL");
+        }
+        
+    }
+    
+    /**
+     * Renames a table
+     * @param string $oldname
+     * @param string $newname
+     * @return boolean
+     * @since 8.0.0
+     */
+    private static function rename_table($oldname, $newname) {
+        
+        global $wpdb;
+        // Check if the old table exists
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . esc_sql($oldname) . "'") == esc_sql($oldname) ) {
+            $wpdb->query('RENAME TABLE ' . esc_sql($oldname) . ' TO ' . esc_sql($newname) . '');
+            return true;
+        }
+        return false;
+        
+    }
+
+
     /**
      * Checks if the table teachpress_authors needs to be filled. Returns false if not.
      * @return boolean

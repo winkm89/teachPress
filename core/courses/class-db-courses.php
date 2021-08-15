@@ -23,10 +23,10 @@ class TP_Courses {
      */
     public static function get_capability ($course_id, $wp_id){
         global $wpdb;
-        $test = $wpdb->get_var("SELECT `use_capabilites` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($course_id) . "'");
+        $test = $wpdb->get_var("SELECT `use_capabilities` FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = '" . intval($course_id) . "'");
         
         if ( intval($test) === 1 ){
-            return $wpdb->get_var("SELECT `capability` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "'");
+            return $wpdb->get_var("SELECT `capability` FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "'");
         }
         
         // Return owner if the course has no capabilities
@@ -34,7 +34,7 @@ class TP_Courses {
     }
 
     /**
-    * Get course capabilites
+    * Get course capabilities
     * @param int $course_id         The course ID
     * @param string $output_type    OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
     * @return array|object
@@ -42,7 +42,7 @@ class TP_Courses {
     */
    public static function get_capabilities ($course_id, $output_type = ARRAY_A) {
        global $wpdb;
-       return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "'",$output_type);
+       return $wpdb->get_results("SELECT * FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE `course_id` = '" . intval($course_id) . "'",$output_type);
    }
    
    /**
@@ -60,7 +60,7 @@ class TP_Courses {
        }
        
        if ( !TP_Courses::has_capability($course_id, $wp_id, $capability) ) {
-           $wpdb->insert(TEACHPRESS_COURSE_CAPABILITES, array('course_id' => $course_id, 'wp_id' => $wp_id, 'capability' => $capability), array('%d', '%d', '%s'));
+           $wpdb->insert(TEACHPRESS_COURSE_CAPABILITIES, array('course_id' => $course_id, 'wp_id' => $wp_id, 'capability' => $capability), array('%d', '%d', '%s'));
        }
        
        return $wpdb->insert_id;
@@ -74,7 +74,7 @@ class TP_Courses {
     */
    public static function delete_capability ($cap_id) {
        global $wpdb;
-       $wpdb->query("DELETE FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `cap_id` = '" . intval($cap_id) . "'");
+       $wpdb->query("DELETE FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE `cap_id` = '" . intval($cap_id) . "'");
    }
    
    /**
@@ -93,7 +93,7 @@ class TP_Courses {
            $where = "AND `capability` = '" . esc_sql($capability). "'";
        }
        
-       $test = $wpdb->query("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "' $where");
+       $test = $wpdb->query("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE `course_id` = '" . intval($course_id) . "' AND `wp_id` = '" . intval($wp_id) . "' $where");
        
        if ( $test === 1 ) {
            return true;
@@ -110,7 +110,7 @@ class TP_Courses {
     */
    public static function is_owner ($course_id) {
        global $wpdb;
-       $test = $wpdb->get_var("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = '" . intval($course_id) . "' AND `capability` = 'owner'");
+       $test = $wpdb->get_var("SELECT `wp_id` FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE `course_id` = '" . intval($course_id) . "' AND `capability` = 'owner'");
        
        if ( $test === NULL ){
            return false;
@@ -183,8 +183,8 @@ class TP_Courses {
         global $wpdb;
 
         // Define basics
-        $sql = "SELECT course_id, name, type, lecturer, date, room, places, start, end, semester, parent, visible, rel_page, comment, image_url, strict_signup, use_capabilites, parent_name
-                FROM ( SELECT t.course_id AS course_id, t.name AS name, t.type AS type, t.lecturer AS lecturer, t.date AS date, t.room As room, t.places AS places, t.start AS start, t.end As end, t.semester AS semester, t.parent As parent, t.visible AS visible, t.rel_page AS rel_page, t.comment AS comment, t.image_url AS image_url, t.strict_signup AS strict_signup, t.use_capabilites AS use_capabilites, p.name AS parent_name 
+        $sql = "SELECT course_id, name, type, lecturer, date, room, places, start, end, semester, parent, visible, rel_page, comment, image_url, strict_signup, use_capabilities, parent_name
+                FROM ( SELECT t.course_id AS course_id, t.name AS name, t.type AS type, t.lecturer AS lecturer, t.date AS date, t.room As room, t.places AS places, t.start AS start, t.end As end, t.semester AS semester, t.parent As parent, t.visible AS visible, t.rel_page AS rel_page, t.comment AS comment, t.image_url AS image_url, t.strict_signup AS strict_signup, t.use_capabilities AS use_capabilities, p.name AS parent_name 
                 FROM " . TEACHPRESS_COURSES . " t 
                 LEFT JOIN " . TEACHPRESS_COURSES . " p ON t.parent = p.course_id ) AS temp";
         
@@ -358,7 +358,7 @@ class TP_Courses {
                     'waitinglist'       => $data['waitinglist'], 
                     'image_url'         => $data['image_url'], 
                     'strict_signup'     => $data['strict_signup'], 
-                    'use_capabilites'   => $data['use_capabilites'] ), 
+                    'use_capabilities'  => $data['use_capabilities'] ), 
                 array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ) );
         $course_id = $wpdb->insert_id;
         // add capability
@@ -481,7 +481,7 @@ class TP_Courses {
                     'waitinglist'       => $data['waitinglist'], 
                     'image_url'         => $data['image_url'], 
                     'strict_signup'     => $data['strict_signup'], 
-                    'use_capabilites'   => $data['use_capabilites'] ), 
+                    'use_capabilities'  => $data['use_capabilities'] ), 
                 array( 'course_id' => $course_id ), 
                 array( '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s', '%d', '%d' ), 
                 array( '%d' ) );
@@ -507,7 +507,7 @@ class TP_Courses {
             
             $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSES . " WHERE `course_id` = $checkbox[$i]" );
             $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSE_META . " WHERE `course_id` = $checkbox[$i]" );
-            $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSE_CAPABILITES . " WHERE `course_id` = $checkbox[$i]" );
+            $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSE_CAPABILITIES . " WHERE `course_id` = $checkbox[$i]" );
             $wpdb->query( "DELETE FROM " . TEACHPRESS_COURSE_DOCUMENTS . " WHERE `course_id` = $checkbox[$i]" );
             $wpdb->query( "DELETE FROM " . TEACHPRESS_ASSESSMENTS . " WHERE `course_id` = $checkbox[$i]" );
             $wpdb->query( "DELETE FROM " . TEACHPRESS_ARTEFACTS . " WHERE `course_id` = $checkbox[$i]" );

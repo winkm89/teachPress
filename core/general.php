@@ -202,7 +202,7 @@ function get_tp_var_types($type) {
             'waitinglist'       => '',
             'image_url'         => '',
             'strict_signup'     => '',
-            'use_capabilites'   => '');
+            'use_capabilities'   => '');
     }
     if ( $type == 'publication_array' ) {
         $ret = array( 
@@ -246,6 +246,7 @@ function get_tp_var_types($type) {
             'status'            => '',
             'added'             => '',
             'modified'          => '',
+            'use_capabilities'  => '',
             'import_id'         => 0);
     }
     return $ret;

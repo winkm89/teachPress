@@ -47,12 +47,12 @@ if ( !defined('TEACHPRESS_COURSE_META') ) {
     */
     define('TEACHPRESS_COURSE_META', $wpdb->prefix . 'teachpress_course_meta');}
 
-if ( !defined('TEACHPRESS_COURSE_CAPABILITES') ) {
+if ( !defined('TEACHPRESS_COURSE_CAPABILITIES') ) {
     /**
-     * This constant defines the table name for teachpress_course_cababilites.
+     * This constant defines the table name for teachpress_course_cababilities.
      * @since 5.0.0
     */
-    define('TEACHPRESS_COURSE_CAPABILITES', $wpdb->prefix . 'teachpress_course_capabilites');}
+    define('TEACHPRESS_COURSE_CAPABILITIES', $wpdb->prefix . 'teachpress_course_capabilities');}
 
 if ( !defined('TEACHPRESS_COURSE_DOCUMENTS') ) {
     /**
@@ -89,12 +89,12 @@ if ( !defined('TEACHPRESS_PUB_META') ) {
     */
     define('TEACHPRESS_PUB_META', $wpdb->prefix . 'teachpress_pub_meta');}
 
-if ( !defined('TEACHPRESS_PUB_CAPABILITES') ) {
+if ( !defined('TEACHPRESS_PUB_CAPABILITIES') ) {
     /**
      * This constant defines the table name for teachpress_course_cababilites.
      * @since 6.0.0
     */
-    define('TEACHPRESS_PUB_CAPABILITES', $wpdb->prefix . 'teachpress_pub_capabilites');}
+    define('TEACHPRESS_PUB_CAPABILITIES', $wpdb->prefix . 'teachpress_pub_capabilities');}
 
 if ( !defined('TEACHPRESS_PUB_DOCUMENTS') ) {
     /**

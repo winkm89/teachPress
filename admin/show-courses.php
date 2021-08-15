@@ -73,7 +73,7 @@ function tp_show_courses_page() {
     if ( $action === 'edit' ) {
         tp_add_course_page();
     }
-    elseif ( $action === 'show' || $action === 'assessments' || $action === 'add_assessments' || $action === 'enrollments' || $action === 'capabilites' || $action === 'documents' ) {
+    elseif ( $action === 'show' || $action === 'assessments' || $action === 'add_assessments' || $action === 'enrollments' || $action === 'capabilities' || $action === 'documents' ) {
         tp_show_single_course_page();
     }
     elseif ( $action === 'list' ) {
@@ -245,7 +245,7 @@ class TP_Courses_Page {
             $courses[$z]['semester'] = stripslashes($row->semester);
             $courses[$z]['parent'] = $row->parent;
             $courses[$z]['visible'] = $row->visible;
-            $courses[$z]['use_capabilites'] = $row->use_capabilites;
+            $courses[$z]['use_capabilities'] = $row->use_capabilities;
             $z++;
         }
         // display courses

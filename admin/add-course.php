@@ -80,7 +80,7 @@ function tp_add_course_page() {
    $data['waitinglist'] = isset( $_POST['waitinglist'] ) ? intval($_POST['waitinglist']) : 0;
    $data['image_url'] = isset( $_POST['image_url'] ) ? htmlspecialchars($_POST['image_url']) : '';
    $data['strict_signup'] = isset( $_POST['strict_signup'] ) ? intval($_POST['strict_signup']) : 0;
-   $data['use_capabilites'] = isset( $_POST['use_capabilites'] ) ? intval($_POST['use_capabilites']) : 0;
+   $data['use_capabilities'] = isset( $_POST['use_capabilities'] ) ? intval($_POST['use_capabilities']) : 0;
    
    $sub['type'] = isset( $_POST['sub_course_type'] ) ? htmlspecialchars($_POST['sub_course_type']) : '';
    $sub['number'] = isset( $_POST['sub_number'] ) ? intval($_POST['sub_number']) : 0;
@@ -98,7 +98,7 @@ function tp_add_course_page() {
    // If the user has no permissions to edit this course
    if ( $course_id !== 0 && ( $capability !== 'owner' && $capability !== 'approved' ) ) {
        echo '<div class="wrap">';
-       get_tp_message(__('You have no capabilites to edit this course','teachpress'), 'red');
+       get_tp_message(__('You have no capabilities to edit this course','teachpress'), 'red');
        echo '</div>';
        return;
    }
@@ -390,10 +390,10 @@ class TP_Add_Course {
                     $readonly = '';
                 }
                 ?>
-                <p><label for="use_capabilites"><strong><?php _e('Capabilites','teachpress'); ?></strong></label></p>
-                <select name="use_capabilites" <?php echo $readonly; ?>>
-                    <option value="0"<?php if ( $course_data["use_capabilites"] == 0 && $course_id != 0 ) {echo ' selected="selected"'; } ?>><?php _e('global','teachpress'); ?></option>
-                    <option value="1"<?php if ( $course_data["use_capabilites"] == 1 && $course_id != 0 ) {echo ' selected="selected"'; } ?>><?php _e('local','teachpress'); ?></option>
+                <p><label for="use_capabilities"><strong><?php _e('Capabilities','teachpress'); ?></strong></label></p>
+                <select name="use_capabilities" <?php echo $readonly; ?>>
+                    <option value="0"<?php if ( $course_data["use_capabilities"] == 0 && $course_id != 0 ) {echo ' selected="selected"'; } ?>><?php _e('global','teachpress'); ?></option>
+                    <option value="1"<?php if ( $course_data["use_capabilities"] == 1 && $course_id != 0 ) {echo ' selected="selected"'; } ?>><?php _e('local','teachpress'); ?></option>
                 </select>
              </div>
              <div id="major-publishing-actions">

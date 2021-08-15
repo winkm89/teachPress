@@ -87,7 +87,7 @@ function tp_show_single_course_page() {
     else if ( $action === 'enrollments' && ( $capability === 'owner' || $capability === 'approved' ) ) {
         TP_Single_Course_Page::get_enrollments_tab($course_id, $course_data, $link_parameter, $reg_action, $checkbox, $waiting);
     }
-    else if ( $action === 'capabilites' && $capability === 'owner' ) {
+    else if ( $action === 'capabilities' && $capability === 'owner' ) {
         TP_Single_Course_Page::get_capability_tab($course_data);
     }
     else if ( $action === 'documents' && ( $capability === 'owner' || $capability === 'approved' ) ) {
@@ -528,8 +528,8 @@ class TP_Single_Course_Page {
         }
         
         if ( $capability === 'owner' ) {
-            $set_capability_tab = ( $action === 'capabilites' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
-            $capability_tab = '<a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;sem=' . $link_parameter['sem'] . '&amp;search=' . $link_parameter['search'] . '&amp;action=capabilites" class="' . $set_capability_tab . '">' . __('Capabilites','teachpress') . '</a> ';
+            $set_capability_tab = ( $action === 'capabilities' ) ? 'nav-tab nav-tab-active' : 'nav-tab';
+            $capability_tab = '<a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;sem=' . $link_parameter['sem'] . '&amp;search=' . $link_parameter['search'] . '&amp;action=capabilities" class="' . $set_capability_tab . '">' . __('Capabilities','teachpress') . '</a> ';
         }
         
         return '<h3 class="nav-tab-wrapper">' . $info_tab . $documents_tab . $enrollments_tab. $assessment_tab . $capability_tab . '</h3>';
@@ -840,13 +840,13 @@ class TP_Single_Course_Page {
     }
     
     /**
-     * Shows the capabilites tab for show_single_course page
+     * Shows the capabilities tab for show_single_course page
      * @param array $course_data
      * @since 5.0.0
      */
     public static function get_capability_tab ($course_data) {
-        if ( $course_data['use_capabilites'] != 1 ) {
-            get_tp_message( __("You can't set user capabilites here, because you are using global capabilites for this course.",'teachpress'), 'orange' );
+        if ( $course_data['use_capabilities'] != 1 ) {
+            get_tp_message( __("You can't set user capabilities here, because you are using global capabilities for this course.",'teachpress'), 'orange' );
             return;
         }
         echo '<div class="tp_actions"><a id="teachpress_add_capability" class="button-secondary" onclick="javascript:teachpress_showhide(' . "'add_capability'" .');"><i class="fas fa-user-plus"></i> ' . __('Add new','teachpress') . '</a></div>';
@@ -856,10 +856,10 @@ class TP_Single_Course_Page {
         echo '<label for="cap_user">' . __('Username', 'teachpress') . '</label> ';
         echo '<select id="cap_user" name="cap_user">';
         echo '<option>- ' . __('Select user','teachpress') . ' -</option>';
-        $capabilites = TP_Courses::get_capabilities($course_data['course_id']);
+        $capabilities = TP_Courses::get_capabilities($course_data['course_id']);
         $users = get_users();
         $array_caps = array();
-        foreach ($capabilites as $row) {
+        foreach ($capabilities as $row) {
             array_push($array_caps, $row['wp_id']);
         }
         foreach ($users as $user) {
@@ -882,7 +882,7 @@ class TP_Single_Course_Page {
         echo '</tr>';
         echo '<tbody>';
         $class_alternate = true;
-        foreach ( $capabilites as $row ) {
+        foreach ( $capabilities as $row ) {
             if ( $class_alternate === true ) {
                 $tr_class = 'class="alternate"';
                 $class_alternate = false;
@@ -897,7 +897,7 @@ class TP_Single_Course_Page {
             echo '<td>';
             echo '<span style="float:left; margin-right:10px;">' . get_avatar($row['wp_id'], 35) . '</span> <strong>' . $user->user_login . '</strong>';
             if ( $row['capability'] !== 'owner' ) {
-                echo '<div class="tp_row_actions"><a class="tp_row_delete" href="admin.php?page=teachpress/teachpress.php&course_id=6&sem=Example%20term&search=&action=capabilites" style="color:#a00;" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
+                echo '<div class="tp_row_actions"><a class="tp_row_delete" href="admin.php?page=teachpress/teachpress.php&course_id=6&sem=Example%20term&search=&action=capabilities" style="color:#a00;" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
             }
             echo '</td>';
             echo '<td>' . $user->display_name . '</td>';
