@@ -167,7 +167,7 @@ class TP_Student_Page {
         
         echo '<table border="0" cellspacing="0" cellpadding="7" id="einzel_optionen">';
         echo '<tr>';
-        echo '<td>' . __('delete enrollment','teachpress') . '</td>';
+        echo '<td>' . __('Delete enrollment','teachpress') . '</td>';
         echo '<td> <input name="delete" type="submit" value="' . __('Delete','teachpress') . '" id="teachpress_search_delete" class="button-secondary"/></td>';
         echo '</tr>';
         echo '</table>';
