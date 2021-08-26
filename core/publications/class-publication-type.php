@@ -21,22 +21,22 @@ class TP_Publication_Type {
     public function register($atts){
         // define defaults
         $param = shortcode_atts(array(
-            'type_slug' => '',
-            'bibtex_key_ext' => '',
-            'i18n_singular' => '',
-            'i18n_plural' => '',
-            'default_fields' => '',
-            'html_meta_row' => ''
+            'type_slug'         => '',
+            'bibtex_key_ext'    => '',
+            'i18n_singular'     => '',
+            'i18n_plural'       => '',
+            'default_fields'    => '',
+            'html_meta_row'     => ''
         ), $atts);
         
         if ( $param['type_slug'] !== '' ) {
             $this->pub_types[ $param['type_slug'] ] = array(
-                'type_slug' => $param['type_slug'],
-                'bibtex_key_ext' => $param['bibtex_key_ext'],
-                'i18n_singular' => $param['i18n_singular'],
-                'i18n_plural' => $param['i18n_plural'],
-                'default_fields' => $param['default_fields'],
-                'html_meta_row' => $param['html_meta_row']
+                'type_slug'         => $param['type_slug'],
+                'bibtex_key_ext'    => $param['bibtex_key_ext'],
+                'i18n_singular'     => $param['i18n_singular'],
+                'i18n_plural'       => $param['i18n_plural'],
+                'default_fields'    => $param['default_fields'],
+                'html_meta_row'     => $param['html_meta_row']
             );
         }
     }

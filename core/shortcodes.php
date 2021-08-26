@@ -695,25 +695,24 @@ class TP_Shortcodes {
 /** 
  * Shows an overview of courses
  * 
- * possible values for $atts:
- *      image (STRING)      left, right, bottom or none, default: none
- *      image_size (INT)    default: 0
- *      headline (INT)      0 for hide headline, 1 for show headline (default:1)
- *      text (STRING)       a custom text under the headline
- *      term (STRING)       the term/semester you want to show
- * 
- * @param array $atts
+ * @param array $atts {
+ *      @type string image      left, right, bottom or none, default: none
+ *      @type int image_size    default: 0
+ *      @type int headline      0 for hide headline, 1 for show headline (default:1)
+ *      @type string text       a custom text under the headline
+ *      @type string term       the term/semester you want to show
+ * }
  * @param string $semester (GET)
  * @return string
  * @since 2.0.0
 */
 function tp_courselist_shortcode($atts) {	
     $param = shortcode_atts(array(
-       'image' => 'none',
+       'image'      => 'none',
        'image_size' => 0,
-       'headline' => 1,
-       'text' => '',
-       'term' => ''
+       'headline'   => 1,
+       'text'       => '',
+       'term'       => ''
     ), $atts);
     $image = htmlspecialchars($param['image']);
     $text = htmlspecialchars($param['text']);
@@ -779,15 +778,14 @@ function tp_courselist_shortcode($atts) {
 /**
  * Displays the attached documents of a course
  * 
- * possible values of $atts:
- *      id (INT)                ID of the course 
- *      linkclass (STRING)      The name of the html class for document links, default is: linksecure
- *      date_format (STRING)    Default: d.m.Y
- *      show_date (INT)         1 (date is visible) or 0, default is: 1
- *      numbered (INT)          1 (use numbering) or 0, default is: 0
- *      headline (INT)          1 (display headline) or 0, default is: 1
- * 
- * @param array $atts
+ * @param array $atts {
+ *      @type int id                ID of the course 
+ *      @type string linkclass      The name of the html class for document links, default is: linksecure
+ *      @type string date_format    Default: d.m.Y
+ *      @type int show_date         1 (date is visible) or 0, default is: 1
+ *      @type int numbered          1 (use numbering) or 0, default is: 0
+ *      @type int headline          1 (display headline) or 0, default is: 1
+ * }
  * @since 5.0.0
  */
 function tp_coursedocs_shortcode($atts) {
@@ -837,11 +835,10 @@ function tp_coursedocs_shortcode($atts) {
 /** 
  * Displays information about a single course and his childs
  * 
- * possible values of $atts:
- *       id (INT)           -   ID of the course 
- *       show_meta (INT)    -   Display course meta data (1) or not (0), default is 1
- * 
- * @param array $atts
+ * @param array $atts {
+ *       @type int id           ID of the course 
+ *       @type int show_meta    Display course meta data (1) or not (0), default is 1
+ * }
  * @return string
  * @since 5.0.0
 */
@@ -901,11 +898,10 @@ function tp_courseinfo_shortcode($atts) {
 /**
  * Prints a citation link
  * 
- * possible values of $atts:
- *      id (INT)            - ID of the publication
- *      key (STRING)        - BibTeX key of a publication
- * 
- * @param array $atts
+ * @param array $atts {
+ *      @type int id        ID of the publication
+ *      @type string key    BibTeX key of a publication
+ * }
  * @return string
  * @since 6.0.0
  */
@@ -941,15 +937,15 @@ function tp_cite_shortcode ($atts) {
 
 /**
  * Prints the references
- * 
- * possible values of $atts:
- *      author_name (STRING)    last, initials or old, default: simple
- *      editor_name (STRING)    last, initials or old, default: initials
- *      author_separator (STRING)   The separator for author names, default: ;
- *      editor_separator (STRING)   The separator for editor names, default: ;
- *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y
- *      show_links (INT)        0 (false) or 1 (true), default: 0
- * @param array $atts
+
+ * @param array $atts {
+ *      @type string author_name        last, initials or old, default: simple
+ *      @type string editor_name        last, initials or old, default: initials
+ *      @type string author_separator   The separator for author names, default: ;
+ *      @type string editor_separator   The separator for editor names, default: ;
+ *      @type string date_format        The format for date; needed for the types: presentations, online; default: d.m.Y
+ *      @type int show_links            0 (false) or 1 (true), default: 0
+ * }
  * @return string
  * @since 6.0.0
  */
@@ -995,19 +991,19 @@ function tp_ref_shortcode($atts) {
 /** 
  * Shorcode for a single publication
  * 
- * possible values of $atts:
- *      id (INT)                id of a publication
- *      key (STRING)            bibtex key of a publication 
- *      author_name (STRING)    last, initials or old, default: simple
- *      author_name (STRING)    last, initials or old, default: last
- *      author_separator (STRING)   The separator for author names, default: ;
- *      editor_separator (STRING)   The separator for editor names, default: ;
- *      date_format (STRING)    the format for date; needed for the types: presentations, online; default: d.m.Y
- *      image (STRING)          none, left or right; default: none
- *      image_size (STRING)     image width in px; default: 0
- *      link (STRING)           Set it to "true" if you want to show a link in addition of the publication title. If there are more than one link, the first one is used.
- * 
- * @param array $atts
+ * @param array $atts {
+ *      @type int id                    id of a publication
+ *      @type string key                bibtex key of a publication 
+ *      @type string author_name        last, initials or old, default: simple
+ *      @type string editor_name        last, initials or old, default: simple
+ *      @type string author_separator   The separator for author names, default: ;
+ *      @type string editor_separator   The separator for editor names, default: ;
+ *      @type string date_format        The format for date; needed for the types: presentations, online; default: d.m.Y
+ *      @type string image              none, left or right; default: none
+ *      @type string image_size         image width in px; default: 0
+ *      @type string meta_label_in      Default: __('In','teachpress') . ': '
+ *      @type string link               Set it to "true" if you want to show a link in addition of the publication title. If there are more than one link, the first one is used.
+ * }
  * @return string
  * @since 2.0.0
 */ 
@@ -1084,13 +1080,12 @@ function tp_single_shortcode ($atts) {
 /** 
  * Shortcode for displaying the BibTeX code of a single publication
  * 
- * possible values of $atts:
- *      id (INT)        id of a publication
- *      key (STRING)    bibtex key of a publication 
- * 
  * If neither is given, the publication of the most recent [tpsingle] will be reused
  * 
- * @param array $atts
+ * @param array $atts {
+ *      @type int id        id of a publication
+ *      @type string key    bibtex key of a publication 
+ * }
  * @return string
  * @since 4.2.0
 */ 
@@ -1112,13 +1107,12 @@ function tp_bibtex_shortcode ($atts) {
 /** 
  * Shortcode for displaying the abstract of a single publication
  * 
- * possible values of $atts:
- *      id (INT)        id of a publication
- *      key (STRING)    bibtex key of a publication 
- * 
  * If neither is given, the publication of the most recent [tpsingle] will be reused
  * 
- * @param array $atts
+ * @param array $atts {
+ *      @type int id        id of a publication
+ *      @type string key    bibtex key of a publication 
+ * }
  * @return string
  * @since 4.2.0
 */ 
@@ -1140,13 +1134,12 @@ function tp_abstract_shortcode ($atts) {
 /**
  * Shortcode for displaying the related websites (url) of a publication 
  * 
- * possible values of $atts:
- *      id (INT)        id of a publication
- *      key (STRING)    bibtex key of a publication 
- * 
  * If neither is given, the publication of the most recent [tpsingle] will be reused
  * 
- * @param array $atts
+ * @param array $atts {
+ *      @type int id        id of a publication
+ *      @type string key    bibtex key of a publication 
+ * }
  * @return string
  * @scine 4.2.0
  */
@@ -1178,51 +1171,51 @@ function tp_links_shortcode ($atts) {
  * 
  * 
  * @param array $atts {
- *      @type string $user                  the WordPress IDs of on or more users (separated by comma)
- *      @type string $tag                   tag IDs (separated by comma)
- *      @type string $type                  the publication types you want to show (separated by comma)
- *      @type string $author                author IDs (separated by comma)
- *      @type string $year                  one or more years (separated by comma)
- *      @type string $exclude               one or more IDs of publications you don't want to show (separated by comma)
- *      @type string $include               one or more IDs of publications you want to show (separated by comma)
- *      @type string $include_editor_as_author  0 (false) or 1 (true), default: 1
- *      @type string $order                 title, year, bibtex or type, default: date DESC
- *      @type int $headline                 show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
- *      @type int $maxsinze                 maximal font size for the tag cloud, default: 35
- *      @type int $minsize                  minimal font size for the tag cloud, default: 11
- *      @type int $tag_limit                number of tags, default: 30
- *      @type string $hide_tags             ids of the tags you want to hide from your users (separated by comma)
- *      @type string $exclude_tags          similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
- *      @type string $exclude_types         name of the publication types you want to exclude (separated by comma)
- *      @type string $image                 none, left, right or bottom, default: none 
- *      @type int $image_size               max. Image size, default: 0
- *      @type string $image_link            none, self, rel_page or external (defalt: none)
- *      @type string $author_name           Author name style options: simple, last, initials, short or old, default: initials
- *      @type string $editor_name           Editor name style options: simple, last, initials, short or old, default: initials
- *      @type string $author_separator      The separator for author names
- *      @type string $editor_separator      The separator for author names
- *      @type string $style                 List style options: numbered, numbered_desc or none, default: none
- *      @type string $template              The key of the used template, default: tp_template_2021
- *      @type string $title_ref             Defines the target for the title link. Options: links or abstract, default: links
- *      @type string $link_style            Defines the style of the publication links. Options: inline, direct or images, default: inline
- *      @type string $date_format           The format for date, needed for the types: presentations, online; default: d.m.Y
- *      @type int $pagination               Activates pagination (1) or not (0), default: 1
- *      @type int $entries_per_page         Number of publications per page (pagination must be set to 1), default: 50
- *      @type string $sort_list             A list of publication types (separated by comma) which overwrites the default sort order for headline = 2
- *      @type string $show_tags_as          Style option for the tag filter: cloud, pulldown or none, default: cloud
- *      @type int $show_author_filter       0 (false) or 1 (true), default: 1
- *      @type string $show_in_author_filter Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
- *      @type int $show_type_filter         0 (false) or 1 (true), default: 1
- *      @type int $show_user_filter         0 (false) or 1 (true), default: 1
- *      @type int $show_search_filter       0 (false) or 1 (true), default: 1
- *      @type int $show_year_filter         0 (false) or 1 (true), default: 1
- *      @type int $show_bibtex              Show bibtex container under each entry (1) or not (0), default: 1
- *      @type string $container_suffix      a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
- *      @type string $filter_class          The CSS class for filter/select menus, default: default
- *      @type int $show_altmetric_donut     0 (false) or 1 (true), default: 0
- *      @type int $show_altmetric_entrx     0 (false) or 1 (true), default: 0
- *      @type int $use_jumpmenu             Use filter as jumpmenu (1) or not (0), default: 1
- *      @type int $use_as_filter            Show all entries by default (1) o not (0), default 1
+ *      @type string user                  the WordPress IDs of on or more users (separated by comma)
+ *      @type string tag                   tag IDs (separated by comma)
+ *      @type string type                  the publication types you want to show (separated by comma)
+ *      @type string author                author IDs (separated by comma)
+ *      @type string year                  one or more years (separated by comma)
+ *      @type string exclude               one or more IDs of publications you don't want to show (separated by comma)
+ *      @type string include               one or more IDs of publications you want to show (separated by comma)
+ *      @type string include_editor_as_author  0 (false) or 1 (true), default: 1
+ *      @type string order                 title, year, bibtex or type, default: date DESC
+ *      @type int headline                 show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
+ *      @type int maxsinze                 maximal font size for the tag cloud, default: 35
+ *      @type int minsize                  minimal font size for the tag cloud, default: 11
+ *      @type int tag_limit                number of tags, default: 30
+ *      @type string hide_tags             ids of the tags you want to hide from your users (separated by comma)
+ *      @type string exclude_tags          similar to hide_tags but with influence on publications; if exclude_tags is defined hide_tags will be ignored
+ *      @type string exclude_types         name of the publication types you want to exclude (separated by comma)
+ *      @type string image                 none, left, right or bottom, default: none 
+ *      @type int image_size               max. Image size, default: 0
+ *      @type string image_link            none, self, rel_page or external (defalt: none)
+ *      @type string author_name           Author name style options: simple, last, initials, short or old, default: initials
+ *      @type string editor_name           Editor name style options: simple, last, initials, short or old, default: initials
+ *      @type string author_separator      The separator for author names
+ *      @type string editor_separator      The separator for author names
+ *      @type string style                 List style options: numbered, numbered_desc or none, default: none
+ *      @type string template              The key of the used template, default: tp_template_2021
+ *      @type string title_ref             Defines the target for the title link. Options: links or abstract, default: links
+ *      @type string link_style            Defines the style of the publication links. Options: inline, direct or images, default: inline
+ *      @type string date_format           The format for date, needed for the types: presentations, online; default: d.m.Y
+ *      @type int pagination               Activates pagination (1) or not (0), default: 1
+ *      @type int entries_per_page         Number of publications per page (pagination must be set to 1), default: 50
+ *      @type string sort_list             A list of publication types (separated by comma) which overwrites the default sort order for headline = 2
+ *      @type string show_tags_as          Style option for the tags: cloud, pulldown, plain or none, default: cloud
+ *      @type int show_author_filter       0 (false) or 1 (true), default: 1
+ *      @type string show_in_author_filter Can be used to manage the visisble authors in the author filter. Uses the author IDs (separated by comma)
+ *      @type int show_type_filter         0 (false) or 1 (true), default: 1
+ *      @type int show_user_filter         0 (false) or 1 (true), default: 1
+ *      @type int show_search_filter       0 (false) or 1 (true), default: 1
+ *      @type int show_year_filter         0 (false) or 1 (true), default: 1
+ *      @type int show_bibtex              Show bibtex container under each entry (1) or not (0), default: 1
+ *      @type string container_suffix      a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
+ *      @type string filter_class          The CSS class for filter/select menus, default: default
+ *      @type int show_altmetric_donut     0 (false) or 1 (true), default: 0
+ *      @type int show_altmetric_entrx     0 (false) or 1 (true), default: 0
+ *      @type int use_jumpmenu             Use filter as jumpmenu (1) or not (0), default: 1
+ *      @type int use_as_filter            Show all entries by default (1) o not (0), default 1
  * }
  * @return string
  * @since 7.0.0
@@ -1776,12 +1769,11 @@ function tp_search_shortcode ($atts) {
 }
 
 /** 
- * Private Post shortcode
+ * Private Post shortcode  
  * 
- * possible values for atts:
- *      id (INT)        The id of the course
- * 
- * @param array $atts       The parameter array (key: id)
+ * @param array $atts  {
+ *      @type int id        The id of the course
+ * }
  * @param string $content   The content you want to display
  * @return string
  * @since 2.0.0

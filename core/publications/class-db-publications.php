@@ -42,32 +42,32 @@ class TP_Publications {
     }
     
     /**
-     * Returns an array or object of publications
-     * 
-     * Possible values for the array $args:
-     *  user (STRING)                   User IDs (separated by comma)
-     *  type (STRING)                   Type name (separated by comma)
-     *  tag (STRING)                    Tag IDs (separated by comma)
-     *  key (STRING)                    BibTex keys (separated by comma)
-     *  author_id (STRING)              Author IDs (separated by comma)
-     *  import_id (STRING)              Import IDs (separated by comma)
-     *  year (STRING)                   Years (separated by comma)
-     *  author (STRING)                 Author name (separated by comma)
-     *  editor (STRING)                 Editor name (separated by comma)
-     *  exclude (STRING)                The ids of the publications you want to exclude (separated by comma)
-     *  include (STRING)                The ids of the publications you want to include (separated by comma)
-     *  include_editor_as_author (BOOL) True or false
-     *  exclude_tags (STRING)           Use it to exclude publications via tag IDs (separated by comma)
-     *  order (STRING)                  The order of the list
-     *  limit (STRING)                  The sql search limit, ie: 0,30
-     *  search (STRING)                 The search string
-     *  meta_key_search (ARRAY)         Array which contains the parameters for meta_keys as key=>value pair
-     *                                  Example for an checkbox: array( 'tp_meta_pub_custom_label' => '{Open Access}' ),
-     *  output_type (STRING)            OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
+     * Returns an array or object of publications     
      *
-     * @since 5.0.0
-     * @param array $args
+     
+     * @param array $args {
+     *      @type string user                   User IDs (separated by comma)
+     *      @type string type                   Type name (separated by comma)
+     *      @type string tag                    Tag IDs (separated by comma)
+     *      @type string key                    BibTex keys (separated by comma)
+     *      @type string author_id              Author IDs (separated by comma)
+     *      @type string import_id              Import IDs (separated by comma)
+     *      @type string year                   Years (separated by comma)
+     *      @type string author                 Author name (separated by comma)
+     *      @type string editor                 Editor name (separated by comma)
+     *      @type string exclude                The ids of the publications you want to exclude (separated by comma)
+     *      @type string include                The ids of the publications you want to include (separated by comma)
+     *      @type bool include_editor_as_author True or false
+     *      @type string exclude_tags           Use it to exclude publications via tag IDs (separated by comma)
+     *      @type string order                  The order of the list
+     *      @type string limit                  The sql search limit, ie: 0,30
+     *      @type string search                 The search string
+     *      @type array meta_key_search         Array which contains the parameters for meta_keys as key=>value pair
+     *                                          Example for an checkbox: array( 'tp_meta_pub_custom_label' => '{Open Access}' ),
+     *      @type string output_type            OBJECT, ARRAY_N or ARRAY_A, default is OBJECT
+     * }
      * @param boolean $count    set to true of you only need the number of rows
+     * @since 5.0.0
      * @return mixed            array, object or int
     */
     public static function get_publications($args = array(), $count = false) {

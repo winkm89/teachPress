@@ -463,15 +463,15 @@ class TP_HTML_Publication_Template {
         
         // load template interface
         $interface_data = array (
-            'row' => $row,
-            'title' => $name,
-            'images' => $images,
-            'tag_line' => $tag_string,
-            'settings' => $settings,
-            'counter' => $pub_count,
-            'all_authors' => $all_authors,
-            'keywords' => $keywords,
-            'container_id' => $container_id,
+            'row'               => $row,
+            'title'             => $name,
+            'images'            => $images,
+            'tag_line'          => $tag_string,
+            'settings'          => $settings,
+            'counter'           => $pub_count,
+            'all_authors'       => $all_authors,
+            'keywords'          => $keywords,
+            'container_id'      => $container_id,
             'template_settings' => $template_settings
         );
         
