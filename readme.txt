@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 8.0
+Stable tag: 8.0.1
 
 Manage your courses and publications with teachPress 
 
@@ -119,7 +119,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 == Upgrade Notice ==
 
-= 8.0 =
+= 8.0.0 =
 Please note that custom publication templates now requires the method get_image()!
 
 = 6.0.1 =
@@ -127,7 +127,10 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 8.0.0 (xx.08.2021)=
+= 8.0.1 (26.08.2021) =
+* New: [tpcloud, tplist, tpsearch]: "plain" option added for "show_tags_as" parameter. This display tags for each publications without links and filter
+
+= 8.0.0 (15.08.2021) =
 * New: New default publication template teachPress 2021 added (mobile friendly flexible layout) (#161)
 * New: Flexible publication type registration added (#150)
 * New: Multi value publication filters for the backend added (#148)
