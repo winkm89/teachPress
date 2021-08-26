@@ -386,7 +386,7 @@ class TP_HTML_Publication_Template {
      * Gets a single publication in html format
      * @param array $row                The publication array (used keys: title, image_url, ...)
      * @param array $all_tags           Array of tags (used_keys: pub_id, tag_id, name)
-     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, date_format, convert_bibtex, container_suffix)
+     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, link_style, date_format, convert_bibtex, container_suffix, show_tags_as)
      * @param object $template          The template object
      * @param array $template_settings  Array with the template settings (keys: button_separator, meta_label_in, menu_label_tags, menu_label_links)
      * @param int $pub_count            The counter for numbered publications (default: 0)
@@ -410,7 +410,7 @@ class TP_HTML_Publication_Template {
         $altmetric = '';
 
         // show tags
-        if ( $settings['with_tags'] == 1 ) {
+        if ( $settings['show_tags_as'] != 'none' ) {
             $generated = self::get_tags($row, $all_tags, $settings);
             $keywords = $generated['keywords'];
             $tag_string = '<span class="tp_pub_tags_label">' . $template_settings['menu_label_tags'] . '</span>' . $generated['tags'];
@@ -671,7 +671,7 @@ class TP_HTML_Publication_Template {
     /**
      * This function prepares the publication title for html publication lists.
      * @param array $row                The publication array
-     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, with_tags, link_style, title_ref, date_format, convert_bibtex, container_suffix,...)
+     * @param array $settings           Array with all settings (keys: author_name, editor_name, style, image, link_style, title_ref, date_format, convert_bibtex, container_suffix,...)
      * @param string $container_id      The basic ID for div container
      * @return string
      * @since 6.0.0
@@ -827,14 +827,30 @@ class TP_HTML_Publication_Template {
     public static function get_tags ($row, $all_tags, $settings) {
         $tag_string = '';
         $keywords = array();
-        foreach ($all_tags as $tag) {
-            if ($tag["pub_id"] == $row['pub_id']) {
+        foreach ( $all_tags as $tag ) {
+            if ( $tag["pub_id"] == $row['pub_id'] ) {
                 $keywords[] = array('name' => stripslashes($tag["name"]));
-                $tag_string .= '<a rel="nofollow" href="' . $settings['permalink'] . 'tgid=' . $tag["tag_id"] . $settings['html_anchor'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($tag["name"]) . '</a>, ';
+                $tag_string .= self::prepare_tag_link($tag, $settings);
             }
         }
         return array('tags' => substr($tag_string, 0, -2),
                      'keywords' => $keywords);
+    }
+    
+    /**
+     * Prepares a single tag (plain or with HTML link)
+     * @param array $tag        with tag_id and name
+     * @param array $settings   The settings array
+     * @return string
+     * @since 8.0.1
+     */
+    private static function prepare_tag_link($tag, $settings) {
+        if ( $settings['show_tags_as'] === 'plain' ) {
+            return stripslashes($tag["name"]) . ', ';
+        }
+        else {
+            return '<a rel="nofollow" href="' . $settings['permalink'] . 'tgid=' . $tag["tag_id"] . $settings['html_anchor'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($tag["name"]) . '</a>, ';
+        }
     }
     
     /**

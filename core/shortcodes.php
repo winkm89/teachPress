@@ -1302,7 +1302,7 @@ function tp_publist_shortcode ($atts) {
         'show_year_filter'      => ( $atts['show_year_filter'] == '1' ) ? true : false,
         'show_search_filter'    => ( $atts['show_search_filter'] == '1' ) ? true : false,
         'show_bibtex'           => ( $atts['show_bibtex'] == '1' ) ? true : false,
-        'with_tags'             => ( $atts['show_tags_as'] == 'none' ) ? 0 : 1,
+        'show_tags_as'          => htmlspecialchars($atts['show_tags_as']),
         'container_suffix'      => htmlspecialchars($atts['container_suffix']),
         'filter_class'          => htmlspecialchars($atts['filter_class']),
         'show_altmetric_entry'  => ($atts['show_altmetric_entry'] == '1') ? true : false,
@@ -1312,7 +1312,6 @@ function tp_publist_shortcode ($atts) {
 
     // Settings for the tag cloud
     $cloud_settings = array (
-        'show_tags_as'          => htmlspecialchars($atts['show_tags_as']),
         'tag_limit'             => intval($atts['tag_limit']),
         'hide_tags'             => htmlspecialchars($atts['hide_tags']),
         'maxsize'               => intval($atts['maxsize']),
@@ -1366,7 +1365,7 @@ function tp_publist_shortcode ($atts) {
     /* Tag cloud */
     /*************/
     $tag_cloud = '';
-    if ( $cloud_settings['show_tags_as'] === 'cloud' ) {
+    if ( $settings['show_tags_as'] === 'cloud' ) {
         $tag_cloud = TP_Shortcodes::generate_tag_cloud($atts['user'], $cloud_settings, $filter_parameter, $sql_parameter, $settings);
     }
     
@@ -1404,7 +1403,7 @@ function tp_publist_shortcode ($atts) {
     }
     
     // Filter tag
-    if ( $cloud_settings['show_tags_as'] === 'pulldown' ) {
+    if ( $settings['show_tags_as'] === 'pulldown' ) {
         $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 4,'tag');
     }
 
