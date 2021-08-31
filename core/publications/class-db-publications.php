@@ -111,6 +111,7 @@ class TP_Publications {
 
         // define basics
         $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn, p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.image_target, p.image_ext, p.doi, p.rel_page, p.status, p.added, p.modified, p.import_id $selects FROM " . TEACHPRESS_PUB . " p $joins ";
+        $select_for_count = "SELECT DISTINCT p.pub_id, DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $joins ";
         $join = '';
 
         // exclude publications via tag_id
@@ -207,7 +208,7 @@ class TP_Publications {
             $sql = $select . $join . $where . $having . " ORDER BY $order $limit";
         }
         else {
-            $sql = "SELECT COUNT( DISTINCT pub_id ) AS `count` FROM ( $select $join $where $having) p ";
+            $sql = "SELECT COUNT( pub_id ) AS `count` FROM ( $select_for_count $join $where $having) p ";
         }
         
         // print_r($args);
