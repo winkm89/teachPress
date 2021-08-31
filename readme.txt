@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 8.0.1
+Stable tag: 8.0.2
 
 Manage your courses and publications with teachPress 
 
@@ -126,6 +126,11 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 8.0.2 (31.08.2021) = 
+* Changed: Don't longer use full table select for count queries in TP_Publications::get_publications()
+* Bugfix: year field was not used fo bibtex import if date field was missing
+* Bugfix: Optimize bibtex key generation within unique bibtex key check 
 
 = 8.0.1 (26.08.2021) =
 * New: [tpcloud, tplist, tpsearch]: "plain" option added for "show_tags_as" parameter. This display tags for each publications without links and filter
