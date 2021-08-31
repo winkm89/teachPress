@@ -697,24 +697,40 @@ class TP_Publications {
             return 'nokey';
         }
         
-        // check if bibtex key has no spaces
+        // Check if bibtex key has no spaces
         if ( strpos($bibtex_key, ' ') !== false ) {
             $bibtex_key = str_replace(' ', '', $bibtex_key);
         }
         
         // Check if the key is unique
         $check = $wpdb->get_var("SELECT COUNT('pub_id') FROM " . TEACHPRESS_PUB . " WHERE `bibtex` = '" . esc_sql($bibtex_key) . "'");
-        if ( intval($check) > 0 ) {
-            $alphabet = range('a', 'z');
-            if ( $check <= 25 ) {
-                $bibtex_key .= $alphabet[$check];
-            }
-            else {
-                $bibtex_key .= '_' . $check;
+        
+        // Return if the key is unique
+        if ( intval($check) === 0 ) {
+            return $bibtex_key;
+        }
+        
+        // Read all similar keys around
+        $keys = $wpdb->get_col("SELECT bibtex FROM " . TEACHPRESS_PUB . " WHERE `bibtex` LIKE '" . esc_sql($bibtex_key) . "%'");
+        $number_keys = count($keys);
+        
+        // Create a unique key
+        // If we can't use letters, use the number
+        if ( $number_keys > 25 ) {
+            return $bibtex_key . '_' . ($number_keys + 1);
+        }
+        
+        // If we can use letters
+        $alphabet = range('a', 'z');
+        for ( $i = $number_keys; $i <= 25; $i++ ) {
+            // Return if the new key is unique
+            if ( !in_array($bibtex_key . $alphabet[$i], $keys) ) {
+                return $bibtex_key . $alphabet[$i];
             }
         }
         
-        return $bibtex_key;
+        // If using letters was unsuccessful
+        return $bibtex_key . '_' . ($number_keys + 1);
         
     }
     
