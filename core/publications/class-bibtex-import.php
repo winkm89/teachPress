@@ -124,6 +124,10 @@ class TP_Bibtex_Import {
             if ( $test === false ) {
                 $entries[$i]['entry_id'] = self::import_publication_to_database($entries[$i], $tags, $settings);
             }
+            // Print the array for testing
+            else {
+                var_dump($entries[$i]);
+            }
         }
         return $entries;
 
