@@ -178,7 +178,7 @@ class TP_Bibtex_Import {
         $entry['month'] = array_key_exists('month', $entry) === true ? self::parse_month($entry['month']) : '';
         $entry['day'] = array_key_exists('day', $entry) === true ? $entry['day'] : '';
         // if complete date is given
-        if ( array_key_exists('date', $entry) ) {
+        if ( $entry['date'] !== '' ) {
             $entry['date'] = $entry['date'];
         }
         // if month + year is given
