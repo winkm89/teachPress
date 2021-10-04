@@ -1,6 +1,6 @@
 /**
  * Template: teachpress original
- * Version: 1.2
+ * Version: 1.3
  * Author: Michael Winkler
 */
 .tp_bibtex_entry {
@@ -48,6 +48,7 @@ td.tp_pub_info {
     font-weight:bold;}
 .tp_pub_link_image {
     max-width: 2em; 
+    max-height: 2em;}
 .tp_close {
     cursor: pointer;
     font-weight: bold;

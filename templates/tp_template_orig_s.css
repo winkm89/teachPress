@@ -1,6 +1,6 @@
 /**
  * Template: teachPress original small
- * Version: 1.2
+ * Version: 1.3
  * Author: Michael Winkler
 */
 .tp_bibtex_entry {
@@ -35,6 +35,7 @@ td.tp_pub_info_simple {
     padding-left: 2px; 
     padding-right: 2px; 
     font-size: 110%; 
+    text-decoration: none;}
 .tp_close {
     cursor: pointer;
     font-weight: bold;
