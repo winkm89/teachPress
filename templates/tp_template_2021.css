@@ -84,4 +84,8 @@ div.tp_pub_number {
     line-height: 1; 
     border-radius: 2px; 
     box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);}
+.tp_close {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem; }
 

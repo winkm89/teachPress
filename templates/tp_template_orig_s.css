@@ -28,4 +28,7 @@ td.tp_pub_info_simple {
     padding-left: 2px; 
     padding-right: 2px; 
     font-size: 110%; 
-    text-decoration: none;}
+.tp_close {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem; }
