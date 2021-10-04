@@ -3,6 +3,11 @@
  * Version: 1.2
  * Author: Michael Winkler
 */
+.tp_bibtex_entry {
+    font-size:0.75rem;}
+.tp_bibtex_entry pre {
+    white-space: normal;
+    word-wrap: break-word;}
 .tp_abstract_entry {
     font-size: 0.9rem;}
 td.tp_pub_info_simple {
