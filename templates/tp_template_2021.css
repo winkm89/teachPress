@@ -37,6 +37,8 @@ div.tp_pub_number {
 .tp_bibtex_entry pre {
     white-space: normal;
     word-wrap: break-word;}
+.tp_abstract_entry {
+    font-size: 0.9rem;}
 .tp_pub_author, #content p.tp_pub_author {
     font-size:0.9rem; 
     margin-bottom:1px; 

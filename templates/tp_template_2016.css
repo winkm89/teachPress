@@ -3,6 +3,8 @@
  * Version: 1.2
  * Author: Michael Winkler
 */
+.tp_abstract_entry {
+    font-size: 0.9rem;}
 td.tp_pub_info {
     border-bottom:1px solid silver; 
     vertical-align:top; 
