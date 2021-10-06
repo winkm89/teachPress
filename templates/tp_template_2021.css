@@ -20,7 +20,7 @@ div.tp_pub_info {
     padding: 8px;}
 div.tp_pub_number {
     width: 40px;
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     padding-top: 8px;
     flex-shrink: 0;}
 @media (max-width: 767.98px) {
@@ -33,27 +33,27 @@ div.tp_pub_number {
 }
 /* entry details */
 .tp_bibtex_entry {
-    font-size:0.75rem;}
+    font-size:0.8rem;}
 .tp_bibtex_entry pre {
     white-space: normal;
     word-wrap: break-word;}
 .tp_abstract_entry {
-    font-size: 0.9rem;}
+    font-size: 1.0rem;}
 .tp_pub_author, #content p.tp_pub_author {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     margin-bottom:1px; 
     margin-top:1px;}
 .tp_pub_title, #content p.tp_pub_title {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     font-weight:bold; 
     margin-top:1px; 
     margin-bottom:1px;}
 .tp_pub_additional, #content p.tp_pub_additional {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     margin-top:1px; 
     margin-bottom:1px;}
 .tp_pub_menu, #content p.tp_pub_menu  {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     margin-top:1px; 
     margin-bottom:1px; 
     color:#AAAAAA;}
@@ -89,5 +89,4 @@ div.tp_pub_number {
 .tp_close {
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.9rem; }
-
+    font-size: 1.0rem; }

@@ -4,31 +4,31 @@
  * Author: Michael Winkler
 */
 .tp_bibtex_entry {
-    font-size:0.75rem;}
+    font-size:0.8rem;}
 .tp_bibtex_entry pre {
     white-space: normal;
     word-wrap: break-word;}
 .tp_abstract_entry {
-    font-size: 0.9rem;}
+    font-size: 1.0rem;}
 td.tp_pub_info {
     border-bottom:1px solid silver; 
     vertical-align:top; 
     padding:8px;}
 .tp_pub_author, #content p.tp_pub_author {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     margin-bottom:1px; 
     margin-top:1px;}
 .tp_pub_title, #content p.tp_pub_title {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     font-weight:bold; 
     margin-top:1px; 
     margin-bottom:1px;}
 .tp_pub_additional, #content p.tp_pub_additional {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     margin-top:1px; 
     margin-bottom:1px;}
 .tp_pub_menu, #content p.tp_pub_menu  {
-    font-size:0.9rem; 
+    font-size:1.0rem; 
     margin-top:1px; 
     margin-bottom:1px; }
 .tp_pub_menu a {
@@ -66,4 +66,4 @@ td.tp_pub_info {
 .tp_close {
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.9rem; }
+    font-size: 1.0rem; }
