@@ -127,7 +127,7 @@ class TP_Bibtex {
                          "\'o","\'O",'\"o','\"O',
                          '\"u','\"U','\ss',
                          '\L','\l','\AE','\ae','\OE','\oe','\t{oo}','\O','\o',
-                         '\textendash','\textemdash','\glqq','\grqq','\flqq','\frqq','\flq','\frq','\glq','\grq','\dq',chr(92));
+                         '\textendash','\textemdash','\textquotesingle','\glqq','\grqq','\flqq','\frqq','\flq','\frq','\glq','\grq','\dq',chr(92));
         $array_b = array('á','Á','ä','Ä',
                          'é','É',
                          'í',
@@ -135,18 +135,18 @@ class TP_Bibtex {
                          'ö','Ö',
                          'ü','Ü','ß',
                          'Ł','ł','Æ','æ','Œ','œ','o͡o','Ø','ø',
-                         '–','—','„','“','«','»','‹','›','‚','‘','','');
+                         '–','—',"'",'„','“','«','»','‹','›','‚','‘','','');
         $input = str_replace( $array_a , $array_b ,$input);
         
-        // Step 2: All over special chars 
+        // Step 2: All other special chars 
         $array_1 = array('"{a}','"{A}','`{a}','`{A}',"'{a}","'{A}",'~{a}','~{A}','={a}','={A}','^{a}','^{A}','u{a}','u{A}','k{a}','k{A}','r{a}','r{A}','{aa}','{AA}',
                          '.{b}','.{B}',
                          "'{c}","'{C}",'v{c}','v{C}','c{c}','c{C}','.{c}','.{C}','^{c}','^{C}',
-                         'v{d}','v{D}','.{d}','.{D}','d{d}','d{D}','{d}','{D}',
+                         'v{d}','v{D}','.{d}','.{D}','d{d}','d{D}','B{d}','B{D}',
                          '"{e}','"{E}',"'{e}","'{E}",'`{e}','`{E}','^{e}','^{E}','u{e}','u{E}','v{e}','v{E}','={e}','={E}','k{e}','k{E}','.{e}','.{E}',
                          '.{f}','.{F}',
                          'u{g}','u{G}','c{g}','c{G}','.{g}','.{G}','^{g}','^{G}',
-                         '.{h}','.{H}','d{h}','d{H}','^{h}','^{H}','{h}','{H}',
+                         '.{h}','.{H}','d{h}','d{H}','^{h}','^{H}','B{h}','B{H}',
                          '"{i}','"{I}','~{i}','~{I}','`{i}','`{I}',"'{i}","'{I}",'^{i}','^{I}','u{i}','u{I}','={i}','={I}','k{i}','k{I}','.{i}','.{I}',
                          '^{j}','^{J}',
                          'c{k}','c{K}','d{k}','d{K}',
@@ -157,7 +157,7 @@ class TP_Bibtex {
                          '.{p}','.{P}',
                          "'{r}","'{R}",'v{r}','v{R}','c{r}','c{R}','.{r}','.{R}','d{r}','d{R}',
                          "'{s}","'{S}",'v{s}','v{S}','c{s}','c{S}','.{s}','.{S}','d{s}','d{S}','^{s}','^{S}',
-                         'v{t}','v{T}','c{t}','c{T}','.{t}','.{T}','d{t}','d{T}','{t}','{T}',
+                         'v{t}','v{T}','c{t}','c{T}','.{t}','.{T}','d{t}','d{T}','B{t}','B{T}',
                          '"{u}','"{U}','`{u}','`{U}',"'{u}","'{U}",'^{u}','^{U}','d{u}','d{U}','~{u}','~{U}','u{u}','u{U}','={u}','={U}','k{u}','k{U}','r{u}','r{U}','H{u}','H{U}',
                          'd{v}','d{V}',
                          '^{w}','^{W}',
@@ -192,7 +192,7 @@ class TP_Bibtex {
     }
     
     /**
-     * Cleans the author names after bibtex to UTF-8 convertion
+     * Cleans the author names after bibtex to UTF-8 conversion
      * @param string $input
      * @return string
      * @since 6.1.0
