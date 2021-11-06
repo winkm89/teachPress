@@ -64,7 +64,7 @@ function tp_load_template($slug) {
     // load template file
     if ( array_key_exists($slug, $templates) ) {
         include_once $templates[$slug];
-        wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . $slug. '.css');
+        wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . $slug. '.css', array(), get_tp_version() );
         return new $slug();
     }
     
