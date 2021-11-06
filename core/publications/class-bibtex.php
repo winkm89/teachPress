@@ -127,7 +127,8 @@ class TP_Bibtex {
                          "\'o","\'O",'\"o','\"O',
                          '\"u','\"U','\ss',
                          '\L','\l','\AE','\ae','\OE','\oe','\t{oo}','\O','\o',
-                         '\textendash','\textemdash','\textquotesingle','\glqq','\grqq','\flqq','\frqq','\flq','\frq','\glq','\grq','\dq',chr(92));
+                         '\textendash','\textemdash','\textquotesingle','\textquoteright','\textquoteleft',
+                         '\glqq','\grqq','\flqq','\frqq','\flq','\frq','\glq','\grq','\dq',chr(92));
         $array_b = array('á','Á','ä','Ä',
                          'é','É',
                          'í',
@@ -135,7 +136,8 @@ class TP_Bibtex {
                          'ö','Ö',
                          'ü','Ü','ß',
                          'Ł','ł','Æ','æ','Œ','œ','o͡o','Ø','ø',
-                         '–','—',"'",'„','“','«','»','‹','›','‚','‘','','');
+                         '–','—',"'",'’','‘',
+                         '„','“','«','»','‹','›','‚','‘','','');
         $input = str_replace( $array_a , $array_b ,$input);
         
         // Step 2: All other special chars 
