@@ -38,39 +38,39 @@ class TP_Bibtex {
         
         // loop for all BibTeX fields
         for ( $i = 2; $i < count($pub_fields); $i++ ) {
-            // replace html chars
-            if ( $pub_fields[$i] === 'author' || $pub_fields[$i] === 'title' ) {
-                $row[$pub_fields[$i]] = TP_HTML::convert_special_chars($row[$pub_fields[$i]]);
-            }
             // go to the next if there is nothing
             if ( !isset( $row[$pub_fields[$i]] ) || $row[$pub_fields[$i]] == '' || $row[$pub_fields[$i]] == '0000-00-00'  ) {
                 continue;
             }
+            
+            $field_name = $pub_fields[$i];
+            $field_value = TP_HTML::convert_special_chars( stripslashes( $row[$pub_fields[$i]] ) );
+           
             // prepare the fields
             // ISBN | ISSN
-            if ( $pub_fields[$i] === 'isbn' ) {
-                $string .= $isbn_label . ' = {' . $row[$pub_fields[$i]] . '},' . chr(13) . chr(10);
+            if ( $field_name === 'isbn' ) {
+                $string .= $isbn_label . ' = {' . $field_value . '},' . chr(13) . chr(10);
             }
             // year
-            elseif ( $pub_fields[$i] === 'date' ) {
+            elseif ( $field_name === 'date' ) {
                 $string .= 'year  = {' . $row['year'] . '},' . chr(13) . chr(10);
-                $string .= TP_Bibtex::prepare_bibtex_line($row[$pub_fields[$i]],$pub_fields[$i]);
+                $string .= TP_Bibtex::prepare_bibtex_line($field_value, $field_name);
             }
             // techtype
-            elseif ( $pub_fields[$i] === 'techtype' ) {
-                $string .= 'type = {' . $row[$pub_fields[$i]] . '},' . chr(13) . chr(10);
+            elseif ( $field_name=== 'techtype' ) {
+                $string .= 'type = {' . $field_value . '},' . chr(13) . chr(10);
             }
             // patent: use address as location
-            elseif ( $pub_fields[$i] === 'address' && $row['type']  === 'patent' ) {
-                $string .= 'location = {' . $row[$pub_fields[$i]] . '},' . chr(13) . chr(10);
+            elseif ( $field_name=== 'address' && $row['type']  === 'patent' ) {
+                $string .= 'location = {' . $field_value . '},' . chr(13) . chr(10);
             }
             // abstract
-            elseif ( $pub_fields[$i] === 'abstract' || $pub_fields[$i] === 'title' ) {
-                $string .= TP_Bibtex::prepare_text($row[$pub_fields[$i]], $pub_fields[$i]);
+            elseif ( $field_name === 'abstract' || $field_name === 'title' ) {
+                $string .= TP_Bibtex::prepare_text($field_value, $field_name);
             }
             // normal case
             else {
-                $string .= TP_Bibtex::prepare_bibtex_line($row[$pub_fields[$i]],$pub_fields[$i]);
+                $string .= TP_Bibtex::prepare_bibtex_line($field_value, $field_name);
             }
             
         }
