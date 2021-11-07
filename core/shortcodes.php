@@ -1478,7 +1478,7 @@ function tp_publist_shortcode ($atts) {
     if ( $settings['headline'] === 3 || $settings['headline'] === 4 ) {
         $sql_parameter['order'] = "year DESC, type ASC, date DESC";
     }
-    
+
     // Parameters for returning publications
     $args = array(
         'tag'                       => $sql_parameter['tag'], 

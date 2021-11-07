@@ -255,6 +255,17 @@ function tp_register_all_publication_types() {
             'html_meta_row'     => '{howpublished}{year}{isbn}{note}' 
         ) );
     
+    // Working paper
+    tp_register_publication_type(
+        array(
+            'type_slug'         => 'workingpaper',
+            'bibtex_key_ext'    => 'misc',
+            'i18n_singular'     => __('Working paper','teachpress'),
+            'i18n_plural'       => __('Working papers','teachpress'), 
+            'default_fields'    => array('howpublished'), 
+            'html_meta_row'     => '{howpublished}{year}{isbn}{note}' 
+        ) );
+    
     // Workshop
     tp_register_publication_type(
         array(
