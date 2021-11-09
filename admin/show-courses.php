@@ -40,7 +40,7 @@ function tp_show_course_page_screen_options() {
     $args = array(
         'label' => __('Items per page', 'teachpress'),
         'default' => 50,
-        'option' => 'tp_pubs_per_page'
+        'option' => 'tp_courses_per_page'
     );
     add_screen_option( 'per_page', $args );
 }
@@ -210,7 +210,12 @@ class TP_Courses_Page {
      * @access private
      */
     private static function get_courses ($user_ID, $search, $sem, $bulk, $checkbox) {
-        $row = TP_Courses::get_courses( array('search' => $search, 'semester' => $sem, 'order' => 'name, course_id') );
+        $row = TP_Courses::get_courses( 
+                array(
+                    'search'    => $search, 
+                    'semester'  => $sem, 
+                    'order'     => 'name, course_id'
+                ) );
         // if the query is empty
         if ( count($row) === 0 ) { 
             echo '<tr><td colspan="13"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
