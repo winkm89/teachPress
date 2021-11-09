@@ -499,7 +499,15 @@ function tp_frontend_scripts() {
  * @since 0.30
  */
 function tp_language_support() {
-    load_plugin_textdomain('teachpress', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
+    $domain = 'teachpress';
+    $locale = apply_filters( 'plugin_locale', determine_locale(), $domain );
+    $path = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
+    $mofile = WP_PLUGIN_DIR . '/' . $path . $domain . '-' . $locale . '.mo';
+    
+    // Load the plugins language files first instead of language files from WP languages directory 
+    if ( !load_textdomain($domain, $mofile) ) {
+        load_plugin_textdomain($domain, false, $path);
+    }
 }
 
 /**
