@@ -15,8 +15,8 @@
 function tp_show_authors_page_screen_options(){
     global $tp_admin_show_authors_page;
     $screen = get_current_screen();
- 
-    if(!is_object($screen) || $screen->id != $tp_admin_show_authors_page) {
+
+    if( !is_object($screen) || $screen->id != $tp_admin_show_authors_page ) {
         return;
     }
 

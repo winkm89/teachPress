@@ -15,8 +15,8 @@
 function tp_edit_tags_page_screen_options () {
     global $tp_admin_edit_tags_page;
     $screen = get_current_screen();
- 
-    if(!is_object($screen) || $screen->id != $tp_admin_edit_tags_page) {
+
+    if( !is_object($screen) || $screen->id != $tp_admin_edit_tags_page ) {
         return;
     }
 

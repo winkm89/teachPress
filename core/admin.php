@@ -824,7 +824,10 @@ function tp_add_publication_as_post ($title, $bibtex_key, $date, $post_type = 'p
  * @since 4.2.0
  */
 function tp_set_screen_option($status, $option, $value) {
-    if ( 'tp_pubs_per_page' == $option || 'tp_tags_per_page' == $option ) { 
+    if ( 'tp_pubs_per_page' == $option || 
+         'tp_tags_per_page' == $option || 
+         'tp_authors_per_page' == $option ||
+         'tp_courses_per_page' == $option ) { 
         return $value; 
     }
 }
