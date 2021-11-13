@@ -150,7 +150,7 @@ class TP_Bibtex_Import {
         }
         if ( $settings['overwrite'] === false || $check === false ) {
             $tags = ( $settings['ignore_tags'] === true ) ? '' : $tags;
-            $entry['entry_id'] = TP_Publications::add_publication($entry, $tags, '');
+            $entry['entry_id'] = TP_Publications::add_publication($entry, $tags);
         }
         return $entry['entry_id'];
     }
