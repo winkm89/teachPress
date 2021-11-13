@@ -127,6 +127,24 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 8.1.0 (xx.11.2021) = 
+* New: Bookmarks can be added/deleted to all users without restriction (#181)
+* New: Publication type added: working paper (#184)
+* New: Sort options for show authors screen added
+* New: Occurence = 0 filter for authors and tags screen added
+* Changed: Load plugins language files fist instead of files from WP languages directory (#189)
+* Changed: Using slimselect for tag selection in add/edit publication screens
+* Changed: Using slimselect for bookmark selection in add/edit publication screens
+* Changed: Add style info for close buttons to publication templates
+* Changed: Add version info to publication template css
+* Bugfix: Add font-size for abstracts and adjust font-sizes (#177)
+* Bugfix: Fix display issue for bibtex entries in publication lists (#177)
+* Bugfix: Fix escaping of special bibtex characters (#187) (Thanks to Lars Reimann)
+* Bugfix: Add textquoteright and textquoteleft to bibtex conversion (#179)
+* Bugfix: Missing "&" conversion while exporting to bibtex (#186)
+* Bugfix: Fix some missing char conversions for bibtex field values in get_single_publication_bibtex()
+* Bugfix: Fix items per page option in show authors screen (#190)
+
 = 8.0.2 (31.08.2021) = 
 * Changed: Don't longer use full table select for count queries in TP_Publications::get_publications()
 * Bugfix: year field was not used fo bibtex import if date field was missing
