@@ -348,11 +348,11 @@ class TP_Publications {
      * Adds a publication
      * @param array $data       An associative array of publication data (title, type, bibtex, author, editor,...)
      * @param string $tags      An associative array of tags
-     * @param array $bookmark   An associative array of bookmark IDs
+     * @param array $bookmark   An array of bookmark IDs
      * @return int              The ID of the new publication
      * @since 5.0.0
     */
-    public static function add_publication($data, $tags, $bookmark) {
+    public static function add_publication($data, $tags, $bookmark = array() ) {
         global $wpdb;
         $defaults = self::get_default_fields();
         $post_time = current_time('mysql',0);
@@ -417,7 +417,7 @@ class TP_Publications {
         $pub_id = $wpdb->insert_id;
 
         // Bookmarks
-        if ( $bookmark != '' ) {
+        if ( !empty( $bookmark ) ) {
             $max = count( $bookmark );
             for( $i = 0; $i < $max; $i++ ) {
                if ($bookmark[$i] != '' || $bookmark[$i] != 0) {
@@ -454,12 +454,14 @@ class TP_Publications {
      * Edit a publication
      * @param int $pub_id           ID of the publication
      * @param array $data           An associative array with publication data
-     * @param array $bookmark       An array with WP_USER_ids
-     * @param array $delbox         An array with tag IDs you want to delete
-     * @param string $tags          A string of Tags seperate by comma
+     * @param string $new_tags      A string of Tags seperate by comma
+     * @param array $del_tags       An array with tag IDs you want to delete
+     * @param array $new_bookmarks  An array with WP_USER_ids for which you want to set a bookmark
+     * @param array $del_bookmarks  An array with WP_USER_ids for which you want to delete the bookmark
+     * 
      * @since 5.0.0
     */
-   public static function change_publication($pub_id, $data, $bookmark, $delbox, $tags) {
+   public static function change_publication($pub_id, $data, $new_tags = '', $del_tags = array(), $new_bookmarks = array(), $del_bookmarks = array() ) {
         global $wpdb;
         $post_time = current_time('mysql',0);
         $pub_id = intval($pub_id);
@@ -530,21 +532,32 @@ class TP_Publications {
         // get_tp_message($wpdb->last_query);
         
         // Bookmarks
-        if ( $bookmark != '' ) {
-            $max = count( $bookmark );
+        // Delete all exisiting bookmarks for this publication
+        if ( !empty( $del_bookmarks ) ) {
+            $max = count( $del_bookmarks );
             for( $i = 0; $i < $max; $i++ ) {
-                if ($bookmark[$i] != '' || $bookmark[$i] != 0) {
-                    TP_Bookmarks::add_bookmark($pub_id, $bookmark[$i]);
+                if ( $del_bookmarks[$i] != '' || $del_bookmarks[$i] != 0 ) {
+                    TP_Bookmarks::delete_bookmark($del_bookmarks[$i]);
+                }
+            }
+        }
+        
+        // Add all current bookmarks
+        if ( !empty( $new_bookmarks ) ) {
+            $max = count( $new_bookmarks );
+            for( $i = 0; $i < $max; $i++ ) {
+                if ( $new_bookmarks[$i] != '' || $new_bookmarks[$i] != 0 ) {
+                    TP_Bookmarks::add_bookmark($pub_id, $new_bookmarks[$i], true);
                 }
             }
         }
         
         // Handle tag relations
-        if ( $delbox != '' ) {
-            TP_Tags::delete_tag_relation($delbox);
+        if ( !empty( $del_tags ) ) {
+            TP_Tags::delete_tag_relation($del_tags);
         }
-        if ( $tags != '' ) {
-            TP_Publications::add_relation($pub_id, $tags);
+        if ( !empty( $new_tags ) ) {
+            TP_Publications::add_relation($pub_id, $new_tags);
         }
         
         // Handle author/editor relations
@@ -578,7 +591,7 @@ class TP_Publications {
         
         // Update publication
         $data = wp_parse_args( $input_data, $search_pub );
-        self::change_publication($search_pub['pub_id'], $data, '', '', '');
+        self::change_publication($search_pub['pub_id'], $data);
         
         // Update tags
         if ( $ignore_tags === false ) {
@@ -615,7 +628,7 @@ class TP_Publications {
     }
     
     /**
-     * Deletes course meta
+     * Deletes pub meta
      * @param int $pub_id           The publication ID
      * @param string $meta_key      The name of the meta field
      * @since 5.0.0

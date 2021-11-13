@@ -63,13 +63,13 @@ function teachpress_trim (input) {
 }
 
 /**
- * for changing the color of a label
- * @param {int} id
+ * For changing the color of a checkbox label between red and dark grey
+ * @param {string} checkbox
+ * @param {string] label
  * @since 1.0.0
+ * @version 2
  */
-function teachpress_change_label_color(id) {
-    var checkbox = "checkbox_" + id;
-    var label = "tag_label_" + id;
+function teachpress_change_label_color(checkbox, label) {
     if (document.getElementById(checkbox).checked === true) {
         document.getElementById(label).style.color = "#FF0000";
     }
