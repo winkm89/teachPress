@@ -183,7 +183,7 @@ class TP_Settings_Page {
      * @since 5.0.0
      */
     private static function get_rel_page_form ($type) {
-        $title = ( $type === 'rel_page_publications' ) ? __('for publications','teachpress') : __('for courses','teachpress');
+        $title = ( $type === 'rel_page_publications' ) ? __('For publications','teachpress') : __('For courses','teachpress');
         $value = get_tp_option($type);
         echo '<p><select name="' . $type . '" id="' . $type . '" title="' . $title . '">';
         

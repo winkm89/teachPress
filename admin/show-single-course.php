@@ -1078,7 +1078,7 @@ class TP_Single_Course_Page {
             echo '<td>' . stripslashes($enrollments["lastname"]) . '</td>';
             echo '<td>' . stripslashes($enrollments["firstname"]) . '</td>';
             echo '<td>' . stripslashes($enrollments["userlogin"]) . '</td>';
-            echo '<td><a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;sem=' . $link_parameter['sem'] . '&amp;search=' . $link_parameter['search'] . '&amp;action=mail&amp;single=' . stripslashes($enrollments["email"]) . '" title="' . __('send E-Mail','teachpress') . '">' . stripslashes($enrollments["email"]) . '</a></td>';
+            echo '<td><a href="admin.php?page=teachpress/teachpress.php&amp;course_id=' . $course_id . '&amp;sem=' . $link_parameter['sem'] . '&amp;search=' . $link_parameter['search'] . '&amp;action=mail&amp;single=' . stripslashes($enrollments["email"]) . '" title="' . __('Send E-Mail','teachpress') . '">' . stripslashes($enrollments["email"]) . '</a></td>';
             $max = count($visible_fields);
             for ($i = 0; $i < $max; $i++) {
                 echo '<td>' . $enrollments[$visible_fields[$i]] . '</td>';
@@ -1239,7 +1239,7 @@ class TP_Single_Course_Page {
         <?php
         // waitinglist
         if ($count_waitinglist != 0) { ?>
-           <h3><?php _e('Waitinglist','teachpress'); ?></h3>
+           <h3><?php _e('Waiting list','teachpress'); ?></h3>
            <table class="widefat">
             <thead>
              <tr>

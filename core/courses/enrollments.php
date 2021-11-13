@@ -861,7 +861,7 @@ class TP_Enrollments {
                 $message = __('Your Registration for the following course was successful:','teachpress') . chr(13) . chr(10);
             }
             else {
-                $subject = '[' . get_bloginfo('name') . '] ' . __('Waitinglist','teachpress');
+                $subject = '[' . get_bloginfo('name') . '] ' . __('Waiting list','teachpress');
                 $message = __('You are signed up in the waitinglist for the following course:','teachpress') . chr(13) . chr(10);
             }
             $message = $message . stripslashes($name);

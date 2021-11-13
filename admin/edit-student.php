@@ -35,7 +35,7 @@ class TP_Student_Page {
         
         // for waitinglists only
         if ( $mode === 'wtl' && count($row) !== 0 ) {
-            echo '<h3>' . __('Waitinglist','teachpress') . '</h3>';
+            echo '<h3>' . __('Waiting list','teachpress') . '</h3>';
         }
         
         echo '<table cellpadding="5" class="widefat">';

@@ -455,7 +455,7 @@ class TP_Shortcodes {
           $link_url = $settings['permalink'];
           $link_title = "";
           $link_class = "";
-          $pub = ( $tagcloud['tagPeak'] == 1 ) ? __('publication', 'teachpress') : __('publications', 'teachpress');
+          $pub = ( $tagcloud['tagPeak'] == 1 ) ? __('Publication', 'teachpress') : __('Publications', 'teachpress');
           
           // division through zero check
           $divisor = ( $max - $min === 0 ) ? 1 : $max - $min;

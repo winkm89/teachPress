@@ -283,7 +283,7 @@ class TP_Students_Page {
             echo '<td><a href="admin.php?page=teachpress/students.php&amp;student_id=' . $row3['wp_id'] . '&amp;search=' . $search . '&amp;limit=' . $curr_page . $url_parameter . '&amp;action=show" class="teachpress_link" title="' . __('Click to edit','teachpress') . '"><strong>' . $link_name . '</strong></a></td>';
             echo '<td>' . stripslashes($row3['firstname']) . '</td>';
             echo '<td>' . stripslashes($row3['userlogin']) . '</td>';
-            echo '<td><a href="admin.php?page=teachpress/teachpress.php&amp;student_id=' . $row3['wp_id'] . '&amp;search=' . $search . '&amp;limit=' . $curr_page . $url_parameter . '&amp;action=mail&amp;single=' . $row3['email'] . '" title="' . __('send E-Mail','teachpress') . '">' . $row3['email'] . '</a></td>';
+            echo '<td><a href="admin.php?page=teachpress/teachpress.php&amp;student_id=' . $row3['wp_id'] . '&amp;search=' . $search . '&amp;limit=' . $curr_page . $url_parameter . '&amp;action=mail&amp;single=' . $row3['email'] . '" title="' . __('Send E-Mail','teachpress') . '">' . $row3['email'] . '</a></td>';
             $max2 = count($visible_fields);
             for ( $i = 0; $i < $max2; $i++ ) {
                 $value = '';

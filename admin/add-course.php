@@ -106,7 +106,7 @@ function tp_add_course_page() {
    
    ?>
    <div class="wrap">
-       <h2><?php if ($course_id == 0) { _e('Create a new course','teachpress'); } else { _e('Edit course','teachpress'); } ?></h2>
+       <h2><?php if ($course_id == 0) { _e('Create a new course','teachpress'); } else { _e('Edit Course','teachpress'); } ?></h2>
    <?php 
         // Add new course
         if ( isset($_POST['create']) ) {
