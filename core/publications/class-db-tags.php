@@ -205,28 +205,60 @@ class TP_Tags {
     
     /**
      * Returns an array|object with the name, tag_id and occurence of all_tags
-     * @param string $search            normal search string
-     * @param string $limit             SQL limit like 0,50
-     * @param string $output_type       OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
+     * @param array $args {
+     *      @type string order          Default: a.name ASC 
+     *      @type string limit          SQL limit like 0,50
+     *      @type string search         a full text search through name field
+     *      @type boolean only_zero     If true: only tags with 0 occurence will be returned
+     *      @type boolean count         Set it to true, if you only need a number of tags, which will be returned by your selection
+     *      @type string output_type    OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
+     * }     
      * @return array|object
-     * @since 5.0.0
+     * @since 8.1
      */
-    public static function count_tags ( $search = '', $limit = '', $output_type = ARRAY_A ) {
+    public static function get_tags_occurence ( $args ) {
+        $defaults = array(
+           'order'              => 't.name ASC',
+           'limit'              => '',
+           'search'             => '',
+           'only_zero'          => false,
+           'count'              => false,
+           'output_type'        => ARRAY_A
+        ); 
+        $atts = wp_parse_args( $args, $defaults );
         global $wpdb;
-        $search = esc_sql( htmlspecialchars( stripslashes($search) ) );
-        $limit = esc_sql($limit);
-        
-        // define global search
-        if ( $search != '' ) {
-            $search = "WHERE t.`name` like '%$search%'";
-        }
+        $search = esc_sql( htmlspecialchars( stripslashes( $atts['search'] ) ) );
         
         // LIMIT clause
-        if ( $limit != '' ) {
-            $limit = "LIMIT $limit";
+        $l = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        
+        // WHERE clause
+        $awhere = array();
+        $awhere[] = ( $atts['search'] != '' ) ? "t.`name` like '%" . $search . "%'" : '';
+        $where = TP_DB_Helpers::compose_clause($awhere);
+        
+        // HAVING clause
+        $having = ( $atts['only_zero'] === true ) ? 'HAVING count = 0' : '';
+        
+        // ORDER clause
+        $order = esc_sql($atts['order']);
+        
+        $sql = "SELECT DISTINCT DISTINCT t.name, t.tag_id, count(r.tag_id) AS count 
+                FROM " . TEACHPRESS_TAGS . " t 
+                LEFT JOIN " . TEACHPRESS_RELATION . " r ON t.tag_id = r.tag_id 
+                $where 
+                GROUP BY t.name
+                $having 
+                ORDER BY $order $l";
+        
+        // if the user needs only the number of rows
+        if ( $atts['count'] === true ) {
+            $sql = "SELECT COUNT(`tag_id`) FROM ( " . $sql . ") AS temp";
         }
         
-        return $wpdb->get_results("SELECT DISTINCT t.name, t.tag_id, count(r.tag_id) AS count FROM " . TEACHPRESS_TAGS . " t LEFT JOIN " . TEACHPRESS_RELATION . " r ON t.tag_id = r.tag_id $search GROUP BY t.name ORDER BY t.name ASC $limit", $output_type);
+        $return = ( $atts['count'] == false ) ? $wpdb->get_results($sql, $atts['output_type']): $wpdb->get_var($sql);
+        return $return;
+        
     }
     
     /**

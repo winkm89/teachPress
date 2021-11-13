@@ -13,26 +13,27 @@
  * @since 5.0.0
  */
 class TP_Authors  {
+    
    /**
     * Returns an array/object of authors/editors of publications
     * 
     * Note: If you only need a list of used authors, set group_by to true.
-    * In this case you should ignore the columns con_id and pub_id from return
+    * In this case you should ignore the columns con_id and pub_id from return   
     * 
-    * Possible values for the array $args:
-    *       author_id (STRING)       Author IDs (separated by comma)
-    *       pub_id (STRING)          Publication IDs (separated by comma)
-    *       user (STRING)            User IDs (separated by comma)
-    *       exclude (STRING)         Authors IDs you want to exclude from result (separated by comma)
-    *       order (STRING)           ASC or DESC; default is ASC
-    *       limit (STRING)           The sql search limit, example: 0,30
-    *       search (STRING)          A normal search string
-    *       inclue_editors (BOOLEAN) Boolean flag, set it to true if you want to include editors (default: false)
-    *       group by (BOOLEAN)       Boolean flag for the group by clause (default: false)
-    *       count (BOOLEAN)          Set it to true, if you only need a number of authors, which will be returned by your selection (default: false)
-    *       output type (STRING)     OBJECT, ARRAY_A, ARRAY_N, default is OBJECT
-    * 
-    * @param array $args
+    * @param array $args {
+    *       @type string author_id      Author IDs (separated by comma)
+    *       @type string pub_id         Publication IDs (separated by comma)
+    *       @type string user           User IDs (separated by comma)
+    *       @type string exclude        Authors IDs you want to exclude from result (separated by comma)
+    *       @type string order          ASC or DESC; default is ASC
+    *       @type string limit          The sql search limit, example: 0,30
+    *       @type string search         A normal search string
+    *       @type string inclue_editors Boolean flag, set it to true if you want to include editors (default: false)
+    *       @type string group_by       Boolean flag for the group by clause (default: false)
+    *       @type string count          Set it to true, if you only need a number of authors, which will be returned by your selection (default: false)
+    *       @type string output_type    OBJECT, ARRAY_A, ARRAY_N, default is OBJECT
+    *       
+    * }
     * @return array|object
     * @since 5.0.0
     */
@@ -94,6 +95,63 @@ class TP_Authors  {
         // echo get_tp_message($wpdb->last_query);
         return $sql;
     }
+
+    /**
+     * Returns an array|object with the name, author_id and occurence of all authors
+     * @param array $args {
+     *      @type string order          Default: a.name ASC 
+     *      @type string limit          SQL limit like 0,50
+     *      @type string search         a full text search through name field
+     *      @type boolean only_zero     If true: only authors with 0 occurence will be returned
+     *      @type boolean count         Set it to true, if you only need a number of authors, which will be returned by your selection
+     *      @type string output_type    OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
+     * }     
+     * @return array|object
+     * @since 8.1.0
+    */
+    public static function get_authors_occurence ( $args = array() ) {
+        $defaults = array(
+           'order'              => 'a.name ASC',
+           'limit'              => '',
+           'search'             => '',
+           'only_zero'          => false,
+           'count'              => false,
+           'output_type'        => ARRAY_A
+        ); 
+        $atts = wp_parse_args( $args, $defaults );
+        global $wpdb;
+        $search = esc_sql( htmlspecialchars( stripslashes( $atts['search'] ) ) );
+        
+        // LIMIT clause
+        $l = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        
+        // WHERE clause
+        $awhere = array();
+        $awhere[] = ( $atts['search'] != '' ) ? "a.`name` like '%" . $search . "%'" : '';
+        $where = TP_DB_Helpers::compose_clause($awhere);
+        
+        // HAVING clause
+        $having = ( $atts['only_zero'] === true ) ? 'HAVING count = 0' : '';
+        
+        // ORDER clause
+        $order = esc_sql($atts['order']);
+        
+        $sql = "SELECT DISTINCT a.name, a.author_id, count(r.author_id) AS count 
+                FROM " . TEACHPRESS_AUTHORS . " a 
+                LEFT JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON a.author_id = r.author_id 
+                $where 
+                GROUP BY a.name
+                $having 
+                ORDER BY $order $l";
+        
+        // if the user needs only the number of rows
+        if ( $atts['count'] === true ) {
+            $sql = "SELECT COUNT(`author_id`) FROM ( " . $sql . ") AS temp";
+        }
+        
+        $return = ( $atts['count'] == false ) ? $wpdb->get_results($sql, $atts['output_type']): $wpdb->get_var($sql);
+        return $return;
+    }
     
     /**
      * Adds a new author
@@ -139,26 +197,6 @@ class TP_Authors  {
                     'is_editor' => $is_editor), 
                 array('%d', '%d', '%d', '%d') );
         return $wpdb->insert_id;
-    }
-    
-     /**
-     * Returns an array|object with the name, author_id and occurence of all authors
-     * @param string $search            normal search string
-     * @param string $limit             SQL limit like 0,50
-     * @param string $output_type       OBJECT, ARRAY_N or ARRAY_A, default is ARRAY_A
-     * @return array|object
-     * @since 5.0.0
-     */
-    public static function count_authors ( $search = '', $limit = '', $output_type = ARRAY_A ) {
-        global $wpdb;
-        
-        // define global search
-        $s = ( $search != '' ) ? "WHERE a.`name` like '%" . esc_sql(stripslashes($search)) . "%'" : '';
-        
-        // LIMIT clause
-        $l = ( $limit != '' ) ? 'LIMIT ' . esc_sql($limit) : '';
-        
-        return $wpdb->get_results("SELECT DISTINCT a.name, a.author_id, count(r.author_id) AS count FROM " . TEACHPRESS_AUTHORS . " a LEFT JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON a.author_id = r.author_id $s GROUP BY a.name ORDER BY a.name ASC $l", $output_type);
     }
     
     /**
