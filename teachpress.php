@@ -228,6 +228,27 @@ function tp_add_menu_settings() {
     add_options_page(__('teachPress Settings','teachpress'),'teachPress','administrator','teachpress/settings.php', 'tp_show_admin_settings');
 }
 
+/**
+ * Adds custom screen options
+ * @global type $tp_admin_show_authors_page
+ * @param string $current   Output before the custom screen options
+ * @param object $screen    WP_Screen object
+ * @return string
+ * @since 8.1
+ */
+function tp_show_screen_options($current, $screen) {
+    global $tp_admin_show_authors_page;
+    
+    if( !is_object($screen) ) {
+        return;
+    }
+    
+    // Show screen options for the authors page
+    if ( $screen->id == $tp_admin_show_authors_page ) {
+        return $current . TP_Authors_Page::print_screen_options();
+    }
+}
+
 /*****************/
 /* Mainfunctions */
 /*****************/
@@ -536,6 +557,7 @@ add_action('wp_head', 'tp_frontend_scripts');
 add_action('admin_init','tp_backend_scripts');
 add_filter('plugin_action_links','tp_plugin_link', 10, 2);
 add_action('wp_ajax_tp_document_upload', 'tp_handle_document_uploads' );
+add_filter( 'screen_settings', 'tp_show_screen_options', 10, 2 );
 
 // Register tinyMCE Plugin
 if ( version_compare( tp_get_wp_version() , '3.9', '>=') ) {
