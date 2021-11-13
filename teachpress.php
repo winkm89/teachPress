@@ -82,16 +82,17 @@ include_once('core/publications/class-books-widget.php');
 
 // Admin menus
 if ( is_admin() ) {
+    include_once('admin/class-authors-page.php');
+    include_once('admin/class-tags-page.php');
     include_once('admin/add-course.php');
     include_once('admin/add-publication.php');
     include_once('admin/add-students.php');
     include_once('admin/create-lists.php');
     include_once('admin/edit-student.php');
-    include_once('admin/edit-tags.php');
+    
     include_once('admin/import-publications.php');
     include_once('admin/mail.php');
     include_once('admin/settings.php');
-    include_once('admin/show-authors.php');
     include_once('admin/show-courses.php');
     include_once('admin/show-publications.php');
     include_once('admin/show-single-course.php');
@@ -200,14 +201,14 @@ function tp_add_menu2() {
             __('Authors', 'teachpress'),
             'use_teachpress',
             'teachpress/authors.php',
-            'tp_show_authors_page');
+            array('TP_Authors_Page','init'));
     $tp_admin_edit_tags_page = add_submenu_page(
             'publications.php',
             __('Tags'),
             __('Tags'),
             'use_teachpress',
             'teachpress/tags.php',
-            'tp_tags_page');
+            array('TP_Tags_Page','init'));
 
     add_action("load-$tp_admin_all_pub_page", 'tp_show_publications_page_help');
     add_action("load-$tp_admin_all_pub_page", 'tp_show_publications_page_screen_options');
@@ -215,8 +216,8 @@ function tp_add_menu2() {
     add_action("load-$tp_admin_your_pub_page", 'tp_show_publications_page_screen_options');
     add_action("load-$tp_admin_add_pub_page", 'tp_add_publication_page_help');
     add_action("load-$tp_admin_import_page", 'tp_import_publication_page_help');
-    add_action("load-$tp_admin_show_authors_page", 'tp_show_authors_page_screen_options');
-    add_action("load-$tp_admin_edit_tags_page", 'tp_edit_tags_page_screen_options');
+    add_action("load-$tp_admin_show_authors_page", array('TP_Authors_Page','add_screen_options'));
+    add_action("load-$tp_admin_edit_tags_page", array('TP_Tags_Page','add_screen_options'));
 }
 
 /**
