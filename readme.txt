@@ -17,6 +17,7 @@ This plugin unites a course management system (with modules for enrollments, doc
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
+* Direct data import from NCBI PubMed 
 * RSS feed for publications
 * Course management with integrated modules for enrollments, assessments and documents
 * XLS/CSV export for course lists
