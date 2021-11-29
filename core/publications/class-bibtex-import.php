@@ -181,6 +181,7 @@ class TP_Bibtex_Import {
     protected static function set_date_of_publishing ($entry) {
         $entry['month'] = array_key_exists('month', $entry) === true ? self::parse_month($entry['month']) : '';
         $entry['day'] = array_key_exists('day', $entry) === true ? $entry['day'] : '';
+        $entry['date'] = array_key_exists('date', $entry) === true ? $entry['date'] : '';
         // if complete date is given
         if ( $entry['date'] !== '' ) {
             $entry['date'] = $entry['date'];

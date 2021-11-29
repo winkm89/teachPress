@@ -127,7 +127,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 8.1.0 (xx.11.2021) = 
+= 8.1.0 (29.11.2021) = 
 * New: Bookmarks can be added/deleted to all users without restriction (#181)
 * New: Publication type added: working paper (#184)
 * New: Sort options for show authors screen added
@@ -144,6 +144,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Bugfix: Missing "&" conversion while exporting to bibtex (#186)
 * Bugfix: Fix some missing char conversions for bibtex field values in get_single_publication_bibtex()
 * Bugfix: Fix items per page option in show authors screen (#190)
+* Bugfix: Fix a date detection error in pubmed import
 
 = 8.0.2 (31.08.2021) = 
 * Changed: Don't longer use full table select for count queries in TP_Publications::get_publications()
