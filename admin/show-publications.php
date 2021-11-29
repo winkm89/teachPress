@@ -125,7 +125,7 @@ function tp_show_publications_page() {
     // Bulk edit of publications
     if ( isset($_GET['bulk_edit']) ) {
         $mass_edit = ( isset($_GET['mass_edit']) ) ? $_GET['mass_edit'] : '';
-        $tags = ( isset($_GET['add_tags']) ) ? $_GET['add_tags'] : '';
+        $tags = ( isset($_GET['add_tags']) ) ? TP_Publication_Page::prepare_tags($_GET['add_tags']) : '';
         $delbox = ( isset($_GET['delbox']) ) ? $_GET['delbox'] : array();
         TP_Tags::change_tag_relations($mass_edit, $tags, $delbox);
         get_tp_message( __('Bulk edit executed','teachpress') );
@@ -226,62 +226,37 @@ class TP_Publications_Page {
         $s = "'";
         echo '<p>';
         foreach ( $used_tags as $row ) {
-            echo'<input name="delbox[]" type="checkbox" value="' . $row['tag_id'] . '" id="checkbox_' . $row['tag_id']. '" onclick="teachpress_change_label_color(' . $s . $row['tag_id'] . $s . ')"/> <label for="checkbox_' . $row['tag_id'] . '" title="Tag &laquo;' . $row['name'] . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row['tag_id'] . '">' . $row['name'] . '</label> | ';
+            $onclick = "teachpress_change_label_color('checkbox_" . $row['tag_id'] . "', 'tag_label_" . $row['tag_id'] . "')";
+            echo'<input name="delbox[]" type="checkbox" value="' . $row['tag_id'] . '" id="checkbox_' . $row['tag_id']. '" onclick="' . $onclick . '"/> <label for="checkbox_' . $row['tag_id'] . '" title="Tag &laquo;' . $row['name'] . '&raquo; ' . __('Delete','teachpress') . '" id="tag_label_' . $row['tag_id'] . '">' . $row['name'] . '</label> | ';
         }
         echo '</p>';
-        echo '<p><label for="add_tags"><b>' . __('New (separate by comma)','teachpress') . '</b></label></p> <p><input name="add_tags" id="add_tags" type="text" style="width:70%;"/></p>';
+        TP_HTML::line('<p><label for="add_tags"><b>' . __('New','teachpress') . '</b></label></p>');
+        TP_HTML::line('<select name="add_tags[]" id="add_tags" multiple style="width:90%;">');
+        $tags = TP_Tags::get_tags( array('group_by' => true, 'output_type'   => ARRAY_A) );
+        foreach ($tags as $row) {
+            TP_HTML::line('<option value="' . esc_js($row['name']) . '">' . $row['name'] . '</option>');
+        }
+        TP_HTML::line('</select>');
         echo '</div>';
         echo '<p class="submit inline-edit-save"><a accesskey="c" onclick="teachpress_showhide(' . $s . 'tp-inline-edit-row' . $s . ')" class="button-secondary cancel alignleft">' . __('Cancel') . '</a> <input type="submit" name="bulk_edit" id="bulk_edit" class="button button-primary alignright" value="' . __('Save') . '" accesskey="s"></p>';
         echo '</td>';
         echo '</tr>';
         ?>
         <script>
-        jQuery(document).ready(function($) {
-          var availableTags = [
-              <?php
-              $sql = TP_Tags::get_tags( array('group_by' => true) );
-              foreach ($sql as $row) {
-                  echo '"' . $row->name . '",';        
-              } ?>
-          ];
-          function split( val ) {
-              return val.split( /,\s*/ );
-          }
-          function extractLast( term ) {
-              return split( term ).pop();
-          }
+            // SELECT fields
+            new SlimSelect({
+                select: '#add_tags',
+                allowDeselect: true,
+                closeOnSelect: false,
+                addable: function (value) {
+                    // return false or null if you do not want to allow value to be submitted
+                    if (value === '') {return false;}
 
-          $( "#add_tags" )
-              // don't navigate away from the field on tab when selecting an item
-              .bind( "keydown", function( event ) {
-                  if ( event.keyCode === $.ui.keyCode.TAB && $( this ).data( "autocomplete" ).menu.active ) {
-                      event.preventDefault();
+                    // Return the value string
+                    return value;
+
                   }
-              })
-              .autocomplete({
-                  minLength: 0,
-                  source: function( request, response ) {
-                      // delegate back to autocomplete, but extract the last term
-                      response( $.ui.autocomplete.filter(
-                          availableTags, extractLast( request.term ) ) );
-                  },
-                  focus: function() {
-                      // prevent value inserted on focus
-                      return false;
-                  },
-                  select: function( event, ui ) {
-                      var terms = split( this.value );
-                      // remove the current input
-                      terms.pop();
-                      // add the selected item
-                      terms.push( ui.item.value );
-                      // add placeholder to get the comma-and-space at the end
-                      terms.push( "" );
-                      this.value = terms.join( ", " );
-                      return false;
-                  }
-              });
-        });
+            });
         </script>
         <?php
     }
