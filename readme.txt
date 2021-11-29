@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 8.0.2
+Stable tag: 8.1.0
 
 Manage your courses and publications with teachPress 
 
@@ -132,7 +132,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * New: Publication type added: working paper (#184)
 * New: Sort options for show authors screen added
 * New: Occurence = 0 filter for authors and tags screen added
-* Changed: Load plugins language files fist instead of files from WP languages directory (#189)
+* Changed: Load plugins language files first instead of files from WP languages directory (#189)
 * Changed: Using slimselect for tag selection in add/edit publication screens
 * Changed: Using slimselect for bookmark selection in add/edit publication screens
 * Changed: Add style info for close buttons to publication templates
