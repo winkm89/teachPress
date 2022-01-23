@@ -113,6 +113,7 @@ class TP_Update {
         // force updates to reach structure of teachPress 7.0.0
         if ( $db_version[0] === '8' || $update_level === '8' ) {
             TP_Update::upgrade_to_80();
+            TP_Update::upgrade_to_81($charset_collate);
         }
         
         // Add teachPress options
@@ -841,6 +842,18 @@ class TP_Update {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_COURSES . " CHANGE `use_capabilites` `use_capabilities` INT(1) NULL DEFAULT NULL");
         }
         
+    }
+    
+    /**
+     * Database upgrade to teachPress 8.1.0 structure
+     * @param string $charset_collate
+     */
+    private static function upgrade_to_81( $charset_collate ) {
+        global $wpdb;
+        // expand char limit for tp_publications::bibtex
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'bibtex'") == '1') {
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `bibtex` `bibtex` VARCHAR (100) $charset_collate NULL DEFAULT NULL");
+        }
     }
     
     /**

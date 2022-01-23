@@ -486,7 +486,7 @@ class TP_Tables {
                     `pub_id` INT UNSIGNED AUTO_INCREMENT,
                     `title` VARCHAR(500),
                     `type` VARCHAR (50),
-                    `bibtex` VARCHAR (50),
+                    `bibtex` VARCHAR (100),
                     `author` VARCHAR (3000),
                     `editor` VARCHAR (3000),
                     `isbn` VARCHAR (50),
