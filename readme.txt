@@ -4,9 +4,9 @@ Tags: publications, enrollments, education, courses, BibTeX, bibliography
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 8.1.0
+Stable tag: 8.1.1
 
 Manage your courses and publications with teachPress 
 
@@ -72,7 +72,7 @@ The plugin saves course documents in your WordPress upload directory under /teac
 
 == Credits ==
 
-Copyright 2008-2021 by Michael Winkler
+Copyright 2008-2022 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -127,6 +127,12 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 8.1.1 (23.01.2022) = 
+* New: Consider annote fields in the bibtex import and save it as comments
+* Changed: Increase max size for bibtex keys from 50 to 100 chars
+* Changed: Larger input fields for series, bibtex_key, crossref
+* Bugfix: Set ROW_FORMAT=DYNAMIC for the tables teachpress_pub, teachpress_author, teachpress_tags during installation to fix installation problems
 
 = 8.1.0 (29.11.2021) = 
 * New: Bookmarks can be added/deleted to all users without restriction (#181)
