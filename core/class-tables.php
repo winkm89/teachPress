@@ -532,7 +532,7 @@ class TP_Tables {
                     KEY `ind_key` (`key`),
                     KEY `ind_bibtex_key` (`bibtex`),
                     KEY `ind_status` (`status`)
-                ) $charset_collate;");
+                ) ROW_FORMAT=DYNAMIC $charset_collate;");
         
         // test engine
         self::change_engine(TEACHPRESS_PUB);
@@ -667,7 +667,7 @@ class TP_Tables {
                     `name` VARCHAR(300),
                     PRIMARY KEY (tag_id),
                     KEY `ind_tag_name` (`name`)
-                ) $charset_collate;");
+                ) ROW_FORMAT=DYNAMIC $charset_collate;");
         
         // test engine
         self::change_engine(TEACHPRESS_TAGS);
@@ -747,7 +747,7 @@ class TP_Tables {
                     `sort_name` VARCHAR(500),
                     PRIMARY KEY (author_id),
                     KEY `ind_sort_name` (`sort_name`)
-                ) $charset_collate;");
+                ) ROW_FORMAT=DYNAMIC $charset_collate;");
         
         // test engine
         self::change_engine(TEACHPRESS_AUTHORS);
