@@ -375,7 +375,7 @@ class TP_Publication_Page {
         TP_HTML::line('<td style="border:none; padding:0; margin: 0;">');
         $title = __('A simple unique key without spaces','teachpress');
         TP_HTML::line('<p><label for="bibtex" title="' . $title . '"><b>' . __('BibTeX Key') . '</b></label></p>');
-        TP_HTML::line('<input name="bibtex" id="bibtex" type="text" title="' . $title . '" value="' . stripslashes($pub_data["bibtex"]) . '" tabindex="3" />');
+        TP_HTML::line('<input name="bibtex" id="bibtex" type="text" title="' . $title . '" value="' . stripslashes($pub_data["bibtex"]) . '" style="width: 350px;" tabindex="3" />');
         TP_HTML::line('<a id="bibtex_key_gen" style="cursor: pointer;" title="' . __('Generate BibTeX key','teachpress') . '"><i class="fas fa-retweet"></i></a>');
         TP_HTML::line('</td>');
         
@@ -523,227 +523,229 @@ class TP_Publication_Page {
         // booktitle
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'booktitle',
-                'title' => __('The title of a book','teachpress'),
-                'label' => __('Booktitle','teachpress'),
-                'type' => 'textarea',
-                'value' => $pub_data['booktitle'],
-                'tabindex' => 6,
-                'display' => ( in_array('booktitle', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%; height: 58px;') );
+                'name'      => 'booktitle',
+                'title'     => __('The title of a book','teachpress'),
+                'label'     => __('Booktitle','teachpress'),
+                'type'      => 'textarea',
+                'value'     => $pub_data['booktitle'],
+                'tabindex'  => 6,
+                'display'   => ( in_array('booktitle', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%; height: 58px;') );
 
         // issuetitle
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'issuetitle',
-                'title' => __('The subtitle of a periodical publication','teachpress'),
-                'label' => __('Issuetitle','teachpress'),
-                'type' => 'textarea',
-                'value' => $pub_data['issuetitle'],
-                'tabindex' => 7,
-                'display' => ( in_array('issuetitle', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%; height: 58px;') );
+                'name'      => 'issuetitle',
+                'title'     => __('The subtitle of a periodical publication','teachpress'),
+                'label'     => __('Issuetitle','teachpress'),
+                'type'      => 'textarea',
+                'value'     => $pub_data['issuetitle'],
+                'tabindex'  => 7,
+                'display'   => ( in_array('issuetitle', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%; height: 58px;') );
 
         // journal
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'journal',
-                'title' => __('The title of a journal','teachpress'),
-                'label' => __('Journal','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['journal'],
-                'tabindex' => 8,
-                'display' => ( in_array('journal', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'journal',
+                'title'     => __('The title of a journal','teachpress'),
+                'label'     => __('Journal','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['journal'],
+                'tabindex'  => 8,
+                'display'   => ( in_array('journal', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
         
         // volume
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'volume',
-                'title' => __('The volume of a journal or book','teachpress'),
-                'label' => __('Volume','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['volume'],
-                'tabindex' => 9,
-                'display' => ( in_array('volume', $default_fields) ) ? 'block' : 'none') );
+                'name'      => 'volume',
+                'title'     => __('The volume of a journal or book','teachpress'),
+                'label'     => __('Volume','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['volume'],
+                'tabindex'  => 9,
+                'display'   => ( in_array('volume', $default_fields) ) ? 'block' : 'none') );
 
         // number
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'number',
-                'title' => __('The number of a book, journal or work in a series','teachpress'),
-                'label' => __('Number','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['number'],
-                'tabindex' => 10,
-                'display' => ( in_array('number', $default_fields) ) ? 'block' : 'none') );
+                'name'      => 'number',
+                'title'     => __('The number of a book, journal or work in a series','teachpress'),
+                'label'     => __('Number','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['number'],
+                'tabindex'  => 10,
+                'display'   => ( in_array('number', $default_fields) ) ? 'block' : 'none') );
 
         // pages
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'pages',
-                'title' => __('The page you are referring to.','teachpress'),
-                'label' => __('Pages','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['pages'],
-                'tabindex' => 11,
-                'display' => ( in_array('pages', $default_fields) ) ? 'block' : 'none') );
+                'name'      => 'pages',
+                'title'     => __('The page you are referring to.','teachpress'),
+                'label'     => __('Pages','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['pages'],
+                'tabindex'  => 11,
+                'display'   => ( in_array('pages', $default_fields) ) ? 'block' : 'none') );
         
 
         // publisher
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'publisher',
-                'title' => __('The names of publisher','teachpress'),
-                'label' => __('Publisher','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['publisher'],
-                'tabindex' => 12,
-                'display' => ( in_array('publisher', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'publisher',
+                'title'     => __('The names of publisher','teachpress'),
+                'label'     => __('Publisher','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['publisher'],
+                'tabindex'  => 12,
+                'display'   => ( in_array('publisher', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
 
         // address
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'address',
-                'title' => __('The address of the publisher or the place of confernece','teachpress'),
-                'label' => __('Address','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['address'],
-                'tabindex' => 13,
-                'display' => ( in_array('address', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'address',
+                'title'     => __('The address of the publisher or the place of confernece','teachpress'),
+                'label'     => __('Address','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['address'],
+                'tabindex'  => 13,
+                'display'   => ( in_array('address', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
         
 
         // edition
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'edition',
-                'title' => __('The edition of a book','teachpress'),
-                'label' => __('Edition','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['edition'],
-                'tabindex' => 14,
-                'display' => ( in_array('edition', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'edition',
+                'title'     => __('The edition of a book','teachpress'),
+                'label'     => __('Edition','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['edition'],
+                'tabindex'  => 14,
+                'display'   => ( in_array('edition', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
 
         // chapter
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'chapter',
-                'title' => __('The chapter or the section number','teachpress'),
-                'label' => __('Chapter','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['chapter'],
-                'tabindex' => 15,
-                'display' => ( in_array('chapter', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'chapter',
+                'title'     => __('The chapter or the section number','teachpress'),
+                'label'     => __('Chapter','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['chapter'],
+                'tabindex'  => 15,
+                'display'   => ( in_array('chapter', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
 
         // institution
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'institution',
-                'title' => __('The name of a sponsoring institution','teachpress'),
-                'label' => __('Institution','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['institution'],
-                'tabindex' => 16,
-                'display' => ( in_array('institution', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'institution',
+                'title'     => __('The name of a sponsoring institution','teachpress'),
+                'label'     => __('Institution','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['institution'],
+                'tabindex'  => 16,
+                'display'   => ( in_array('institution', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
 
         // organization
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'organization',
-                'title' => __('The names of a sponsoring organization','teachpress'),
-                'label' => __('Organization','teachpress'), 
-                'type' => 'input',
-                'value' => $pub_data['organization'],
-                'tabindex' => 17,
-                'display' => ( in_array('organization', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'organization',
+                'title'     => __('The names of a sponsoring organization','teachpress'),
+                'label'     => __('Organization','teachpress'), 
+                'type'      => 'input',
+                'value'     => $pub_data['organization'],
+                'tabindex'  => 17,
+                'display'   => ( in_array('organization', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
 
         // school
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'school',
-                'title' => __('The names of the academic instituion where a thesis was written','teachpress'),
-                'label' => __('School','teachpress'), 
-                'type' => 'input',
-                'value' => $pub_data['school'],
-                'tabindex' => 18,
-                'display' => ( in_array('school', $default_fields) ) ? 'block' : 'none',
-                'style' => 'width:95%;') );
+                'name'      => 'school',
+                'title'     => __('The names of the academic instituion where a thesis was written','teachpress'),
+                'label'     => __('School','teachpress'), 
+                'type'      => 'input',
+                'value'     => $pub_data['school'],
+                'tabindex'  => 18,
+                'display'   => ( in_array('school', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;') );
 
         // series
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'series',
-                'title' => __('The name of a series','teachpress'),
-                'label' => __('Series','teachpress'), 
-                'type' => 'input',
-                'value' => $pub_data['series'],
-                'tabindex' => 19,
-                'display' => ( in_array('series', $default_fields) ) ? 'block' : 'none') );
+                'name'      => 'series',
+                'title'     => __('The name of a series','teachpress'),
+                'label'     => __('Series','teachpress'), 
+                'type'      => 'input',
+                'value'     => $pub_data['series'],
+                'tabindex'  => 19,
+                'display'   => ( in_array('series', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;' ) );
 
         // crossref
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'crossref',
-                'title' => __('The BibTeX key this work is referring to','teachpress'),
-                'label' => __('Crossref','teachpress'), 
-                'type' => 'input',
-                'value' => $pub_data['crossref'],
-                'tabindex' => 20,
-                'display' => ( in_array('crossref', $default_fields) ) ? 'block' : 'none') );
+                'name'      => 'crossref',
+                'title'     => __('The BibTeX key this work is referring to','teachpress'),
+                'label'     => __('Crossref','teachpress'), 
+                'type'      => 'input',
+                'value'     => $pub_data['crossref'],
+                'tabindex'  => 20,
+                'display'   => ( in_array('crossref', $default_fields) ) ? 'block' : 'none',
+                'style'     => 'width:95%;' ) );
 
         // abstract
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'abstract',
-                'title' => __('A short summary of the publication','teachpress'),
-                'label' => __('Abstract','teachpress'),
-                'type' => 'textarea',
-                'value' => $pub_data['abstract'],
-                'tabindex' => 21,
-                'display' => 'block',
-                'style' => 'width:95%; height: 150px;') );
+                'name'      => 'abstract',
+                'title'     => __('A short summary of the publication','teachpress'),
+                'label'     => __('Abstract','teachpress'),
+                'type'      => 'textarea',
+                'value'     => $pub_data['abstract'],
+                'tabindex'  => 21,
+                'display'   => 'block',
+                'style'     => 'width:95%; height: 150px;') );
 
         // howpublished
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'howpublished',
-                'title' => __('An unusual method for publishing','teachpress'),
-                'label' => __('Howpublished','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['howpublished'],
-                'tabindex' => 22,
-                'display' => ( in_array('howpublished', $default_fields) ) ? 'block' : 'none', 
-                'style' => 'width:95%;') );
+                'name'      => 'howpublished',
+                'title'     => __('An unusual method for publishing','teachpress'),
+                'label'     => __('Howpublished','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['howpublished'],
+                'tabindex'  => 22,
+                'display'   => ( in_array('howpublished', $default_fields) ) ? 'block' : 'none', 
+                'style'     => 'width:95%;') );
         
         // key
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'key',
-                'title' => __('If there is no author or editor given, so this field is used for the sorting.','teachpress'),
-                'label' => __('Key','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['key'],
-                'tabindex' => 23,
-                'display' => 'block', 
-                'style' => '') );
+                'name'      => 'key',
+                'title'     => __('If there is no author or editor given, so this field is used for the sorting.','teachpress'),
+                'label'     => __('Key','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['key'],
+                'tabindex'  => 23,
+                'display'   => 'block', 
+                'style'     => '') );
 
         // techtype
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'techtype',
-                'title' => __('The type of a technical report, thesis, incollection or inbook.','teachpress'),
-                'label' => __('Type'),
-                'type' => 'input',
-                'value' => $pub_data['techtype'],
-                'tabindex' => 24,
-                'display' => ( in_array('techtype', $default_fields) ) ? 'block' : 'none', 
-                'style' => '') );
+                'name'      => 'techtype',
+                'title'     => __('The type of a technical report, thesis, incollection or inbook.','teachpress'),
+                'label'     => __('Type'),
+                'type'      => 'input',
+                'value'     => $pub_data['techtype'],
+                'tabindex'  => 24,
+                'display'   => ( in_array('techtype', $default_fields) ) ? 'block' : 'none', 
+                'style'     => '') );
         
         // isbn
         $checked_1 = ( $pub_data["is_isbn"] == '1' || $pub_id === 0 ) ? 'checked="checked"' : '';
