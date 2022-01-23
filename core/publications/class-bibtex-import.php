@@ -53,6 +53,7 @@ class TP_Bibtex_Import {
             $entries[$i]['tppubtype'] = array_key_exists('tppubtype', $entries[$i]) === true ? $entries[$i]['tppubtype'] : '';
             $entries[$i]['pubstate'] = array_key_exists('pubstate', $entries[$i]) === true ? $entries[$i]['pubstate'] : '';
             $entries[$i]['journal'] = array_key_exists('journal', $entries[$i]) === true ? $entries[$i]['journal'] : '';
+            $entries[$i]['annote'] = array_key_exists('annote', $entries[$i]) === true ? $entries[$i]['annote'] : '';
             $entries[$i]['import_id'] = $import_id;
             
             // for the date of publishing
@@ -74,6 +75,11 @@ class TP_Bibtex_Import {
             // consider old location fields
             if ( $entries[$i]['location'] != '' ) {
                 $entries[$i]['address'] = $entries[$i]['location'];
+            }
+            
+            // consider annote field and use it as comment
+            if ( $entries[$i]['annote'] != '' ) {
+                $entries[$i]['comment'] = $entries[$i]['annote'];
             }
             
             // for author / editor
