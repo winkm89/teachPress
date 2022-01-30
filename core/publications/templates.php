@@ -520,7 +520,7 @@ class TP_HTML_Publication_Template {
             $number = isset( $row['number'] ) ? TP_HTML_Publication_Template::prepare_field('number', $row['number'],'',', ',$use_span) : '';
         }
         else {
-            $number = isset( $row['number'] ) ? TP_HTML_Publication_Template::prepare_field('number', $row['number'],'(','), ',$use_span) : '';
+            $number = isset( $row['number'] ) ? TP_HTML_Publication_Template::prepare_field('number', $row['number'],__('no.','teachpress') . ' ',', ', $use_span) : '';
         }
         
         // for forthcoming publications
@@ -537,7 +537,8 @@ class TP_HTML_Publication_Template {
         $booktitle = isset( $row['booktitle'] ) ? TP_HTML_Publication_Template::prepare_field('booktitle', $row['booktitle'],'',', ',$use_span) : '';
         $issuetitle = isset( $row['issuetitle'] ) ? TP_HTML_Publication_Template::prepare_field('issuetitle', $row['issuetitle'],'',', ',$use_span) : '';
         $journal = isset( $row['journal'] ) ? TP_HTML_Publication_Template::prepare_field('journal', $row['journal'],'',', ',$use_span) : '';
-        $volume = isset( $row['volume'] ) ? TP_HTML_Publication_Template::prepare_field('volume', $row['volume'],'',' ',$use_span) : '';        
+        $volume = isset( $row['volume'] ) ? TP_HTML_Publication_Template::prepare_field('volume', $row['volume'],__('vol.','teachpress') . ' ',', ',$use_span) : '';
+        $issue = isset( $row['issue'] ) ? TP_HTML_Publication_Template::prepare_field('issue', $row['issue'],__('iss.','teachpress') . ' ',', ',$use_span) : '';   
         $publisher = isset( $row['publisher'] ) ? TP_HTML_Publication_Template::prepare_field('publisher', $row['publisher'],'',', ',$use_span) : '';
         $address = isset( $row['address'] ) ? TP_HTML_Publication_Template::prepare_field('address', $row['address'],'',', ',$use_span) : '';
         $edition = isset( $row['edition'] ) ? TP_HTML_Publication_Template::prepare_field('edition', $row['edition'],'',', ',$use_span) : '';
@@ -550,11 +551,6 @@ class TP_HTML_Publication_Template {
         $techtype = isset( $row['techtype'] ) ? TP_HTML_Publication_Template::prepare_field('techtype', $row['techtype'],'',', ',$use_span) : '';
         $note = isset( $row['techtype'] ) ? TP_HTML_Publication_Template::prepare_field('note', $row['note'],', (',')',$use_span) : '';
         $date = ( array_key_exists('date_format', $settings) === true ) ? TP_HTML_Publication_Template::prepare_field('date', date( $settings['date_format'], strtotime($row['date']) ) ,'','',$use_span) : '';
-        
-        // special cases for volume/number
-        if ( $number == '' && $volume != '' ) {
-            $number = ', ';
-        }
         
         // special cases for article/incollection/inbook/inproceedings
         $in = ( $use_span === true ) ? '<span class="tp_pub_additional_in">' . $settings['meta_label_in'] . '</span>' : $settings['meta_label_in'];
