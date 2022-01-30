@@ -115,7 +115,7 @@ class TP_Publications {
         $join = '';
 
         // exclude publications via tag_id
-        if ( $atts['exclude_tags'] != '' ) {
+        if ( !empty($atts['exclude_tags']) ) {
             $extend = '';
             $exclude_tags = TP_DB_Helpers::generate_where_clause($atts['exclude_tags'], "tag_id", "OR", "=");
             $exclude_publications = $wpdb->get_results("SELECT DISTINCT pub_id FROM " . TEACHPRESS_RELATION . " WHERE $exclude_tags ORDER BY pub_id ASC", ARRAY_A);
@@ -126,13 +126,13 @@ class TP_Publications {
         }
 
         // additional joins
-        if ( $atts['user'] != '' ) {
+        if ( !empty($atts['user']) ) {
             $join .= "INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id = p.pub_id ";
         }
-        if ( $atts['tag'] != '' ) {
+        if ( !empty($atts['tag']) ) {
             $join .= "INNER JOIN " . TEACHPRESS_RELATION . " b ON p.pub_id = b.pub_id INNER JOIN " . TEACHPRESS_TAGS . " t ON t.tag_id = b.tag_id ";
         }
-        if ( $atts['author_id'] != '' ) {
+        if ( !empty($atts['author_id'] ) ) {
             $join .= "INNER JOIN " . TEACHPRESS_REL_PUB_AUTH . " r ON p.pub_id = r.pub_id ";
         }
 
@@ -196,23 +196,23 @@ class TP_Publications {
         
         // HAVING clause
         $having = '';
-        if ( $atts['year'] != '' && $atts['year'] !== '0' ) {
+        if ( !empty($atts['year']) ) {
             $having = ' HAVING ' . TP_DB_Helpers::generate_where_clause($atts['year'], "year", "OR", "=");
         }
         
         // LIMIT clause
-        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        $limit = ( !empty($atts['limit']) ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
 
         // End
         if ( $count !== true ) {
             $sql = $select . $join . $where . $having . " ORDER BY $order $limit";
+            // var_dump($args);
+            // get_tp_message($sql,'red');
         }
         else {
             $sql = "SELECT COUNT( pub_id ) AS `count` FROM ( $select_for_count $join $where $having) p ";
         }
         
-        // print_r($args);
-        // get_tp_message($sql,'red');
         $sql = ( $count != true ) ? $wpdb->get_results($sql, $atts['output_type']): $wpdb->get_var($sql);
         return $sql;
     }
@@ -391,16 +391,16 @@ class TP_Publications {
                 'pages'         => stripslashes($data['pages']),
                 'publisher'     => stripslashes($data['publisher']),
                 'address'       => stripslashes($data['address']),
-                'edition'       => $data['edition'],
-                'chapter'       => $data['chapter'],
+                'edition'       => stripslashes($data['edition']),
+                'chapter'       => stripslashes($data['chapter']),
                 'institution'   => stripslashes($data['institution']),
                 'organization'  => stripslashes($data['organization']),
                 'school'        => stripslashes($data['school']),
-                'series'        => $data['series'],
-                'crossref'      => $data['crossref'],
+                'series'        => stripslashes($data['series']),
+                'crossref'      => stripslashes($data['crossref']),
                 'abstract'      => stripslashes($data['abstract']),
                 'howpublished'  => stripslashes($data['howpublished']),
-                'key'           => $data['key'],
+                'key'           => stripslashes($data['key']),
                 'techtype'      => stripslashes($data['techtype']),
                 'comment'       => stripslashes($data['comment']),
                 'note'          => stripslashes($data['note']),
@@ -500,25 +500,22 @@ class TP_Publications {
                     'booktitle'     => stripslashes($data['booktitle']), 
                     'issuetitle'    => stripslashes($data['issuetitle']), 
                     'journal'       => stripslashes($data['journal']), 
-                    'volume'        => $data['volume'], 
-                    'number'        => $data['number'], 
-                    'pages'         => $data['pages'], 
                     'issue'         => stripslashes($data['issue']),
                     'volume'        => stripslashes($data['volume']), 
                     'number'        => stripslashes($data['number']), 
                     'pages'         => stripslashes($data['pages']), 
                     'publisher'     => stripslashes($data['publisher']), 
                     'address'       => stripslashes($data['address']), 
-                    'edition'       => $data['edition'], 
-                    'chapter'       => $data['chapter'], 
+                    'edition'       => stripslashes($data['edition']), 
+                    'chapter'       => stripslashes($data['chapter']), 
                     'institution'   => stripslashes($data['institution']), 
                     'organization'  => stripslashes($data['organization']), 
                     'school'        => stripslashes($data['school']), 
-                    'series'        => $data['series'], 
-                    'crossref'      => $data['crossref'], 
+                    'series'        => stripslashes($data['series']), 
+                    'crossref'      => stripslashes($data['crossref']), 
                     'abstract'      => stripslashes($data['abstract']), 
                     'howpublished'  => stripslashes($data['howpublished']), 
-                    'key'           => $data['key'], 
+                    'key'           => stripslashes($data['key']), 
                     'techtype'      => stripslashes($data['techtype']), 
                     'comment'       => stripslashes($data['comment']), 
                     'note'          => stripslashes($data['note']), 

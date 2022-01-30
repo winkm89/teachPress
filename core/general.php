@@ -322,11 +322,19 @@ function tp_convert_file_size ($bytes) {
  * @since 8.0.0
  */
 function tp_convert_array_to_string($input, $type = 'string') {
+    // if we have an array already
     if (is_array($input) ) {
         $array = $input;
     }
     else {
-        $array[] = $input;
+        // If we have a comma separated string
+        if ( strpos ($input, ',') !== false ) {
+            $array = explode(',',$input);
+        }
+        // If we don't know what we have
+        else {
+            $array[] = $input;
+        }
     }
 
     $max = count( $array );

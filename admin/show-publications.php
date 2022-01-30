@@ -87,7 +87,6 @@ function tp_show_publications_page() {
         $array_variables['entry_limit'] = 0;
         $array_variables['curr_page'] = 1;
     }
-    
     echo '<div class="wrap">';
     
     // test if teachpress database is up to date
@@ -490,7 +489,7 @@ class TP_Publications_Page {
         TP_HTML::div_close('alignleft actions');
            
         // Page Menu
-        $link = 'search=' . $array_variables['search'] . '&amp;filter=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'];
+        $link = 'search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'];
         echo tp_page_menu(array('number_entries'    => $test,
                                 'entries_per_page'  => $array_variables['per_page'],
                                 'current_page'      => $array_variables['curr_page'],
