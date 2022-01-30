@@ -55,6 +55,7 @@ function tp_add_publication_page() {
     $data['booktitle'] = isset( $_POST['booktitle'] ) ? htmlspecialchars($_POST['booktitle']) : '';
     $data['issuetitle'] = isset( $_POST['issuetitle'] ) ? htmlspecialchars($_POST['issuetitle']) : '';
     $data['journal'] = isset( $_POST['journal'] ) ? htmlspecialchars($_POST['journal']) : '';
+    $data['issue'] = isset( $_POST['issue'] ) ? htmlspecialchars($_POST['issue']) : '';
     $data['volume'] = isset( $_POST['volume'] ) ? htmlspecialchars($_POST['volume']) : '';
     $data['number'] = isset( $_POST['number'] ) ? htmlspecialchars($_POST['number']) : '';
     $data['pages'] = isset( $_POST['pages'] ) ? htmlspecialchars($_POST['pages']) : '';
@@ -566,6 +567,17 @@ class TP_Publication_Page {
                 'value'     => $pub_data['volume'],
                 'tabindex'  => 9,
                 'display'   => ( in_array('volume', $default_fields) ) ? 'block' : 'none') );
+        
+        // volume
+        echo TP_Admin::get_form_field(
+            array(
+                'name'      => 'issue',
+                'title'     => __('The issue of a journal','teachpress'),
+                'label'     => __('Issue','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['issue'],
+                'tabindex'  => 10,
+                'display'   => ( in_array('issue', $default_fields) ) ? 'block' : 'none') );
 
         // number
         echo TP_Admin::get_form_field(
@@ -575,7 +587,7 @@ class TP_Publication_Page {
                 'label'     => __('Number','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['number'],
-                'tabindex'  => 10,
+                'tabindex'  => 11,
                 'display'   => ( in_array('number', $default_fields) ) ? 'block' : 'none') );
 
         // pages
@@ -586,7 +598,7 @@ class TP_Publication_Page {
                 'label'     => __('Pages','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['pages'],
-                'tabindex'  => 11,
+                'tabindex'  => 12,
                 'display'   => ( in_array('pages', $default_fields) ) ? 'block' : 'none') );
         
 
@@ -598,7 +610,7 @@ class TP_Publication_Page {
                 'label'     => __('Publisher','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['publisher'],
-                'tabindex'  => 12,
+                'tabindex'  => 13,
                 'display'   => ( in_array('publisher', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;') );
 
@@ -610,7 +622,7 @@ class TP_Publication_Page {
                 'label'     => __('Address','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['address'],
-                'tabindex'  => 13,
+                'tabindex'  => 14,
                 'display'   => ( in_array('address', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;') );
         
@@ -623,7 +635,7 @@ class TP_Publication_Page {
                 'label'     => __('Edition','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['edition'],
-                'tabindex'  => 14,
+                'tabindex'  => 15,
                 'display'   => ( in_array('edition', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;') );
 
@@ -635,7 +647,7 @@ class TP_Publication_Page {
                 'label'     => __('Chapter','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['chapter'],
-                'tabindex'  => 15,
+                'tabindex'  => 16,
                 'display'   => ( in_array('chapter', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;') );
 
@@ -647,7 +659,7 @@ class TP_Publication_Page {
                 'label'     => __('Institution','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['institution'],
-                'tabindex'  => 16,
+                'tabindex'  => 17,
                 'display'   => ( in_array('institution', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;') );
 
@@ -659,7 +671,7 @@ class TP_Publication_Page {
                 'label'     => __('Organization','teachpress'), 
                 'type'      => 'input',
                 'value'     => $pub_data['organization'],
-                'tabindex'  => 17,
+                'tabindex'  => 18,
                 'display'   => ( in_array('organization', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;') );
 
@@ -671,7 +683,7 @@ class TP_Publication_Page {
                 'label'     => __('School','teachpress'), 
                 'type'      => 'input',
                 'value'     => $pub_data['school'],
-                'tabindex'  => 18,
+                'tabindex'  => 19,
                 'display'   => ( in_array('school', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;') );
 
@@ -683,7 +695,7 @@ class TP_Publication_Page {
                 'label'     => __('Series','teachpress'), 
                 'type'      => 'input',
                 'value'     => $pub_data['series'],
-                'tabindex'  => 19,
+                'tabindex'  => 20,
                 'display'   => ( in_array('series', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;' ) );
 
@@ -695,7 +707,7 @@ class TP_Publication_Page {
                 'label'     => __('Crossref','teachpress'), 
                 'type'      => 'input',
                 'value'     => $pub_data['crossref'],
-                'tabindex'  => 20,
+                'tabindex'  => 21,
                 'display'   => ( in_array('crossref', $default_fields) ) ? 'block' : 'none',
                 'style'     => 'width:95%;' ) );
 
@@ -707,7 +719,7 @@ class TP_Publication_Page {
                 'label'     => __('Abstract','teachpress'),
                 'type'      => 'textarea',
                 'value'     => $pub_data['abstract'],
-                'tabindex'  => 21,
+                'tabindex'  => 22,
                 'display'   => 'block',
                 'style'     => 'width:95%; height: 150px;') );
 
@@ -719,7 +731,7 @@ class TP_Publication_Page {
                 'label'     => __('Howpublished','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['howpublished'],
-                'tabindex'  => 22,
+                'tabindex'  => 23,
                 'display'   => ( in_array('howpublished', $default_fields) ) ? 'block' : 'none', 
                 'style'     => 'width:95%;') );
         
@@ -731,7 +743,7 @@ class TP_Publication_Page {
                 'label'     => __('Key','teachpress'),
                 'type'      => 'input',
                 'value'     => $pub_data['key'],
-                'tabindex'  => 23,
+                'tabindex'  => 24,
                 'display'   => 'block', 
                 'style'     => '') );
 
@@ -743,7 +755,7 @@ class TP_Publication_Page {
                 'label'     => __('Type'),
                 'type'      => 'input',
                 'value'     => $pub_data['techtype'],
-                'tabindex'  => 24,
+                'tabindex'  => 25,
                 'display'   => ( in_array('techtype', $default_fields) ) ? 'block' : 'none', 
                 'style'     => '') );
         

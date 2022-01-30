@@ -110,7 +110,7 @@ class TP_Publications {
         }
 
         // define basics
-        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn, p.url, p.booktitle, p.issuetitle, p.journal, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.image_target, p.image_ext, p.doi, p.rel_page, p.status, p.added, p.modified, p.import_id $selects FROM " . TEACHPRESS_PUB . " p $joins ";
+        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn, p.url, p.booktitle, p.issuetitle, p.journal, p.issue, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.is_isbn, p.image_url, p.image_target, p.image_ext, p.doi, p.rel_page, p.status, p.added, p.modified, p.import_id $selects FROM " . TEACHPRESS_PUB . " p $joins ";
         $select_for_count = "SELECT DISTINCT p.pub_id, DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $joins ";
         $join = '';
 
@@ -385,9 +385,10 @@ class TP_Publications {
                 'booktitle'     => stripslashes($data['booktitle']),
                 'issuetitle'    => stripslashes($data['issuetitle']),
                 'journal'       => stripslashes($data['journal']),
-                'volume'        => $data['volume'],
-                'number'        => $data['number'],
-                'pages'         => $data['pages'],
+                'issue'         => stripslashes($data['issue']),
+                'volume'        => stripslashes($data['volume']),
+                'number'        => stripslashes($data['number']),
+                'pages'         => stripslashes($data['pages']),
                 'publisher'     => stripslashes($data['publisher']),
                 'address'       => stripslashes($data['address']),
                 'edition'       => $data['edition'],
@@ -413,7 +414,7 @@ class TP_Publications {
                 'added'         => $post_time,
                 'modified'      => $post_time,
                 'import_id'     => $data['import_id'] ),
-            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
+            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
         $pub_id = $wpdb->insert_id;
 
         // Bookmarks
@@ -502,6 +503,10 @@ class TP_Publications {
                     'volume'        => $data['volume'], 
                     'number'        => $data['number'], 
                     'pages'         => $data['pages'], 
+                    'issue'         => stripslashes($data['issue']),
+                    'volume'        => stripslashes($data['volume']), 
+                    'number'        => stripslashes($data['number']), 
+                    'pages'         => stripslashes($data['pages']), 
                     'publisher'     => stripslashes($data['publisher']), 
                     'address'       => stripslashes($data['address']), 
                     'edition'       => $data['edition'], 
@@ -526,7 +531,7 @@ class TP_Publications {
                     'status'        => stripslashes($data['status']), 
                     'modified'      => $post_time ), 
                 array( 'pub_id' => $pub_id ), 
-                array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), 
+                array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), 
                 array( '%d' ) );
         
         // get_tp_message($wpdb->last_query);
@@ -766,6 +771,7 @@ class TP_Publications {
             'booktitle'         => '',
             'issuetitle'        => '',
             'journal'           => '',
+            'issue'             => '',
             'volume'            => '',
             'number'            => '',
             'pages'             => '',

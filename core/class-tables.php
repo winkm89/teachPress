@@ -496,6 +496,7 @@ class TP_Tables {
                     `booktitle` VARCHAR (1000),
                     `issuetitle` VARCHAR (200),
                     `journal` VARCHAR(200),
+                    `issue` VARCHAR(40),
                     `volume` VARCHAR(40),
                     `number` VARCHAR(40),
                     `pages` VARCHAR(40),

@@ -588,6 +588,7 @@ class TP_HTML_Publication_Template {
             '{techtype}'        => $techtype,
             '{urldate}'         => $urldate,
             '{volume}'          => $volume, 
+            '{issue}'           => $issue, 
             '{year}'            => $year,
         );
         $end = strtr($meta_row_template, $replace_pairs) . '.';

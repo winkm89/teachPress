@@ -850,9 +850,13 @@ class TP_Update {
      */
     private static function upgrade_to_81( $charset_collate ) {
         global $wpdb;
-        // expand char limit for tp_publications::bibtex
+        // expand char limit for teachpress_pub::bibtex
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'bibtex'") == '1') {
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " CHANGE `bibtex` `bibtex` VARCHAR (100) $charset_collate NULL DEFAULT NULL");
+        }
+        // add column issue to table teachpress_pub
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " WHERE Field = 'issue'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `issue` VARCHAR(40) $charset_collate NULL DEFAULT NULL AFTER `journal`");
         }
     }
     

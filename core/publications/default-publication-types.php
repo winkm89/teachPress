@@ -11,8 +11,8 @@ function tp_register_all_publication_types() {
             'bibtex_key_ext'    => 'article',
             'i18n_singular'     => __('Journal Article','teachpress'),
             'i18n_plural'       => __('Journal Articles','teachpress'),
-            'default_fields'    => array('journal', 'volume', 'number', 'pages'),
-            'html_meta_row'     => '{IN}{journal}{volume}{number}{pages}{year}{isbn}{note}' 
+            'default_fields'    => array('journal', 'volume', 'number', 'issue', 'pages'),
+            'html_meta_row'     => '{IN}{journal}{volume}{issue}{number}{pages}{year}{isbn}{note}' 
         ) );
     
     // Book
