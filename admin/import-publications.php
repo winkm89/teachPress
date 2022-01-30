@@ -295,7 +295,14 @@ class TP_Import_Publication_Page {
             echo '<td>' . $value . '</td>';
             echo '<td>' . tp_translate_pub_type( $entry['type'] ) . '</td>';
             echo '<td>' . $author . '</td>';
-            echo '<td>' . $entry['year'] . '</td>';
+            echo '<td>';
+            if ( array_key_exists('year', $entry) ) {
+                echo $entry['year'];
+            }
+            elseif ( array_key_exists('date', $entry) ) {
+                echo $entry['date'];
+            }
+            echo '</td>';
             echo '</tr>';
             $array_id .= $value . ',';
         }
