@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 8.1.1
+Stable tag: 8.1.2
 
 Manage your courses and publications with teachPress 
 
@@ -127,6 +127,13 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 8.1.2 (30.01.2022) = 
+* New: Issue is available as new field for journals
+* Changed: New style of volume/number/issue fields in publication entries. We switch from 8(3) to vol. 8, no. 3
+* Changed: Show date instead of year in publication import if it's available
+* Bugfix: Fix some problems with pagination and losing filter values in the backend publications overview
+* Note: Considering that 99,9% of all users using the publication management only, I've decided to split the course system from the publication management during this year. So teachPress will be a publication management only plugin in future.
 
 = 8.1.1 (23.01.2022) = 
 * New: Consider annote fields in the bibtex import and save it as comments
