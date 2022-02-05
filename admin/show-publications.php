@@ -67,10 +67,10 @@ function tp_show_publications_page() {
     $array_variables['checkbox'] = isset( $_GET['checkbox'] ) ? $_GET['checkbox'] : '';
     $array_variables['action'] = isset( $_GET['action'] ) ? $_GET['action'] : '';
     $array_variables['page'] = isset( $_GET['page'] ) ? htmlspecialchars($_GET['page']) : '';
-    $array_variables['type'] = ( isset( $_GET['type'] ) && $_GET['type'] != '0' ) ? tp_convert_array_to_string($_GET['type']) : '';
-    $array_variables['year'] = isset( $_GET['tp_year'] ) ? tp_convert_array_to_string($_GET['tp_year'], 'int') : '';
+    $array_variables['type'] = ( isset( $_GET['type'] ) && $_GET['type'] != '0' ) ? tp_convert_input_to_string($_GET['type']) : '';
+    $array_variables['year'] = isset( $_GET['tp_year'] ) ? tp_convert_input_to_string($_GET['tp_year'], 'int') : '';
     $array_variables['search'] = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
-    $array_variables['tag_id'] = isset( $_GET['tag'] ) ? tp_convert_array_to_string($_GET['tag'], 'int') : '';
+    $array_variables['tag_id'] = isset( $_GET['tag'] ) ? tp_convert_input_to_string($_GET['tag'], 'int') : '';
     $user = $current_user->ID;
 
     // Page menu

@@ -1165,7 +1165,7 @@ function tp_links_shortcode ($atts) {
  *      $yr (INT)               Year 
  *      $type (STRING)          Publication type 
  *      $auth (INT)             Author ID
- *      $tg (INT)               Tag ID
+ *      $tgid (INT)             Tag ID
  *      $usr (INT)              User ID
  *      $tsr (STRING)           Full text search
  * 
@@ -1313,7 +1313,7 @@ function tp_publist_shortcode ($atts) {
     
     // Settings for and from form fields
     $filter_parameter = array(
-        'tag'                   => ( isset ($_GET['tgid']) && $_GET['tgid'] != '' ) ? intval($_GET['tgid']) : '',
+        'tag'                   => ( isset ($_GET['tgid']) && $_GET['tgid'] != '' ) ? tp_convert_input_to_string($_GET['tgid'], 'int') : '',
         'year'                  => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
         'type'                  => isset ($_GET['type']) ? htmlspecialchars( $_GET['type'] ) : '',
         'author'                => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
@@ -1593,7 +1593,7 @@ function tp_publist_shortcode ($atts) {
  *      $yr (INT)              Year 
  *      $type (STRING)         Publication type 
  *      $auth (INT)            Author ID
- *      $tg (INT)              Tag ID
+ *      $tgid (INT)            Tag ID
  *      $usr (INT)             User ID
  * 
  * @param array $atts

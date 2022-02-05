@@ -315,15 +315,18 @@ function tp_convert_file_size ($bytes) {
 }
 
 /**
- * Converts an array in a comma separated string
+ * Converts an input(array or comma separated string) in a secured comma separated string
+ * 
+ * The method uses intval, floatval or htmlspecialchars for each element depending on the given
+ * $type (string, int, float)
  * @param array|string $input
  * @param string $type  The type of the elements: string, int, float
  * @return string
  * @since 8.0.0
  */
-function tp_convert_array_to_string($input, $type = 'string') {
+function tp_convert_input_to_string($input, $type = 'string') {
     // if we have an array already
-    if (is_array($input) ) {
+    if ( is_array($input) ) {
         $array = $input;
     }
     else {
@@ -331,7 +334,7 @@ function tp_convert_array_to_string($input, $type = 'string') {
         if ( strpos ($input, ',') !== false ) {
             $array = explode(',',$input);
         }
-        // If we don't know what we have
+        // If we don't know what we have, so we create an array
         else {
             $array[] = $input;
         }
@@ -352,7 +355,7 @@ function tp_convert_array_to_string($input, $type = 'string') {
             default:
                 $element = htmlspecialchars($array[$i]);
         endswitch;
-        $string = ($string === '') ? $element : $string . ',' .$element;
+        $string = ( $string === '' ) ? $element : $string . ',' . $element;
     }
     return $string;
 }
