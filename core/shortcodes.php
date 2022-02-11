@@ -977,7 +977,12 @@ function tp_ref_shortcode($atts) {
     );
     
     // define reference part
-    $references = $tp_cite_object->get_ref();
+    $references = isset($tp_cite_object) ? $tp_cite_object->get_ref() : array();
+    
+    // If there is no reference to show
+    if ( empty($references) ) {
+        return;
+    }
     
     $ret = '<h3 class="teachpress_ref_headline">' . __('References','teachpress') . '</h3>';
     $ret .= '<ol>';
