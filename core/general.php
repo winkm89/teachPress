@@ -219,6 +219,7 @@ function get_tp_var_types($type) {
             'booktitle'         => '',
             'issuetitle'        => '',
             'journal'           => '',
+            'issue'             => '',
             'volume'            => '',
             'number'            => '',
             'pages'             => '',
