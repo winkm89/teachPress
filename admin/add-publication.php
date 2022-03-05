@@ -116,7 +116,7 @@ function tp_add_publication_page() {
     
     // create publication and related page
     if ( isset($_POST['create_pub']) ) {
-        $pub_id = TP_Publications::add_publication($data, $tags, $new_bookmark);
+        $pub_id = TP_Publications::add_publication($data, $tags, $new_bookmarks);
         TP_DB_Helpers::prepare_meta_data($pub_id, $fields, $_POST, 'publications');
         $message = __('Publication added','teachpress') . ' <a href="admin.php?page=teachpress/addpublications.php">' . __('Add new','teachpress') . '</a>';
         get_tp_message($message);
