@@ -372,10 +372,10 @@ class TP_Publication_Page {
         TP_HTML::line(' </select>');
         TP_HTML::line('</td>');
         
-        // BibTex Key
+        // BibTex key
         TP_HTML::line('<td style="border:none; padding:0; margin: 0;">');
         $title = __('A simple unique key without spaces','teachpress');
-        TP_HTML::line('<p><label for="bibtex" title="' . $title . '"><b>' . __('BibTeX Key') . '</b></label></p>');
+        TP_HTML::line('<p><label for="bibtex" title="' . $title . '"><b>' . __('BibTeX key') . '</b></label></p>');
         TP_HTML::line('<input name="bibtex" id="bibtex" type="text" title="' . $title . '" value="' . stripslashes($pub_data["bibtex"]) . '" style="width: 350px;" tabindex="3" />');
         TP_HTML::line('<a id="bibtex_key_gen" style="cursor: pointer;" title="' . __('Generate BibTeX key','teachpress') . '"><i class="fas fa-retweet"></i></a>');
         TP_HTML::line('</td>');
