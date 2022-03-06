@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 8.1.4
+Stable tag: 8.1.5
 
 Manage your courses and publications with teachPress 
 
@@ -127,6 +127,12 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 8.1.5 (06.03.2022) =
+* Changed: Add comment field to field list in SQL statement
+* Bugfix: Bugfix: Call to a member function get_ref() on null
+* Bugfix: Fix undefined variable warning
+* Bugfix: Add issue as default field for new publication
 
 = 8.1.4 (08.02.2022) =
 * Bugfix: Fix a variable declaration to block-scoped in teachpress_pub_showhide()
