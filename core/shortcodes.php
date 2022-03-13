@@ -161,138 +161,253 @@ class TP_Shortcodes {
     
     /**
      * Generates and returns filter for the shortcodes
+     * @param string $key                   year/type/author/user/tag
      * @param array $filter_parameter       An associative array with filter parameter (user input). The keys are: year, type, author, user
      * @param array $sql_parameter          An assosciative array with SQL search parameter (user, type, exclude, exclude_tags, order)
      * @param array $settings               An assosciative array with settings (permalink, html_anchor,...)
      * @param int $tabindex                 The tabindex
-     * @param string $mode                  year, type, author, user or tag, default is year
      * @return string
      * @since 5.0.0
      * @access public
      */
-    public static function generate_filter ($filter_parameter, $sql_parameter, $settings, $tabindex, $mode = 'year'){
-
+    public static function generate_filter ($key, $filter_parameter, $sql_parameter, $settings, $tabindex){
+        
+        $defaults = [
+            'key'               => '',
+            'title'             => '',
+            'url_slug'          => '',
+            'row_key'           => '',
+            'filter_parameter'  => $filter_parameter,
+            'custom_filters'    => explode(',', $settings['custom_filter']),
+            'tabindex'          => $tabindex,
+            'author_name'       => $settings['author_name'],
+            'html_anchor'       => $settings['html_anchor'],
+            'filter_class'      => $settings['filter_class'],
+            'permalink'         => $settings['permalink']
+        ];
+        
         // year filter
-        if ( $mode === 'year' ) {
-            $row = TP_Publications::get_years( array( 'user' => $filter_parameter['user_preselect'], 
-                                                      'type' => $filter_parameter['type_preselect'],
-                                                      'include' => $filter_parameter['year_preselect'],
-                                                      'order' => 'DESC', 
+        if ( $key === 'year' ) {
+            $row = TP_Publications::get_years( array( 'user'        => $filter_parameter['user_preselect'], 
+                                                      'type'        => $filter_parameter['type_preselect'],
+                                                      'include'     => $filter_parameter['year_preselect'],
+                                                      'order'       => 'DESC', 
                                                       'output_type' => ARRAY_A ) );
-            $id = 'yr';
-            $index = 'year';
-            $title = __('All years','teachpress');
+            $defaults['url_slug'] = 'yr';
+            $defaults['key'] = 'year';
+            $defaults['row_key'] = 'year';
+            $defaults['title'] = __('All years','teachpress');
         }
         
         // type filter
-        if ( $mode === 'type' ) {
-            $row = TP_Publications::get_used_pubtypes( array( 'user' => $filter_parameter['user_preselect'], 
+        if ( $key === 'type' ) {
+            $row = TP_Publications::get_used_pubtypes( array( 'user'    => $filter_parameter['user_preselect'], 
                                                               'include' => $filter_parameter['type_preselect'],
                                                               'exclude' => isset($sql_parameter['exclude_types']) ? $sql_parameter['exclude_types'] : '') );
-            $id = 'type';
-            $index = 'type';
-            $title = __('All types','teachpress');
+            $defaults['url_slug'] = 'type';
+            $defaults['key'] = 'type';
+            $defaults['row_key'] = 'type';
+            $defaults['title'] = __('All types','teachpress');
         }
         
         // author filter
-        if ( $mode === 'author' ) {
+        if ( $key === 'author' ) {
             // Use the visible filter o the SQL parameter
             $author_id = ($filter_parameter['show_in_author_filter'] !== '') ? $filter_parameter['show_in_author_filter'] : $filter_parameter['author_preselect'];
             
-            $row = TP_Authors::get_authors( array( 'user' => $sql_parameter['user'],
-                                                   'author_id' => $author_id,
-                                                   'output_type' => ARRAY_A, 
-                                                   'group_by' => true ) );
-            $id = 'auth';
-            $index = 'author_id';
-            $title = __('All authors','teachpress');
+            $row = TP_Authors::get_authors( array( 'user'           => $sql_parameter['user'],
+                                                   'author_id'      => $author_id,
+                                                   'output_type'    => ARRAY_A, 
+                                                   'group_by'       => true ) );
+            $defaults['url_slug'] = 'auth';
+            $defaults['key'] = 'author';
+            $defaults['row_key'] = 'author_id';
+            $defaults['title'] = __('All authors','teachpress');
         }
         
         // user filter
-        if ( $mode === 'user' ) {
+        if ( $key === 'user' ) {
             $row = TP_Publications::get_pub_users( array('output_type' => ARRAY_A) );
-            $id = 'usr';
-            $index = 'user';
-            $title = __('All users','teachpress');
+            $defaults['url_slug'] = 'usr';
+            $defaults['key'] = 'user';
+            $defaults['row_key'] = 'user';
+            $defaults['title'] = __('All users','teachpress');
         }
         
         // tag filter
-        if ( $mode === 'tag' ) {
-            $row = TP_Tags::get_tags( array( 'output_type' => ARRAY_A, 
-                                             'group_by' => true, 
-                                             'order' => 'ASC', 
-                                             'exclude' => $sql_parameter['exclude_tags'] ) );
-            $id = 'tgid';
-            $index = 'tag_id';
-            $title = __('All tags','teachpress');
+        if ( $key === 'tag' ) {
+            $row = TP_Tags::get_tags( array( 'output_type'      => ARRAY_A, 
+                                             'group_by'         => true, 
+                                             'order'            => 'ASC', 
+                                             'exclude'          => $sql_parameter['exclude_tags'] ) );
+            $defaults['url_slug'] = 'thid';
+            $defaults['key'] = 'tag';
+            $defaults['row_key'] = 'tag_id';
+            $defaults['title'] = __('All tags','teachpress');
         }
 
         // Generate filter
         if ( $settings['use_jumpmenu'] === true ) {
-            return self::generate_filter_jumpmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode);
+            return self::generate_filter_jumpmenu($row, $defaults);
         }
-        return self::generate_filter_selectmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode);
+        return self::generate_filter_selectmenu($row, $defaults);
+    }
+    
+    /**
+     * Generates a filter for a custom select field
+     * @param array $settings
+     * @param array $filter_parameter
+     * @param int $tabindex
+     * @return type
+     * @since 8.2
+     */
+    public static function generate_custom_filter($settings, $filter_parameter, $tabindex) {
+        if ( $settings['custom_filter'] === '') {
+            return;
+        }
+        
+        $custom_filter = '';
+        $filters = explode(',', $settings['custom_filter']);
+        $filter_labels = explode(',', $settings['custom_filter_label']);
+        
+        //var_dump($settings['custom_filter_label']);
+        
+        $defaults = [
+            'key'               => '',
+            'title'             => '',
+            'url_slug'          => '',
+            'row_key'           => 'variable',
+            'filter_parameter'  => $filter_parameter,
+            'custom_filters'    => explode(',', $settings['custom_filter']),
+            'tabindex'          => $tabindex,
+            'author_name'       => $settings['author_name'],
+            'html_anchor'       => $settings['html_anchor'],
+            'filter_class'      => $settings['filter_class'],
+            'permalink'         => $settings['permalink']
+        ];
+        
+        for ( $i = 0; $i < count($filters); $i++ ) {
+            $row = get_tp_options($filters[$i], $order = "`variable` ASC", ARRAY_A);
+            $defaults['key'] = $filters[$i];
+            $defaults['title'] = $filter_labels[$i];
+            $defaults['url_slug'] = $filters[$i];
+            
+            if ( $settings['use_jumpmenu'] === true ) {
+                $custom_filter .= self::generate_filter_jumpmenu($row, $defaults); 
+            }
+            else {
+                $custom_filter .= self::generate_filter_selectmenu($row, $defaults); 
+            }
+            $tabindex++;
+        }
+        return $custom_filter;
     }
     
     /**
      * Generates and returns filter for the shortcodes (jumpmenus)
-     * @param array $row                The array of select options
-     * @param string $id                name/id of the form field
-     * @param string $index             year/type/author_id/user/tag_id
-     * @param string $title             The title for the default value
-     * @param array $filter_parameter   An array with the user input. The keys are: year, type, author, user
-     * @param array $settings           An array with SQL search parameter (user, type, exclude, exclude_tags, order)
-     * @param int tabindex              The tabindex fo the form field
-     * @param string $mode              year/type/author/user/tag
+     * @param array $rows               The array of select options
+     * @param array $args {
+     *      @type string key                name/id of the field
+     *      @type string title              The title for the default value
+     *      @type string url_slug           The name for the field used in the URL
+     *      @type string row_key            The used key in the rows array
+     *      @type array filter_parameter    An array with the user input. The keys are: year, type, author, user
+     *      @type array custom_filters      An array with optional custom filter keys
+     *      @type int tabindex              The tabindex fo the form field
+     *      @type string author_name        From $settings
+     *      @type string html_anchor        From $settings
+     *      @type string filter_class       From $settings
+     *      @type string permalink          From $settings
+     * }
      * @return string
      * @since 7.0.0
+     * @version 2
      */
-    private static function generate_filter_jumpmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode) {
-        $options = '';
+    private static function generate_filter_jumpmenu( $rows, $args = [] ) {
+        $defaults = [
+            'key'               => '',
+            'title'             => '',
+            'url_slug'          => '',
+            'row_key'           => '',
+            'filter_parameter'  => [],
+            'custom_filters'    => [],
+            'tabindex'          => '',
+            'author_name'       => '',
+            'html_anchor'       => '',
+            'filter_class'      => '',
+            'permalink'         => ''
+        ];
+        $atts = wp_parse_args($args, $defaults);
+        $html = '';
+        $base = self::generate_jumpmenu_url( $atts['filter_parameter'] , $atts['key'], $atts['custom_filters'] );
+        $filter_parameter = $atts['filter_parameter'];
+        $key = $atts ['key'];
         
         // generate option
-        foreach ( $row as $row ){
+        foreach ( $rows as $row ){
+            $value = $row[ $atts['row_key'] ];
             // Set the values for URL parameters
-            $current = ( $row[$index] == $filter_parameter[$mode] && $filter_parameter[$mode] != '0' ) ? 'selected="selected"' : '';
-            $tag = ( $mode === 'tag' ) ? $row['tag_id'] : $filter_parameter['tag'] ;
-            $year = ( $mode === 'year' ) ? $row['year'] : $filter_parameter['year'];
-            $type = ( $mode === 'type' ) ? $row['type'] : $filter_parameter['type'];
-            $user = ( $mode === 'user' ) ? $row['user'] : $filter_parameter['user'];
-            $author = ( $mode === 'author' ) ? $row['author_id'] : $filter_parameter['author'];
+            $current = ( $value == $filter_parameter[ $key ] && $filter_parameter[ $key ] != '0' ) ? 'selected="selected"' : '';
             
             // Set the label for each select option
-            if ( $mode === 'type' ) {
+            if ( $key === 'type' ) {
                 $text = tp_translate_pub_type($row['type'], 'pl');
             }
-            else if ( $mode === 'author' ) {
-                $text = TP_Bibtex::parse_author($row['name'], '', $settings['author_name']);
+            else if ( $key === 'author' ) {
+                $text = TP_Bibtex::parse_author($row['name'], '', $atts['author_name']);
             }
-            else if ( $mode === 'user' ) {
+            else if ( $key === 'user' ) {
                 $user_info = get_userdata( $row['user'] );
                 if ( $user_info === false ) {
                     continue;
                 }
                 $text = $user_info->display_name;
             }
-            else if ( $mode === 'tag' ) {
+            else if ( $key === 'tag' ) {
                 $text = $row['name'];
             }
             else {
-                $text = $row[$index];
+                $text = $value;
             }
             
             // Write the select option
-            $options .= '<option value = "tgid=' . $tag. '&amp;yr=' . $year . '&amp;type=' . $type . '&amp;usr=' . $user . '&amp;auth=' . $author . $settings['html_anchor'] . '" ' . $current . '>' . stripslashes(urldecode($text)) . '</option>';
+            $html .= '<option value = "' . $base . '&amp;' . $atts ['url_slug'] . '=' . urlencode($value) . $atts['html_anchor'] . '" ' . $current . '>' . stripslashes(urldecode($text)) . '</option>';
         }
-
-        // clear filter_parameter[$mode]
-        $filter_parameter[$mode] = '';
         
         // return filter menu
-        return '<select class="' . $settings['filter_class'] . '" name="' . $id . '" id="' . $id . '" tabindex="' . $tabindex . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this, ' . "'" . stripslashes(urldecode($settings['permalink'])) . "'" . ')">
-                   <option value="tgid=' . $filter_parameter['tag'] . '&amp;yr=' . $filter_parameter['year'] . '&amp;type=' . $filter_parameter['type'] . '&amp;usr=' . $filter_parameter['user'] . '&amp;auth=' . $filter_parameter['author'] . '' . $settings['html_anchor'] . '">' . $title . '</option>
-                   ' . $options . '
+        return '<select class="' . $atts['filter_class'] . '" name="' . $atts ['url_slug'] . '" id="' . $atts ['url_slug'] . '" tabindex="' . $atts['tabindex'] . '" onchange="teachpress_jumpMenu(' . "'" . 'parent' . "'" . ',this, ' . "'" . stripslashes(urldecode($atts['permalink'])) . "'" . ')">
+                   <option value="' . $base . '&amp;' . $atts ['url_slug'] . '=' . $atts['html_anchor'] . '">' . $atts['title'] . '</option>
+                   ' . $html . '
                 </select>';
+    }
+    
+    /**
+     * Generates the parameter part for jumpmenu URL
+     * @param array $filter_parameter   The filter_parameters array
+     * @param string $hide_key          The key you don't want to add to the URL here
+     * @param array $additional_keys    An array iwht the custom keys in the filter_parameters array
+     * @return string
+     * @since 8.2
+     */
+    private static function generate_jumpmenu_url($filter_parameter, $hide_key = '', $additional_keys = [] ) {
+        $basic_keys = ['tag', 'year', 'type', 'author', 'user'];
+        $url_vars = ['tag'      => 'tgid', 
+                     'year'     => 'yr', 
+                     'type'     => 'type', 
+                     'author'   => 'auth', 
+                     'user'     => 'usr' ];
+        $keys = array_merge($basic_keys, $additional_keys);
+        $params = '';
+        
+        foreach ( $keys as $key ) {
+            if ( $key === $hide_key ) {
+                continue;
+            }
+            $url_param = isset ( $url_vars[ $key ] ) ? $url_vars[ $key ] : $key;
+            $element = $url_param . '=' . $filter_parameter[ $key ];
+            $params .= ( $params === '' ) ? $element  : '&amp;' . $element;
+        }
+        return $params;
     }
     
     /**
@@ -308,50 +423,58 @@ class TP_Shortcodes {
      * @return string
      * @since 7.0.0
      */
-    private static function generate_filter_selectmenu($row, $id, $index, $title, $filter_parameter, $settings, $tabindex, $mode ) {
+    private static function generate_filter_selectmenu($row, $args = [] ) {
         $options = '';
+        $defaults = [
+            'key'               => '',
+            'title'             => '',
+            'url_slug'          => '',
+            'row_key'           => '',
+            'filter_parameter'  => [],
+            'custom_filters'    => [],
+            'tabindex'          => '',
+            'author_name'       => '',
+            'html_anchor'       => '',
+            'filter_class'      => '',
+            'permalink'         => ''
+        ];
+        $atts = wp_parse_args($args, $defaults);
+        $filter_parameter = $atts['filter_parameter'];
+        $key = $atts ['key'];
         
         // generate option
         foreach ( $row as $row ){
-            $current = ( $row[$index] == $filter_parameter[$mode] && $filter_parameter[$mode] != '0' ) ? 'selected="selected"' : '';
-            $value = '';
+            $value = $row[ $atts['row_key'] ];
+            $current = ( $value == $filter_parameter[$key] && $filter_parameter[$key] != '0' ) ? 'selected="selected"' : '';
             
             // Set the label for each select option
-            if ( $mode === 'type' ) {
+            if ( $key === 'type' ) {
                 $text = tp_translate_pub_type($row['type'], 'pl');
-                $value = $row['type'];
             }
-            else if ( $mode === 'author' ) {
-                $text = TP_Bibtex::parse_author($row['name'], '', $settings['author_name']);
-                $value = $row['author_id'];
+            else if ( $key === 'author' ) {
+                $text = TP_Bibtex::parse_author($row['name'], '', $atts['author_name']);
             }
-            else if ( $mode === 'user' ) {
+            else if ( $key === 'user' ) {
                 $user_info = get_userdata( $row['user'] );
                 if ( $user_info === false ) {
                     continue;
                 }
                 $text = $user_info->display_name;
-                $value = $row['user'];
             }
-            else if ( $mode === 'tag' ) {
+            else if ( $key === 'tag' ) {
                 $text = $row['name'];
-                $value = $row['tag_id'];
             }
             else {
-                $text = $row[$index];
-                $value = $row[$index];
+                $text = $value;
             }
             
             // Write the select option
             $options .= '<option value="' . $value. '" ' . $current . '>' . stripslashes($text) . '</option>';
         }
-
-        // clear filter_parameter[$mode]
-        $filter_parameter[$mode] = '';
         
         // return filter menu
-        return '<select class="' . $settings['filter_class'] . '" name="' . $id . '" id="' . $id . '" tabindex="' . $tabindex . '">
-                   <option value="">' . $title . '</option>
+        return '<select class="' . $atts['filter_class'] . '" title="' . $atts['title'] . '" name="' . $atts ['url_slug'] . '" id="' . $atts ['url_slug'] . '" tabindex="' . $atts['tabindex'] . '">
+                   <option value="">' . $atts['title'] . '</option>
                    ' . $options . '
                 </select>';
     }
@@ -428,20 +551,19 @@ class TP_Shortcodes {
     /**
      * Returns a tag cloud
      * @param int $user                 The user ID
-     * @param array $cloud_settings     An associative array with settings for the cloud (tag_limit, maxsize, minsize)
      * @param array $filter_parameter   An associative array with filter parameter (user input). The keys are: year, type, author, user
      * @param array $sql_parameter      An assosciative array with SQL search parameter (user, type)
-     * @param array $settings           An assosciative array with settings (permalink, html_anchor)
+     * @param array $settings           An assosciative array with settings (permalink, html_anchor, tag_limit, maxsize, minsize)
      * @return string
      * @since 5.0.0
      * @access public
      */
-    public static function generate_tag_cloud ($user, $cloud_settings, $filter_parameter, $sql_parameter, $settings){
+    public static function generate_tag_cloud ($user, $filter_parameter, $sql_parameter, $settings){
         $temp = TP_Tags::get_tag_cloud( array(
                                         'user'          => $user, 
                                         'type'          => $sql_parameter['type'],
-                                        'exclude'       => $cloud_settings['hide_tags'],
-                                        'number_tags'   => $cloud_settings['tag_limit'],
+                                        'exclude'       => $settings['hide_tags'],
+                                        'number_tags'   => $settings['tag_limit'],
                                         'output_type'   => ARRAY_A ) );
        $min = $temp["info"]->min;
        $max = $temp["info"]->max;
@@ -462,10 +584,10 @@ class TP_Shortcodes {
 
           // calculate the font size
           // max. font size * (current occorence - min occurence) / (max occurence - min occurence)
-          $size = floor(( $cloud_settings['maxsize'] *( $tagcloud['tagPeak'] - $min ) / $divisor ));
+          $size = floor(( $settings['maxsize'] *( $tagcloud['tagPeak'] - $min ) / $divisor ));
           // level out the font size
-          if ( $size < $cloud_settings['minsize'] ) {
-             $size = $cloud_settings['minsize'] ;
+          if ( $size < $settings['minsize'] ) {
+             $size = $settings['minsize'] ;
           }
 
           // for current tags
@@ -484,6 +606,37 @@ class TP_Shortcodes {
           $tags .= '<span style="font-size:' . $size . 'px;"><a rel="nofollow" href="' . $link_url . '" title="' . $link_title . '" class="' . $link_class . '">' . stripslashes($tagcloud['name']) . '</a></span> ';
        }
        return $tags;
+    }
+    
+    /**
+     * Generates a "show all" link for clearing all filters
+     * @param array $atts
+     * @param array $filter_parameter
+     * @param array $settings
+     * @return string
+     */
+    public static function generate_show_all_link ($atts, $filter_parameter, $settings) {
+        $custom_clean = '';
+        if ( $settings['custom_filter'] !== '' ) {
+            $f = explode(',', $settings['custom_filter']);
+            foreach ( $f as $f ) {
+                if ( $filter_parameter[$f] != '' ) {
+                    $custom_clean = 'b';
+                }
+            }
+        }
+        if ( ( $filter_parameter['year'] == '' || $filter_parameter['year'] == $atts['year'] ) && 
+             ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $atts['type'] ) && 
+             ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && 
+             ( $filter_parameter['author'] == '' || $filter_parameter['author'] == $atts['author'] ) && 
+             ( $filter_parameter['tag'] == '' || $filter_parameter['tag'] == $atts['tag'] ) && 
+               $filter_parameter['search'] == '' && $custom_clean == ''
+            ) {
+            return '';
+        }
+
+        return '<a rel="nofollow" href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . __('Show all','teachpress') . '">' . __('Show all','teachpress') . '</a>';
+        
     }
     
     /**
@@ -994,7 +1147,7 @@ function tp_ref_shortcode($atts) {
 }
 
 /** 
- * Shorcode for a single publication
+ * Shortcode for a single publication
  * 
  * @param array $atts {
  *      @type int id                    id of a publication
@@ -1225,7 +1378,7 @@ function tp_links_shortcode ($atts) {
  * @return string
  * @since 7.0.0
  */
-function tp_publist_shortcode ($atts) {
+function tp_publist_shortcode ($args) {
     $atts = shortcode_atts(array(
         'user'                  => '',
         'tag'                   => '',
@@ -1269,11 +1422,13 @@ function tp_publist_shortcode ($atts) {
         'show_bibtex'           => 1,
         'container_suffix'      => '',
         'filter_class'          => 'default',
+        'custom_filter'         => '',
+        'custom_filter_label'   => '',
         'show_altmetric_donut'  => 0,
         'show_altmetric_entry'  => 0,
         'use_jumpmenu'          => 1,
         'use_as_filter'         => 1
-    ), $atts);
+    ), $args);
     
     $settings = array(
         'author_name'           => htmlspecialchars($atts['author_name']),
@@ -1301,19 +1456,17 @@ function tp_publist_shortcode ($atts) {
         'show_search_filter'    => ( $atts['show_search_filter'] == '1' ) ? true : false,
         'show_bibtex'           => ( $atts['show_bibtex'] == '1' ) ? true : false,
         'show_tags_as'          => htmlspecialchars($atts['show_tags_as']),
-        'container_suffix'      => htmlspecialchars($atts['container_suffix']),
-        'filter_class'          => htmlspecialchars($atts['filter_class']),
-        'show_altmetric_entry'  => ($atts['show_altmetric_entry'] == '1') ? true : false,
-        'show_altmetric_donut'  => ($atts['show_altmetric_donut'] == '1') ? true : false,
-        'use_jumpmenu'          => ( $atts['use_jumpmenu'] == '1' ) ? true : false
-    );
-
-    // Settings for the tag cloud
-    $cloud_settings = array (
         'tag_limit'             => intval($atts['tag_limit']),
         'hide_tags'             => htmlspecialchars($atts['hide_tags']),
         'maxsize'               => intval($atts['maxsize']),
-        'minsize'               => intval($atts['minsize'])
+        'minsize'               => intval($atts['minsize']),
+        'container_suffix'      => htmlspecialchars($atts['container_suffix']),
+        'filter_class'          => htmlspecialchars($atts['filter_class']),
+        'custom_filter'         => htmlspecialchars($atts['custom_filter']),
+        'custom_filter_label'   => htmlspecialchars($atts['custom_filter_label']),
+        'show_altmetric_entry'  => ($atts['show_altmetric_entry'] == '1') ? true : false,
+        'show_altmetric_donut'  => ($atts['show_altmetric_donut'] == '1') ? true : false,
+        'use_jumpmenu'          => ( $atts['use_jumpmenu'] == '1' ) ? true : false
     );
     
     // Settings for and from form fields
@@ -1349,6 +1502,17 @@ function tp_publist_shortcode ($atts) {
         'exclude_types' => htmlspecialchars($atts['exclude_types']),
         'order'         => htmlspecialchars($atts['order']),
     );
+    
+    // Add values for custom filters
+    $meta_key_search = [];
+    if ( $settings['custom_filter'] !== '' ) {
+        $custom_fields = explode(',', $settings['custom_filter']);
+        foreach ( $custom_fields as $field ) {
+            $filter_parameter[ $field ] = isset ($_GET[$field]) ? htmlspecialchars( $_GET[$field] ) : '';
+            $sql_parameter[ $field ] = isset ($_GET[$field]) ? htmlspecialchars( $_GET[$field] ) : '';
+            $meta_key_search[$field] = isset ($_GET[$field]) ? htmlspecialchars( $_GET[$field] ) : '';
+        }
+    }
    
     // Handle limits for pagination   
     $form_limit = ( isset($_GET['limit']) ) ? intval($_GET['limit']) : '';
@@ -1364,7 +1528,7 @@ function tp_publist_shortcode ($atts) {
     /*************/
     $tag_cloud = '';
     if ( $settings['show_tags_as'] === 'cloud' ) {
-        $tag_cloud = TP_Shortcodes::generate_tag_cloud($atts['user'], $cloud_settings, $filter_parameter, $sql_parameter, $settings);
+        $tag_cloud = TP_Shortcodes::generate_tag_cloud($atts['user'], $filter_parameter, $sql_parameter, $settings);
     }
     
     /**********/ 
@@ -1375,52 +1539,47 @@ function tp_publist_shortcode ($atts) {
     // Filter year
     if ( ( $atts['year'] == '' || strpos($atts['year'], ',') !== false ) && 
             $settings['show_year_filter'] === true ) {
-        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 2,'year');
+        $filter .= TP_Shortcodes::generate_filter('year', $filter_parameter, $sql_parameter, $settings, 2);
     }
 
     // Filter type
     if ( ( $atts['type'] == '' || strpos($atts['type'], ',') !== false ) && 
             $settings['show_type_filter'] === true ) {
-        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 3, 'type');
+        $filter .= TP_Shortcodes::generate_filter('type', $filter_parameter, $sql_parameter, $settings, 3);
     }
     
     // Filter tag
     if ( $settings['show_tags_as'] === 'pulldown' ) {
-        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 4,'tag');
+        $filter .= TP_Shortcodes::generate_filter('tag', $filter_parameter, $sql_parameter, $settings, 4);
     }
 
     // Filter author
     if ( ( $atts['author'] == '' || strpos($atts['author'], ',') !== false ) && 
             $settings['show_author_filter'] === true ) {
-        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 5,'author');
+        $filter .= TP_Shortcodes::generate_filter('author', $filter_parameter, $sql_parameter, $settings, 5);
     }
     
     // Filter user
     if ( ( $atts['user'] == '' || strpos($atts['user'], ',') !== false ) &&
             $settings['show_user_filter'] === true ) {
-        $filter .= TP_Shortcodes::generate_filter($filter_parameter, $sql_parameter, $settings, 6,'user');
+        $filter .= TP_Shortcodes::generate_filter('user', $filter_parameter, $sql_parameter, $settings, 6);
+    }
+    
+    // Custom filters
+    if ( $settings['custom_filter'] !== '' ) {
+        $custom_filter = TP_Shortcodes::generate_custom_filter($settings, $filter_parameter, 7);
+        $filter .= $custom_filter;
     }
 
     // Show all link
-    if ( ( $filter_parameter['year'] == '' || $filter_parameter['year'] == $atts['year'] ) && 
-         ( $filter_parameter['type'] == '' || $filter_parameter['type'] == $atts['type'] ) && 
-         ( $filter_parameter['user'] == '' || $filter_parameter['user'] == $atts['user'] ) && 
-         ( $filter_parameter['author'] == '' || $filter_parameter['author'] == $atts['author'] ) && 
-         ( $filter_parameter['tag'] == '' || $filter_parameter['tag'] == $atts['tag'] ) && 
-           $filter_parameter['search'] == '' 
-        ) {
-        $showall = '';
-    }
-    else {
-        $showall = '<a rel="nofollow" href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . __('Show all','teachpress') . '">' . __('Show all','teachpress') . '</a>';
-    }
+    $showall = TP_Shortcodes::generate_show_all_link($atts, $filter_parameter, $settings);
     
     /****************/
     /* Search Field */
     /****************/
     
     $searchbox = '';
-    $search_button = '<div class="teachpress_search_button"><input name="tps_button" class="tp_search_button" type="submit" tabindex="7" value="' . __('Search', 'teachpress') . '"/></div>';
+    $search_button = '<div class="teachpress_search_button"><input name="tps_button" class="tp_search_button" type="submit" tabindex="10" value="' . __('Search', 'teachpress') . '"/></div>';
     
     if ( $settings['show_search_filter'] === true ) {
         if ( !get_option('permalink_structure') ) {
@@ -1502,6 +1661,7 @@ function tp_publist_shortcode ($atts) {
         'include'                   => $atts['include'], 
         'include_editor_as_author'  => ($atts['include_editor_as_author'] == 1) ? true : false,
         'limit'                     => $pagination_limits['limit'],
+        'meta_key_search'           => $meta_key_search,
         'output_type'               => ARRAY_A);
 
     $all_tags = TP_Tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
@@ -1655,7 +1815,9 @@ function tp_cloud_shortcode($atts) {
         'show_altmetric_entry'      => 0,
         'use_jumpmenu'              => 1,
         'use_as_filter'             => 1,
-        'filter_class'              => 'default'
+        'filter_class'              => 'default',
+        'custom_filter'             => '',
+        'custom_filter_label'       => '',
     ), $atts);
    
     return tp_publist_shortcode($atts);
@@ -1770,7 +1932,9 @@ function tp_search_shortcode ($atts) {
        'show_altmetric_entry'       => 0,
        'use_jumpmenu'               => 0,
        'use_as_filter'              => 1,
-       'filter_class'               => 'block'
+       'filter_class'               => 'block',
+       'custom_filter'              => '',
+       'custom_filter_label'        => '',
     ), $atts); 
     
     return tp_publist_shortcode($atts);
