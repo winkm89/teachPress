@@ -60,6 +60,7 @@ input.tp_search_button:hover {background:#ECECEC; color:#333333;}
 a.tp_search_reset {background:transparent; cursor:pointer; border:none; font-weight: bold; padding:3px 6px; text-decoration: none; font-size:13px; color:#000;}
 a.tp_search_reset:hover {color:red;}
 #tp_search_input_field {width: 60%;}
+.teachpress_search_button {display:inline-block;}
 
 /* active tags */
 .teachpress_cloud a.teachpress_cloud_active {color:#008bd2; font-weight:bold;}

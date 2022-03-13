@@ -1367,22 +1367,6 @@ function tp_publist_shortcode ($atts) {
         $tag_cloud = TP_Shortcodes::generate_tag_cloud($atts['user'], $cloud_settings, $filter_parameter, $sql_parameter, $settings);
     }
     
-    /****************/
-    /* Search Field */
-    /****************/
-    
-    $searchbox = '';
-    
-    if ( $settings['show_search_filter'] === true ) {
-        if ( !get_option('permalink_structure') ) {
-            $searchbox .= '<input type="hidden" name="p" id="page_id" value="' . get_the_id() . '"/>';
-        }
-
-        $searchbox .= '<input name="tsr" id="tp_search_input_field" type="search" placeholder="' . __('Enter search word','teachpress') .'" value="' . stripslashes($filter_parameter['search']) . '" tabindex="1"/>';
-        $searchbox .= '<input name="tps_button" class="tp_search_button" type="submit" tabindex="7" value="' . __('Search', 'teachpress') . '"/>';
-
-    }
-    
     /**********/ 
     /* Filter */
     /**********/
@@ -1429,6 +1413,25 @@ function tp_publist_shortcode ($atts) {
     }
     else {
         $showall = '<a rel="nofollow" href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . __('Show all','teachpress') . '">' . __('Show all','teachpress') . '</a>';
+    }
+    
+    /****************/
+    /* Search Field */
+    /****************/
+    
+    $searchbox = '';
+    $search_button = '<div class="teachpress_search_button"><input name="tps_button" class="tp_search_button" type="submit" tabindex="7" value="' . __('Search', 'teachpress') . '"/></div>';
+    
+    if ( $settings['show_search_filter'] === true ) {
+        if ( !get_option('permalink_structure') ) {
+            $searchbox .= '<input type="hidden" name="p" id="page_id" value="' . get_the_id() . '"/>';
+        }
+
+        $searchbox .= '<input name="tsr" id="tp_search_input_field" type="search" placeholder="' . __('Enter search word','teachpress') .'" value="' . stripslashes($filter_parameter['search']) . '" tabindex="1"/>';
+        
+        $searchbox .= ( $filter === '' ) ? $search_button  : '';
+        $filter .= ( $filter !== '' ) ? $search_button : '';
+
     }
     
     /***********************/ 
