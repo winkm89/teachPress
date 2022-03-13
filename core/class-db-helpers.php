@@ -51,7 +51,7 @@ class TP_DB_Helpers {
         
         $array = explode(",", $input);
         foreach ( $array as $element ) {
-            $element = esc_sql( htmlspecialchars( trim($element) ) );
+            $element = esc_sql( trim($element) );
             if ( $element === '' ) {
                 continue;
             }
