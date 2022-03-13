@@ -41,7 +41,7 @@ function tp_add_publication_page() {
     $fields = get_tp_options('teachpress_pub','`setting_id` ASC', ARRAY_A);
 
     // form variables from add_publication.php
-    $data = get_tp_var_types('publication_array');
+    $data = tp_get_default_structure();
     $data['title'] = isset( $_POST['tp_post_title'] ) ? htmlspecialchars($_POST['tp_post_title']) : '';
     $data['type'] = isset( $_POST['type'] ) ? htmlspecialchars($_POST['type']) : '';
     $data['bibtex'] = isset( $_POST['bibtex'] ) ? htmlspecialchars($_POST['bibtex']) : '';
@@ -105,8 +105,6 @@ function tp_add_publication_page() {
         echo '<h2>' . __('Edit publication','teachpress') . ' <a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Create','teachpress') . '</a></h2>';
     }
     
-    
-    
     echo '<form name="form1" method="post" action="' . esc_url($_SERVER['REQUEST_URI']) . '" id="form1">';
    
     // create related content (post/page/...)
@@ -136,7 +134,7 @@ function tp_add_publication_page() {
         $pub_meta = TP_Publications::get_pub_meta($pub_id);
     }
     else {
-        $pub_data = get_tp_var_types('publication_array');
+        $pub_data = tp_get_default_structure();
         $pub_meta = array ( array('meta_key' => '', 'meta_value' => '') );
     }
 

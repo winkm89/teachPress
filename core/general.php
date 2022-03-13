@@ -178,78 +178,55 @@ function sort_tp_publication_type_options ($a, $b) {
 }
 
 /**
- * Get the array structure for a parameter
- * @param string $type  --> values: course_array, publication_array
+ * Returns the default structure for a publication array
  * @return array 
+ * @since 9.0.0
  */
-function get_tp_var_types($type) {
-    if ( $type == 'course_array' ) {
-        $ret = array( 
-            'course_id'         => '',
-            'name'              => '',
-            'type'              => '',
-            'room'              => '',
-            'lecturer'          => '',
-            'date'              => '',
-            'places'            => '',
-            'start'             => '',
-            'end'               => '',
-            'semester'          => '',
-            'comment'           => '',
-            'rel_page'          => '',
-            'parent'            => '',
-            'visible'           => '',
-            'waitinglist'       => '',
-            'image_url'         => '',
-            'strict_signup'     => '',
-            'use_capabilities'   => '');
-    }
-    if ( $type == 'publication_array' ) {
-        $ret = array( 
-            'pub_id'            => '',
-            'title'             => '',
-            'type'              => '',
-            'bibtex'            => '',
-            'author'            => '',
-            'editor'            => '',
-            'isbn'              => '',
-            'url'               => '',
-            'date'              => '',
-            'urldate'           => '',
-            'booktitle'         => '',
-            'issuetitle'        => '',
-            'journal'           => '',
-            'issue'             => '',
-            'volume'            => '',
-            'number'            => '',
-            'pages'             => '',
-            'publisher'         => '',
-            'address'           => '',
-            'edition'           => '',
-            'chapter'           => '',
-            'institution'       => '',
-            'organization'      => '',
-            'school'            => '',
-            'series'            => '',
-            'crossref'          => '',
-            'abstract'          => '',
-            'howpublished'      => '',
-            'key'               => '',
-            'techtype'          => '',
-            'comment'           => '',
-            'note'              => '',
-            'image_url'         => '',
-            'image_target'      => '',
-            'image_ext'         => '',
-            'doi'               => '',
-            'is_isbn'           => '',
-            'rel_page'          => '',
-            'status'            => '',
-            'added'             => '',
-            'modified'          => '',
-            'use_capabilities'  => '',
-            'import_id'         => 0);
-    }
+function tp_get_default_structure() {
+    $ret = array( 
+        'pub_id'            => '',
+        'title'             => '',
+        'type'              => '',
+        'bibtex'            => '',
+        'author'            => '',
+        'editor'            => '',
+        'isbn'              => '',
+        'url'               => '',
+        'date'              => '',
+        'urldate'           => '',
+        'booktitle'         => '',
+        'issuetitle'        => '',
+        'journal'           => '',
+        'issue'             => '',
+        'volume'            => '',
+        'number'            => '',
+        'pages'             => '',
+        'publisher'         => '',
+        'address'           => '',
+        'edition'           => '',
+        'chapter'           => '',
+        'institution'       => '',
+        'organization'      => '',
+        'school'            => '',
+        'series'            => '',
+        'crossref'          => '',
+        'abstract'          => '',
+        'howpublished'      => '',
+        'key'               => '',
+        'techtype'          => '',
+        'comment'           => '',
+        'note'              => '',
+        'image_url'         => '',
+        'image_target'      => '',
+        'image_ext'         => '',
+        'doi'               => '',
+        'is_isbn'           => '',
+        'rel_page'          => '',
+        'status'            => '',
+        'added'             => '',
+        'modified'          => '',
+        'use_capabilities'  => '',
+        'import_id'         => 0);
     return $ret;
 }
 
@@ -442,8 +419,8 @@ function tp_write_data_for_tinymce () {
         var teachpress_editor_url = '<?php echo admin_url( 'admin-ajax.php' ) . '?action=teachpressdocman&post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
         var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
-        var teachpress_course_module = <?php if (TEACHPRESS_COURSE_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
-        var teachpress_publication_module = <?php if (TEACHPRESS_PUBLICATION_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
+        var teachpress_course_module = true;
+        var teachpress_publication_module = true;
     </script>
     <?php
 }

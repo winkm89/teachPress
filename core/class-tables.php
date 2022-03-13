@@ -32,17 +32,6 @@ class TP_Tables {
         // Settings
         self::add_table_settings($charset_collate);
         
-        // Courses
-        self::add_table_courses($charset_collate);
-        self::add_table_course_meta($charset_collate);
-        self::add_table_course_capabilities($charset_collate);
-        self::add_table_course_documents($charset_collate);
-        self::add_table_stud($charset_collate);
-        self::add_table_stud_meta($charset_collate);
-        self::add_table_signup($charset_collate);
-        self::add_table_artefacts($charset_collate);
-        self::add_table_assessments($charset_collate);
-        
         // Publications
         self::add_table_pub($charset_collate);
         self::add_table_pub_meta($charset_collate);
@@ -68,13 +57,8 @@ class TP_Tables {
     public static function remove() {
         global $wpdb;
         $wpdb->query("SET FOREIGN_KEY_CHECKS=0");
-        $wpdb->query("DROP TABLE `" . TEACHPRESS_ARTEFACTS . "`, 
-                                `" . TEACHPRESS_ASSESSMENTS . "`, 
+        $wpdb->query("DROP TABLE  
                                 `" . TEACHPRESS_AUTHORS . "`, 
-                                `" . TEACHPRESS_COURSES . "`, 
-                                `" . TEACHPRESS_COURSE_CAPABILITIES . "`, 
-                                `" . TEACHPRESS_COURSE_DOCUMENTS . "`, 
-                                `" . TEACHPRESS_COURSE_META . "`, 
                                 `" . TEACHPRESS_PUB . "`, 
                                 `" . TEACHPRESS_PUB_CAPABILITIES . "`, 
                                 `" . TEACHPRESS_PUB_DOCUMENTS . "`, 
@@ -83,9 +67,6 @@ class TP_Tables {
                                 `" . TEACHPRESS_RELATION ."`,
                                 `" . TEACHPRESS_REL_PUB_AUTH . "`, 
                                 `" . TEACHPRESS_SETTINGS ."`, 
-                                `" . TEACHPRESS_SIGNUP ."`, 
-                                `" . TEACHPRESS_STUD . "`, 
-                                `" . TEACHPRESS_STUD_META . "`, 
                                 `" . TEACHPRESS_TAGS . "`, 
                                 `" . TEACHPRESS_USER . "`");
         $wpdb->query("SET FOREIGN_KEY_CHECKS=1");
@@ -114,287 +95,6 @@ class TP_Tables {
         if ( $db_info['Engine'] != 'InnoDB' ) {
             $wpdb->query("ALTER TABLE " . $table . " ENGINE = INNODB");
         }
-    }
-
-    /**
-     * Create table teachpress_courses
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_courses($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_COURSES . "'") == TEACHPRESS_COURSES ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        
-        dbDelta("CREATE TABLE " . TEACHPRESS_COURSES . " (
-                    `course_id` INT UNSIGNED AUTO_INCREMENT,
-                    `name` VARCHAR(100),
-                    `type` VARCHAR (100),
-                    `room` VARCHAR(100),
-                    `lecturer` VARCHAR (100),
-                    `date` VARCHAR(60),
-                    `places` INT(4),
-                    `start` DATETIME,
-                    `end` DATETIME,
-                    `semester` VARCHAR(100),
-                    `comment` VARCHAR(500),
-                    `rel_page` INT,
-                    `parent` INT,
-                    `visible` INT(1),
-                    `waitinglist` INT(1),
-                    `image_url` VARCHAR(400),
-                    `strict_signup` INT(1),
-                    `use_capabilities` INT(1),
-                    PRIMARY KEY (`course_id`),
-                    KEY `semester` (`semester`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_COURSES);
-    }
-    
-    /**
-     * Create table course_capabilities
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_course_capabilities($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_COURSE_CAPABILITIES . "'") == TEACHPRESS_COURSE_CAPABILITIES ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        
-        dbDelta("CREATE TABLE " . TEACHPRESS_COURSE_CAPABILITIES . " (
-                    `cap_id` INT UNSIGNED AUTO_INCREMENT,
-                    `wp_id` INT UNSIGNED,
-                    `course_id` INT UNSIGNED,
-                    `capability` VARCHAR(100),
-                    PRIMARY KEY (`cap_id`),
-                    KEY `ind_course_id` (`course_id`),
-                    KEY `ind_wp_id` (`wp_id`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_COURSE_CAPABILITIES);
-    }
-    
-    /**
-     * Create table course_documents
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_course_documents($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_COURSE_DOCUMENTS . "'") == TEACHPRESS_COURSE_DOCUMENTS ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        
-        dbDelta("CREATE TABLE " . TEACHPRESS_COURSE_DOCUMENTS . " (
-                    `doc_id` INT UNSIGNED AUTO_INCREMENT,
-                    `name` VARCHAR(500),
-                    `path` VARCHAR(500),
-                    `added` DATETIME,
-                    `size` BIGINT,
-                    `sort` INT,
-                    `course_id` INT UNSIGNED,
-                    PRIMARY KEY (doc_id),
-                    KEY `ind_course_id` (`course_id`)
-                ) $charset_collate;");
-         
-        // test engine
-        self::change_engine(TEACHPRESS_COURSE_DOCUMENTS);
-    }
-    
-    /**
-     * Create table teachpress_course_meta
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_course_meta($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_COURSE_META . "'") == TEACHPRESS_COURSE_META ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    
-        dbDelta("CREATE TABLE " . TEACHPRESS_COURSE_META . " (
-                    `meta_id` INT UNSIGNED AUTO_INCREMENT,
-                    `course_id` INT UNSIGNED,
-                    `meta_key` VARCHAR(255),
-                    `meta_value` TEXT,
-                    PRIMARY KEY (meta_id),
-                    KEY `ind_course_id` (`course_id`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_COURSE_META);
-    }
-    
-    /**
-     * Create table teachpress_stud
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_stud($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_STUD . "'") == TEACHPRESS_STUD ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    
-        dbDelta("CREATE TABLE " . TEACHPRESS_STUD . " (
-                    `wp_id` INT UNSIGNED,
-                    `firstname` VARCHAR(100) ,
-                    `lastname` VARCHAR(100),
-                    `userlogin` VARCHAR (100),
-                    `email` VARCHAR(50),
-                    PRIMARY KEY (wp_id),
-                    KEY `ind_userlogin` (`userlogin`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_STUD);
-    }
-    
-    /**
-     * Create table teachpress_stud_meta
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_stud_meta($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_STUD_META . "'") == TEACHPRESS_STUD_META ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    
-        dbDelta("CREATE TABLE " . TEACHPRESS_STUD_META . " (
-                    `meta_id` INT UNSIGNED AUTO_INCREMENT,
-                    `wp_id` INT UNSIGNED,
-                    `meta_key` VARCHAR(255),
-                    `meta_value` TEXT,
-                    PRIMARY KEY (meta_id),
-                    KEY `ind_wp_id` (`wp_id`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_STUD_META);
-    }
-    
-    /**
-     * Create table teachpress_signup
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_signup($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_SIGNUP ."'") == TEACHPRESS_SIGNUP ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    
-        dbDelta("CREATE TABLE " . TEACHPRESS_SIGNUP ." (
-                    `con_id` INT UNSIGNED AUTO_INCREMENT,
-                    `course_id` INT UNSIGNED,
-                    `wp_id` INT UNSIGNED,
-                    `waitinglist` INT(1) UNSIGNED,
-                    `date` DATETIME,
-                    PRIMARY KEY (con_id),
-                    KEY `ind_course_id` (`course_id`),
-                    KEY `ind_wp_id` (`wp_id`),
-                    KEY `ind_date` (`date`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_SIGNUP);
-    }
-    
-    /**
-     * Create table teachpress_artefacts
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    
-
-
-    
-    public static function add_table_artefacts($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_ARTEFACTS . "'") == TEACHPRESS_ARTEFACTS ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    
-        dbDelta("CREATE TABLE " . TEACHPRESS_ARTEFACTS . " (
-                    `artefact_id` INT UNSIGNED AUTO_INCREMENT,
-                    `parent_id` INT UNSIGNED,
-                    `course_id` INT UNSIGNED,
-                    `title` VARCHAR(500),
-                    `scale` TEXT,
-                    `passed` INT(1),
-                    `max_value` VARCHAR(50),
-                    PRIMARY KEY (artefact_id),
-                    KEY `ind_course_id` (`course_id`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_ARTEFACTS);
-    }
-    
-    /**
-     * Create table teachpress_assessments
-     * @param string $charset_collate
-     * @since 5.0.0
-     */
-    public static function add_table_assessments($charset_collate) {
-        global $wpdb;
-        
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_ASSESSMENTS . "'") == TEACHPRESS_ASSESSMENTS ) {
-            return;
-        }
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    
-        dbDelta("CREATE TABLE " . TEACHPRESS_ASSESSMENTS . " (
-                    `assessment_id` INT UNSIGNED AUTO_INCREMENT,
-                    `artefact_id` INT UNSIGNED,
-                    `course_id` INT UNSIGNED,
-                    `wp_id` INT UNSIGNED,
-                    `value` VARCHAR(50),
-                    `max_value` VARCHAR(50),
-                    `type` VARCHAR(50),
-                    `examiner_id` INT,
-                    `exam_date` DATETIME,
-                    `comment` TEXT,
-                    `passed` INT(1),
-                    PRIMARY KEY (assessment_id),
-                    KEY `ind_course_id` (`course_id`),
-                    KEY `ind_artefact_id` (`artefact_id`),
-                    KEY `ind_wp_id` (`wp_id`)
-                ) $charset_collate;");
-        
-        // test engine
-        self::change_engine(TEACHPRESS_ASSESSMENTS);
     }
     
     /**
@@ -435,36 +135,14 @@ class TP_Tables {
         $value = '[tpsingle [key]]<!--more-->' . "\n\n[tpabstract]\n\n[tplinks]\n\n[tpbibtex]";
         $version = get_tp_version();
         
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('sem', 'Example term', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('db-version', '$version', 'system')");
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('sign_out', '0', 'system')");
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('login', 'std', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('stylesheet', '1', 'system')");
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('rel_page_courses', 'page', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('rel_page_publications', 'page', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('rel_content_auto', '0', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('rel_content_template', '$value', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('rel_content_category', '', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('import_overwrite', '1', 'system')");
         $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('convert_bibtex', '0', 'system')");
-        // Example values
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('Example term', 'Example term', 'semester')");
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('Example', 'Example', 'course_of_studies')");	
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . "(`variable`, `value`, `category`) VALUES ('Lecture', 'Lecture', 'course_type')");
-        
-        // Register example meta data fields
-        // course_of_studies
-        $value = 'name = {course_of_studies}, title = {' . __('Course of studies','teachpress') . '}, type = {SELECT}, required = {false}, min = {false}, max = {false}, step = {false}, visibility = {admin}';
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('course_of_studies', '$value', 'teachpress_stud')"); 
-        // birthday
-        $value = 'name = {birthday}, title = {' . __('Birthday','teachpress') . '}, type = {DATE}, required = {false}, min = {false}, max = {false}, step = {false}, visibility = {normal}';
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('birthday', '$value', 'teachpress_stud')"); 
-        // semester_number
-        $value = 'name = {semester_number}, title = {' . __('Semester number','teachpress') . '}, type = {INT}, required = {false}, min = {1}, max = {99}, step = {1}, visibility = {normal}';
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('semester_number', '$value', 'teachpress_stud')"); 
-        // matriculation_number
-        $value = 'name = {matriculation_number}, title = {' . __('Matriculation number','teachpress') . '}, type = {INT}, required = {false}, min = {1}, max = {1000000}, step = {1}, visibility = {admin}';
-        $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('matriculation_number', '$value', 'teachpress_stud')"); 
        
     }
     
@@ -793,9 +471,6 @@ class TP_Tables {
         $role = $wp_roles->get_role('administrator');
         if ( !$role->has_cap('use_teachpress') ) {
             $wp_roles->add_cap('administrator', 'use_teachpress');
-        }
-        if ( !$role->has_cap('use_teachpress_courses') ) {
-            $wp_roles->add_cap('administrator', 'use_teachpress_courses');
         }
     }
     

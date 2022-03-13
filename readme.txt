@@ -1,28 +1,26 @@
 === teachPress ===
 Contributors: Michael Winkler
-Tags: publications, enrollments, education, courses, BibTeX, bibliography
+Tags: publications, bibliography, BibTeX
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 8.1.5
+Stable tag: 9.0.0
 
-Manage your courses and publications with teachPress 
+Manage your publications with teachPress 
 
 == Description ==
-This plugin unites a course management system (with modules for enrollments, documents and assessments) and a powerful BibTeX compatible publication management. Both modules can be operated independently. teachPress is optimized for the needs of professorships and research groups. You can use it with WordPress 3.9.0 or higher.
+This plugin is a powerful BibTeX compatible multi user publication management for WordPress. teachPress adds an own separate database to your WordPress installation which gives you the opportunity to handle hundreds of publications from different users. You can use it with WordPress 3.9.0 or higher.
 
 = Features: =
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
 * Direct data import from NCBI PubMed 
-* RSS feed for publications
-* Course management with integrated modules for enrollments, assessments and documents
-* XLS/CSV export for course lists
-* Many shortcodes for an easy using of publication lists, publication searches, enrollments and course overviews
-* Dymamic meta data system for courses, students and publications
+* RSS feeds for publications
+* Many shortcodes for an easy using of publication lists, publication searches or for text references
+* Dymamic meta data system for adding new custom fields to publication entries
 
 = Supported Languages =
 * English
@@ -36,6 +34,9 @@ This plugin unites a course management system (with modules for enrollments, doc
 
 (o) Incomplete language files
 
+= Note =
+Due to the fact that the most teachpress users uses only the publication module, the course management modul is no longer a part of the default plugin. It's now separatly available over GitHub.
+
 = Start with teachPress =
 The following article describes the fist steps for [starting with teachPress](https://github.com/winkm89/teachPress/wiki/Start-with-teachPress).
 
@@ -47,9 +48,7 @@ The following article describes the fist steps for [starting with teachPress](ht
 == Screenshots ==
 1. Publication overview screen
 2. Add publication screen
-3. Add course screen
-4. Single course menu
-5. Example for a publication list created with [tpcloud]
+3. Example for a publication list created with [tpcloud]
 
 == Frequently Asked Questions ==
 
@@ -61,12 +60,6 @@ Use the shortcode with the following parameters: [tp_cloud show_tags_as="none"]
 
 = How can I display images in publication lists? =
 An example: [tplist image="left" image_size="70"]. Important: You must specify both image parameters.
-
-= How can I add longer course desciptions? =
-Write a long course desciption as normal WordPress pages and add this page as related content to the course.
-
-= How can I protect course documents? =
-The plugin saves course documents in your WordPress upload directory under /teachpress/*course_id*. You can add a protection for this directory with a .htaccess file without influence to your normal media files.
 
 [More FAQs are available on GitHub](https://github.com/winkm89/teachPress/wiki/FAQ)
 
@@ -116,7 +109,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 1. Download the plugin.
 2. Delete all files in the 'plugins/teachpress/' directory.
 3. Upload all files to the 'plugins/teachpress/' directory.
-4. Go in the backend to Courses->Settings and click on "Update to ....".
+4. Go in the backend to Publications and click on the update message on the screen.
 
 == Upgrade Notice ==
 
@@ -127,6 +120,11 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 9.0.0 beta (xx.xx.xxxx) =
+* New: Filters for custom select fields can be added to [tpcloud], [tpsearch]
+* Changed: This version no longer contains the course module
+* Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
 
 = 8.1.5 (06.03.2022) =
 * Changed: Add comment field to field list in SQL statement

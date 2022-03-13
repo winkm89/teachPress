@@ -159,20 +159,6 @@ if ( !defined('TEACHPRESS_FILE_LINK_CSS_CLASS') ) {
     */
     define('TEACHPRESS_FILE_LINK_CSS_CLASS', 'linksecure tp_file_link');}
 
-if ( !defined('TEACHPRESS_COURSE_MODULE') ) {
-    /**
-     * This value defines if the course module of teachPress is active
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_COURSE_MODULE', true);}
-
-if ( !defined('TEACHPRESS_PUBLICATION_MODULE') ) {
-    /**
-     * This value defines if the publication module of teachPress is active
-     * @since 5.0.0
-    */
-    define('TEACHPRESS_PUBLICATION_MODULE', true);}
-
 if ( !defined('TEACHPRESS_ERROR_REPORTING') ) {
     /**
      * This value defines if the error reporting is active or not
