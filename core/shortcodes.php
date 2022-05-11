@@ -266,6 +266,7 @@ class TP_Shortcodes {
             return;
         }
         
+        // field name / labels are separated by comma
         $custom_filter = '';
         $filters = explode(',', $settings['custom_filter']);
         $filter_labels = explode(',', $settings['custom_filter_label']);
@@ -286,6 +287,7 @@ class TP_Shortcodes {
             'permalink'         => $settings['permalink']
         ];
         
+        // Create the filters
         for ( $i = 0; $i < count($filters); $i++ ) {
             $row = get_tp_options($filters[$i], $order = "`variable` ASC", ARRAY_A);
             $defaults['key'] = $filters[$i];
