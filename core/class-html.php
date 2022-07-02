@@ -11,174 +11,38 @@
  * @package teachpress\core\html
  * @since 5.0.10
  */
-class tp_html {
+class TP_HTML {
     
     /**
-     * Gets the second line of the publications with editor, year, volume, address, edition, etc.
-     * @param array $row            The data array of a single publication
-     * @param array $settings       The settings array
-     * @return string
-     * @since 6.0.0
-    */
-    public static function get_publication_meta_row($row, $settings) {
-        $use_span = $settings['use_span']; 
-        // For ISBN or ISSN number
-        $isbn = '';
-        if ( $row['isbn'] != '' ) {
-            // test if ISBN or ISSN
-            $after = ( $use_span === true ) ? '</span>' : ''; 
-            if ($row['is_isbn'] == '0') {
-                $before = ( $use_span === true ) ? '<span class="tp_pub_additional_issn">' : '';
-                $isbn = ', ' . $before . 'ISSN: ' . $row['isbn'] . $after; 
-            }
-            else {
-                $before = ( $use_span === true ) ? '<span class="tp_pub_additional_isbn">' : '';
-                $isbn = ', ' . $before . 'ISBN: ' . $row['isbn'] . $after;
-            }
-        }
-        
-        // for urldate
-        $urldate = '';
-        if ( isset( $row['urldate'] ) && $row['urldate'] !== '0000-00-00'  ) {
-            $row['urldate'] = ( array_key_exists('date_format', $settings) === true ) ? date( $settings['date_format'], strtotime($row['urldate']) ) : $row['urldate'];
-            $urldate = tp_html::prepare_line('urldate', $row['urldate'],', ' . __('visited','teachpress') . ': ', '', $use_span); 
-        }
-        
-        // for number
-        if ( $row['type'] === 'patent' ) {
-            $number = isset( $row['number'] ) ? tp_html::prepare_line('number', $row['number'],'',', ',$use_span) : '';
-        }
-        else {
-            $number = isset( $row['number'] ) ? tp_html::prepare_line('number', $row['number'],'(','), ',$use_span) : '';
-        }
-        
-        // for forthcoming publications
-        if ( $row['status'] === 'forthcoming' ) {
-            $year = __('Forthcoming','teachpress');
-        }
-        else {
-            $year = isset( $row['year'] ) ? tp_html::prepare_line('year', $row['year'],'','',$use_span) : '';
-        }
-        
-        // isset() doesn't work for $editor
-        $editor = ( $row['editor'] != '' ) ? tp_bibtex::parse_author($row['editor'], $settings['editor_separator'], $settings['editor_name']) . ' (' . __('Ed.','teachpress') . '): ' : '';
-        $pages = isset( $row['pages'] ) ? tp_html::prepare_line('pages', tp_bibtex::prepare_page_number($row['pages']) , __('pp.','teachpress') . ' ',', ', $use_span) : '';
-        $booktitle = isset( $row['booktitle'] ) ? tp_html::prepare_line('booktitle', $row['booktitle'],'',', ',$use_span) : '';
-        $issuetitle = isset( $row['issuetitle'] ) ? tp_html::prepare_line('issuetitle', $row['issuetitle'],'',', ',$use_span) : '';
-        $journal = isset( $row['journal'] ) ? tp_html::prepare_line('journal', $row['journal'],'',', ',$use_span) : '';
-        $volume = isset( $row['volume'] ) ? tp_html::prepare_line('volume', $row['volume'],'',' ',$use_span) : '';        
-        $publisher = isset( $row['publisher'] ) ? tp_html::prepare_line('publisher', $row['publisher'],'',', ',$use_span) : '';
-        $address = isset( $row['address'] ) ? tp_html::prepare_line('address', $row['address'],'',', ',$use_span) : '';
-        $edition = isset( $row['edition'] ) ? tp_html::prepare_line('edition', $row['edition'],'',', ',$use_span) : '';
-        $chapter = isset( $row['chapter'] ) ? tp_html::prepare_line('chapter', $row['chapter'],' ' . __('Chapter','teachpress') . ' ',', ',$use_span) : '';
-        $institution = isset( $row['institution'] ) ? tp_html::prepare_line('institution', $row['institution'],'',' ',$use_span) : '';
-        $organization = isset( $row['organization'] ) ? tp_html::prepare_line('organization', $row['organization'],'',' ',$use_span) : '';
-        $school = isset( $row['school'] ) ? tp_html::prepare_line('school', $row['school'],'',', ',$use_span) : '';
-        $series = isset( $row['series'] ) ? tp_html::prepare_line('series', $row['series'],'',' ',$use_span) : '';
-        $howpublished = isset( $row['howpublished'] ) ? tp_html::prepare_line('howpublished', $row['howpublished'],'',', ',$use_span) : '';
-        $techtype = isset( $row['techtype'] ) ? tp_html::prepare_line('techtype', $row['techtype'],'',', ',$use_span) : '';
-        $note = isset( $row['techtype'] ) ? tp_html::prepare_line('note', $row['note'],', (',')',$use_span) : '';
-        
-        // special cases for volume/number
-        if ( $number == '' && $volume != '' ) {
-            $number = ', ';
-        }
-        
-        // special cases for article/incollection/inbook/inproceedings
-        $in = '';
-        if ( $settings['style'] === 'simple' || $settings['style'] === 'numbered' ) {
-            if ( $row['type'] === 'article' || $row['type'] === 'inbook' || $row['type'] === 'incollection' || $row['type'] === 'inproceedings') {
-                $in = __('In','teachpress') . ': ';
-            }
-        }
-
-        // end format after type
-        if ($row['type'] === 'article') {
-            $end = $in . $journal . $volume . $number . $pages . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'book') {
-            $end = $edition . $publisher . $address . $year . $isbn . $note .'.';
-        }
-        elseif ($row['type'] === 'booklet') {
-            $end = $howpublished . $address . $edition . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'collection') {
-            $end = $edition . $publisher . $address . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'conference') {
-            $end = $booktitle . $volume . $number . $series . $organization . $publisher . $address . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'inbook') {
-            $end = $in . $editor . $booktitle . $volume . $number . $chapter . $pages . $publisher . $address . $edition. $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'incollection') {
-            $end = $in . $editor . $booktitle . $volume . $number . $pages . $publisher . $address . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'inproceedings') {
-            $end = $in . $editor . $booktitle . $pages . $organization . $publisher . $address. $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'manual') {
-            $end = $editor . $organization . $address. $edition . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] == 'mastersthesis') {
-            $end = $school . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'misc') {
-            $end = $howpublished . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'online') {
-            $end = $editor . $organization . $year . $urldate . $note . '.';
-        }
-        elseif ($row['type'] === 'periodical') {
-            $end = $issuetitle . $series . $volume . $number . $year . $urldate . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'patent') {
-            $end = $number . $year . $note . '.';
-        }
-        elseif ($row['type'] === 'phdthesis') {
-            $end = $school . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'presentation') {
-            $date = ( array_key_exists('date_format', $settings) === true ) ? ', ' . tp_html::prepare_line('date', date( $settings['date_format'], strtotime($row['date']) ) ,'','',$use_span) : '';
-            $end = ( $howpublished === '' && $row['address'] === '' ) ? substr($date,2) . $note . '.' : $howpublished . tp_html::prepare_line('address', $row['address'],'','',$use_span) . $date . $note . '.';
-        }
-        elseif ($row['type'] === 'proceedings') {
-            $end = $howpublished . $organization. $publisher. $address . $volume . $number . $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'techreport') {
-            $end = $institution . $address . $techtype . $number. $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'unpublished') {
-            $end = $year . $isbn . $note . '.';
-        }
-        elseif ($row['type'] === 'workshop') {
-            $end = $booktitle . $volume . $number . $series . $organization . $publisher . $address . $year . $isbn . $note . '.';
-        }
-        else {
-            $end = $year . $note . '.';
-        }
-        $end = stripslashes($end);
-        return $end;
+     * Prints a simple text line with PHP_EOL at the end
+     * @param string $text
+     * @since 8.0.0
+     */
+    public static function line ($text) {
+        echo $text . PHP_EOL;
     }
     
     /**
-     * Prepares a single HTML line with the input from one publication field
-     * @param string $element
-     * @param string $content
-     * @param string $before
-     * @param string $after
-     * @param string $use_span 
-     * @return string
-     * @since 6.0.0
+     * Prints a html div init tag
+     * @param string $class
+     * @param array $args
+     * @since 8.0.0
      */
-    public static function prepare_line($element, $content, $before = '', $after = '', $use_span = false) {
-        if ( $content === '' ) {
-            return '';
-        }
-        if ( $use_span === true ) {
-            return '<span class="tp_pub_additional_' . $element . '">' . $before . $content . $after . '</span>';
-        }
-        return $before . $content . $after;
+    public static function div_open ($class = '', $args = array()) {
+        $c = ($class !== '') ? ' class="' . $class . '"' : '';
+        echo '<div' . $c . '>' . PHP_EOL;
+    }
+    
+    /**
+     * Prints a html div close tag
+     * @param string $class
+     * @since 8.0.0
+     */
+    public static function div_close($class = '') {
+        // Print the class name as comment in debug mode
+        $c = (TEACHPRESS_DEBUG === true && $class !== '') ? '<!-- CLOSE: div: ' . $class . ' -->' : '';
+        
+        echo '</div>' . $c . PHP_EOL;
     }
     
     /**

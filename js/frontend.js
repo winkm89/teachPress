@@ -52,7 +52,7 @@ function teachpress_pub_showhide(id, button) {
     }
     else {
         container = new Array("tp_altmetric_", "tp_abstract_", "tp_bibtex_", "tp_links_");
-        for ( i=0; i < (container.length); i++ ) {
+        for ( let i = 0; i < (container.length); i++ ) {
             if ( document.getElementById(container[i] + id) ) {
                 if ( (container[i] + id) === curr ) {
                     document.getElementById(container[i] + id).style.display = mode;

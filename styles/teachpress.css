@@ -27,6 +27,8 @@ td.tp_course_child {padding-left:25px; background: url(../images/child.png) no-r
 .options_for_number{display: none;}
 #tp_searchbox {float:right; padding-bottom: 5px;}
 a.tp_search_cancel {font-size:14px; font-weight:bold; text-decoration:none; padding-right:3px;}
+.tp_pub_label_status {background-color: orange; color: #fff; display: inline-block; padding: 3px 4px; margin-left: 5px; font-size: 10px; font-weight: bold; line-height: 1; border-radius: 2px; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);}
+.slim-select select {display: none;}
 
 /* Action menus */
 .tp_row_actions {visibility: hidden;padding: 2px 0 0; color:#ddd;}
@@ -35,16 +37,7 @@ tr:hover .tp_row_actions {visibility: visible;}
 .tp_row_actions-visible {padding: 2px 0 0;cursor: pointer;}
 a.tp_row_delete, a.tp_file_delete {color:#a00;}
 a.tp_row_delete:hover, a.tp_file_delete:hover {color:red;}
-
-/* buttons */
-#teachpress_add_capability { background: url( ../images/user-new-3.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
-#teachpress_add_signup { background: url( ../images/document-new-6.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
-#teachpress_add_artefact { background: url( ../images/folder-new-7.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
-#teachpress_add_assessment { background: url( ../images/bookmark-new-4.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
-#teachpress_send_mail { background: url( ../images/mimetypes/text-plain.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
-#teachpress_create_list { background: url( ../images/mimetypes/application-opendocument.spreadsheet.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
-#teachpress_create_xls { background: url( ../images/mimetypes/application-msexcel.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
-#teachpress_create_csv { background: url( ../images/mimetypes/text-csv.png) no-repeat 7px 3px; background-size: 17px auto; padding-left: 30px !important; }
+.ss-main {padding-bottom: 5px;}
 
 /* cite screen */
 .tp_cite_text { cursor: pointer; }
@@ -63,9 +56,10 @@ a.tp_row_delete:hover, a.tp_file_delete:hover {color:red;}
 
 /* filelists */
 .tp_filelist { padding-top: 5px; max-width: 680px;}
-.tp_filelist .tp_file { padding: 8px 8px 8px 30px; border: solid 1px #ccc; margin-bottom: 4px; z-index: 123; position: relative; background: no-repeat 4px 8px; background-size: 20px 20px;}
+.tp_filelist .tp_file { padding: 8px 8px 8px 25px; border: solid 1px #ccc; margin-bottom: 4px; z-index: 123; position: relative; background: no-repeat 4px 8px; background-size: 20px 20px;}
 .tp_file_headline { background-color: #eee !important;}
 .tp_file_headline .tp_file_name {font-weight: bold;}
+.tp_file_name i {width: 20px;}
 .tp_filelist .tp_fileprogress { background: #0074a2; height: 5px;}
 .tp_file_actions {margin-left: 0; visibility: hidden; position: absolute; right: 5px; top:10px; font-size: 12px; z-index: 1; color:#ddd;}
 .tp_file_size {margin-left: 0; visibility: visible; position: absolute; right: 5px; top:10px; font-size: 12px; z-index: 1; color:#aaa;}

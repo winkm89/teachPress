@@ -11,7 +11,7 @@
  * @since 5.0.0
  * @package teachpress\core\admin
  */
-class tp_admin {
+class TP_Admin {
     
     /**
      * Tests if the database needs an update. If this is available a message will be displayed.
@@ -98,17 +98,17 @@ class tp_admin {
         global $wpdb;
         $return = '';
         $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
-        $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
-        $required = ( $required === true ) ? 'required="required"' : '';
+        $ro = ( $readonly === true ) ? 'readonly="true" ' : '' ;
+        $rq = ( $required === true ) ? 'required="required"' : '';
         // extrakt checkbox_values
-        $array_checked = tp_enrollments::extract_checkbox_data($checked);
+        $array_checked = TP_Enrollments::extract_checkbox_data($checked);
         $return .= '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>';
         $i = 1;
         $max = count($options);
         foreach ($options as $opt) {
             $checked = ( in_array($opt->value, $array_checked) ) ? 'checked="checked"' : '';
-            $required = ( $max === 1 ) ? $required : '';  // The required optopns is only available for single checkboxes
-            $return .= '<input name="' . $field_name . '[]" type="checkbox" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $readonly . ' ' . $required . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
+            $rq = ( $max === 1 ) ? $rq : '';  // The required option is only available for single checkboxes
+            $return .= '<input name="' . $field_name . '[]" type="checkbox" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $ro . ' ' . $rq . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
             $i++;
         }
         return $return;
@@ -129,7 +129,19 @@ class tp_admin {
         $day = ( $value != '' ) ? $b[0][2] : '01';
         $month = ( $value != '' ) ? $b[0][1] : '01';
         $year = ( $value != '' ) ? $b[0][0] : '19xx';
-        $months = array ( __('Jan','teachpress'), __('Feb','teachpress'), __('Mar','teachpress'), __('Apr','teachpress'), __('May','teachpress'), __('Jun','teachpress'), __('Jul','teachpress'), __('Aug','teachpress'), __('Sep','teachpress'), __('Oct','teachpress'), __('Nov','teachpress'), __('Dec','teachpress') );
+        $months = array ( 
+            __('Jan','teachpress'), 
+            __('Feb','teachpress'), 
+            __('Mar','teachpress'), 
+            __('Apr','teachpress'), 
+            __('May','teachpress'), 
+            __('Jun','teachpress'), 
+            __('Jul','teachpress'), 
+            __('Aug','teachpress'), 
+            __('Sep','teachpress'), 
+            __('Oct','teachpress'), 
+            __('Nov','teachpress'), 
+            __('Dec','teachpress') );
         $return = '';
         $return .= '<p><b>' . stripslashes($label) . '</b></p>';
         $return .= '<input name="' . $field_name . '_day" id="' . $field_name . '_day" type="text" title="Day" size="2" value="' . $day . '"/>';
@@ -158,10 +170,10 @@ class tp_admin {
      * @since 5.0.0
      */
     public static function get_int_field($field_name, $label, $value, $min = 0, $max = 999, $step = 1, $readonly = false, $required = false){
-        $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
-        $required = ( $required === true ) ? 'required="required"' : '';
+        $ro = ( $readonly === true ) ? 'readonly="true" ' : '' ;
+        $r = ( $required === true ) ? 'required="required"' : '';
         return '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>
-                <input name="' . $field_name . '" type="number" id="' . $field_name . '" value="' . $value . '" size="50" ' . $readonly . ' ' . $required . ' min="' . $min . '" max="' . $max . '" step="' . $step . '"/>';
+                <input name="' . $field_name . '" type="number" id="' . $field_name . '" value="' . $value . '" size="50" ' . $ro . ' ' . $r . ' min="' . $min . '" max="' . $max . '" step="' . $step . '"/>';
     }
     
     /**
@@ -178,13 +190,13 @@ class tp_admin {
         global $wpdb;
         $return = '';
         $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
-        $readonly = ( $readonly === true ) ? 'readonly="true" ' : '' ;
-        $required = ( $required === true ) ? 'required="required"' : '';
+        $ro = ( $readonly === true ) ? 'readonly="true" ' : '' ;
+        $rq = ( $required === true ) ? 'required="required"' : '';
         $return .= '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>';
         $i = 1;
         foreach ($options as $opt) {
             $checked = ( $value == $opt->value ) ? 'checked="checked"' : '';
-            $return .= '<input name="' . $field_name . '" type="radio" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $readonly . ' ' . $required . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
+            $return .= '<input name="' . $field_name . '" type="radio" id="' . $field_name . '_' . $i . '" value="' . stripslashes($opt->value) . '" ' . $checked . ' ' . $ro . ' ' . $rq . '/> <label for="' . $field_name . '_' . $i . '">' . stripslashes($opt->value) . '</label><br/>';
             $i++;
         }
         return $return;
@@ -208,11 +220,23 @@ class tp_admin {
             $return .= '<option value="">- ' . __('none','teachpress') . ' -</option>';
         }
         foreach ($options as $opt) {
-            $selected = ( $value == $opt->value ) ? 'selected="selected"' : '';
-            $return .= '<option value="' . stripslashes($opt->value) . '" ' . $selected . '>' . stripslashes($opt->value) . '</option>';
+            $return .= TP_Admin::get_select_option(stripslashes($opt->value), stripslashes($opt->value), $value);
         }
         $return .= '</select>';
         return $return;
+    }
+    
+    /**
+     * Returns a single option for a select field
+     * @param string $value     The option value
+     * @param string $label     The option label   
+     * @param string $match     If $match is the same as $value the option is set as selected
+     * @return string
+     * @since 7.1.0
+     */
+    public static function get_select_option($value, $label, $match) {
+        $s = ( $match == $value ) ? 'selected="selected"' : '';
+        return '<option value="' . $value . '" ' . $s . '>' . $label . '</option>';
     }
     
     /**
@@ -225,9 +249,9 @@ class tp_admin {
      * @since 5.0.0
      */
     public static function get_text_field($field_name, $label, $value, $readonly = false) {
-        $readonly = ( $readonly === false ) ? '' : 'readonly="true" ';
+        $ro = ( $readonly === false ) ? '' : 'readonly="true" ';
         return '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>
-                <input name="' . $field_name . '" type="text" id="' . $field_name . '" value="' . stripslashes($value) . '" size="50" ' . $readonly . '/>';
+                <input name="' . $field_name . '" type="text" id="' . $field_name . '" value="' . stripslashes($value) . '" size="50" ' . $ro . '/>';
     }
     
     /**
@@ -245,28 +269,42 @@ class tp_admin {
     
     /**
      * Returns a form field for the add_publication_page()
-     * @param string $name          field name
-     * @param string $title         field title
-     * @param string $label         field label
-     * @param string $field_type    field type (textarea|input)
-     * @param string $pub_type      publication type of the current/visible entry
-     * @param string $pub_value     field value of the current/visible entry
-     * @param array $availabe_for   array of publication types
-     * @param int $tabindex         the tab index
-     * @param string $style         css style attributes
+     * @param array $atts {
+     *      @type string $name              field name
+     *      @type string $title             field title
+     *      @type string $label             field label
+     *      @type string $field_type        field type (textarea|input)
+     *      @type string $field_value       field value of the current/visible entry
+     *      @type int $tabindex             the tab index
+     *      @type string $display           defines if the field is visible or not (block|none)
+     *      @type string $style             css style attributes
+     *      @type string $container_misc    used for custom attributes of the enclosing div container
+     * }
      * @return string
      * @since 5.0.0
+     * @version 2
      */
-    public static function get_form_field ($name, $title, $label, $field_type, $pub_type, $pub_value, $availabe_for, $tabindex, $style = '') {
-        $display = ( in_array($pub_type, $availabe_for) ) ? 'style="display:block;"' : 'style="display:none;"';
-        if ( $field_type === 'textarea' ) {
-            $field = '<textarea name="' . $name . '" id="' . $name . '" wrap="virtual" style="' . $style . '" tabindex="' . $tabindex . '" title="' . stripslashes($title) . '">' . stripslashes($pub_value) . '</textarea>';
+    public static function get_form_field ($atts) {
+        $param = shortcode_atts(array(
+            'name'      => '',
+            'title'     => '',
+            'label'     => '',
+            'type'      => '',
+            'value'     => '',
+            'tabindex'  => '',
+            'display'   => 'block',
+            'style'     => ''
+        ), $atts);
+        
+        if ( $param['type'] === 'textarea' ) {
+            $field = '<textarea name="' . $param['name'] . '" id="' . $param['name'] . '" wrap="virtual" style="' . $param['style'] . '" tabindex="' . $param['tabindex'] . '" title="' . stripslashes($param['title']) . '">' . stripslashes($param['value']) . '</textarea>';
         }
         else {
-            $field = '<input name="' . $name . '" id="' . $name . '" type="text" title="' . stripslashes($title) . '" style="' . $style . '" value="' . stripslashes($pub_value) . '" tabindex="' . $tabindex . '" />';
+            $field = '<input name="' . $param['name'] . '" id="' . $param['name']. '" type="text" title="' . stripslashes($param['title']) . '" style="' . $param['style'] . '" value="' . stripslashes($param['value']) . '" tabindex="' . $param['tabindex'] . '" />';
         }
-        $a = '<div id="div_' . $name . '" ' . $display . '>
-              <p><label for="' . $name . '" title="' . stripslashes($title) . '"><strong>' . stripslashes($label) . '</strong></label></p>
+        
+        $a = '<div id="div_' . $param['name'] . '" style="display:' . $param['display']. '">
+              <p><label for="' . $param['name'] . '" title="' . stripslashes($param['title']) . '"><strong>' . stripslashes($param['label']) . '</strong></label></p>
               ' . $field . '</div>';
         return $a;
     }
@@ -366,7 +404,7 @@ class tp_admin {
     
         echo '<div class="inside">';   
         foreach ($fields as $row) {
-            $col_data = tp_db_helpers::extract_column_data($row['value']);
+            $col_data = TP_DB_Helpers::extract_column_data($row['value']);
             $required = ( $col_data['required'] === 'true' ) ? true : false;
             $value = '';
             foreach ( $meta_input as $row_meta ) {
@@ -376,28 +414,28 @@ class tp_admin {
                 }
             }
             if ( $col_data['type'] === 'SELECT' ) {
-                echo tp_admin::get_select_field($row['variable'], $col_data['title'], $value);
+                echo TP_Admin::get_select_field($row['variable'], $col_data['title'], $value);
             }
             elseif ( $col_data['type'] === 'DATE' ) {
-                echo tp_admin::get_date_field($row['variable'], $col_data['title'], $value);
+                echo TP_Admin::get_date_field($row['variable'], $col_data['title'], $value);
             }
             elseif ( $col_data['type'] === 'RADIO' ) {
-                echo tp_admin::get_radio_field($row['variable'], $col_data['title'], $value, false, $required);
+                echo TP_Admin::get_radio_field($row['variable'], $col_data['title'], $value, false, $required);
             }
             elseif ( $col_data['type'] === 'CHECKBOX' ) {
-                echo tp_admin::get_checkbox_field($row['variable'], $col_data['title'], $value, false, $required);
+                echo TP_Admin::get_checkbox_field($row['variable'], $col_data['title'], $value, false, $required);
             }
             elseif ( $col_data['type'] === 'TEXTAREA' ) {
-                echo tp_admin::get_textarea_field($row['variable'], $col_data['title'], $value);
+                echo TP_Admin::get_textarea_field($row['variable'], $col_data['title'], $value);
             }
             elseif ( $col_data['type'] === 'INT' ) {
                 $col_data['min'] = ( $col_data['min'] !== 'false' ) ? intval($col_data['min']) : 0;
                 $col_data['max'] = ( $col_data['max'] !== 'false' ) ? intval($col_data['max']) : 999;
                 $col_data['step'] = ( $col_data['step'] !== 'false' ) ? intval($col_data['step']) : 1;
-                echo tp_admin::get_int_field($row['variable'], $col_data['title'], $value, $col_data['min'], $col_data['max'], $col_data['step'], false, $required);
+                echo TP_Admin::get_int_field($row['variable'], $col_data['title'], $value, $col_data['min'], $col_data['max'], $col_data['step'], false, $required);
             }
             else {
-                echo tp_admin::get_text_field($row['variable'], $col_data['title'], $value);
+                echo TP_Admin::get_text_field($row['variable'], $col_data['title'], $value);
             }
         }
         echo '</div>';
@@ -425,8 +463,8 @@ class tp_copy_course {
             $original_course_id = intval($checkbox[$i]);
             $new_courses[$i]['orig_id'] = $original_course_id;
             $new_courses[$i]['new_id'] = 0;
-            $new_courses[$i]['data'] = tp_courses::get_course($original_course_id, ARRAY_A);
-            $new_courses[$i]['meta'] = tp_courses::get_course_meta($original_course_id);
+            $new_courses[$i]['data'] = TP_Courses::get_course($original_course_id, ARRAY_A);
+            $new_courses[$i]['meta'] = TP_Courses::get_course_meta($original_course_id);
             $new_courses[$i]['orig_semester'] = $new_courses[$i]['data']['semester'];
             $new_courses[$i]['data']['semester'] = $copysem;
 
@@ -477,9 +515,9 @@ class tp_copy_course {
         $data['end'] = '00';
         
         // add data
-        $new_id = tp_courses::add_course($data, array('number' => 0));
+        $new_id = TP_Courses::add_course($data, array('number' => 0));
         foreach ( $meta_data as $meta_row ) {
-            tp_courses::add_course_meta($new_id, $meta_row['meta_key'], $meta_row['meta_value']);
+            TP_Courses::add_course_meta($new_id, $meta_row['meta_key'], $meta_row['meta_value']);
         }
         return $new_id;
     }
@@ -537,7 +575,7 @@ function tp_handle_document_uploads(){
         echo htmlspecialchars($status['error']);
         exit;
     }
-    $doc_id = tp_documents::add_document($status['filename'], $status['path'], $status['size'], $course_id);
+    $doc_id = TP_Documents::add_document($status['filename'], $status['path'], $status['size'], $course_id);
     $upload_dir = wp_upload_dir();
     echo $doc_id . ' | ' . $course_id . ' | ' . esc_url($upload_dir['baseurl'] . $status['path']);
     exit;
@@ -766,14 +804,14 @@ function tp_add_publication_as_post ($title, $bibtex_key, $date, $post_type = 'p
     $content = str_replace('[key]', 'key="' . $bibtex_key . '"', get_tp_option('rel_content_template') );
      
     $post_id = wp_insert_post(array(
-      'post_title' => $title,
-      'post_content' => $content,
-      'tags_input' => $tags,
-      'post_date' => $date . " 12:00:00",
-      'post_date_gmt' => $date . " 12:00:00",
-      'post_type' => $post_type,
-      'post_status' => 'publish',
-      'post_category' => $category,
+      'post_title'      => $title,
+      'post_content'    => $content,
+      'tags_input'      => $tags,
+      'post_date'       => $date . " 12:00:00",
+      'post_date_gmt'   => $date . " 12:00:00",
+      'post_type'       => $post_type,
+      'post_status'     => 'publish',
+      'post_category'   => $category,
       ));
     return $post_id;
 }
@@ -786,7 +824,17 @@ function tp_add_publication_as_post ($title, $bibtex_key, $date, $post_type = 'p
  * @since 4.2.0
  */
 function tp_set_screen_option($status, $option, $value) {
-    if ( 'tp_pubs_per_page' == $option || 'tp_tags_per_page' == $option ) { 
+    // For custom values: tp_authors_sorting
+    if ( isset( $_POST['tp_authors_sorting'] ) ) {
+        TP_Authors_Page::save_screen_options();
+    }
+    
+    // For default per_page values
+    if ( 'tp_pubs_per_page' == $option || 
+         'tp_tags_per_page' == $option || 
+         'tp_authors_per_page' == $option ||
+         'tp_authors_sorting' == $option ||
+         'tp_courses_per_page' == $option ) { 
         return $value; 
     }
 }

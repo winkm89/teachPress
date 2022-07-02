@@ -7,222 +7,10 @@
  * @since 5.0.0
  */
 
-/*************************/
-/* AJAX request function */
-/*************************/
-
-/**
- * AJAX callback function
- * @since 6.0.0
- */
-function tp_ajax_callback () {
-    
-    // Check permissions
-    if ( is_user_logged_in() && current_user_can('use_teachpress') ) {
-        
-        /**
-         * Getting author's publications (for show_authors.php)
-         * Works if $_GET['author_id'] is given
-         */
-        $author_id = ( isset( $_GET['author_id'] ) ) ? intval( $_GET['author_id'] ) : 0;
-        if ( $author_id !== 0 ) {
-            tp_ajax::get_author_publications($author_id);
-        }
-        
-        /**
-         * Getting assessment screen (for show_single_course.php)
-         * Works if $_GET['assessment_id'] is given
-         */
-        $assessment_id = ( isset( $_GET['assessment_id'] ) ) ? intval( $_GET['assessment_id'] ) : 0;
-        if ( $assessment_id !== 0 ) {
-            tp_ajax::get_assessment_screen($assessment_id);
-        }
-        
-        /**
-         * Getting artefact screen (for show_single_course.php)
-         * Works if $_GET['artefact_id'] is given
-         */
-        $artefact_id = ( isset( $_GET['artefact_id'] ) ) ? intval( $_GET['artefact_id'] ) : 0;
-        if ( $artefact_id !== 0 ) {
-            tp_ajax::get_artefact_screen($artefact_id);
-        }
-        
-        /**
-         * Removing documents
-         * Works if $_GET['del_document'] is given
-         */
-        $del_document = ( isset( $_GET['del_document'] ) ) ? intval( $_GET['del_document'] ) : 0;
-        if ( $del_document !== 0 ) {
-            tp_ajax::delete_document($del_document);
-        }
-
-        /**
-         * Adding document headlines
-         * Works if $_GET['add_document'] and $_GET['course_id'] are given
-         */
-        $add_document = ( isset( $_GET['add_document'] ) ) ? htmlspecialchars( $_GET['add_document'] ) : '';
-        $course_id = ( isset( $_GET['course_id'] ) ) ? intval($_GET['course_id']) : 0;
-        if ( $add_document !== '' && $course_id !== 0 ) {
-            tp_ajax::add_document_headline($add_document, $course_id);
-        }
-
-        /**
-         * Getting a document name
-         * Works if $_GET['get_document_name'] is given
-         */
-        $get_document_name = ( isset( $_GET['get_document_name'] ) ) ? intval( $_GET['get_document_name'] ) : 0;
-        if ( $get_document_name !== 0 ) {
-            tp_ajax::get_document_name($get_document_name);
-        }
-
-        /**
-         * Changing a document name
-         * Works if $_POST['change_document'] and $_POST['new_document_name'] are given
-         */
-        $change_document = ( isset( $_POST['change_document'] ) ) ? intval( $_POST['change_document'] ) : 0;
-        $new_document_name = ( isset( $_POST['new_document_name'] ) ) ? htmlspecialchars( $_POST['new_document_name'] ) : '';
-        if ( $change_document !== 0 && $new_document_name !== '' ) {
-            tp_ajax::change_document_name($change_document, $new_document_name);
-        }
-
-        /**
-         * Saving sort order of documents
-         * Works if $_POST['tp_file'] is given
-         */
-        if ( isset( $_POST['tp_file'] ) ) {
-            tp_ajax::set_sort_order($_POST['tp_file']);
-        }
-
-        /**
-         * Getting image url for mimetype
-         * Works if $_GET['mimetype_input'] is given
-         */
-        if ( isset( $_GET['mimetype_input'] ) ) {
-            tp_ajax::get_mimetype_image($_GET['mimetype_input']);
-        }
-
-        /**
-         * Getting the cite dialog
-         * @since 6.0.0
-         */
-        if ( isset( $_GET['cite_id'] ) ) {
-            tp_ajax::get_cite_screen($_GET['cite_id']);
-        }
-
-        /**
-         * Getting the cite text for a cite dialog
-         * @since 6.0.0
-         */
-        if ( isset( $_GET['cite_pub'] ) && isset( $_GET['cite_type'] )  ) {
-            tp_ajax::get_cite_text($_GET['cite_pub'], $_GET['cite_type']);
-        }
-        
-        /**
-         * Getting the edit meta field dialog
-         * @since 6.0.0
-         */
-        if ( isset( $_GET['meta_field_id'] ) ) {
-            $meta_field_id = intval( $_GET['meta_field_id'] );
-            tp_ajax::get_meta_field_screen($meta_field_id);
-        } 
-        
-        /**
-         * Getting the unique version of the bibtex string
-         * @since 6.1.1
-         */
-        if ( isset ( $_GET['bibtex_key_check'] ) ) {
-            tp_ajax::get_generated_bibtex_key($_GET['bibtex_key_check']);
-        }
-
-    }
-
-    // this is required to terminate immediately and return a proper response
-    wp_die();
-}
-
-/**
- * AJAX callback function for the document manager
- * @since 6.0.0
- */
-function tp_ajax_doc_manager_callback () {
-    tp_document_manager::get_window();
-    wp_die();
-}
-
-/**********************/
-/* Template functions */
-/**********************/
-
-/**
- * Detects template files and returns an array with available templates
- * @return array
- * @since 6.0.0
- */
-function tp_detect_templates() {
-    $folder = TEACHPRESS_TEMPLATE_PATH;
-    $files = scandir($folder);
-    
-    if ( $files === false ) {
-        return array();
-    }
-    
-    $return = array();
-    foreach ( $files as $file ) {
-        $infos = pathinfo($folder.$file);
-        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
-            $return[$infos['filename']] = $folder.$file;
-        }
-    }
-    return $return;
-}
-
-/**
- * Returns an array with the data of all available templates
- * @return array
- * @since 6.0.0
- */
-function tp_list_templates () {
-    $folder = TEACHPRESS_TEMPLATE_PATH;
-    $files = scandir($folder);
-    $return = array();
-    foreach ( $files as $file ) {
-        $infos = pathinfo($folder.$file);
-        if ( $infos['extension'] == 'php' || $infos['extension'] == 'php5' ) {
-            $return[] = $infos['filename'];
-        }
-    }
-    return $return;
-}
-
-/**
- * Loads a template and returns the template object or false, if the template doesn't exist
- * @param string $slug
- * @return object|boolean
- * @since 6.0.0
- */
-function tp_load_template($slug) {
-    if ( $slug === '' ) {
-        return;
-    }
-    
-    $slug = esc_attr($slug);
-    $templates = tp_detect_templates();
-    
-    // load template file
-    if ( array_key_exists($slug, $templates) ) {
-        include_once $templates[$slug];
-        wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . $slug. '.css');
-        return new $slug();
-    }
-    
-    return false;
-
-}
-
 /** 
  * teachPress Page Menu
- * 
- * possible values for array $atts:
+ *      
+ * @param array $atts {
  *      @type int number_entries       Number of all available entries
  *      @type int entries_per_page     Number of entries per page
  *      @type int current_page         current displayed page
@@ -231,23 +19,23 @@ function tp_load_template($slug) {
  *      @type string link_atrributes   the url attributes for get parameters
  *      @type string container_suffix  The optional suffix from the shortcode container 
  *      @type string mode              top or bottom, default: top
- * @param array $atts
+ * }
  * @return string
  * @since 5.0.0
 */
 function tp_page_menu ($atts) {
     $atts = shortcode_atts(array(
-       'number_entries' => 0,
-       'entries_per_page' => 50,
-       'current_page' => 1,
-       'entry_limit' => 0,
-       'page_link' => '',
-       'link_attributes' => '',
-       'container_suffix' => '',
-       'mode' => 'top',
-       'class' => 'tablenav-pages',
-       'before' => '',
-       'after' => ''
+       'number_entries'     => 0,
+       'entries_per_page'   => 50,
+       'current_page'       => 1,
+       'entry_limit'        => 0,
+       'page_link'          => '',
+       'link_attributes'    => '',
+       'container_suffix'   => '',
+       'mode'               => 'top',
+       'class'              => 'tablenav-pages',
+       'before'             => '',
+       'after'              => ''
     ), $atts);
     
     $number_entries = intval($atts['number_entries']);
@@ -256,40 +44,46 @@ function tp_page_menu ($atts) {
     $entry_limit = intval($atts['entry_limit']);
     $limit_name = 'limit' . $atts['container_suffix'];
     
-    // if number of entries > number of entries per page
-    if ($number_entries > $entries_per_page) {
-        $num_pages = floor (($number_entries / $entries_per_page));
-        $mod = $number_entries % $entries_per_page;
-        if ($mod != 0) {
-            $num_pages = $num_pages + 1;
-        }
-
-        // first page / previous page
-        if ($entry_limit != 0) {
-            $back_links = '<a href="' . $atts['page_link'] . $limit_name . '=1&amp;' . $atts['link_attributes'] . '" title="' . __('first page','teachpress') . '" class="page-numbers button">&laquo;</a> <a href="' . $atts['page_link'] . $limit_name . '=' . ($current_page - 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('previous page','teachpress') . '" class="page-numbers button">&lsaquo;</a> ';
-        }
-        else {
-            $back_links = '<a class="first-page button disabled">&laquo;</a> <a class="prev-page button disabled">&lsaquo;</a> ';
-        }
-        $page_input = ' <input name="' . $limit_name . '" type="text" size="2" value="' .  $current_page . '" style="text-align:center;" /> ' . __('of','teachpress') . ' ' . $num_pages . ' ';
-
-        // next page/ last page
-        if ( ( $entry_limit + $entries_per_page ) <= ($number_entries)) { 
-            $next_links = '<a href="' . $atts['page_link'] . $limit_name . '=' . ($current_page + 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('next page','teachpress') . '" class="page-numbers button">&rsaquo;</a> <a href="' . $atts['page_link'] . $limit_name . '=' . $num_pages . '&amp;' . $atts['link_attributes'] . '" title="' . __('last page','teachpress') . '" class="page-numbers button">&raquo;</a> ';
-        }
-        else {
-            $next_links = '<a class="next-page disabled">&rsaquo;</a> <a class="last-page disabled">&raquo;</a> ';
-        }
-
-        // return
-        if ($atts['mode'] === 'top') {
-            return $atts['before'] . '<div class="' . $atts['class'] . '"><span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ' . $back_links . '' . $page_input . '' . $next_links . '</div>' . $atts['after'];
-        }
-        else {
-            return $atts['before'] . '<div class="' . $atts['class'] . '"><span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ' . $back_links . ' ' . $current_page . ' ' . __('of','teachpress') . ' ' . $num_pages . ' ' . $next_links . '</div>' . $atts['after'];
-        }	
+    // If we can show all entries on a page, do nothing
+    if ( $number_entries <= $entries_per_page ) {
+        return;
     }
-}	
+
+    $page_link = $atts['page_link'] . $limit_name;
+    $num_pages = floor (($number_entries / $entries_per_page));
+    $mod = $number_entries % $entries_per_page;
+    if ($mod != 0) {
+        $num_pages = $num_pages + 1;
+    }
+    
+    // Defaults
+    $page_input = ' <input name="' . $limit_name . '" type="text" size="2" value="' .  $current_page . '" style="text-align:center;" /> ' . __('of','teachpress') . ' ' . $num_pages . ' ';
+    $entries = '<span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ';
+    $back_links = '<a class="page-numbers button disabled">&laquo;</a> <a class="page-numbers button disabled">&lsaquo;</a> ';
+    $next_links = '<a class="page-numbers button disabled">&rsaquo;</a> <a class="page-numbers button disabled">&raquo;</a> ';
+
+    // first page / previous page
+    if ( $entry_limit != 0 ) {
+        $first_page = '<a href="' . $page_link . '=1&amp;' . $atts['link_attributes'] . '" title="' . __('first page','teachpress') . '" class="page-numbers button">&laquo;</a>';
+        $prev_page = ' <a href="' . $page_link . '=' . ($current_page - 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('previous page','teachpress') . '" class="page-numbers button">&lsaquo;</a> ';
+        $back_links = $first_page . $prev_page;
+    }
+
+    // next page/ last page
+    if ( ( $entry_limit + $entries_per_page ) <= ($number_entries)) { 
+        $next_page = '<a href="' . $page_link . '=' . ($current_page + 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('next page','teachpress') . '" class="page-numbers button">&rsaquo;</a>';
+        $last_page = ' <a href="' . $page_link . '=' . $num_pages . '&amp;' . $atts['link_attributes'] . '" title="' . __('last page','teachpress') . '" class="page-numbers button">&raquo;</a> ';
+        $next_links = $next_page . $last_page;
+    }
+
+    // return
+    if ($atts['mode'] === 'top') {
+        return $atts['before'] . '<div class="' . $atts['class'] . '">' . $entries . $back_links . $page_input . $next_links . '</div>' . $atts['after'];
+    }
+    
+    return $atts['before'] . '<div class="' . $atts['class'] . '">' . $entries . $back_links . $current_page . ' ' . __('of','teachpress') . ' ' . $num_pages . ' ' . $next_links . '</div>' . $atts['after'];
+
+}
 
 /** 
  * Print message
@@ -299,9 +93,9 @@ function tp_page_menu ($atts) {
  * @since 5.0.0
 */ 
 function get_tp_message($message, $color = 'green') {
-    echo '<div class="teachpress_message teachpress_message_' . esc_attr( $color ) . '">';
-    echo '<strong>' . $message . '</strong>';
-    echo '</div>';
+    TP_HTML::line('<div class="teachpress_message teachpress_message_' . esc_attr( $color ) . '">');
+    TP_HTML::line('<strong>' . $message . '</strong>');
+    TP_HTML::line('</div>');
 }
 
 /** 
@@ -324,242 +118,28 @@ function tp_datesplit($date_string) {
     return $split; 
 }
 
-/** 
- * Gives an array with all publication types
- * 
- * Definition of array[] $pub_types:
- *      $pub_types[x][0] ==> BibTeX key
- *      $pub_types[x][1] ==> i18n string (singular)
- *      $pub_types[x][2] ==> i18n string (plural)
- * 
- * @return array
-*/ 
-function get_tp_publication_types() {
-    $pub_types[0] = array (0 => '0', 1 => __('All types','teachpress'), 2 => __('All types','teachpress'));
-    $pub_types[1] = array (0 => 'article', 1 => __('Journal Article','teachpress'), 2 => __('Journal Articles','teachpress'));
-    $pub_types[2] = array (0 => 'book', 1 => __('Book','teachpress'), 2 => __('Books','teachpress'));
-    $pub_types[3] = array (0 => 'booklet', 1 => __('Booklet','teachpress'), 2 => __('Booklets','teachpress'));
-    $pub_types[4] = array (0 => 'collection', 1 => __('Collection','teachpress'), 2 => __('Collections','teachpress'));
-    $pub_types[5] = array (0 => 'conference', 1 => __('Conference','teachpress'), 2 => __('Conferences','teachpress'));
-    $pub_types[6] = array (0 => 'inbook', 1 => __('Book Chapter','teachpress'), 2 => __('Book Chapters','teachpress'));
-    $pub_types[7] = array (0 => 'incollection', 1 => __('Incollection','teachpress'), 2 => __('Incollections','teachpress'));
-    $pub_types[8] = array (0 => 'inproceedings', 1 => _x('Inproceedings','Singular form of inproceedings, if it exists','teachpress'), 2 => __('Inproceedings','teachpress'));
-    $pub_types[9] = array (0 => 'manual', 1 => __('Technical Manual','teachpress'), 2 => __('Technical Manuals','teachpress'));
-    $pub_types[10] = array (0 => 'mastersthesis', 1 => __('Masters Thesis','teachpress'), 2 => __('Masters Theses','teachpress'));
-    $pub_types[11] = array (0 => 'misc', 1 => __('Miscellaneous','teachpress'), 2 => __('Miscellaneous','teachpress'));
-    $pub_types[12] = array (0 => 'online', 1 => __('Online','teachpress'), 2 => __('Online','teachpress'));
-    $pub_types[13] = array (0 => 'patent', 1 => __('Patent','teachpress'), 2 => __('Patents','teachpress'));
-    $pub_types[14] = array (0 => 'periodical', 1 => __('Periodical','teachpress'), 2 => __('Periodicals','teachpress'));
-    $pub_types[15] = array (0 => 'phdthesis', 1 => __('PhD Thesis','teachpress'), 2 => __('PhD Theses','teachpress'));
-    $pub_types[16] = array (0 => 'presentation', 1 => __('Presentation','teachpress'), 2 => __('Presentations','teachpress'));
-    $pub_types[17] = array (0 => 'proceedings', 1 => __('Proceeding','teachpress'), 2 => __('Proceedings','teachpress'));
-    $pub_types[18] = array (0 => 'techreport', 1 => __('Technical Report','teachpress'), 2 => __('Technical Reports','teachpress'));
-    $pub_types[19] = array (0 => 'unpublished', 1 => __('Unpublished','teachpress'), 2 => __('Unpublished','teachpress'));
-    $pub_types[20] = array (0 => 'workshop', 1 => __('Workshop','teachpress'), 2 => __('Workshops','teachpress'));
-    return $pub_types;
-}
-
-/**
- * Returns the path to a mimetype image
- * @param string $url   --> the URL of a file
- * @return string 
- * @since 3.1.0
- */
-function get_tp_mimetype_images($url_link) {
-    $mimetype = substr($url_link,-4,4);
-    preg_match( "/^(https?:\/\/)?(.+)$/", $url_link, $urltype);
-    $urltype = preg_split("#/#", $urltype[2])[0];
-    $urltype = explode(".", $urltype);
-    $urltype = $urltype[count($urltype)-2].".".end($urltype);
-    $url = plugins_url();
-    $mimetypes = array(
-        '.pdf' => $url . '/teachpress/images/mimetypes/application-pdf.png',
-        '.doc' => $url . '/teachpress/images/mimetypes/application-msword.png',
-        'docx' => $url . '/teachpress/images/mimetypes/application-msword.png',
-        '.ppt' => $url . '/teachpress/images/mimetypes/application-mspowerpoint.png',
-        'pptx' => $url . '/teachpress/images/mimetypes/application-mspowerpoint.png',
-        '.xls' => $url . '/teachpress/images/mimetypes/application-msexcel.png',
-        'xlsx' => $url . '/teachpress/images/mimetypes/application-msexcel.png',
-        '.odt' => $url . '/teachpress/images/mimetypes/application-opendocument.text.png',
-        '.ods' => $url . '/teachpress/images/mimetypes/application-opendocument.spreadsheet.png',
-        '.odp' => $url . '/teachpress/images/mimetypes/application-opendocument.presentation.png',
-        '.odf' => $url . '/teachpress/images/mimetypes/application-opendocument.formula.png',
-        '.odg' => $url . '/teachpress/images/mimetypes/application-opendocument.graphics.png',
-        '.odc' => $url . '/teachpress/images/mimetypes/application-opendocument.chart.png',
-        '.odi' => $url . '/teachpress/images/mimetypes/application-opendocument.image.png',
-        '.rtf' => $url . '/teachpress/images/mimetypes/application-rtf.png',
-        '.rdf' => $url . '/teachpress/images/mimetypes/text-rdf.png',
-        '.txt' => $url . '/teachpress/images/mimetypes/text-plain.png',
-        '.tex' => $url . '/teachpress/images/mimetypes/text-x-bibtex.png',
-        'html' => $url . '/teachpress/images/mimetypes/text-html.png',
-        '.php' => $url . '/teachpress/images/mimetypes/text-html.png',
-        '.xml' => $url . '/teachpress/images/mimetypes/text-xml.png',
-        '.csv' => $url . '/teachpress/images/mimetypes/text-csv.png',
-        '.mp3' => $url . '/teachpress/images/mimetypes/audio-x-generic.png',
-        '.wma' => $url . '/teachpress/images/mimetypes/audio-x-generic.png',
-        '.wav' => $url . '/teachpress/images/mimetypes/audio-x-generic.png',
-        '.gif' => $url . '/teachpress/images/mimetypes/image-x-generic.png',
-        '.jpg' => $url . '/teachpress/images/mimetypes/image-x-generic.png',
-        '.png' => $url . '/teachpress/images/mimetypes/image-x-generic.png',
-        '.svg' => $url . '/teachpress/images/mimetypes/image-x-generic.png',
-        '.dvi' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
-        '.flv' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
-        '.mov' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
-        '.mp4' => $url . '/teachpress/images/mimetypes/video-x-generic.png',
-        '.wmv' => $url . '/teachpress/images/mimetypes/video-x-generic.png'
-        );
-    $mediaicons = array(
-        'youtube.com' => $url . '/teachpress/images/icons/icon-youtube.png',
-        'vimeo.com' => $url . '/teachpress/images/icons/icon-vimeo.png',
-        'github.com' => $url . '/teachpress/images/icons/icon-github.png',
-        'gitlab.com' => $url . '/teachpress/images/icons/icon-gitlab.png',
-
-    );
-    
-    if ( isset ($mimetypes[$mimetype]) ) {
-        return $mimetypes[$mimetype];
-    }
-    elseif ( isset ($mediaicons[$urltype]) ) {
-        return $mediaicons[$urltype];
-    }
-    else {
-        return $mimetypes['html'];
-    }
-}
-
-/**
- * Returns the path to a mimetype image
- * @param string $url   --> the icon of a file using Font Awesome and academicons
- * @return string 
- * @since 6.0.0
- */
-function get_tp_mimetype_icon($url_link) {
-    $mimetype = substr($url_link,-4,4);
-    preg_match( "/^(https?:\/\/)?(.+)$/", $url_link, $urltype);
-    $urltype = preg_split("#/#", $urltype[2])[0];
-    $urltype = explode(".", $urltype);
-    $urltype = $urltype[count($urltype)-2].".".end($urltype);
-    $mimetypes = array(
-        'doi' => 'ai ai-doi',
-        '.pdf' => 'fas fa-file-pdf',
-        '.doc' => 'fas fa-file-word',
-        'docx' => 'fas fa-file-word',
-        '.ppt' => 'fas fa-file-powerpoint',
-        'pptx' => 'fas fa-file-powerpoint',
-        '.xls' => 'fas fa-file-excel',
-        'xlsx' => 'fas fa-file-excel',
-        '.odt' => 'fas fa-file-word',
-        '.ods' => 'fas fa-file-excel',
-        '.odp' => 'fas fa-file-powerpoint',
-        '.odf' => 'fas fa-file-code',
-        '.odg' => 'fas fa-file-contract',
-        '.odc' => 'fas fa-file-contract',
-        '.odi' => 'fas fa-file-contract',
-        '.rtf' => 'fas fa-file-alt',
-        '.rdf' => 'fas fa-file-alt',
-        '.txt' => 'fas fa-file-alt',
-        '.tex' => 'fas fa-file-alt',
-        'html' => 'fas fa-globe',
-        'htm' => 'fas fa-globe',
-        '.php' => 'fas fa-globe',
-        '.xml' => 'fas fa-file-code',
-        '.css' => 'fas fa-file-code',
-        '.py' => 'fas fa-file-code',
-        '.ipynb' => 'fas fa-file-code',
-        '.csv' => 'fas fa-file-csv',
-        '.dat' => 'fas fa-file-alt',
-        '.db' => 'fas fa-database',
-        '.dbf' => 'fas fa-database',
-        '.log' => 'fas fa-file-alt',
-        '.mdb' => 'fas fa-database',
-        '.sql' => 'fas fa-database',
-        '.sav' => 'fas fa-file-alt',
-        '.sav' => 'fas fa-file-alt',
-        '.mid' => 'fas fa-file-audio',
-        '.midi' => 'fas fa-file-audio',
-        '.mp3' => 'fas fa-file-audio',
-        '.ogg' => 'fas fa-file-audio',
-        '.wma' => 'fas fa-file-audio',
-        '.wav' => 'fas fa-file-audio',
-        '.wpl' => 'fas fa-file-audio',
-        '.ai' => 'fas fa-file-image',
-        '.bmp' => 'fas fa-file-image',
-        '.gif' => 'fas fa-file-image',
-        '.ico' => 'fas fa-file-image',
-        '.jpg' => 'fas fa-file-image',
-        '.jpeg' => 'fas fa-file-image',
-        '.png' => 'fas fa-file-image',
-        '.psd' => 'fas fa-file-image',
-        '.svg' => 'fas fa-file-image',
-        '.dvi' => 'fas fa-file-image',
-        '.tif' => 'fas fa-file-image',
-        '.tiff' => 'fas fa-file-image',
-        '.3g2' => 'fas fa-file-video',
-        '.3gp' => 'fas fa-file-video',
-        '.avi' => 'fas fa-file-video',
-        '.flv' => 'fas fa-file-video',
-        '.h264' => 'fas fa-file-video',
-        '.m4v' => 'fas fa-file-video',
-        '.mkv' => 'fas fa-file-video',
-        '.mov' => 'fas fa-file-video',
-        '.mp4' => 'fas fa-file-video',
-        '.wmv' => 'fas fa-file-video',
-        '.mpg' => 'fas fa-file-video',
-        '.mpeg' => 'fas fa-file-video',
-        '.wmv' => 'fas fa-file-video',
-        '.7z' => 'fas fa-file-archive',
-        '.arj' => 'fas fa-file-archive',   
-        '.deb' => 'fas fa-file-archive',
-        '.pkg' => 'fas fa-file-archive',
-        '.rar' => 'fas fa-file-archive',
-        '.rpm' => 'fas fa-file-archive',
-        '.tar.gz' => 'fas fa-file-archive',
-        '.gz' => 'fas fa-file-archive',     
-        '.zip' => 'fas fa-file-archive',
-        );
-    $mediaicons = array(
-        'youtube.com' => 'fab fa-youtube',
-        'icon-vimeo.com' => 'fab fa-vimeo-v',
-        'github.com' => 'fab fa-github',
-        'gitlab.com' => 'fab fa-gitlab',
-        'overleaf.com' => 'ai ai-overleaf',
-        'arxiv.org' => 'ai ai-arxiv',
-
-    );
-
-
-    
-    if ( isset ($mimetypes[$mimetype]) ) {
-        return $mimetypes[$mimetype];
-    }
-    elseif ( isset ($mediaicons[$urltype]) ) {
-        return $mediaicons[$urltype];
-    }
-    else {
-
-        return 'fas fa-globe';
-    }
-}
-
 /**
  * Translate a publication type
- * @param string $string    The publication type
+ * @param string $pub_slug  The publication type
  * @param string $num       sin (singular) or pl (plural)
  * @return string
  * @since 2.0.0
  */
-function tp_translate_pub_type($string, $num = 'sin') {
-    $types = get_tp_publication_types();
-    $max = count($types);
-    $translated_string = '';
-    $num = ( $num === 'sin' ) ? 1 : 2;
-    for ( $i = 1; $i < $max; $i++ ) {
-        if ( $string == $types[$i][0] ) {
-            $translated_string = $types[$i][$num];
-            break;
+function tp_translate_pub_type($pub_slug, $num = 'sin') {
+    global $tp_publication_types;
+    $types = $tp_publication_types->get();
+    
+    if ( isset( $types[$pub_slug] ) ) {
+        if ( $num == 'sin' ) {
+            return $types[$pub_slug]['i18n_singular'];
+        }
+        else {
+            return $types[$pub_slug]['i18n_plural'];
         }
     }
-    return $translated_string;
+    else {
+        return $pub_slug;
+    }
 }
 
 /** 
@@ -567,93 +147,86 @@ function tp_translate_pub_type($string, $num = 'sin') {
  * @param string $selected  --> 
  * @param string $mode      --> sng (singular titles) or pl (plural titles)
  * 
- * @version 2
+ * @version 3
  * @since 4.1.0
  * 
  * @return string
 */
 function get_tp_publication_type_options ($selected, $mode = 'sng') {
-     $selected = htmlspecialchars($selected);
-     $types = '';
-     $pub_types = get_tp_publication_types();
-     $m = ($mode === 'sng') ? 1 : 2;
-     $max = count($pub_types);
-     for ($i = 1; $i < $max; $i++) {
-         $current = ($pub_types[$i][0] == $selected && $selected != '') ? 'selected="selected"' : '';
-         $types = $types . '<option value="' . $pub_types[$i][0] . '" ' . $current . '>' . __('' . $pub_types[$i][$m] . '','teachpress') . '</option>';  
-     }
+    global $tp_publication_types;
+    $types = '';
+    $pub_types = $tp_publication_types->get();
+    usort($pub_types, 'sort_tp_publication_type_options');
+    foreach ( $pub_types as $row ) {
+        $title = ($mode === 'sng') ? $row['i18n_singular'] : $row['i18n_plural'];
+        $current = ( $row['type_slug'] == $selected && $selected != '' ) ? 'selected="selected"' : '';
+        $types = $types . '<option value="' . $row['type_slug'] . '" ' . $current . '>' . $title . '</option>';  
+    }
    return $types;
 }
 
 /**
- * Get the array structure for a parameter
- * @param string $type  --> values: course_array, publication_array
- * @return array 
+ * Sort function helper for get_tp_publication_type_options()
+ * Sorts the publication types after the i18n_singular string
+ * @param string $a
+ * @param string $b
+ * @return int
+ * @since 8.0.0
  */
-function get_tp_var_types($type) {
-    if ( $type == 'course_array' ) {
-        $ret = array( 
-            'course_id' => '',
-            'name' => '',
-            'type' => '',
-            'room' => '',
-            'lecturer' => '',
-            'date' => '',
-            'places' => '',
-            'start' => '',
-            'end' => '',
-            'semester' => '',
-            'comment' => '',
-            'rel_page' => '',
-            'parent' => '',
-            'visible' => '',
-            'waitinglist' => '',
-            'image_url' => '',
-            'strict_signup' => '',
-            'use_capabilites' => '');
-    }
-    if ( $type == 'publication_array' ) {
-        $ret = array( 
-            'pub_id' => '',
-            'title' => '',
-            'type' => '',
-            'bibtex' => '',
-            'author' => '',
-            'editor' => '',
-            'isbn' => '',
-            'url' => '',
-            'date' => '',
-            'urldate' => '',
-            'booktitle' => '',
-            'issuetitle' => '',
-            'journal' => '',
-            'volume' => '',
-            'number' => '',
-            'pages' => '',
-            'publisher' => '',
-            'address' => '',
-            'edition' => '',
-            'chapter' => '',
-            'institution' => '',
-            'organization' => '',
-            'school' => '',
-            'series' => '',
-            'crossref' => '',
-            'abstract' => '',
-            'howpublished' => '',
-            'key' => '',
-            'techtype' => '',
-            'comment' => '',
-            'note' => '',
-            'image_url' => '',
-            'doi' => '',
-            'is_isbn' => '',
-            'rel_page' => '',
-            'status' => '',
-            'added' => '',
-            'modified' => '',
-            'import_id' => 0);
-    }
+function sort_tp_publication_type_options ($a, $b) {
+    return strcmp($a['i18n_singular'], $b['i18n_singular']);
+}
+
+/**
+ * Returns the default structure for a publication array
+ * @return array 
+ * @since 9.0.0
+ */
+function tp_get_default_structure() {
+    $ret = array( 
+        'pub_id'            => '',
+        'title'             => '',
+        'type'              => '',
+        'bibtex'            => '',
+        'author'            => '',
+        'editor'            => '',
+        'isbn'              => '',
+        'url'               => '',
+        'date'              => '',
+        'urldate'           => '',
+        'booktitle'         => '',
+        'issuetitle'        => '',
+        'journal'           => '',
+        'issue'             => '',
+        'volume'            => '',
+        'number'            => '',
+        'pages'             => '',
+        'publisher'         => '',
+        'address'           => '',
+        'edition'           => '',
+        'chapter'           => '',
+        'institution'       => '',
+        'organization'      => '',
+        'school'            => '',
+        'series'            => '',
+        'crossref'          => '',
+        'abstract'          => '',
+        'howpublished'      => '',
+        'key'               => '',
+        'techtype'          => '',
+        'comment'           => '',
+        'note'              => '',
+        'image_url'         => '',
+        'image_target'      => '',
+        'image_ext'         => '',
+        'doi'               => '',
+        'is_isbn'           => '',
+        'rel_page'          => '',
+        'status'            => '',
+        'added'             => '',
+        'modified'          => '',
+        'use_capabilities'  => '',
+        'import_id'         => 0);
     return $ret;
 }
 
@@ -720,6 +293,52 @@ function tp_convert_file_size ($bytes) {
 }
 
 /**
+ * Converts an input(array or comma separated string) in a secured comma separated string
+ * 
+ * The method uses intval, floatval or htmlspecialchars for each element depending on the given
+ * $type (string, int, float)
+ * @param array|string $input
+ * @param string $type  The type of the elements: string, int, float
+ * @return string
+ * @since 8.0.0
+ */
+function tp_convert_input_to_string($input, $type = 'string') {
+    // if we have an array already
+    if ( is_array($input) ) {
+        $array = $input;
+    }
+    else {
+        // If we have a comma separated string
+        if ( strpos ($input, ',') !== false ) {
+            $array = explode(',',$input);
+        }
+        // If we don't know what we have, so we create an array
+        else {
+            $array[] = $input;
+        }
+    }
+
+    $max = count( $array );
+    $string = '';
+    
+    for( $i = 0; $i < $max; $i++ ) {
+        // Prepare element
+        switch ( $type ) :
+            case 'int':
+                $element = intval($array[$i]);
+                break;
+            case 'float':
+                $element = floatval($array[$i]);
+                break;
+            default:
+                $element = htmlspecialchars($array[$i]);
+        endswitch;
+        $string = ( $string === '' ) ? $element : $string . ',' . $element;
+    }
+    return $string;
+}
+
+/**
  * Writes data for the teachPress tinyMCE plugin in Javascript objects
  * @since 5.0.0
  */
@@ -735,7 +354,7 @@ function tp_write_data_for_tinymce () {
     $course_list[] = array( 'text' => '=== SELECT ===' , 'value' => 0 );
     $semester = get_tp_options('semester', '`setting_id` DESC');
     foreach ( $semester as $row ) {
-        $courses = tp_courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
+        $courses = TP_Courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
         foreach ($courses as $course) {
             $course_list[] = array( 'text' => $course->name . ' (' . $course->semester . ')' , 'value' => $course->course_id );
         }
@@ -754,7 +373,7 @@ function tp_write_data_for_tinymce () {
     // List of publication users
     $pub_user_list = array();
     $pub_user_list[] = array( 'text' => __('All','teachpress') , 'value' => '' );
-    $pub_users = tp_publications::get_pub_users();
+    $pub_users = TP_Publications::get_pub_users();
     foreach ($pub_users as $row) { 
         $user_data = get_userdata($row->user);
         if ( $user_data !== false ) {
@@ -765,16 +384,17 @@ function tp_write_data_for_tinymce () {
     // List of publication tags
     $pub_tag_list = array();
     $pub_tag_list[] = array( 'text' => __('All','teachpress'), 'value' => null );
-    $pub_tags = tp_tags::get_tags(array( 'group_by' => true ));
+    $pub_tags = TP_Tags::get_tags(array( 'group_by' => true ));
     foreach($pub_tags as $pub_tag){
 	$pub_tag_list[] = array( 'text' => $pub_tag->name, 'value' => intval($pub_tag->tag_id) );
     }
     
     // List of publication types
+    global $tp_publication_types;
     $pub_type_list = array();
-    $pub_types = get_tp_publication_types();
+    $pub_types = $tp_publication_types->get();
     foreach ( $pub_types as $pub_type ) {
-        $pub_type_list[] = array ( 'text' => $pub_type[1], 'value' => stripslashes($pub_type[0]) );
+        $pub_type_list[] = array ( 'text' => $pub_type['i18n_singular'], 'value' => stripslashes($pub_type['type_slug']) );
     }
     
     // List of publication templates
@@ -799,8 +419,8 @@ function tp_write_data_for_tinymce () {
         var teachpress_editor_url = '<?php echo admin_url( 'admin-ajax.php' ) . '?action=teachpressdocman&post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
         var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
-        var teachpress_course_module = <?php if (TEACHPRESS_COURSE_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
-        var teachpress_publication_module = <?php if (TEACHPRESS_PUBLICATION_MODULE === true) { echo 'true'; } else { echo 'false'; } ?>;
+        var teachpress_course_module = true;
+        var teachpress_publication_module = true;
     </script>
     <?php
 }

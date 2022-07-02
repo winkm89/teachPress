@@ -11,7 +11,7 @@
  * @package teachpress\core\ajax
  * @since 5.0.0
  */
-class tp_ajax {
+class TP_Ajax {
     /**
      * Adds a document headline
      * @param string $doc_name      The name of the document
@@ -20,7 +20,7 @@ class tp_ajax {
      * @access public
      */
     public static function add_document_headline( $doc_name, $course_id ) {
-        $file_id = tp_documents::add_document($doc_name, '', 0, $course_id);
+        $file_id = TP_Documents::add_document($doc_name, '', 0, $course_id);
         echo $file_id;
     }
     
@@ -32,7 +32,7 @@ class tp_ajax {
      * @access public
      */
     public static function change_document_name( $doc_id, $doc_name ) {
-        tp_documents::change_document_name($doc_id, $doc_name);
+        TP_Documents::change_document_name($doc_id, $doc_name);
         echo $doc_name;
     }
     
@@ -45,7 +45,7 @@ class tp_ajax {
      */
     public static function delete_document( $doc_id ) {
         $doc_id = intval($doc_id);
-        $data = tp_documents::get_document($doc_id);
+        $data = TP_Documents::get_document($doc_id);
         if ( $data['path'] !== '' ) {
             $uploads = wp_upload_dir();
             $test = @ unlink( $uploads['basedir'] . $data['path'] );
@@ -55,7 +55,7 @@ class tp_ajax {
                 return false;
             }
         }
-        tp_documents::delete_document($doc_id);
+        TP_Documents::delete_document($doc_id);
         echo 'true';
         return true;
     }
@@ -67,7 +67,7 @@ class tp_ajax {
      * @access public
      */
     public static function get_artefact_screen($artefact_id) {
-        $artefact = tp_artefacts::get_artefact($artefact_id);
+        $artefact = TP_Artefacts::get_artefact($artefact_id);
         echo '<!doctype html>';
         echo '<html>';
         echo '<head>';
@@ -99,11 +99,11 @@ class tp_ajax {
      */
     public static function get_assessment_screen($assessment_id) {
         global $current_user;
-        $assessment = tp_assessments::get_assessment($assessment_id);
-        $artefact = tp_artefacts::get_artefact($assessment['artefact_id']);
+        $assessment = TP_Assessments::get_assessment($assessment_id);
+        $artefact = TP_Artefacts::get_artefact($assessment['artefact_id']);
         $course_id = ( $assessment['course_id'] !== '' ) ? $assessment['course_id'] : $artefact['course_id'];
-        $capability = tp_courses::get_capability($course_id, $current_user->ID);
-        $student = tp_students::get_student($assessment['wp_id']);
+        $capability = TP_Courses::get_capability($course_id, $current_user->ID);
+        $student = TP_Students::get_student($assessment['wp_id']);
         $examiner = get_userdata($assessment['examiner_id']);
 
         // Check capability
@@ -133,7 +133,7 @@ class tp_ajax {
         echo '</tr>';
         echo '<tr>';
         echo '<td>' . __('Type','teachpress') . '</td>';
-        echo '<td>' . tp_admin::get_assessment_type_field('tp_type', $assessment['type']) . '</td>';
+        echo '<td>' . TP_Admin::get_assessment_type_field('tp_type', $assessment['type']) . '</td>';
         echo '</tr>';
         echo '<tr>';
         echo '<td>' . __('Value/Grade','teachpress') . '</td>';
@@ -145,7 +145,7 @@ class tp_ajax {
         echo '</tr>';
         echo '<tr>';
         echo '<td>' . __('Has passed','teachpress') . '</td>';
-        echo '<td>' . tp_admin::get_assessment_passed_field('tp_passed', $assessment['passed']) . '</td>';
+        echo '<td>' . TP_Admin::get_assessment_passed_field('tp_passed', $assessment['passed']) . '</td>';
         echo '</tr>';
         echo '<tr>';
         echo '<td>' . __('Date','teachpress') . '</td>';
@@ -171,11 +171,11 @@ class tp_ajax {
      */
     public static function get_author_publications( $author_id ) {
         $author_id = intval($author_id);
-        $pubs = tp_authors::get_related_publications($author_id, ARRAY_A);
+        $pubs = TP_Authors::get_related_publications($author_id, ARRAY_A);
         echo '<ol>';
         foreach ( $pubs as $pub) {
             echo '<li style="padding-left:10px;">';
-            echo '<a target="_blank" title="' . __('Edit publication','teachpress') .'" href="admin.php?page=teachpress/addpublications.php&pub_id=' . $pub['pub_id'] . '">' . tp_html::prepare_title($pub['title'], 'decode') . '</a>, ' . stripslashes($pub['type']) . ', ' . $pub['year'];
+            echo '<a target="_blank" title="' . __('Edit publication','teachpress') .'" href="admin.php?page=teachpress/addpublications.php&pub_id=' . $pub['pub_id'] . '">' . TP_HTML::prepare_title($pub['title'], 'decode') . '</a>, ' . stripslashes($pub['type']) . ', ' . $pub['year'];
             if ( $pub['is_author'] == 1 ) {
                 echo ' (' . __('as author','teachpress') . ')';
             }
@@ -194,7 +194,7 @@ class tp_ajax {
      * @access public
      */
     public static function get_generated_bibtex_key ($string) {
-        echo tp_publications::generate_unique_bibtex_key($string);
+        echo TP_Publications::generate_unique_bibtex_key($string);
     }
 
     /**
@@ -204,7 +204,7 @@ class tp_ajax {
      * @access public
      */
     public static function get_cite_screen ($cite_id) {
-        $publication = tp_publications::get_publication($cite_id, ARRAY_A);
+        $publication = TP_Publications::get_publication($cite_id, ARRAY_A);
         echo '<!doctype html>';
         echo '<html>';
         echo '<head>';
@@ -212,12 +212,12 @@ class tp_ajax {
 	echo '<title>teachPress - cite publication</title>';
         echo '</head>';
         echo '<body>';
-        echo '<div id="content">';
+        echo '<div class="content">';
         echo '<div class="wrap">';
         echo '<h3 class="nav-tab-wrapper"><a class="nav-tab nav-tab-active tp_cite_text" id="tp_cite_text_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('Text','teachpress') . '</a> <a class="nav-tab tp_cite_bibtex" id="tp_cite_bibtex_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('BibTeX','teachpress') . '</a></h3>';
         echo '<form name="form_cite" method="post">';
         echo '<input name="tp_cite_id" type="hidden" value="' . '"/>';
-        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="7" style="width:100%; border-top:none;">' . tp_export::text_row($publication) . '</textarea>';
+        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="7" style="width:100%; border-top:none;" title="' . __('Publication entry','teachpress') . '">' . TP_Export::text_row($publication) . '</textarea>';
         echo '</form>';
         echo '</div>';
         echo '</div>';
@@ -234,12 +234,13 @@ class tp_ajax {
      */
     public static function get_cite_text ($cite_id, $mode) {
         if ( $mode === 'bibtex' ) {
-            $publication = tp_publications::get_publication($cite_id, ARRAY_A);
-            echo tp_bibtex::get_single_publication_bibtex($publication);
+            $publication = TP_Publications::get_publication($cite_id, ARRAY_A);
+            $tags = TP_Tags::get_tags(array('pub_id' => $cite_id, 'output_type' => ARRAY_A));
+            echo TP_Bibtex::get_single_publication_bibtex($publication, $tags);
         }
         if ( $mode === 'text' ) {
-            $publication = tp_publications::get_publication($cite_id, ARRAY_A);
-            echo tp_export::text_row($publication);
+            $publication = TP_Publications::get_publication($cite_id, ARRAY_A);
+            echo TP_Export::text_row($publication);
         }
     }
 
@@ -252,7 +253,7 @@ class tp_ajax {
      */
     public static function get_document_name( $doc_id ) {
         $doc_id = intval($doc_id);
-        $data = tp_documents::get_document($doc_id);
+        $data = TP_Documents::get_document($doc_id);
         echo stripslashes($data['name']);
     }
     
@@ -276,8 +277,8 @@ class tp_ajax {
             );
         }
         else {
-            $field = tp_options::get_option_by_id($meta_field_id);
-            $data = tp_db_helpers::extract_column_data($field['value']);
+            $field = TP_Options::get_option_by_id($meta_field_id);
+            $data = TP_DB_Helpers::extract_column_data($field['value']);
         }
         
         echo '<!doctype html>';
@@ -387,7 +388,7 @@ class tp_ajax {
      * @access public
      */
     public static function get_mimetype_image( $filename ) {
-        echo get_tp_mimetype_images($filename);
+        echo TP_Icons::get_class($filename);
     }
 
     /**
@@ -399,7 +400,7 @@ class tp_ajax {
     public static function set_sort_order( $array ) {
         $i = 0;
         foreach ($array as $value) {
-            tp_documents::set_sort($value, $i);
+            TP_Documents::set_sort($value, $i);
             $i++;
         }
     }

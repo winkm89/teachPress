@@ -11,7 +11,7 @@
  * @package teachpress\core\ajax
  * @since 5.0.0
  */
-class tp_document_manager {
+class TP_Document_Manager {
     
     /**
      * Inits the document manager
@@ -80,24 +80,23 @@ class tp_document_manager {
             </div>
             <ul class="tp_filelist" id="tp_sortable">
                 <?php
-                $documents = tp_documents::get_documents($course_id);
+                $documents = TP_Documents::get_documents($course_id);
                 $upload_dir = wp_upload_dir();
                 foreach ($documents as $row) {
                     $class = 'tp_file tp_file_headline';
-                    $style = '';
                     $size = '';
                     $checkbox = '';
                     $name = '<span class="tp_file_name">' . stripslashes($row['name']) . '</span>';
                     if ( $row['path'] !== '' ) {
                         $class = 'tp_file';
-                        $style = 'background-image: url(' . get_tp_mimetype_images( $row['path'] ) . ');';
+                        $name = '<span class="tp_file_name"><i class="' . TP_Icons::get_class( $row['path'] ) . '"></i>' . stripslashes($row['name']) . '</span>';
                         $size = '<span class="tp_file_size">' . tp_convert_file_size($row['size']) . '</span>';
                     }
                     if ( $mode === 'tinyMCE' && $row['path'] !== '' ) {
                         $checkbox = '<input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' . $row['doc_id'] . '" class="tp_file_checkbox" data_1="' . esc_js($row['name']) . '" data_2="' . esc_url($upload_dir['baseurl'] . $row['path']) . '" value="' . $row['doc_id'] . '" />';
                         $name = '<label class="tp_file_label" for="tp_file_checkbox_' . $row['doc_id'] . '"><span class="tp_file_name">' . stripslashes($row['name']) . '</span></label>';
                     }
-                    echo '<li class="' . $class . '" id="tp_file_' . $row['doc_id'] . '" style="' . $style . '">' . $checkbox . $name . ' ' . $size . ' <span class="tp_file_actions"><a class="tp_file_view" href="' . $upload_dir['baseurl'] . $row['path'] . '" target="_blank">' . __('Show','teachpress') . '</a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Edit','teachpress') . '</a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Delete','teachpress') . '</a></span></li>';
+                    echo '<li class="' . $class . '" id="tp_file_' . $row['doc_id'] . '">' . $checkbox . $name . ' ' . $size . ' <span class="tp_file_actions"><a class="tp_file_view" href="' . $upload_dir['baseurl'] . $row['path'] . '" target="_blank">' . __('Show','teachpress') . '</a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Edit','teachpress') . '</a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Delete','teachpress') . '</a></span></li>';
                 }
                 ?>
             </ul>
@@ -153,10 +152,10 @@ class tp_document_manager {
                     $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&mimetype_input=" + file.name, 
                     function(text){
                         <?php if ( $mode === 'tinyMCE' ) { ?>
-                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '" style="background-image: url(' + text + ');"><input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' + file.id + '" disabled="disabled" class="tp_file_checkbox" data_1="' + file.name + '" data_2="" value=""/><label class="tp_file_label" for="tp_file_checkbox_' + file.id + '"><span class="tp_file_name">' +
+                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '"><input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' + file.id + '" disabled="disabled" class="tp_file_checkbox" data_1="' + file.name + '" data_2="" value=""/><label class="tp_file_label" for="tp_file_checkbox_' + file.id + '"><span class="tp_file_name"><i class="' + text + '"></i>' +
                         file.name + '</span></label> (<span class="tp_file_size">' + plupload.formatSize(0) + '/</span>' + plupload.formatSize(file.size) + ') ' + '<div class="tp_fileprogress"></div></li>');
                         <?php } else { ?>
-                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '" style="background-image: url(' + text + ');"><span class="tp_file_name">' +
+                        $('.tp_filelist').append('<li class="tp_file" id="' + file.id + '"><span class="tp_file_name"><i class="' + text + '"></i>' +
                         file.name + '</span> (<span class="tp_file_size">' + plupload.formatSize(0) + '/</span>' + plupload.formatSize(file.size) + ') ' + '<div class="tp_fileprogress"></div></li>');
                         <?php } ?>
                         console.log(file);
@@ -222,7 +221,7 @@ class tp_document_manager {
             $( "#tp_sortable" ).disableSelection();
             
             // Add headlines
-            $("#tp_add_headline_button").live("click", function() {
+            $("body").on("click", "#tp_add_headline_button", function() {
                 var value = $("#tp_add_headline_name").val();
                 if ( value !== '' ) {
                     $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&add_document=" + value + "&course_id=<?php echo $course_id; ?>", 
@@ -260,7 +259,7 @@ class tp_document_manager {
             }
             
             // Checkboxes for file inserts (tinyMCE Document Manager only)
-            $(".tp_file_checkbox").live( "click", function() {
+            $("body").on( "click", ".tp_file_checkbox", function() {
                 var value = '';
                 // var tp_saved_cookie = getCookie("teachpress_data_store");
                 $(".tp_file_checkbox").each(function( index ) {
@@ -272,7 +271,7 @@ class tp_document_manager {
             });
             
             // Edit documents: add menu
-            $(".tp_file_edit").live( "click", function() {
+            $("body").on( "click", ".tp_file_edit", function() {
                 var document_id = $(this).attr("document_id");
                 
                 $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&get_document_name=" + document_id, 
@@ -282,13 +281,13 @@ class tp_document_manager {
             });
             
             // Edit documents: cancel
-            $(".tp_file_edit_cancel").live( "click", function() {
+            $("body").on( "click", ".tp_file_edit_cancel", function() {
                 var document_id = $(this).attr("document_id");
                 $("#tp_file_edit_" + document_id).remove();
             });
             
             // Edit documents: save
-            $(".tp_file_edit_save").live( "click", function() {
+            $("body").on( "click", ".tp_file_edit_save", function() {
                 var document_id = $(this).attr("document_id");
                 var value = $("#tp_file_edit_text_" + document_id).val();
                 
@@ -300,7 +299,7 @@ class tp_document_manager {
             });
             
             // Delete documents
-            $(".tp_file_delete").live( "click", function() {
+            $("body").on( "click", ".tp_file_delete", function() {
                 var document_id = $(this).attr("document_id");
                 $("#tp_file_" + document_id).remove().hide();
                 $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&del_document=" + document_id, 
@@ -346,7 +345,7 @@ class tp_document_manager {
                 decimalPoint = ',',
                 isRtl = 0;
             </script>
-            <link rel="stylesheet" id="teachpress-document-manager-css"  href="<?php echo plugins_url(); ?>/teachpress/styles/teachpress_document_manager.css?ver=<?php echo get_tp_version(); ?>" type="text/css" media="all" />
+            <link rel="stylesheet" id="teachpress-document-manager-css"  href="<?php echo plugins_url( 'styles/teachpress_document_manager.css', dirname( __FILE__ ) ) . '?ver=' . get_tp_version(); ?>" type="text/css" media="all" />
         </head>
         <?php
     }
@@ -365,7 +364,7 @@ class tp_document_manager {
         // List of courses
         $semester = get_tp_options('semester', '`setting_id` DESC');
         foreach ( $semester as $row ) {
-            $courses = tp_courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
+            $courses = TP_Courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
             if ( count($courses) !== 0 ) {
                 echo '<optgroup label="' . $row->value . '">';
             }
@@ -398,10 +397,10 @@ class tp_document_manager {
             wp_enqueue_script('media-upload');
             add_thickbox();
     
-            wp_enqueue_script('teachpress-standard', plugins_url() . '/teachpress/js/backend.js');
+            wp_enqueue_script('teachpress-standard', plugins_url( 'js/backend.js', dirname( __FILE__ ) ) );
 
-            wp_enqueue_style('teachpress.css', plugins_url() . '/teachpress/styles/teachpress.css');
-            wp_enqueue_style('teachpress-jquery-ui.css', plugins_url() . '/teachpress/styles/jquery.ui.css');
+            wp_enqueue_style('teachpress.css', plugins_url( 'styles/teachpress.css', dirname( __FILE__ ) ) );
+            wp_enqueue_style('teachpress-jquery-ui.css', plugins_url( 'styles/jquery.ui.css', dirname( __FILE__ ) ) );
             wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
 
             do_action( 'admin_print_scripts' );
@@ -415,11 +414,11 @@ class tp_document_manager {
 
             // default
             if ( $post_id !== 0 && $course_id === 0 ) {
-                $course_id = intval (tp_courses::is_used_as_related_content($post_id) );
+                $course_id = intval (TP_Courses::is_used_as_related_content($post_id) );
             }
             // For user's selection
             else if ( $course_id !== 0 ) {
-                $post_id = tp_courses::get_course_data($course_id, 'rel_page');
+                $post_id = TP_Courses::get_course_data($course_id, 'rel_page');
             }
             
             echo '<body>';
@@ -429,13 +428,13 @@ class tp_document_manager {
             self::get_course_selector($course_id);
             
             if ( $course_id !== 0 ) { 
-                $capability = tp_courses::get_capability($course_id, $current_user->ID);
+                $capability = TP_Courses::get_capability($course_id, $current_user->ID);
                 // check capabilities
                 if ( $capability !== 'owner' && $capability !== 'approved' ) {
-                    get_tp_message(__('You have no capabilites to use this course','teachpress'), 'red');
+                    get_tp_message(__('You have no capabilities to use this course','teachpress'), 'red');
                 }
                 else {
-                    tp_document_manager::init($course_id, 'tinyMCE');
+                    TP_Document_Manager::init($course_id, 'tinyMCE');
                 }
             } 
             

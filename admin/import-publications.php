@@ -37,29 +37,29 @@ function tp_show_import_publication_page() {
     echo '<h3 class="nav-tab-wrapper"><a href="admin.php?page=teachpress/import.php&amp;tab=import" class="' . $set_menu_1 .'">' . __('Import') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=export" class="' . $set_menu_2 . '">' . __('Export') . '</a> <a href="admin.php?page=teachpress/import.php&amp;tab=exist" class="' . $set_menu_3 . '">' . __('List of imports','teachpress') . '</a></h3>';
     // For actions
     if ( isset($_POST['tp_submit']) || isset($_POST['tp_bookmark']) || isset($_POST['tp_delete']) ) {
-        tp_import_publication_page::import_actions($_POST);
+        TP_Import_Publication_Page::import_actions($_POST);
     }
     else {
         
         // Import
         if ( $tab === '' || $tab === 'import' ) {
-            tp_import_publication_page::import_tab($tab);
+            TP_Import_Publication_Page::import_tab($tab);
         }
         
         // Export
         if ( $tab === 'export' ) {
-            tp_import_publication_page::export_tab();
+            TP_Import_Publication_Page::export_tab();
         }
         
         // List of Imports
         if ( $tab === 'exist' && $import_id === 0 ) {
-            tp_import_publication_page::exist_tab($import_id, $delete_import, $checkbox);
+            TP_Import_Publication_Page::exist_tab($import_id, $delete_import, $checkbox);
         }
         
         // Show the list of publications, which were imported with the selected import
         if ( $tab === 'exist' && $import_id !== 0 ) {
-            $entries = tp_publications::get_publications( array( 'import_id' => $import_id, 'output_type' => ARRAY_A ) );
-            tp_import_publication_page::show_results($entries, 'history');
+            $entries = TP_Publications::get_publications( array( 'import_id' => $import_id, 'output_type' => ARRAY_A ) );
+            TP_Import_Publication_Page::show_results($entries, 'history');
         }
         
         echo '</div>';
@@ -71,7 +71,7 @@ function tp_show_import_publication_page() {
  * This class contains function for generating the import_publication_page
  * @since 6.0.0
  */
-class tp_import_publication_page {
+class TP_Import_Publication_Page {
     
     /**
      * This function executes all import action calls
@@ -90,14 +90,14 @@ class tp_import_publication_page {
         if ( $tp_bookmark !== '' && $checkbox !== '' ) {
             $max = count($checkbox);
             for ( $i = 0; $i < $max; $i++ ) {
-                tp_bookmarks::add_bookmark( intval($checkbox[$i]), $current_user->ID );
+                TP_Bookmarks::add_bookmark( intval($checkbox[$i]), $current_user->ID );
             }
             get_tp_message( __('Publications added to your list.','teachpress') );
         }
         
         // delete publication
         if ( $tp_delete !== '' && $checkbox !== '' ) {
-            tp_publications::delete_publications($post['checkbox']);
+            TP_Publications::delete_publications($post['checkbox']);
             get_tp_message( __('Removing successful','teachpress') );
         }
         
@@ -124,7 +124,7 @@ class tp_import_publication_page {
             if ( $file_name !== '' ) {
                 $bibtex =  file_get_contents ( $file_name );
                 // Check if string is utf8 or not
-                if ( tp_bibtex::is_utf8($bibtex) === false ) {
+                if ( TP_Bibtex::is_utf8($bibtex) === false ) {
                     $bibtex = utf8_encode($bibtex);
                 }
             }
@@ -134,21 +134,32 @@ class tp_import_publication_page {
             
             $settings = array(
                 'keyword_separator' => htmlspecialchars($post['keyword_option']),
-                'author_format' => htmlspecialchars($post['author_format']),
-                'overwrite' => isset( $post['overwrite']) ? true : false
+                'author_format'     => htmlspecialchars($post['author_format']),
+                'overwrite'         => isset( $post['overwrite'] ) ? true : false,
+                'ignore_tags'       => isset( $post['ignore_tags'] ) ? true : false,
             );
 
             // echo $bibtex;
             // add publications to database
-            $entries = tp_bibtex_import::init($bibtex, $settings);
+            $entries = TP_Bibtex_Import::init($bibtex, $settings);
+        }
+        
+        // import from PubMed
+        elseif ( isset($post['tp_pmid']) ) {
+
+            $settings = array(
+                'overwrite'         => isset( $post['overwrite'] ),
+                'ignore_tags'       => isset( $post['ignore_tags'] ) ? true : false    
+            );
+            $entries = TP_PubMed_Import::init($post['tp_pmid'], $settings);
         }
         
         // if there is no import
         else {
             $tp_entries = ( isset($post['tp_entries']) ) ? htmlspecialchars($post['tp_entries'] ) : '0';
-            $entries = tp_publications::get_publications( array( 'include' => $tp_entries, 'output_type' => ARRAY_A ) );
+            $entries = TP_Publications::get_publications( array( 'include' => $tp_entries, 'output_type' => ARRAY_A ) );
         }
-        tp_import_publication_page::show_results($entries);
+        TP_Import_Publication_Page::show_results($entries);
     }
     
     /**
@@ -168,16 +179,35 @@ class tp_import_publication_page {
                     <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
                 </div>
                 <textarea name="bibtex_area" id="bibtex_area" rows="20" style="width:100%;" title="<?php _e('Insert your BibTeX entries here','teachpress'); ?>"></textarea>
+                <div style="text-align: center;">
+                    <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
+                    <label for="tp_pmid">PMID</label>
+                    <input name="tp_pmid" id="tp_pmid" style="width:350px;" title="<?php _e('Comma-separated list of PubMed identifiers','teachpress'); ?>" type="text">
+                    <p style="text-align: center; font-size: small;"><a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a></p>
+                </div>
             </div>
             <div class="tp_postcontent_right">
                 <div class="postbox">
                     <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
-                    <?php if ( get_tp_option('import_overwrite') === '1' ) { ?>
                     <div class="inside">
-                        <p><strong><label for="overwrite"><?php _e('Publications','teachpress'); ?></label></strong></p>
-                        <?php echo tp_admin::get_checkbox('overwrite', __('Update existing publications','teachpress'), '', __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress')); ?>
+                        <?php 
+                        // Overwrite option
+                        if ( get_tp_option('import_overwrite') === '1' ) { 
+                            echo TP_Admin::get_checkbox(
+                                    'overwrite', 
+                                    __('Update existing publications','teachpress'), 
+                                    '', 
+                                    __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress'));
+                            echo '<br/>';
+                        }
+                        
+                        // Ignore tags option
+                        echo TP_Admin::get_checkbox(
+                                'ignore_tags', 
+                                __('Ignore Tags','teachpress'), 
+                                '', 
+                                __('Ignore tags or keywords in the import data.','teachpress')); ?>
                     </div>
-                    <?php } ?>
                     <div id="major-publishing-actions" style="text-align: center;">
                         <input name="tp_submit" type="submit" class="button-primary" value="<?php _e('Import'); ?>"/>
                     </div>
@@ -221,6 +251,12 @@ class tp_import_publication_page {
 
         // WordPress User informations
         $current_user = wp_get_current_user();
+        
+        // Debug info
+        if ( TEACHPRESS_DEBUG === true ) {
+            global $wpdb;
+            get_tp_message('Queries: ' . $wpdb->num_queries . ' | Time: ' . timer_stop() . 's');
+        }
 
         echo '<div class="wrap">';
         if ( $mode !== 'history' ) {
@@ -249,7 +285,7 @@ class tp_import_publication_page {
             $value = ( isset($_POST['tp_submit']) && isset ($_POST['bibtex_area']) ) ? intval($entry['entry_id']) : intval($entry['pub_id']);
             $author = ( array_key_exists('author', $entry) === true ) ? $entry['author'] : '';
             echo '<tr>';
-            if ( tp_bookmarks::bookmark_exists($value, $current_user->ID) === true ) {
+            if ( TP_Bookmarks::bookmark_exists($value, $current_user->ID) === true ) {
                 echo '<th></th>';
             }
             else {
@@ -259,7 +295,14 @@ class tp_import_publication_page {
             echo '<td>' . $value . '</td>';
             echo '<td>' . tp_translate_pub_type( $entry['type'] ) . '</td>';
             echo '<td>' . $author . '</td>';
-            echo '<td>' . $entry['year'] . '</td>';
+            echo '<td>';
+            if ( array_key_exists('year', $entry) ) {
+                echo $entry['year'];
+            }
+            elseif ( array_key_exists('date', $entry) ) {
+                echo $entry['date'];
+            }
+            echo '</td>';
             echo '</tr>';
             $array_id .= $value . ',';
         }
@@ -289,7 +332,7 @@ class tp_import_publication_page {
                     <select name="tp_user" id="tp_user">
                         <option value="all"><?php _e('All','teachpress'); ?></option>
                         <?php
-                        $row = tp_publications::get_pub_users();
+                        $row = TP_Publications::get_pub_users();
                         foreach($row as $row) {
                             $user_info = get_userdata($row->user);
                             if ( $user_info != false ) { 
