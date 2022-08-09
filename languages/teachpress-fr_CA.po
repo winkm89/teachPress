@@ -1,0 +1,2171 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: teachPress v5.0.13\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-12-20 23:23+0100\n"
+"PO-Revision-Date: 2022-02-20 16:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: French (Canada)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Textdomain-Support: yes\n"
+"Language: fr_CA\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Loco-Version: 2.5.5; wp-5.8.2"
+
+# @ teachpress
+#: core/admin.php:30
+msgid "A database update is necessary"
+msgstr "Une mise à jour de la base de données est nécessaire"
+
+# @ teachpress
+#: admin/add-publication.php:269
+msgid "A not vissible private comment"
+msgstr "Un commentaire privé non visible"
+
+# @ teachpress
+#: admin/add-publication.php:718
+msgid "A short summary of the publication"
+msgstr "Un bref résumé de la publication"
+
+# @ teachpress
+#: admin/add-publication.php:377
+msgid "A simple unique key without spaces"
+msgstr "Une clé unique simple, sans espace"
+
+# @ teachpress
+#: admin/add-publication.php:719 core/shortcodes.php:931
+#: core/publications/templates.php:435
+msgid "Abstract"
+msgstr "Résumé"
+
+# @ teachpress
+#: core/class-export.php:80 core/class-export.php:144
+msgid "Access denied"
+msgstr "Accès refusé"
+
+# @ teachpress
+#: core/class-document-manager.php:79
+msgid "Add"
+msgstr "Ajouter"
+
+# @ teachpress
+#: admin/add-publication.php:102
+msgid "Add a new publication"
+msgstr "Ajouter une nouvelle publication"
+
+# @ teachpress
+#: admin/settings.php:369 admin/settings.php:424
+msgid "Add element"
+msgstr "Ajouter un élément"
+
+# @ teachpress
+#: core/class-document-manager.php:77
+msgid "Add headline"
+msgstr "Ajoutez un titre"
+
+# @ teachpress
+#: admin/add-publication.php:443
+msgid "Add Image"
+msgstr "Ajouter une image"
+
+# @ teachpress
+#: teachpress.php:129 teachpress.php:130 admin/add-publication.php:121
+#: admin/settings.php:410 admin/settings.php:410
+#: admin/show-publications.php:428
+msgid "Add new"
+msgstr "Ajouter une publication"
+
+# @ teachpress
+#: admin/settings.php:612
+msgid "Add term"
+msgstr "Ajouter un semestre"
+
+# @ teachpress
+#: admin/import-publications.php:267 admin/show-publications.php:288
+#: admin/show-publications.php:474
+msgid "Add to your own list"
+msgstr "Ajouter à votre propre liste"
+
+# @ teachpress
+#: admin/settings.php:608
+msgid "Add type"
+msgstr "Ajouter un type"
+
+# @ teachpress
+#: admin/add-publication.php:799
+msgid "Add/Upload"
+msgstr "Ajouter/Télécharger"
+
+# @ teachpress
+#: admin/add-publication.php:281
+msgid "Additional information"
+msgstr "Informations supplémentaires"
+
+# @ teachpress
+#: admin/add-publication.php:622
+#| msgid "address"
+msgid "Address"
+msgstr "Adresse"
+
+# @ teachpress
+#: core/class-ajax.php:360
+msgid "Admin"
+msgstr "Administrateur"
+
+# @ teachpress
+#: admin/import-publications.php:333 core/general.php:397 core/general.php:408
+msgid "All"
+msgstr "Tous"
+
+# @ teachpress
+#: core/shortcodes.php:208
+msgid "All authors"
+msgstr "Tous les auteurs"
+
+# @ teachpress
+#: core/publications/class-books-widget.php:44
+msgid "All books"
+msgstr "Tous les ouvrages"
+
+# @ teachpress
+#: admin/show-publications.php:427
+msgid "All publications"
+msgstr "Toutes les publications"
+
+# @ teachpress
+#: admin/show-publications.php:368 core/shortcodes.php:227
+msgid "All tags"
+msgstr "Tous les mots-clés"
+
+# @ teachpress
+#: admin/show-publications.php:388 core/shortcodes.php:194
+msgid "All types"
+msgstr "Tous les types"
+
+# @ teachpress
+#: core/shortcodes.php:216
+msgid "All users"
+msgstr "Tous les utilisateurs"
+
+# @ teachpress
+#: admin/show-publications.php:411 core/shortcodes.php:184
+msgid "All years"
+msgstr "Toutes les années"
+
+# @ teachpress
+#: admin/settings.php:276
+#| msgid "Allow optional overwriting for publication import"
+msgid "Allow optional updating for publication import"
+msgstr "Permettre une mise à jour optionnelle pour l'importation"
+
+# @ teachpress
+#: core/class-ajax.php:300
+msgid "Allowed chars"
+msgstr "Caractères autorisés"
+
+#: core/publications/templates.php:429
+msgid "Altmetric"
+msgstr "Altmetric"
+
+# @ teachpress
+#: admin/add-publication.php:730
+msgid "An unusual method for publishing"
+msgstr "Une méthode inhabituelle pour la publication"
+
+# @ teachpress
+#: core/class-update.php:34
+msgid "An update is not necessary."
+msgstr "Une mise à jour n'est pas nécessaire."
+
+# @ teachpress
+#: core/admin.php:136
+msgid "Apr"
+msgstr "Avr"
+
+# @ teachpress
+#: core/class-ajax.php:131
+msgid "Artefact"
+msgstr "Artefact"
+
+# @ teachpress
+#: core/class-ajax.php:180
+msgid "as author"
+msgstr "as author"
+
+# @ teachpress
+#: core/class-ajax.php:183
+msgid "as editor"
+msgstr "as editor"
+
+# @ teachpress
+#: core/admin.php:140
+msgid "Aug"
+msgstr "Août"
+
+# @ teachpress
+#: admin/add-publication.php:391 admin/import-publications.php:275
+#: admin/show-publications.php:510
+msgid "Author(s)"
+msgstr "Auteur(s)"
+
+# @ teachpress
+#: admin/import-publications.php:218
+msgid "Author/Editor Format"
+msgstr "Format auteur/éditeur"
+
+# @ teachpress
+#: teachpress.php:143 teachpress.php:144 admin/class-authors-page.php:100
+msgid "Authors"
+msgstr "Auteurs"
+
+# @ teachpress
+#: admin/settings.php:255
+msgid "Automatic related content"
+msgstr "Automatic related content"
+
+#: admin/settings.php:461
+msgid "Available templates for publication lists"
+msgstr "Patrons disponibles pour les listes de publications"
+
+#: core/publications/default-publication-types.php:71
+msgid "Bachelor Theses"
+msgstr "Thèses de baccalauréat"
+
+#: core/publications/default-publication-types.php:70
+msgid "Bachelor Thesis"
+msgstr "Thèse de baccalauréat"
+
+# @ teachpress
+#: admin/import-publications.php:263 admin/show-publications.php:161
+msgid "Back"
+msgstr "Arrière"
+
+# @ teachpress
+#: admin/settings.php:170
+msgid "Backend access for course module"
+msgstr "Accès backend pour le module de cours"
+
+# @ teachpress
+#: admin/settings.php:170
+msgid "Backend access for publication module"
+msgstr "Accès Backend pour le module de publication"
+
+# @ teachpress
+#: admin/show-publications.php:159 core/class-ajax.php:217
+#: core/publications/templates.php:452
+msgid "BibTeX"
+msgstr "BibTeX"
+
+# @ teachpress
+#: admin/settings.php:270
+msgid "BibTeX special chars"
+msgstr "BibTeX caractères spéciaux"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:23
+msgid "Book"
+msgstr "Ouvrage"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:95
+msgid "Book Chapter"
+msgstr "Chapitre d'ouvrage"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:96
+msgid "Book Chapters"
+msgstr "Chapitres d'ouvrage"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:34
+msgid "Booklet"
+msgstr "Brochure"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:35
+msgid "Booklets"
+msgstr "Livrets"
+
+# @ teachpress
+#: admin/add-publication.php:234
+msgid "Bookmarks"
+msgstr "Favoris"
+
+# @ teachpress
+#: core/publications/class-books-widget.php:69
+#: core/publications/default-publication-types.php:24
+msgid "Books"
+msgstr "Ouvrages"
+
+# @ teachpress
+#: admin/add-publication.php:529
+#| msgid "booktitle"
+msgid "Booktitle"
+msgstr "Titre de l'ouvrage"
+
+# @ teachpress
+#: admin/class-authors-page.php:121 admin/class-tags-page.php:125
+#: admin/show-publications.php:470
+msgid "Bulk actions"
+msgstr "Actions groupées"
+
+# @ teachpress
+#: admin/show-publications.php:130
+msgid "Bulk edit executed"
+msgstr "Bulk edit executed"
+
+# @ teachpress
+#: admin/show-publications.php:213
+msgid "Bulk editing"
+msgstr "Bulk editing"
+
+#: admin/settings.php:464
+msgid "But you can change the directory for the templates."
+msgstr ""
+
+#: admin/settings.php:516
+msgid "by"
+msgstr "par"
+
+# @ teachpress
+# @ default
+#: admin/class-authors-page.php:44 admin/class-tags-page.php:38
+#: admin/import-publications.php:390 admin/show-publications.php:437
+msgid "Cancel"
+msgstr "Annuler"
+
+# @ teachpress
+#: admin/class-authors-page.php:110 admin/class-tags-page.php:114
+#: admin/show-publications.php:460
+msgid "Cancel the search"
+msgstr "Arrêter la recherche"
+
+#: admin/settings.php:561
+msgid "Cardinality"
+msgstr "Cardinalité"
+
+#: admin/settings.php:464
+msgid "Changes in the templates will be overwritten by updates of the plugin."
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:647 core/publications/templates.php:545
+msgid "Chapter"
+msgstr "Chapitre"
+
+# @ teachpress
+#: admin/import-publications.php:178
+msgid "Choose a BibTeX file for upload"
+msgstr "Choose a BibTeX file for upload"
+
+#: admin/show-publications.php:312
+msgid "Cite"
+msgstr ""
+
+#: admin/show-publications.php:607
+msgid "Cite publication"
+msgstr ""
+
+# @ teachpress
+#: admin/class-tags-page.php:232 admin/class-tags-page.php:236
+#: admin/import-publications.php:294 admin/settings.php:384
+#: admin/show-publications.php:308 admin/show-publications.php:312
+msgid "Click to edit"
+msgstr "Cliquez pour éditer"
+
+# @ teachpress
+#: core/publications/templates.php:627
+msgid "Close"
+msgstr "Fermer"
+
+#: admin/settings.php:562
+msgid "Collation"
+msgstr ""
+
+# @ teachpress
+#: core/publications/default-publication-types.php:45
+msgid "Collection"
+msgstr "Recueil"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:46
+msgid "Collections"
+msgstr "Recueils"
+
+#: admin/settings.php:560
+msgid "Column"
+msgstr ""
+
+#: admin/import-publications.php:185
+msgid "Comma-separated list of PubMed identifiers"
+msgstr ""
+
+# @ teachpress
+#: core/class-ajax.php:143 core/class-export.php:117
+msgid "Comment"
+msgstr "Commentaire"
+
+# @ teachpress
+#: admin/add-publication.php:262
+msgid "Comments"
+msgstr "Commentaires"
+
+# @ teachpress
+#: core/class-ajax.php:114
+msgid "Complete Course"
+msgstr "Complete Course"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:56
+msgid "Conference"
+msgstr "Conférence"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:57
+msgid "Conferences"
+msgstr "Conférences"
+
+# @ teachpress
+#: admin/settings.php:765
+msgid "Continue"
+msgstr "Continuer"
+
+# @ teachpress
+#: admin/add-publication.php:105 admin/add-publication.php:215
+#: core/admin.php:387
+msgid "Create"
+msgstr "Créer"
+
+# @ teachpress
+#: admin/add-publication.php:16
+msgid "Create a new publication"
+msgstr "Créer une nouvelle publication"
+
+# @ teachpress
+#: admin/settings.php:256
+msgid "Create an automatic related content with every new publication"
+msgstr "Create an automatic related content with every new publication"
+
+# @ teachpress
+#: admin/add-publication.php:493
+msgid "Create related content"
+msgstr "Créer le contenu associé"
+
+# @ teachpress
+#: core/class-export.php:129
+msgid "Created on"
+msgstr "Créé le"
+
+# @ teachpress
+#: admin/add-publication.php:707
+#| msgid "crossref"
+msgid "Crossref"
+msgstr "Référence croisée"
+
+# @ teachpress
+#: admin/add-publication.php:304 admin/add-publication.php:329
+msgid "Current"
+msgstr "Actuel(le)"
+
+# @ teachpress
+#: core/admin.php:403
+msgid "Custom meta data"
+msgstr "Custom meta data"
+
+# @ teachpress
+#: admin/import-publications.php:216
+msgid "Data options"
+msgstr "Data options"
+
+#: admin/settings.php:302
+msgid "Database"
+msgstr ""
+
+# @ teachpress
+#: admin/settings.php:781
+msgid "Database uninstalled"
+msgstr "Database uninstalled"
+
+# @ teachpress
+#: core/class-ajax.php:151 core/class-export.php:102
+msgid "Date"
+msgstr "Date"
+
+# @ teachpress
+#: admin/add-publication.php:411
+#| msgid "date of publishing"
+msgid "Date of publishing"
+msgstr "Date de publication"
+
+# @ teachpress
+#: core/admin.php:144
+msgid "Dec"
+msgstr "Déc"
+
+#: core/general.php:390
+msgid "Default"
+msgstr ""
+
+# @ teachpress
+#: admin/settings.php:247
+msgid "Default category for related content"
+msgstr "Default category for related content"
+
+#: admin/add-publication.php:446 admin/add-publication.php:447
+msgid "Define the link target for the image."
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:309 admin/class-authors-page.php:43
+#: admin/class-authors-page.php:122 admin/class-authors-page.php:239
+#: admin/class-authors-page.php:239 admin/class-tags-page.php:37
+#: admin/class-tags-page.php:126 admin/class-tags-page.php:236
+#: admin/class-tags-page.php:236 admin/import-publications.php:267
+#: admin/import-publications.php:389 admin/import-publications.php:397
+#: admin/settings.php:384 admin/settings.php:384
+#: admin/show-publications.php:229 admin/show-publications.php:312
+#: admin/show-publications.php:312 admin/show-publications.php:436
+#: admin/show-publications.php:475 core/class-ajax.php:87
+#: core/class-ajax.php:159 core/class-document-manager.php:99
+#: core/class-document-manager.php:193 core/class-document-manager.php:231
+msgid "Delete"
+msgstr "Supprimer"
+
+#: admin/add-publication.php:346
+msgid "Delete bookmark for"
+msgstr ""
+
+# @ teachpress
+#: admin/show-publications.php:223
+msgid "Delete current tags"
+msgstr "Delete current tags"
+
+# @ teachpress
+#: admin/settings.php:423
+msgid "Delete elemtent"
+msgstr "Delete elemtent"
+
+# @ teachpress
+#: admin/show-publications.php:293
+msgid "Delete from your own list"
+msgstr "Delete from your own list"
+
+# @ teachpress
+#: admin/show-publications.php:345 core/shortcodes.php:474
+msgid "Delete tag as filter"
+msgstr "Supprimer l'étiquette comme filtre"
+
+#: admin/settings.php:60
+msgid "Deleted"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:520
+msgid "Detailed information"
+msgstr "Informations détaillées"
+
+#: core/publications/default-publication-types.php:85
+msgid "Diploma Theses"
+msgstr ""
+
+#: core/publications/default-publication-types.php:84
+msgid "Diploma Thesis"
+msgstr ""
+
+# @ teachpress
+#: admin/show-publications.php:36
+msgid "Display publications"
+msgstr "Afficher les publications"
+
+# @ teachpress
+#: admin/settings.php:776
+msgid "Do you really want to delete all teachpress database tables?"
+msgstr "Do you really want to delete all teachpress database tables?"
+
+# @ teachpress
+#: admin/settings.php:705
+msgid "Do you really want to delete the selected meta field?"
+msgstr "Do you really want to delete the selected meta field?"
+
+# @ teachpress
+#: admin/class-authors-page.php:42 admin/class-tags-page.php:36
+#: admin/import-publications.php:388 admin/show-publications.php:435
+msgid "Do you want to delete the selected items?"
+msgstr "Voulez-vous supprimer les éléments sélectionnés?"
+
+# @ teachpress
+#: core/class-document-manager.php:75
+msgid "Documents"
+msgstr "Documents"
+
+# @ teachpress
+#: admin/add-publication.php:778 admin/add-publication.php:779
+msgid "DOI number"
+msgstr "Numéro DOI"
+
+#: admin/import-publications.php:221
+msgid "Dynamic detection"
+msgstr ""
+
+# @ teachpress
+#: admin/show-publications.php:317 core/class-export.php:274
+#: core/class-export.php:303 core/feeds.php:59 core/shortcodes.php:850
+#: core/publications/templates.php:421 core/publications/templates.php:535
+msgid "Ed."
+msgstr "Ed."
+
+# @ teachpress
+#: admin/class-tags-page.php:236 admin/settings.php:384
+#: admin/show-publications.php:312 admin/show-publications.php:471
+#: core/class-document-manager.php:99 core/class-document-manager.php:193
+#: core/class-document-manager.php:231
+msgid "Edit"
+msgstr "Modifier"
+
+# @ teachpress
+#: admin/add-publication.php:105 core/class-ajax.php:178
+msgid "Edit publication"
+msgstr "Modifier publication"
+
+# @ teachpress
+#: admin/add-publication.php:635
+#| msgid "edition"
+msgid "Edition"
+msgstr "Édition"
+
+# @ teachpress
+#: admin/add-publication.php:403
+msgid "Editor(s)"
+msgstr "Editeur(s)"
+
+# @ teachpress
+#: core/shortcodes.php:1178
+msgid "Enter search word"
+msgstr "Entrez vos mots-clés"
+
+# @ teachpress
+#: admin/class-authors-page.php:193 admin/class-tags-page.php:196
+#: admin/show-publications.php:561 core/general.php:61
+msgid "entries"
+msgstr "Entrées"
+
+# @ teachpress
+#: admin/class-authors-page.php:190 admin/class-tags-page.php:193
+#: admin/show-publications.php:558
+msgid "entry"
+msgstr "entrée"
+
+#: core/publications/class-pubmed-import.php:80
+msgid "Error: Failed to parse PubMed XML"
+msgstr ""
+
+# @ teachpress
+#: core/class-ajax.php:155
+msgid "Examiner"
+msgstr "Examinateur"
+
+# @ teachpress
+#: admin/settings.php:291
+msgid "Example for publications of a single tag (tag = tag-id):"
+msgstr "Exemple pour les publications d'une seule étiquette (tag = tag-id):"
+
+# @ teachpress
+#: admin/settings.php:289
+msgid "Example for publications of a single user (id = WordPress user-ID):"
+msgstr ""
+"Exemple pour les publications d'un seul utilisateur (id = WordPress "
+"utilisateur-ID):"
+
+# @ default
+# @ teachpress
+#: admin/show-publications.php:195
+msgid "Export"
+msgstr "Exporter"
+
+#: admin/add-publication.php:461
+msgid "External Image Link"
+msgstr ""
+
+#: admin/add-publication.php:452
+msgid "External URL"
+msgstr ""
+
+# @ teachpress
+#: core/admin.php:134
+msgid "Feb"
+msgstr "Fev"
+
+# @ teachpress
+#: admin/settings.php:659
+msgid "Field added"
+msgstr "Field added"
+
+# @ teachpress
+#: admin/settings.php:715
+msgid "Field deleted"
+msgstr "Field deleted"
+
+# @ teachpress
+#: admin/settings.php:353 admin/settings.php:643 core/class-ajax.php:299
+msgid "Field name"
+msgstr "Nom du champ"
+
+# @ teachpress
+#: core/class-ajax.php:316
+msgid "Field type"
+msgstr "Type de champ"
+
+# @ teachpress
+#: admin/class-authors-page.php:289 core/class-export.php:31
+#: core/class-export.php:162
+msgid "First name"
+msgstr "Prénom"
+
+# @ teachpress
+#: core/general.php:67
+msgid "first page"
+msgstr "Première Page"
+
+# @ teachpress
+#: core/publications/templates.php:775 core/publications/templates.php:778
+msgid "Follow DOI:"
+msgstr "Suivez DOI:"
+
+# @ teachpress
+#: admin/show-publications.php:40
+msgid "For a publication list with tag cloud:"
+msgstr "Pour une liste de publications avec nuage de tags:"
+
+# @ teachpress
+#: admin/show-publications.php:39
+msgid "For a single publication:"
+msgstr "Pour une seule publication:"
+
+# @ teachpress
+#: admin/settings.php:287
+msgid "For all publications:"
+msgstr "Pour toutes les publications:"
+
+# @ teachpress
+#: admin/settings.php:142
+#| msgid "for courses"
+msgid "For courses"
+msgstr "pour les cours"
+
+# @ teachpress
+#: admin/show-publications.php:41
+msgid "For normal publication lists:"
+msgstr "Pour les listes de publication normales:"
+
+# @ teachpress
+#: admin/settings.php:142
+#| msgid "for publications"
+msgid "For publications"
+msgstr "pour les publications"
+
+# @ teachpress
+#: admin/add-publication.php:418 admin/show-publications.php:310
+#: core/publications/templates.php:175 core/publications/templates.php:528
+msgid "Forthcoming"
+msgstr "À paraître"
+
+# @ teachpress
+#: core/class-export.php:110
+msgid "free places"
+msgstr "places gratuites"
+
+# @ teachpress
+#: admin/settings.php:212 admin/settings.php:214
+msgid "Frontend styles"
+msgstr "styles Frontend"
+
+# @ teachpress
+#: admin/settings.php:85
+msgid "General"
+msgstr "Général"
+
+# @ teachpress
+#: admin/add-publication.php:361
+msgid "General information"
+msgstr "Informations générales"
+
+# @ teachpress
+#: admin/add-publication.php:380
+msgid "Generate BibTeX key"
+msgstr "Generate BibTeX key"
+
+# @ teachpress
+#: core/deprecated.php:45
+msgid ""
+"get_tp_publication() is deprecated since teachpress 5.0.0. Use "
+"tp_publications::get_publication() instead."
+msgstr ""
+"get_tp_publication() is deprecated since teachpress 5.0.0. Use "
+"tp_publications::get_publication() instead."
+
+# @ teachpress
+#: core/deprecated.php:59
+msgid ""
+"get_tp_publications() is deprecated since teachpress 5.0.0. Use "
+"tp_publications::get_publications() instead."
+msgstr ""
+"get_tp_publications() is deprecated since teachpress 5.0.0. Use "
+"tp_publications::get_publications() instead."
+
+# @ teachpress
+#: core/deprecated.php:31
+msgid ""
+"get_tp_tag_cloud() is deprecated since teachpress 5.0.0. Use tp_tags::"
+"get_tag_cloud() instead."
+msgstr ""
+"get_tp_tag_cloud() is deprecated since teachpress 5.0.0. Use tp_tags::"
+"get_tag_cloud() instead."
+
+# @ teachpress
+#: core/deprecated.php:19
+msgid ""
+"get_tp_tags() is deprecated since teachpress 5.0.0. Use tp_tags::get_tags() "
+"instead."
+msgstr ""
+"get_tp_tags() is deprecated since teachpress 5.0.0. Use tp_tags::get_tags() "
+"instead."
+
+# @ teachpress
+#: core/admin.php:53
+msgid "Grade"
+msgstr "Qualité"
+
+# @ teachpress
+#: core/class-ajax.php:147
+msgid "Has passed"
+msgstr "A réussi"
+
+# @ teachpress
+#: core/class-ajax.php:364
+msgid "Hidden"
+msgstr "Caché"
+
+# @ teachpress
+#: admin/add-publication.php:731
+#| msgid "howpublished"
+msgid "Howpublished"
+msgstr "Howpublished"
+
+#. Author URI of the plugin
+msgid "http://mtrv.wordpress.com/"
+msgstr ""
+
+#. URI of the plugin
+msgid "http://mtrv.wordpress.com/teachpress/"
+msgstr ""
+
+# @ default
+# @ teachpress
+#: admin/class-authors-page.php:152
+msgid "ID"
+msgstr "Identifiant"
+
+#: admin/import-publications.php:200
+msgid ""
+"If the bibtex key is similar with a publication in the database, teachPress "
+"updates this publication with the import information."
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:742
+msgid ""
+"If there is no author or editor given, so this field is used for the sorting."
+msgstr ""
+"S'il n'y a pas d'auteur ou d'éditeur, ce champ est utilisé pour le tri."
+
+#: admin/add-publication.php:460
+msgid ""
+"If you choice an external link target for the image, then you can define the "
+"URL of this target here."
+msgstr ""
+
+#: admin/settings.php:243
+msgid ""
+"If you create a publication you can define a link to related content. It is "
+"kind of a \"more information link\", which helps you to connect a "
+"course/publication with a page. If you want to use custom post types instead "
+"of pages, so you can set it here."
+msgstr ""
+
+#: admin/import-publications.php:207
+msgid "Ignore Tags"
+msgstr ""
+
+#: admin/import-publications.php:209
+msgid "Ignore tags or keywords in the import data."
+msgstr ""
+
+#: admin/add-publication.php:431
+msgid "Image"
+msgstr ""
+
+#: admin/add-publication.php:446
+msgid "Image Link Target"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:440
+msgid "Image URL"
+msgstr "URL de l'image"
+
+# @ default
+#: admin/settings.php:266
+#| msgid "Import/Export"
+msgid "Import / Export"
+msgstr "Importer/Exporter"
+
+# @ teachpress
+#: admin/import-publications.php:191
+msgid "Import options"
+msgstr "Options d'importation"
+
+# @ teachpress
+#: admin/import-publications.php:265
+msgid "Imported Publications"
+msgstr "Publications importées"
+
+# @ teachpress
+#: core/class-export.php:270 core/class-export.php:299 core/feeds.php:72
+#: core/shortcodes.php:772 core/shortcodes.php:824
+#: templates/tp_template_2021.php:22 core/publications/templates.php:375
+msgid "In"
+msgstr "Dans"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:106
+msgid "Incollection"
+msgstr "Recueil"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:107
+msgid "Incollections"
+msgstr "Recueils"
+
+#: admin/settings.php:304
+msgid "Index status"
+msgstr ""
+
+# @ teachpress
+#: core/publications/default-publication-types.php:118
+msgid "Inproceedings"
+msgstr "Actes"
+
+# @ teachpress
+#: admin/add-publication.php:799
+msgid "Insert a file from the WordPress Media Library"
+msgstr "Insérez un fichier de la Médiathèque WordPress"
+
+# @ teachpress
+#: admin/import-publications.php:181
+msgid "Insert your BibTeX entries here"
+msgstr "Insérez vos entrées BibTeX ici"
+
+# @ teachpress
+#: core/admin.php:36
+msgid "Install database"
+msgstr "Install database"
+
+# @ teachpress
+#: admin/add-publication.php:659
+#| msgid "institution"
+msgid "Institution"
+msgstr "Institution"
+
+# @ teachpress
+#: admin/add-publication.php:769
+msgid "ISBN"
+msgstr "ISBN"
+
+# @ teachpress
+#: admin/add-publication.php:766
+msgid "ISBN/ISSN"
+msgstr "ISBN/ISSN"
+
+#: core/publications/templates.php:541
+msgid "iss."
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:770
+msgid "ISSN"
+msgstr "ISSN"
+
+#: admin/add-publication.php:576
+msgid "Issue"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:541
+#| msgid "issuetitle"
+msgid "Issuetitle"
+msgstr "Issuetitle"
+
+# @ teachpress
+#: admin/class-authors-page.php:264 admin/class-tags-page.php:262
+#: admin/show-publications.php:22
+msgid "Items per page"
+msgstr "Articles par page"
+
+# @ teachpress
+#: core/admin.php:133
+msgid "Jan"
+msgstr "Janv."
+
+# @ teachpress
+#: admin/add-publication.php:412 admin/add-publication.php:789
+msgid "JJJJ-MM-TT"
+msgstr "JJJJ-MM-TT"
+
+# @ teachpress
+#: admin/add-publication.php:553
+#| msgid "journal"
+msgid "Journal"
+msgstr "Journal"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:12
+msgid "Journal Article"
+msgstr "Article de journal"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:13
+msgid "Journal Articles"
+msgstr "Articles de journaux"
+
+# @ teachpress
+#: core/admin.php:139
+msgid "Jul"
+msgstr "Juil"
+
+# @ teachpress
+#: core/admin.php:138
+msgid "Jun"
+msgstr "Juin"
+
+# @ teachpress
+#: admin/add-publication.php:743
+msgid "Key"
+msgstr "Clé"
+
+#: admin/settings.php:556
+msgid "Key_name"
+msgstr ""
+
+# @ teachpress
+#: admin/import-publications.php:234 admin/import-publications.php:235
+msgid "Keyword Separator"
+msgstr "Séparateur de mots-clés"
+
+# @ teachpress
+#: admin/settings.php:651 core/class-ajax.php:309
+msgid "Label"
+msgstr "Étiquette"
+
+# @ teachpress
+#: admin/class-authors-page.php:293 core/class-export.php:30
+#: core/class-export.php:162
+msgid "Last name"
+msgstr "Nom"
+
+# @ teachpress
+#: core/general.php:75
+msgid "last page"
+msgstr "Dernière page"
+
+# @ teachpress
+#: core/class-export.php:100
+msgid "Lecturer"
+msgstr "Enseignant"
+
+# @ teachpress
+#: admin/show-publications.php:487
+msgid "Limit selection"
+msgstr "Filtrer"
+
+# @ teachpress
+#: core/shortcodes.php:958 templates/tp_template_2021.php:21
+#: core/publications/templates.php:374 core/publications/templates.php:442
+msgid "Links"
+msgstr "Liens"
+
+#: admin/import-publications.php:37 admin/import-publications.php:373
+msgid "List of imports"
+msgstr ""
+
+# @ teachpress
+#: core/admin.php:135
+msgid "Mar"
+msgstr "Mar"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:140
+msgid "Masters Theses"
+msgstr "Thèses"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:139
+msgid "Masters Thesis"
+msgstr "Thèse"
+
+# @ teachpress
+#: core/class-ajax.php:337
+msgid "Max"
+msgstr "Max."
+
+# @ teachpress
+#: admin/import-publications.php:178
+msgid "max file size"
+msgstr "Taille Max du fichier"
+
+# @ teachpress
+#: core/admin.php:137
+msgid "May"
+msgstr "Mai"
+
+#: core/publications/default-publication-types.php:154
+msgid "Media"
+msgstr ""
+
+#: core/publications/default-publication-types.php:153
+msgid "Medium"
+msgstr ""
+
+# @ teachpress
+#: admin/settings.php:86
+msgid "Meta"
+msgstr "Méta"
+
+# @ teachpress
+#: admin/settings.php:346
+msgid "Meta data fields"
+msgstr "Meta data fields"
+
+#: admin/settings.php:440
+msgid "Meta Field Settings"
+msgstr ""
+
+#. Author of the plugin
+msgid "Michael Winkler"
+msgstr ""
+
+# @ teachpress
+#: core/class-ajax.php:330
+msgid "Min"
+msgstr "Mi"
+
+#: admin/settings.php:298
+msgid "Misc"
+msgstr ""
+
+# @ teachpress
+#: core/publications/default-publication-types.php:164
+#: core/publications/default-publication-types.php:165
+msgid "Miscellaneous"
+msgstr "Divers"
+
+# @ teachpress
+#: core/admin.php:148
+msgid "Month"
+msgstr "Mois"
+
+# @ teachpress
+#: admin/show-publications.php:42
+msgid "More information"
+msgstr "Plus d'informations"
+
+# @ teachpress
+#: admin/class-authors-page.php:151 admin/class-tags-page.php:155
+#: admin/settings.php:421 core/class-ajax.php:127
+msgid "Name"
+msgstr "Nom"
+
+#: admin/add-publication.php:241 admin/add-publication.php:825
+#: admin/show-publications.php:232
+msgid "New"
+msgstr ""
+
+# @ teachpress
+#: core/general.php:74
+msgid "next page"
+msgstr "page suivante"
+
+# @ teachpress
+#: admin/import-publications.php:117
+msgid "No suported file type"
+msgstr "No suported file type"
+
+#: core/publications/class-db-publications.php:376
+msgid "No title"
+msgstr ""
+
+# @ teachpress
+#: core/publications/templates.php:523
+#, fuzzy
+#| msgid "no"
+msgid "no."
+msgstr "non"
+
+# @ teachpress
+#: admin/add-publication.php:449 admin/settings.php:249 core/admin.php:220
+#: core/admin.php:558 core/admin.php:769
+#: core/publications/class-books-widget.php:79
+msgid "none"
+msgstr "Aucun"
+
+# @ teachpress
+#: core/class-ajax.php:356
+msgid "Normal"
+msgstr "Ordinaire"
+
+# @ teachpress
+#: core/admin.php:76
+msgid "not passed"
+msgstr "Recalé"
+
+# @ teachpress
+#: admin/add-publication.php:282
+#| msgid "note"
+msgid "Note"
+msgstr "Remarques"
+
+# @ teachpress
+#: core/admin.php:143
+msgid "Nov"
+msgstr "Nov"
+
+# @ teachpress
+#: admin/add-publication.php:587 admin/class-tags-page.php:157
+msgid "Number"
+msgstr "Numéro"
+
+# @ teachpress
+#: admin/settings.php:422
+msgid "Number of students"
+msgstr "Nombre d'étudiants"
+
+# @ teachpress
+#: admin/class-authors-page.php:153 admin/import-publications.php:429
+msgid "Number publications"
+msgstr "Nombre de publications"
+
+#: admin/class-authors-page.php:127 admin/class-tags-page.php:132
+msgid "Occurence = 0"
+msgstr ""
+
+# @ teachpress
+#: core/admin.php:142
+msgid "Oct"
+msgstr "Oct"
+
+# @ teachpress
+#: core/general.php:60 core/general.php:84
+msgid "of"
+msgstr "de"
+
+# @ default
+# @ teachpress
+#: admin/show-publications.php:478
+msgid "OK"
+msgstr "OK"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:175
+#: core/publications/default-publication-types.php:176
+msgid "Online"
+msgstr "En ligne"
+
+#: core/class-ajax.php:330 core/class-ajax.php:337 core/class-ajax.php:344
+msgid "Only for INT fields"
+msgstr ""
+
+# @ teachpress
+#: admin/import-publications.php:179 admin/import-publications.php:183
+msgid "or"
+msgstr "ou"
+
+# @ teachpress
+#: admin/add-publication.php:671
+#| msgid "organization"
+msgid "Organization"
+msgstr "Organisation"
+
+#: admin/settings.php:559
+msgid "Packed"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:598
+#| msgid "pages"
+msgid "Pages"
+msgstr "Pages"
+
+# @ teachpress
+#: core/admin.php:77
+msgid "passed"
+msgstr "réussi"
+
+#: core/publications/default-publication-types.php:186
+msgid "Patent"
+msgstr ""
+
+#: core/publications/default-publication-types.php:187
+msgid "Patents"
+msgstr ""
+
+# @ teachpress
+#: core/admin.php:54
+msgid "Percentage"
+msgstr "Pourcentage"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:197
+msgid "Periodical"
+msgstr "Périodique"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:198
+msgid "Periodicals"
+msgstr "Periodiques"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:209
+msgid "PhD Theses"
+msgstr "Thèses"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:208
+msgid "PhD Thesis"
+msgstr "Thèse"
+
+# @ teachpress
+#: core/class-export.php:108
+msgid "Places"
+msgstr "Lieux"
+
+# @ teachpress
+#: admin/add-publication.php:147
+msgid ""
+"Please check the format of author/editor information and correct it to the "
+"following format: firstname1 lastname1 and firstname2 lastname 2. Example: "
+"Adam Smith and John M. Keynes"
+msgstr ""
+"Veuillez vérifier le format de l'auteur/éditeur et appliquer le format "
+"suivant: prénom1 nom1 and prénom2 nom2. Exemple: Adam Smith and John M. "
+"Keynes"
+
+#: admin/add-publication.php:893
+msgid "Please enter an author before!"
+msgstr ""
+
+#: admin/add-publication.php:901
+msgid "Please enter the date before!"
+msgstr ""
+
+#: admin/settings.php:464
+msgid "Please note"
+msgstr ""
+
+# @ teachpress
+#: core/admin.php:55
+msgid "Points"
+msgstr "Points"
+
+# @ teachpress
+#: core/publications/templates.php:536
+msgid "pp."
+msgstr "p."
+
+# @ teachpress
+#: core/publications/default-publication-types.php:219
+msgid "Presentation"
+msgstr "Présentation"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:220
+msgid "Presentations"
+msgstr "Présentations"
+
+# @ teachpress
+#: core/general.php:68
+msgid "previous page"
+msgstr "page précédente"
+
+# @ teachpress
+#: admin/add-publication.php:270
+#| msgid "private comment"
+msgid "Private comment"
+msgstr "Commentaire privé"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:230
+msgid "Proceeding"
+msgstr "Actes"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:231
+msgid "Proceedings"
+msgstr "Actes"
+
+# @ teachpress
+#: admin/settings.php:354
+msgid "Properties"
+msgstr "Propriétés"
+
+# @ teachpress
+#: core/shortcodes.php:458
+#| msgid "publication"
+msgid "Publication"
+msgstr "Publication"
+
+# @ teachpress
+#: admin/add-publication.php:121
+msgid "Publication added"
+msgstr "Publication ajoutée"
+
+#: core/class-ajax.php:220
+msgid "Publication entry"
+msgstr ""
+
+#. Description of the plugin
+msgid "Publication management for WordPress"
+msgstr ""
+
+# @ teachpress
+#: teachpress.php:113 teachpress.php:114 admin/add-publication.php:208
+#: admin/class-authors-page.php:337 admin/class-tags-page.php:236
+#: admin/import-publications.php:36 admin/settings.php:86
+#: core/shortcodes.php:458
+msgid "Publications"
+msgstr "Publications"
+
+# @ teachpress
+#: admin/show-publications.php:115
+msgid "Publications added"
+msgstr "Publications added"
+
+# @ teachpress
+#: admin/import-publications.php:95
+msgid "Publications added to your list."
+msgstr "Publications ajoutés à votre liste."
+
+# @ teachpress
+#: admin/import-publications.php:329
+msgid "Publications by user"
+msgstr "Publications de l'utilisateur"
+
+# @ teachpress
+#: core/shortcodes.php:57
+msgid "Published on"
+msgstr "Publié le"
+
+# @ teachpress
+#: admin/add-publication.php:610
+#| msgid "publisher"
+msgid "Publisher"
+msgstr "Éditeur"
+
+# @ teachpress
+#: core/class-export.php:162
+msgid "Record-ID"
+msgstr "Record-ID"
+
+#: core/shortcodes.php:784
+msgid "References"
+msgstr ""
+
+# @ teachpress
+#: core/class-export.php:41 core/class-export.php:162
+msgid "Registered at"
+msgstr "Inscrit à"
+
+# @ teachpress
+#: core/class-export.php:123
+msgid "Registered participants"
+msgstr "Les participants inscrits"
+
+# @ teachpress
+#: admin/add-publication.php:451 admin/add-publication.php:479
+#: admin/add-publication.php:481 admin/settings.php:235
+msgid "Related content"
+msgstr "Contenu associé"
+
+# @ teachpress
+#: core/publications/class-books-widget.php:78
+msgid "Releated Page for &laquo;all books&raquo; link:"
+msgstr "Releated Page de &laquo; tous les ouvrages &raquo; lien:"
+
+# @ teachpress
+#: admin/settings.php:311
+msgid "Remove teachPress from database"
+msgstr "Remove teachPress from database"
+
+# @ teachpress
+#: core/class-document-manager.php:311
+msgid "Removing failed"
+msgstr "La suppression a échoué"
+
+# @ teachpress
+#: admin/class-authors-page.php:50 admin/class-tags-page.php:45
+#: admin/import-publications.php:101 admin/import-publications.php:381
+#: admin/show-publications.php:121 core/class-document-manager.php:308
+msgid "Removing successful"
+msgstr "Suppression réussie"
+
+# @ teachpress
+#: core/class-ajax.php:373
+msgid "Required field"
+msgstr "Champs requis"
+
+# @ teachpress
+#: admin/add-publication.php:17
+msgid "Required fields"
+msgstr "Champs obligatoires"
+
+# @ teachpress
+#: admin/add-publication.php:214
+msgid "Reset"
+msgstr "Réinitialiser"
+
+# @ teachpress
+#: core/class-export.php:104
+msgid "Room"
+msgstr "Pièce"
+
+#: admin/settings.php:282
+msgid "RSS"
+msgstr ""
+
+# @ teachpress
+#: admin/settings.php:286
+msgid "RSS feed addresses"
+msgstr "Adresses de flux RSS"
+
+# @ default
+#: core/class-ajax.php:377
+msgid "Save"
+msgstr "Sauvegarder"
+
+# @ teachpress
+#: admin/add-publication.php:683
+#| msgid "school"
+msgid "School"
+msgstr "École"
+
+# @ teachpress
+#: admin/class-authors-page.php:113 admin/class-tags-page.php:117
+#: admin/show-publications.php:463 core/shortcodes.php:1179
+msgid "Search"
+msgstr "Rechercher"
+
+# @ teachpress
+#: core/class-document-manager.php:380
+msgid "Select"
+msgstr "Sélectionner"
+
+# @ teachpress
+#: admin/add-publication.php:481 admin/add-publication.php:485
+msgid "Select a post/page with releated content."
+msgstr "Select a post/page with releated content."
+
+# @ teachpress
+#: core/class-document-manager.php:362
+msgid "Select Course"
+msgstr "Sélectionnez Cours"
+
+#: admin/class-authors-page.php:125 admin/class-tags-page.php:130
+msgid "Select filter"
+msgstr ""
+
+#: admin/show-publications.php:306
+msgid "Select the entry"
+msgstr ""
+
+# @ teachpress
+#: admin/settings.php:227
+msgid ""
+"Select which style sheet you will use. teachpress_front.css is the "
+"teachPress default style. If you have created your own style in the default "
+"style sheet of your theme, you can activate this here."
+msgstr ""
+"Sélectionnez le style de la feuille que vous allez utiliser. "
+"teachpress_front.css est le style par défaut teachPress. Si vous avez créé "
+"votre propre style dans la feuille de style par défaut de votre thème, vous "
+"pouvez activer cette ici."
+
+# @ teachpress
+#: admin/settings.php:187
+msgid ""
+"Select which userrole your users must have to use the teachPress backend."
+msgstr ""
+"Sélectionnez les UserRole vos utilisateurs doivent avoir à utiliser le "
+"backend teachPress."
+
+#: admin/add-publication.php:450
+msgid "Self"
+msgstr ""
+
+# @ teachpress
+#: core/admin.php:141
+msgid "Sep"
+msgstr "Sep"
+
+#: admin/settings.php:564
+msgid "Seq index"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:695
+#| msgid "series"
+msgid "Series"
+msgstr "Série"
+
+# @ teachpress
+#: admin/settings.php:744
+msgid ""
+"Settings are changed. Please note that access changes are visible, until you "
+"have reloaded this page a second time."
+msgstr ""
+"Settings are changed. Please note that access changes are visible, until you "
+"have reloaded this page a second time."
+
+# @ teachpress
+#: admin/settings.php:288 admin/settings.php:290 admin/settings.php:292
+#: core/class-document-manager.php:99 core/class-document-manager.php:193
+msgid "Show"
+msgstr "Afficher"
+
+# @ teachpress
+#: core/publications/templates.php:435
+msgid "Show abstract"
+msgstr "Montrer le résumé"
+
+# @ teachpress
+#: core/shortcodes.php:1228
+msgid "Show all"
+msgstr "Afficher tous"
+
+# @ teachpress
+#: admin/add-publication.php:520
+msgid "Show all fields"
+msgstr "Afficher tous les champs"
+
+# @ teachpress
+#: admin/class-tags-page.php:236 admin/show-publications.php:348
+#: core/publications/templates.php:849
+msgid "Show all publications which have a relationship to this tag"
+msgstr "Afficher toutes les publications ayant une relation avec cette balise"
+
+#: core/publications/templates.php:429
+msgid "Show Altmetric"
+msgstr ""
+
+# @ teachpress
+#: admin/show-publications.php:472
+msgid "Show as BibTeX entry"
+msgstr "Montrer l'entrée BibTeX"
+
+# @ teachpress
+#: core/publications/templates.php:452
+msgid "Show BibTeX entry"
+msgstr "Afficher BibTeX entrée"
+
+# @ teachpress
+#: core/publications/templates.php:442
+msgid "Show links and resources"
+msgstr "Afficher les liens et les ressources"
+
+# @ teachpress
+#: admin/class-authors-page.php:235
+msgid "Show publications"
+msgstr "Show publications"
+
+# @ teachpress
+#: admin/add-publication.php:520
+msgid "Show recommend fields"
+msgstr "Afficher les champs recommandés"
+
+# @ teachpress
+#: core/publications/class-books-widget.php:20
+msgid "Shows a random book in the sidebar"
+msgstr "Affiche un ouvrage au hasard dans la barre latérale"
+
+#: core/publications/default-publication-types.php:117
+msgctxt "Singular form of inproceedings, if it exists"
+msgid "Inproceedings"
+msgstr ""
+
+# @ teachpress
+#: admin/class-authors-page.php:157 admin/class-tags-page.php:162
+#: admin/import-publications.php:282 admin/show-publications.php:523
+msgid "Sorry, no entries matched your criteria."
+msgstr "Désolé, aucune entrée ne correspond à vos critères."
+
+# @ teachpress
+#: core/shortcodes.php:1378
+msgid "Sorry, no publications matched your criteria."
+msgstr "Désolé, aucune publication ne correspond à vos critères."
+
+#: admin/class-authors-page.php:296
+msgid "Sorting"
+msgstr ""
+
+# @ teachpress
+#: core/class-ajax.php:344
+msgid "Step"
+msgstr "Etape"
+
+# @ teachpress
+#: core/class-update.php:999
+msgid "Step 1: Read and prepare data"
+msgstr "Étape 1: Lire et préparer les données"
+
+# @ teachpress
+#: core/class-update.php:973
+msgid "Step 1: Read data and add authors"
+msgstr "Étape 1: Lire les données et ajouter des auteurs"
+
+# @ teachpress
+#: core/class-update.php:985
+msgid "Step 2: Add relations between authors and publications"
+msgstr "Étape 2: Ajouter les relations entre les auteurs et les publications"
+
+# @ teachpress
+#: core/class-update.php:1009
+msgid "Step 2: Insert data"
+msgstr "Étape 2: Insérer des données"
+
+# @ teachpress
+#: admin/import-publications.php:19
+msgid "Supported file types"
+msgstr "Types de fichier supportés"
+
+# @ teachpress
+#: admin/class-tags-page.php:51
+msgid "Tag saved"
+msgstr "Étiquette enregistrée"
+
+#. Name of the plugin
+msgid "teachPress"
+msgstr ""
+
+# @ teachpress
+#: core/publications/class-books-widget.php:22
+msgid "teachPress books"
+msgstr "Ouvrages teachPress"
+
+# @ teachpress
+#: teachpress.php:171
+msgid "teachPress Settings"
+msgstr "Paramètres teachPress"
+
+# @ teachpress
+#: admin/settings.php:77
+msgid "teachPress settings"
+msgstr "les paramètres de teachPress"
+
+# @ teachpress
+#: admin/settings.php:204
+msgid "teachPress version"
+msgstr "Version de teachPress"
+
+# @ teachpress
+#: admin/settings.php:765
+msgid "teachPress wants to fill up the new database. This can take some time."
+msgstr "teachPress wants to fill up the new database. This can take some time."
+
+# @ teachpress
+#: admin/settings.php:218 admin/settings.php:222
+msgid "teachpress_front.css"
+msgstr "teachpress_front.css"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:128
+msgid "Technical Manual"
+msgstr "Manuel technique"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:129
+msgid "Technical Manuals"
+msgstr "Manuels techniques"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:241
+msgid "Technical Report"
+msgstr "Rapport technique"
+
+# @ teachpress
+#: core/publications/default-publication-types.php:242
+msgid "Technical Reports"
+msgstr "Rapports techniques"
+
+# @ teachpress
+#: admin/settings.php:260
+msgid "Template for related content"
+msgstr "Template for related content"
+
+#: admin/settings.php:88
+msgid "Templates"
+msgstr ""
+
+#: core/class-ajax.php:217
+msgid "Text"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:621
+msgid "The address of the publisher or the place of confernece"
+msgstr "L'adresse de l'éditeur ou du lieu de la conférence"
+
+# @ teachpress
+#: admin/add-publication.php:706
+msgid "The BibTeX key this work is referring to"
+msgstr "La clé BibTeX de ce travail se réfère à"
+
+# @ teachpress
+#: admin/add-publication.php:646
+msgid "The chapter or the section number"
+msgstr "Le chapitre ou le numéro de section"
+
+# @ teachpress
+#: admin/add-publication.php:788
+msgid "The date you have visited the online resource"
+msgstr "La date à laquelle vous avez accédé à la ressource"
+
+# @ teachpress
+#: admin/add-publication.php:634
+msgid "The edition of a book"
+msgstr "L'édition d'un ouvrage"
+
+# @ teachpress
+#: admin/add-publication.php:767
+msgid "The ISBN or ISSN of the publication"
+msgstr "L'ISBN ou ISSN de la publication"
+
+#: admin/add-publication.php:575
+msgid "The issue of a journal"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:694
+msgid "The name of a series"
+msgstr "Le nom d'une série"
+
+# @ teachpress
+#: admin/add-publication.php:658
+msgid "The name of a sponsoring institution"
+msgstr "Le nom d'un établissement parrain"
+
+# @ teachpress
+#: admin/add-publication.php:670
+msgid "The names of a sponsoring organization"
+msgstr "Les noms d'un organisme parrain"
+
+# @ teachpress
+#: admin/add-publication.php:609
+msgid "The names of publisher"
+msgstr "Les noms des éditeurs"
+
+# @ teachpress
+#: admin/add-publication.php:682
+msgid "The names of the academic instituion where a thesis was written"
+msgstr "Le nom de l'université où une thèse a été soutenue"
+
+# @ teachpress
+#: admin/add-publication.php:390
+msgid ""
+"The names of the authors, separate by `and`. Example: Mark Twain and Albert "
+"Einstein"
+msgstr ""
+"Les noms des auteurs, séparés par `et`. Exemple: Mark Twain et Albert "
+"Einstein"
+
+# @ teachpress
+#: admin/add-publication.php:402
+msgid ""
+"The names of the editors, separate by `and`. Example: Mark Twain and Albert "
+"Einstein"
+msgstr ""
+"Les noms des éditeurs, séparés par `et`. Exemple: Mark Twain et Albert "
+"Einstein"
+
+# @ teachpress
+#: admin/add-publication.php:586
+msgid "The number of a book, journal or work in a series"
+msgstr "Le numéro d'un ouvrage, d'une revue ou d'un travail dans une série"
+
+# @ teachpress
+#: admin/add-publication.php:597
+msgid "The page you are referring to."
+msgstr "La page que vous référencez."
+
+#: admin/add-publication.php:18
+msgid "The required fields for a new publication:"
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:540
+msgid "The subtitle of a periodical publication"
+msgstr "Le sous-titre d'une publication périodique"
+
+# @ teachpress
+#: admin/add-publication.php:528
+msgid "The title of a book"
+msgstr "Le titre d'un ouvrage"
+
+# @ teachpress
+#: admin/add-publication.php:552
+msgid "The title of a journal"
+msgstr "Le titre d'un journal"
+
+# @ teachpress
+#: admin/add-publication.php:754
+msgid "The type of a technical report, thesis, incollection or inbook."
+msgstr "Le type d'un rapport technique, thèse, incollection ou inbook."
+
+# @ teachpress
+#: admin/add-publication.php:368
+msgid "The type of publication"
+msgstr "Le type de publication"
+
+# @ teachpress
+#: core/class-ajax.php:310
+msgid "The visible name of the field"
+msgstr "Le nom visible du champ"
+
+# @ teachpress
+#: admin/add-publication.php:564
+msgid "The volume of a journal or book"
+msgstr "Le volume d'un journal ou d'un ouvrage"
+
+# @ teachpress
+#: admin/add-publication.php:171 admin/add-publication.php:172
+#: admin/add-publication.php:172 admin/import-publications.php:272
+#: admin/show-publications.php:507 core/class-ajax.php:83
+#: core/publications/class-books-widget.php:67
+msgid "Title"
+msgstr "Titre"
+
+#: admin/add-publication.php:18
+msgid "title, author, bibtex key, tags"
+msgstr ""
+
+# @ teachpress
+#: core/deprecated.php:74
+msgid ""
+"tp_check_bookmark() is deprecated since teachpress 5.0.0. Use tp_bookmarks::"
+"bookmark_exists() instead."
+msgstr ""
+"tp_check_bookmark() is deprecated since teachpress 5.0.0. Use tp_bookmarks::"
+"bookmark_exists() instead."
+
+# @ teachpress
+#: admin/settings.php:271
+msgid "Try to convert utf-8 chars into BibTeX compatible ASCII strings"
+msgstr ""
+"Essayez de convertir les caractères UTF-8 dans BibTeX chaînes ASCII "
+"compatible"
+
+# @ default
+# @ teachpress
+#: admin/settings.php:239 admin/settings.php:557 core/class-ajax.php:135
+#: templates/tp_template_orig_s.php:86
+msgid "Type"
+msgstr "Type"
+
+# @ teachpress
+#: admin/settings.php:309
+msgid "Uninstalling"
+msgstr "Désinstallation..."
+
+#: admin/settings.php:558
+msgid "Unique"
+msgstr ""
+
+# @ teachpress
+#: core/publications/default-publication-types.php:252
+#: core/publications/default-publication-types.php:253
+msgid "Unpublished"
+msgstr "Non publié"
+
+#: admin/import-publications.php:198 admin/settings.php:275
+msgid "Update existing publications"
+msgstr ""
+
+# @ teachpress
+#: core/class-update.php:987 core/class-update.php:1011
+#: core/class-update.php:1108
+msgid "Update successful"
+msgstr "Mise à jour réussie"
+
+# @ teachpress
+#: core/admin.php:30
+msgid "Update to"
+msgstr "Mise à jour de"
+
+# @ teachpress
+#: admin/add-publication.php:19 admin/add-publication.php:798
+#: admin/add-publication.php:798
+msgid "URL/Files"
+msgstr "URL/Fichiers"
+
+# @ teachpress
+#: admin/add-publication.php:792
+msgid "Urldate"
+msgstr "Urldate"
+
+# @ teachpress
+#: core/publications/class-books-widget.php:76
+msgid "use &lt;Ctrl&gt; key to select multiple books"
+msgstr "utiliser & lt; Ctrl & gt; pour sélectionner plusieurs ouvrages"
+
+# @ teachpress
+#: admin/settings.php:187
+msgid "use &lt;Ctrl&gt; key to select multiple roles"
+msgstr "utiliser &lt; Ctrl &gt; pour sélectionner plusieurs rôles"
+
+# @ teachpress
+#: admin/import-publications.php:18
+msgid ""
+"Use the file upload or add your BibTeX entries directly in the textfield. "
+"Restrictions: teachPress can't convert not numeric month and day attributes."
+msgstr ""
+"Use the file upload or add your BibTeX entries directly in the textfield. "
+"Restrictions: teachPress can't convert not numeric month and day attributes."
+
+# @ teachpress
+#: admin/settings.php:251
+#, fuzzy
+#| msgid ""
+#| "Used if the related content type for publicaitons is set on \"Posts\""
+msgid "Used if the related content type for publicaitons is set on"
+msgstr "Used if the related content type for publicaitons is set on \"Posts\""
+
+#: admin/import-publications.php:428
+msgid "User"
+msgstr ""
+
+# @ teachpress
+#: core/class-export.php:32 core/class-export.php:162
+msgid "User account"
+msgstr "Compte utilisateur"
+
+# @ teachpress
+#: core/class-ajax.php:139
+msgid "Value/Grade"
+msgstr "Value/Grade"
+
+#: admin/settings.php:516
+msgid "Version"
+msgstr ""
+
+# @ teachpress
+#: core/class-ajax.php:350
+msgid "Visibility"
+msgstr "Visibilité"
+
+# @ teachpress
+#: core/publications/templates.php:515
+msgid "visited"
+msgstr "Visité"
+
+#: core/publications/templates.php:540
+msgid "vol."
+msgstr ""
+
+# @ teachpress
+#: admin/add-publication.php:565
+#| msgid "volume"
+msgid "Volume"
+msgstr "Volume"
+
+# @ teachpress
+#: core/class-export.php:125 core/class-export.php:162
+msgid "Waiting list"
+msgstr "Liste d'attente"
+
+# @ teachpress
+#: admin/import-publications.php:106
+msgid "Warning: No publication was selected."
+msgstr "Warning: No publication was selected."
+
+# @ teachpress
+#: admin/settings.php:662
+msgid "Warning: This field name is not possible."
+msgstr "Attention: ce nom de champ est impossible."
+
+# @ teachpress
+#: admin/add-publication.php:439
+msgid ""
+"With the image field you can add an image to a publication. You can display "
+"images in all publication lists"
+msgstr ""
+"Avec le champ image, vous pouvez ajouter une image à une publication. Vous "
+"pouvez afficher des images dans toutes les listes de publication"
+
+#: core/publications/default-publication-types.php:263
+msgid "Working paper"
+msgstr ""
+
+#: core/publications/default-publication-types.php:264
+msgid "Working papers"
+msgstr ""
+
+#: core/publications/default-publication-types.php:274
+msgid "Workshop"
+msgstr ""
+
+#: core/publications/default-publication-types.php:275
+msgid "Workshops"
+msgstr ""
+
+# @ teachpress
+#: admin/import-publications.php:276 admin/show-publications.php:512
+#: core/admin.php:155
+msgid "Year"
+msgstr "Année"
+
+# @ teachpress
+#: admin/add-publication.php:20 admin/add-publication.php:801
+msgid ""
+"You can add one URL or file per line. Insert the name of the URL/file behind "
+"the address and separate it by a comma and a space. Example:"
+msgstr ""
+"Vous pouvez ajouter une URL ou un fichier par ligne. Insérez le nom de "
+"l'URL/du fichier derrière l'adresse, et séparez-le par une virgule et un "
+"espace. Exemple:"
+
+# @ teachpress
+#: admin/show-publications.php:38
+msgid ""
+"You can use publications in a page or article with the following shortcodes:"
+msgstr ""
+"Vous pouvez utiliser des publications dans une page ou un article avec les "
+"shortcodes suivants:"
+
+# @ teachpress
+#: core/class-document-manager.php:434
+#| msgid "You have no capabilites to use this course"
+msgid "You have no capabilities to use this course"
+msgstr "Vous n'avez pas la permission d'utiliser ce cours"
+
+# @ teachpress
+#: teachpress.php:122 teachpress.php:123 admin/show-publications.php:427
+msgid "Your publications"
+msgstr "Vos publications"
+
+# @ teachpress
+#: admin/settings.php:219 admin/settings.php:223
+msgid "your theme.css"
+msgstr "votre theme.css"
