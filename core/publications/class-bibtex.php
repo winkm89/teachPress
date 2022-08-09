@@ -120,8 +120,10 @@ class TP_Bibtex {
         // return the input if there are no bibtex chars
         if ( strpos( $input,'\\' ) === false && strpos($input,'{') === false ) { return $input; }
         
+<<<<<<< Updated upstream
         // Step 1: Chars which based on a combination of two chars, delete escapes
         $array_a = array("\'a","\'A",'\"a','\"A',
+                         "\c c",
                          "\'e","\'E",
                          "\'i",
                          "\'o","\'O",'\"o','\"O',
@@ -130,14 +132,29 @@ class TP_Bibtex {
                          '\textendash','\textemdash','\textquotesingle','\textquoteright','\textquoteleft',
                          '\glqq','\grqq','\flqq','\frqq','\flq','\frq','\glq','\grq','\dq',chr(92));
         $array_b = array('á','Á','ä','Ä',
+                         "ç",
                          'é','É',
                          'í',
+=======
+        // Step 1: Chars which are based on a combination of two chars, delete escapes
+        $array_a = array("\'a","\`a",'\^a',"\'A",'\"a','\"A',"\`A",'\^A',
+                         "\'e","\`e",'\^e','\"e',"\'E","\`E",'\^E','\"E',
+                         "\'i",'\^i','\"i',"\^I",
+                         "\'o","\'O",'\"o','\"O','\^o','\^O',
+                         '\"u','\"U','\^u','\^U','\ss',
+                         '\L','\l','\AE','\ae','\OE','\oe','\t{oo}','\O','\o',
+                         '\textendash','\textemdash','\textquotesingle','\textquoteright','\textquoteleft',
+                         '\glqq','\grqq','\flqq','\frqq','\flq','\frq','\guillemotleft','\guillemotright','\glq','\grq','\dq',chr(92));
+        $array_b = array('á','à','â','Á','ä','Ä','À','Â',
+                         'é','è','ê','ë','É','È','Ê','Ë',
+                         'í','î','ï','Î',
+>>>>>>> Stashed changes
                          'ó','Ó',
-                         'ö','Ö',
-                         'ü','Ü','ß',
+                         'ö','Ö','ô','Ô',
+                         'ü','Ü','û','Û','ß',
                          'Ł','ł','Æ','æ','Œ','œ','o͡o','Ø','ø',
                          '–','—',"'",'’','‘',
-                         '„','“','«','»','‹','›','‚','‘','','');
+                         '„','“','«','»','‹','›','«','»','‚','‘','','');
         $input = str_replace( $array_a , $array_b ,$input);
         
         // Step 2: All other special chars 
