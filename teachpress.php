@@ -142,8 +142,8 @@ function tp_add_menu() {
             'tp_show_import_publication_page');
     $tp_admin_sources_page = add_submenu_page(
             'publications.php',
-            __('Publication sources'), 
-            __('Publication sources'), 
+            __('Auto-publish'), 
+            __('Auto-publish'), 
             'use_teachpress', 
             'teachpress/sources.php',
             'tp_show_publication_sources_page');
