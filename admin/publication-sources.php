@@ -27,7 +27,13 @@ function tp_import_publication_sources_help() {
  * @since 9.0.0
 */ 
 function tp_show_publication_sources_page() {
-    TP_Publication_Sources_Page::sources_tab();
+    if ( isset($_POST['tp_submit']) ) {        
+        TP_Publication_Sources_Page::sources_actions($_POST);
+    } else if ( isset($_GET['tp_stop_sched']) ) {
+        // TODO
+    }
+    
+    TP_Publication_Sources_Page::sources_tab();      
 }
 
 /**
@@ -75,7 +81,7 @@ class TP_Publication_Sources_Page {
                     </div>
                     <div id="major-publishing-actions" style="text-align: center;">
                         <input name="tp_submit" type="submit" class="button-primary" value="<?php _e('Schedule'); ?>"/>
-                        <input name="tp_stop" type="submit" class="button-cancel" value="<?php _e('Stop'); ?>"/>
+                        <a class="tp_row_delete" href="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>&amp;tp_stop_sched=1">Stop auto-publish</a>
                     </div>
                 </div>
                 <div class="postbox">
@@ -108,4 +114,49 @@ class TP_Publication_Sources_Page {
         
         <?php  
     }
+    
+    /**
+     * This function executes all source publication action calls
+     * @global object $current_user
+     * @param array $post                   The $_POST array
+     * @since 9.0.0
+     * @access public
+     */
+    public static function sources_actions ($post) {
+        $sources_area = isset($post['sources_area']) ? trim($post['sources_area']) : '';
+        $sources_to_monitor = array_filter(preg_split("/\r\n|\n|\r/", $sources_area), 
+                                           function($k) { return strlen(trim($k)) > 0; });
+        
+        // overwrite the existing entries with the new ones, even if there are none
+        $installed = TP_Publication_Sources_Page::install_sources($sources_to_monitor);
+        
+        get_tp_message( __(sprintf('Now monitoring the %d URL(s) specified.', count($installed)),'teachpress') );
+    }
+
+    /**
+     * This function installs monitored bibtex sources.
+     * @global object $current_user
+     * @param array $sources    An array of source URLs.
+     * @return URLs monitored.
+     * @since 9.0.0
+     * @access public
+     */
+    public static function install_sources($sources) {
+        global $wpdb;
+        $result = array();
+        
+        // empty table first 
+        $wpdb->query( "DELETE FROM " . TEACHPRESS_MONITORED_SOURCES );
+        
+        // write new entries -- could be done in a single statement
+        foreach( $sources as $element ) {
+            $element = esc_sql( trim($element) );
+            $wpdb->insert(TEACHPRESS_MONITORED_SOURCES, array('name' => $element, 'md5' => 0), array('%s', '%d'));            
+            $result[] = $element;
+        }
+        
+        return $result;
+    }
+    
 }
+
