@@ -145,6 +145,13 @@ if ( !defined('TEACHPRESS_REL_PUB_AUTH') ) {
     */
     define('TEACHPRESS_REL_PUB_AUTH', $wpdb->prefix . 'teachpress_rel_pub_auth');}
 
+if ( !defined('TEACHPRESS_MONITORED_SOURCES') ) {
+    /**
+     * This constant defines the table name for teachpress_monitored_sources. This is the list of monitored publication sources.
+     * @since 9.0.0
+     */
+    define('TEACHPRESS_MONITORED_SOURCES', $wpdb->prefix . 'teachpress_monitored_sources');}
+
 if ( !defined('TEACHPRESS_TIME_LIMIT') ) {
     /**
      * This value is used for PHP's set_time_limit(). The plugin sets this value before an import or export of publications

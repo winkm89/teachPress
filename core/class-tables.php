@@ -43,6 +43,7 @@ class TP_Tables {
         self::add_table_user($charset_collate);
         self::add_table_authors($charset_collate);
         self::add_table_rel_pub_auth($charset_collate);
+        self::add_table_monitored_sources($charset_collate);
         
         // Enable foreign key checks
         if ( TEACHPRESS_FOREIGN_KEY_CHECKS === false ) {
@@ -66,6 +67,7 @@ class TP_Tables {
                                 `" . TEACHPRESS_PUB_IMPORTS . "`,
                                 `" . TEACHPRESS_RELATION ."`,
                                 `" . TEACHPRESS_REL_PUB_AUTH . "`, 
+                                `" . TEACHPRESS_MONITORED_SOURCES . "`,                                 
                                 `" . TEACHPRESS_SETTINGS ."`, 
                                 `" . TEACHPRESS_TAGS . "`, 
                                 `" . TEACHPRESS_USER . "`");
@@ -459,6 +461,31 @@ class TP_Tables {
         
         // test engine
         self::change_engine(TEACHPRESS_REL_PUB_AUTH);
+    }
+
+    /**
+     * Create table teachpress_monitored_sources
+     * @param string $charset_collate
+     * @since 9.0.0
+     */
+    public static function add_table_monitored_sources($charset_collate) {
+        global $wpdb;
+        
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . TEACHPRESS_MONITORED_SOURCES . "'") == TEACHPRESS_MONITORED_SOURCES ) {
+            return;
+        }
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    
+        dbDelta("CREATE TABLE " . TEACHPRESS_MONITORED_SOURCES . " (
+                    `src_id` INT UNSIGNED AUTO_INCREMENT,
+                    `md5` INT UNSIGNED,
+                    `name` VARCHAR(4096),
+                    PRIMARY KEY (src_id)
+                ) $charset_collate;");
+        
+        // test engine
+        self::change_engine(TEACHPRESS_MONITORED_SOURCES);
     }
     
     /**
