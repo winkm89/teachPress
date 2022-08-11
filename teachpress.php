@@ -267,6 +267,15 @@ function tp_db_sync($table) {
 
 /**
  * teachPress plugin activation
+ * @since 9.0.0
+ */
+function tp_deactivation () {
+    TP_Publication_Sources_Page::uninstall_cron();
+}
+
+    
+/**
+ * teachPress plugin activation
  * @param boolean $network_wide
  * @since 4.0.0
  */
@@ -477,6 +486,7 @@ function tp_plugin_link($links, $file){
 
 // Register WordPress-Hooks
 register_activation_hook( __FILE__, 'tp_activation');
+register_deactivation_hook( __FILE__, 'tp_deactivation' );
 add_action('init', 'tp_language_support');
 add_action('init', 'tp_feed_init');
 add_action('init', 'tp_register_all_publication_types');

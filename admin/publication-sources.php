@@ -7,6 +7,13 @@
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
  */
 
+if ( !defined('TEACHPRESS_CRON_SOURCES_HOOK') ) {
+/**
+ * This constant defines the hook name for cron update task.
+ * @since 9.0.0
+*/
+    define('TEACHPRESS_CRON_SOURCES_HOOK', 'tp_sources_cron_hook');
+}
 
 /**
  * Add help tab for sources page
@@ -20,7 +27,6 @@ function tp_import_publication_sources_help() {
                         <p>' . __("Additional publication sources to scan regularly.",'teachpress') . '</p>',
      ) );
 }
-
 
 /**
  * The controller for the import page of teachPress
@@ -57,6 +63,7 @@ class TP_Publication_Sources_Page {
                 <label for="sources_area">These URLs will be periodically scanned for changes and imported</label>
                 <textarea name="sources_area" id="sources_area" rows="20" style="width:100%;" title="<?php _e('Type the URLs here','teachpress'); ?>"></textarea>
             </div>
+<p><?php var_dump(_get_cron_array()); ?></p>
             <div class="tp_postcontent_right">
                 <div class="postbox">
                     <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
@@ -130,7 +137,15 @@ class TP_Publication_Sources_Page {
         // overwrite the existing entries with the new ones, even if there are none
         $installed = TP_Publication_Sources_Page::install_sources($sources_to_monitor);
         
-        get_tp_message( __(sprintf('Now monitoring the %d URL(s) specified.', count($installed)),'teachpress') );
+        get_tp_message( __(sprintf('Now monitoring the %d URL(s) specified.',
+                                   count($installed)),'teachpress') );
+        
+        // manage cron hook
+        if (count($installed) == 0) {
+            TP_Publication_Sources_Page::uninstall_cron();
+        } else {
+            TP_Publication_Sources_Page::install_cron('hourly');
+        }
     }
 
     /**
@@ -157,6 +172,39 @@ class TP_Publication_Sources_Page {
         
         return $result;
     }
-    
+            
+    /**
+     * This function installs the cron hook.
+     * @param string $freq    Frequency of cron.
+     * @since 9.0.0
+     * @access public
+     */
+    public static function install_cron($freq) {
+        // install action if required
+        if ( ! has_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' ) ) {
+            add_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' );
+        }
+        
+        // schedule hook - here the freq is ignored if already scheduled
+        if ( ! wp_next_scheduled( TEACHPRESS_CRON_SOURCES_HOOK ) ) {
+            wp_schedule_event( time(), $freq, TEACHPRESS_CRON_SOURCES_HOOK );
+        }
+    }
+
+    /**
+     * This function uninstalls the cron hook.
+     * @since 9.0.0
+     * @access public
+     */
+    public static function uninstall_cron() {
+        $timestamp = wp_next_scheduled( TEACHPRESS_CRON_SOURCES_HOOK );
+        wp_unschedule_event( $timestamp, TEACHPRESS_CRON_SOURCES_HOOK );
+    }
+            
+    public static function tp_cron_exec() {
+        
+        return 0;
+    }
+
 }
 
