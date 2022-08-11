@@ -63,7 +63,6 @@ class TP_Publication_Sources_Page {
                 <label for="sources_area">These URLs will be periodically scanned for changes and imported</label>
                 <textarea name="sources_area" id="sources_area" rows="20" style="width:100%;" title="<?php _e('Type the URLs here','teachpress'); ?>"></textarea>
             </div>
-<p><?php var_dump(_get_cron_array()); ?></p>
             <div class="tp_postcontent_right">
                 <div class="postbox">
                     <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
@@ -201,9 +200,78 @@ class TP_Publication_Sources_Page {
         wp_unschedule_event( $timestamp, TEACHPRESS_CRON_SOURCES_HOOK );
     }
             
+    /**
+     * Execute the scheduled sources update.
+     * @since 9.0.0
+     * @access public
+     */
     public static function tp_cron_exec() {
+        TP_Publication_Sources_Page::update_sources();
+    }
         
-        return 0;
+    /**
+     * Performs update for all sources present.
+     * @since 9.0.0
+     */
+    public static function update_sources() {
+        // list all sources
+        global $wpdb;
+        $source_urls = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_MONITORED_SOURCES);
+        
+        foreach ($source_urls as $src_url) {
+            $res = TP_Publication_Sources_Page::update_source($src_url->name, $src_url->md5);
+        }
+    }
+            
+    /**
+     * Performs update for a single source.
+     * @param $url   The URL of the source.
+     * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
+     * @return new_signature, nb_updates, status_message
+     * @since 9.0.0
+     */
+    public static function update_source($url, $previous_sig) {
+        $new_signature = '';
+        $nb_updates = 0;
+        $status_message = 'Unknown error.';
+        
+        $req = wp_remote_get($url, array('sslverify' => false));
+        if (is_wp_error($req)) {
+            $status_message = 'Error while retrieving URL.';
+        } else {
+            $code = $req["response"]["code"];
+            if (!preg_match("#^2\d+$#", $code)) {
+                $status_message = 'Error code while connecting to URL server.';
+            } else {
+                $body = wp_remote_retrieve_body($req);
+                if ($body) {
+                    if ($new_signature != $previous_sig) {
+                        if ( TP_Bibtex::is_utf8($body) === false ) {
+                            $body = utf8_encode($body);
+                        }
+
+                        $settings = array(
+                            'keyword_separator' => ',',
+                            'author_format'     => 'author_format_1',
+                            'overwrite'         => true,
+                            'ignore_tags'       => false,
+                        );
+
+                        $entries = TP_Bibtex_Import::init($body, $settings);
+                        $status_message = 'Successfully read and imported.';
+                        $new_signature = md5($body);
+                        $nb_updates = count($entries);
+                    } else {
+                        $status_message = 'File unchanged.';
+                        $new_signature = $previous_signature;
+                    }
+                } else {
+                    $status_message = 'Invalid body in server response.';
+                }
+            }
+        }
+        
+        return array($new_signature, $nb_updates, $status_message);
     }
 
 }
