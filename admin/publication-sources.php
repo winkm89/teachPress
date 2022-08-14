@@ -259,13 +259,18 @@ class TP_Publication_Sources_Page {
      * @since 9.0.0
      */
     public static function update_sources() {
+        $result = array();
+        
         // list all sources
         global $wpdb;
         $source_urls = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_MONITORED_SOURCES);
         
         foreach ($source_urls as $src_url) {
-            $res = TP_Publication_Sources_Page::update_source($src_url->name, $src_url->md5);
+            $result[] = TP_Publication_Sources_Page::update_source($src_url->name, $src_url->md5);
+            // TODO: UPDATE DATABASE
         }
+        
+        return $result;
     }
             
     /**
