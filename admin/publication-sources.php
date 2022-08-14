@@ -173,6 +173,7 @@ class TP_Publication_Sources_Page {
             TP_Publication_Sources_Page::install_cron($new_freq);
         }
         
+        $new_freq = TP_Publication_Sources_Page::get_update_freq();
         get_tp_message( __(sprintf('Configuration updated with %d URL(s) at frequency "%s".',
                                    count($installed), $new_freq),'teachpress') );
     }
