@@ -481,6 +481,7 @@ class TP_Tables {
                     `src_id` INT UNSIGNED AUTO_INCREMENT,
                     `md5` INT UNSIGNED,
                     `name` VARCHAR(4096),
+                    `last_res` VARCHAR(1024) DEFAULT '',
                     PRIMARY KEY (src_id)
                 ) $charset_collate;");
         

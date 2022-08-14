@@ -29,14 +29,19 @@ function tp_import_publication_sources_help() {
 }
 
 /**
+ * Auxiliary function to get source url from dict.
+ */
+function tp_get_source_url($source) {
+    return trim($source['src_url']);
+}
+    
+/**
  * The controller for the import page of teachPress
  * @since 9.0.0
 */ 
 function tp_show_publication_sources_page() {
-    if ( isset($_POST['tp_submit']) ) {        
+    if ( isset($_POST['tp_sources_save']) ) {
         TP_Publication_Sources_Page::sources_actions($_POST);
-    } else if ( isset($_GET['tp_stop_sched']) ) {
-        // TODO
     }
     
     TP_Publication_Sources_Page::sources_tab();      
@@ -48,77 +53,101 @@ function tp_show_publication_sources_page() {
  */
 class TP_Publication_Sources_Page {
     /**
+     * Returns current sources.
+     */
+    public static function get_current_sources() {
+        global $wpdb;
+        $source_urls = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_MONITORED_SOURCES);
+        $result = array();
+        
+        foreach ($source_urls as $src_url) {
+            $result[] = array("src_url" => $src_url->name, "last_res" => $src_url->last_res);
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Returns the table rows for sources rendering
+     */
+    public static function get_pages_rows($current_pages) {
+        $result = "";
+        
+        $alternate = true;
+        
+        foreach ($current_pages as $src_url) {
+            $last_res = $src_url['last_res'];
+            if (strlen($last_res) == 0) {
+                $last_res = __("URL not scanned yet.", "teachpress");
+            }
+            $result .= sprintf("<tr class='%s'><td class='tp_url'>%s</td><td>%s</td></tr>",
+                               $alternate ? "alternate" : "", $src_url['src_url'], $last_res);
+            $alternate = ! $alternate;
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Shows the sources
      * @since 9.0.0
      * @access public
     */
     public static function sources_tab () {
-        echo '<div class="wrap">';
-        echo '<h2>' . __('Auto-publish','teachpress') . '</h2>';
         ?>
-        <form id="tp_sources" name="tp_sources" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
-        <input type="hidden" name="page" value="teachpress/sources.php"/>
-        <div class="tp_postbody">
-            <div class="tp_postcontent">
-                <label for="sources_area">These URLs will be periodically scanned for changes and imported</label>
-                <textarea name="sources_area" id="sources_area" rows="20" style="width:100%;" title="<?php _e('Type the URLs here','teachpress'); ?>"></textarea>
-            </div>
-            <div class="tp_postcontent_right">
-                <div class="postbox">
-                    <h3 class="tp_postbox"><?php _e('Import options','teachpress'); ?></h3>
-                    <div class="inside">
-                        <?php 
-                        // Overwrite option
-                        if ( get_tp_option('import_overwrite') === '1' ) { 
-                            echo TP_Admin::get_checkbox(
-                                    'overwrite', 
-                                    __('Update existing publications','teachpress'), 
-                                    '1', 
-                                    __('If the bibtex key is similar with a publication in the database, teachPress updates this publication with the import information.','teachpress'), true);
-                            echo '<br/>';
-                        }
-                    
-                        // Ignore tags option
-                        echo TP_Admin::get_checkbox(
-                                'ignore_tags', 
-                                __('Ignore Tags','teachpress'), 
-                                '0', 
-                                __('Ignore tags or keywords in the import data.','teachpress'), true); ?>
-                    </div>
-                    <div id="major-publishing-actions" style="text-align: center;">
-                        <input name="tp_submit" type="submit" class="button-primary" value="<?php _e('Schedule'); ?>"/>
-                        <a class="tp_row_delete" href="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>&amp;tp_stop_sched=1">Stop auto-publish</a>
-                    </div>
-                </div>
-                <div class="postbox">
-                    <h3 class="tp_postbox"><?php _e('Data options','teachpress'); ?></h3>
-                    <div class="inside">
-                        <p><strong><label for="author_format_0"><?php _e('Author/Editor Format','teachpress'); ?></label></strong></p>
-                        <label>
-                            <input type="radio" name="author_format" value="dynamic" id="author_format_1" checked="checked" disabled="disabled"/>
-                            <?php _e('Dynamic detection','teachpress');?>
-                        </label>
-                        <br />
-                        <label>
-                            <input type="radio" name="author_format" value="default" id="author_format_0" disabled="disabled" />
-                            Firstname1 Lastname1 and Firstname2 Lastname2 and ...
-                        </label>
-                        <br />
-                        <label>
-                            <input type="radio" name="author_format" value="lastfirst" id="author_format_1" disabled="disabled"     />
-                            Lastname1, Firstname1 and Lastname2, Firstname2 and ...
-                        </label>
-                        <br />
-                        <p><strong><label for="keyword_option"><?php _e('Keyword Separator','teachpress'); ?></label></strong></p>
-                        <input type="text" name="keyword_option" id="keyword_option" title="<?php _e('Keyword Separator','teachpress'); ?>" value="," size="3" disabled="disabled" />
-                    </div>
-                </div>
-            </div>
+
+        <div class="wrap">
+            <h2><?php echo __('Auto-publish','teachpress'); ?></h2>
+            <p>The following URLs can be scanned regularly and their bibtex entries
+               automatically imported if they have changed. The publication log can
+               be consulted on the Import/Export page.</p>
+            <form id="tp_sources" name="tp_sources"
+                  action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
+                <p>
+                    <label for="tp_source_freq">Update frequency:</label>
+
+                    <select name="tp_source_freq" id="tp_source_freq">
+                        <?php
+                            $cur_freq = TP_Publication_Sources_Page::get_update_freq();
+                            $all_freqs = array("never" => "Never (disable updates)",
+                                               "hourly" => "Hourly",
+                                               "twicedaily" => "Twice a day",
+                                               "daily" => "Daily");
+                            foreach ($all_freqs as $val => $render) {
+                                print(sprintf("<option value='%s' %s>%s</option>", $val, $val == $cur_freq ? "selected='selected'" : "", $render));
+                            }
+                        ?>
+                    </select>
+                </p>
+                
+                <p id="tp_sources_holder">
+                    <table id="tp_sources_table" class="widefat" cellspacing="0" cellpadding="0" border="0">
+                        <thead>
+                            <tr><td>URL</td><td>Previous update result</td></tr>
+                        </thead>
+                        <tbody>
+                            <?php $cur_sources = TP_Publication_Sources_Page::get_current_sources();
+                                   print(TP_Publication_Sources_Page::get_pages_rows($cur_sources)); ?>
+                        <tbody>
+                    </table>
+                    <label style="display:none;" id="tp_sources_area_lbl" for="tp_sources_area">One URL per line. Start each URL with http:// or https://.</label>
+                    <textarea id="tp_sources_area" name="tp_sources_area" style="width: 100%; display: none;"><?php
+                              $cur_sources = TP_Publication_Sources_Page::get_current_sources();
+                              print(implode(array_map('tp_get_source_url', $cur_sources), "\n"));
+                    ?></textarea>
+                </p>
+
+                <p><button class="button-secondary" name="tp_edit_sources" id="tp_edit_sources"
+                           type="button" onclick="teachpress_edit_sources()">Edit URL list</button>
+                    <button class="button-secondary" name="tp_sources_cancel" id="tp_sources_cancel"
+                    type="button" onclick="teachpress_edit_sources()" style="display: none;">Cancel</button></p>
+
+                <p style="margin-top: 60px;"><button class="button-primary"
+                   name="tp_sources_save" type="submit" >Save configuration</button></p>
+            </form>
         </div>
-        </form>
-        </div>     
-        
-        <?php  
+
+        <?php
     }
     
     /**
@@ -129,24 +158,39 @@ class TP_Publication_Sources_Page {
      * @access public
      */
     public static function sources_actions ($post) {
-        $sources_area = isset($post['sources_area']) ? trim($post['sources_area']) : '';
-        $sources_to_monitor = array_filter(preg_split("/\r\n|\n|\r/", $sources_area), 
+        $sources_area = isset($post['tp_sources_area']) ? trim($post['tp_sources_area']) : '';
+        $sources_to_monitor = array_filter(preg_split("/\r\n|\n|\r/", $sources_area),
                                            function($k) { return strlen(trim($k)) > 0; });
+        $new_freq = isset($post['tp_source_freq']) ? trim($post['tp_source_freq']) : 'hourly';
         
         // overwrite the existing entries with the new ones, even if there are none
         $installed = TP_Publication_Sources_Page::install_sources($sources_to_monitor);
-        
-        get_tp_message( __(sprintf('Now monitoring the %d URL(s) specified.',
-                                   count($installed)),'teachpress') );
-        
+                
         // manage cron hook
-        if (count($installed) == 0) {
+        if (count($installed) == 0 || $new_freq == 'never') {
             TP_Publication_Sources_Page::uninstall_cron();
         } else {
-            TP_Publication_Sources_Page::install_cron('hourly');
+            TP_Publication_Sources_Page::install_cron($new_freq);
         }
+        
+        get_tp_message( __(sprintf('Configuration updated with %d URL(s) at frequency "%s".',
+                                   count($installed), $new_freq),'teachpress') );
     }
 
+    /**
+     * Finds the current frequency of schedule.
+     * @return Current frequency, or 'never' if none scheduled.
+     * @since 9.0.0
+     * @access public
+     */
+    public static function get_update_freq() {
+        $result = wp_get_schedule(TEACHPRESS_CRON_SOURCES_HOOK);
+        if ($result === false) {
+            $result = 'never';
+        }
+        return $result;
+    }
+            
     /**
      * This function installs monitored bibtex sources.
      * @global object $current_user
@@ -184,8 +228,8 @@ class TP_Publication_Sources_Page {
             add_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' );
         }
         
-        // schedule hook - here the freq is ignored if already scheduled
-        if ( ! wp_next_scheduled( TEACHPRESS_CRON_SOURCES_HOOK ) ) {
+        // schedule hook
+        if ( TP_Publication_Sources_Page::get_update_freq() != $freq && $freq != 'never' ) {
             wp_schedule_event( time(), $freq, TEACHPRESS_CRON_SOURCES_HOOK );
         }
     }
