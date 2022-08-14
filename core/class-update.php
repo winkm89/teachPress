@@ -114,6 +114,7 @@ class TP_Update {
         if ( $db_version[0] === '8' || $update_level === '8' ) {
             TP_Update::upgrade_to_80();
             TP_Update::upgrade_to_81($charset_collate);
+            TP_Update::upgrade_to_82();
         }
         
         // Add teachPress options
@@ -857,6 +858,21 @@ class TP_Update {
         // add column issue to table teachpress_pub
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " WHERE Field = 'issue'") == '0') { 
             $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `issue` VARCHAR(40) $charset_collate NULL DEFAULT NULL AFTER `journal`");
+        }
+    }
+
+
+    /**
+     * Database upgrade to teachPress 9.0.0 structure
+     * @param string $charset_collate
+     * @since 9.0.0
+     */
+    private static function upgrade_to_82() {
+        global $wpdb;
+
+        // add column image_target to table teachpress_pub
+        if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'award'") == '0') { 
+            $wpdb->query("ALTER TABLE " . TEACHPRESS_PUB . " ADD `award` VARCHAR (100) NULL DEFAULT NULL AFTER `type`");
         }
     }
     

@@ -90,7 +90,12 @@ class TP_Template_2021 implements TP_Publication_Template {
         $s .= $interface->get_images('left');
         $s .= '<div class="tp_pub_info">';
         $s .= $interface->get_author('<p class="tp_pub_author">', '</p>');
-        $s .= '<p class="tp_pub_title">' . $interface->get_title() . ' ' . $interface->get_type() . ' ' . $interface->get_label('status', array('forthcoming') ) . '</p>';
+        $s .= '<p class="tp_pub_title">' . $interface->get_title();
+        $award = $interface->get_award(true);
+        if ($award != ""){
+            $s .= ' ' . $award;
+        }
+        $s .= ' ' . $interface->get_type() . ' ' . $interface->get_label('status', array('forthcoming') ) . '</p>';
         $s .= '<p class="tp_pub_additional">' . $interface->get_meta() . '</p>';
         $s .= '<p class="tp_pub_menu">' . $interface->get_menu_line() . '</p>';
         $s .= $interface->get_infocontainer();

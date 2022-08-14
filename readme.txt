@@ -123,6 +123,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 = 9.0.0 beta (xx.xx.xxxx) =
 * New: Filters for custom select fields can be added to [tpcloud], [tpsearch]
+* New: Add awards field to the publications
 * Changed: This version no longer contains the course module
 * Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
 

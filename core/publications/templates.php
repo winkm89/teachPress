@@ -237,6 +237,26 @@ class TP_Publication_Template_API {
         return $before . $this->data['all_authors']  . $after;
     }
     
+    /** 
+     * Returns the award (as html element)
+     * @return string
+     * @since 9.0.0
+     * @access public
+     */
+    public function get_award($withLabel = false) {
+        global $tp_awards;
+        if ( $this->data['row']['award'] != '' && $this->data['row']['award'] != 'none' ) {
+            $award_data = $tp_awards->get_data($this->data['row']['award']);
+            $s = '<span class="tp_pub_label_award" title="'.$award_data["i18n_singular"].'"><i class="'.$award_data["icon"].'"></i>';
+            if ($withLabel) {
+                $s .= ' '.$award_data["i18n_singular"];
+            }
+            $s .= "</span>";
+            return $s;
+        }
+        return "";
+    }
+
     /**
      * Returns the meta row
      * @return string

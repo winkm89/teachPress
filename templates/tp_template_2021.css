@@ -75,6 +75,18 @@ div.tp_pub_number {
     line-height: 1; 
     border-radius: 2px; 
     box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);}
+.tp_pub_label_award {
+    background-color: #d2001f; 
+    color: #fff; 
+    display: inline-block; 
+    padding: 5px 5px; 
+    margin-left: 5px; 
+    font-size: 0.9em; 
+    font-weight: bold; 
+    line-height: 1; 
+    border-radius: 2px;
+}
+
 .tp_pub_label_status {
     background-color: orange; 
     color: #fff; 
