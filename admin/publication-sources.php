@@ -101,6 +101,9 @@ class TP_Publication_Sources_Page {
             <p>The following URLs can be scanned regularly and their bibtex entries
                automatically imported if they have changed. The publication log can
                be consulted on the Import/Export page.</p>
+            <p>Zotero group bibliographies can be downloaded in BibTeX format by using URLs such
+               as <code>https://api.zotero.org/groups/<span style="color:green;">group_id</span>/items/top?direction=asc&format=bibtex&sort=title</code>,
+               where <code>group_id</code> is the group id (numerical) on zotero.org.</p>
             <form id="tp_sources" name="tp_sources"
                   action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
                 <p>
