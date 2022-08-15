@@ -479,7 +479,7 @@ class TP_Tables {
     
         dbDelta("CREATE TABLE " . TEACHPRESS_MONITORED_SOURCES . " (
                     `src_id` INT UNSIGNED AUTO_INCREMENT,
-                    `md5` INT UNSIGNED,
+                    `md5` VARCHAR(32) DEFAULT '',
                     `name` VARCHAR(4096),
                     `last_res` VARCHAR(1024) DEFAULT '',
                     PRIMARY KEY (src_id)

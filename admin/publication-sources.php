@@ -266,8 +266,13 @@ class TP_Publication_Sources_Page {
         $source_urls = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_MONITORED_SOURCES);
         
         foreach ($source_urls as $src_url) {
-            $result[] = TP_Publication_Sources_Page::update_source($src_url->name, $src_url->md5);
-            // TODO: UPDATE DATABASE
+            $result[] = array_merge(TP_Publication_Sources_Page::update_source($src_url->name, $src_url->md5),
+                                    array('src_id' => $src_url->src_id));
+        }
+        
+        foreach ($result as $cur_res) {
+            $wpdb->update(TEACHPRESS_MONITORED_SOURCES, array('md5' => $cur_res[0], 'last_res' => $cur_res[2]),
+                          array('src_id' => $cur_res['src_id']));
         }
         
         return $result;
@@ -277,13 +282,14 @@ class TP_Publication_Sources_Page {
      * Performs update for a single source.
      * @param $url   The URL of the source.
      * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
-     * @return new_signature, nb_updates, status_message
+     * @return new_signature, nb_updates, status_message, success
      * @since 9.0.0
      */
     public static function update_source($url, $previous_sig) {
         $new_signature = '';
         $nb_updates = 0;
         $status_message = 'Unknown error.';
+        $success = false;
         
         $req = wp_remote_get($url, array('sslverify' => false));
         if (is_wp_error($req)) {
@@ -295,6 +301,7 @@ class TP_Publication_Sources_Page {
             } else {
                 $body = wp_remote_retrieve_body($req);
                 if ($body) {
+                    $new_signature = md5($body);
                     if ($new_signature != $previous_sig) {
                         if ( TP_Bibtex::is_utf8($body) === false ) {
                             $body = utf8_encode($body);
@@ -309,11 +316,12 @@ class TP_Publication_Sources_Page {
 
                         $entries = TP_Bibtex_Import::init($body, $settings);
                         $status_message = 'Successfully read and imported.';
-                        $new_signature = md5($body);
                         $nb_updates = count($entries);
+                        $success = true;
                     } else {
                         $status_message = 'File unchanged.';
-                        $new_signature = $previous_signature;
+                        $new_signature = $previous_sig;
+                        $success = true;
                     }
                 } else {
                     $status_message = 'Invalid body in server response.';
@@ -321,7 +329,7 @@ class TP_Publication_Sources_Page {
             }
         }
         
-        return array($new_signature, $nb_updates, $status_message);
+        return array($new_signature, $nb_updates, $status_message, $success);
     }
 
 }
