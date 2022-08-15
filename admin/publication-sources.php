@@ -309,18 +309,22 @@ class TP_Publication_Sources_Page {
                         if ( TP_Bibtex::is_utf8($body) === false ) {
                             $body = utf8_encode($body);
                         }
+                        
+                        if ( !TP_Bibtex::looks_like_bibtex($body) ) {
+                            $status_message = "Content does not look like BibTeX.";
+                        } else {
+                            $settings = array(
+                                'keyword_separator' => ',',
+                                'author_format'     => 'author_format_1',
+                                'overwrite'         => true,
+                                'ignore_tags'       => false,
+                            );
 
-                        $settings = array(
-                            'keyword_separator' => ',',
-                            'author_format'     => 'author_format_1',
-                            'overwrite'         => true,
-                            'ignore_tags'       => false,
-                        );
-
-                        $entries = TP_Bibtex_Import::init($body, $settings);
-                        $status_message = 'Successfully read and imported.';
-                        $nb_updates = count($entries);
-                        $success = true;
+                            $entries = TP_Bibtex_Import::init($body, $settings);
+                            $status_message = 'Successfully read and imported.';
+                            $nb_updates = count($entries);
+                            $success = true;
+                        }
                     } else {
                         $status_message = 'File unchanged.';
                         $new_signature = $previous_sig;

@@ -118,16 +118,20 @@ class TP_Bibtex {
      */
     public static function looks_like_bibtex ($input) {
         $lines = preg_split("/\r\n|\n|\r/", $input);
-        $result = true;
+        $result = $lines !== false;
         
-        $lines = array_filter($lines, function ($l) { $l = trim($l); return strlen($l) > 0 && substr($l, 0, 1) != "%"; });
-        
-        if (count($lines) > 0) {
-            $first_char = substr(trim($lines[0]), 0, 1);
-            $last_line = trim(end($lines));
-            $last_char = substr($last_line, strlen($last_line) - 1, 1);
+        if ($result) {
+            $lines = array_filter($lines, function ($l) {
+                                  $l = trim($l);
+                                  return strlen($l) > 0 && substr($l, 0, 1) != "%"; });
             
-            $result = $first_char == "@" && $last_char == "}";
+            if ($result && count($lines) > 0) {
+                $first_char = substr(trim(reset($lines)), 0, 1);
+                $last_line = trim(end($lines));
+                $last_char = substr($last_line, strlen($last_line) - 1, 1);
+                
+                $result = $first_char == "@" && $last_char == "}";
+            }
         }
         
         return $result;
