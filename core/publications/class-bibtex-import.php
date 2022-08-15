@@ -29,6 +29,14 @@ class TP_Bibtex_Import {
         // create import info
         $import_id = ( $test === false ) ? tp_publication_imports::add_import() : 0;
         
+        // if first lines are empty, remove them, otherwise import won't find any entries
+        $lines = $array = preg_split("/\r\n|\n|\r/", $input);
+        if ( $lines !== false ) {
+            $lines = array_filter($lines, function($l) { $l = trim($l);
+                                                         return strlen($l) > 0; });
+            $input = implode("\n", $lines);
+        }
+        
         // Init bibtexParse
         $input = TP_Bibtex::convert_bibtex_to_utf8($input);
         $parse = NEW BIBTEXPARSE();
@@ -39,6 +47,7 @@ class TP_Bibtex_Import {
         $parse->extractEntries();
         
         list($preamble, $strings, $entries, $undefinedStrings) = $parse->returnArrays();
+        
         $max = count( $entries );
         // print_r($undefinedStrings);
         // print_r($entries);
