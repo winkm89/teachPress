@@ -107,6 +107,33 @@ class TP_Bibtex {
     }
 
     /**
+     * Heuristics to check if the input is BibTeX. May be useful when handling
+     * potentially problematic content, i.e. automatically downloaded from URLs.
+     *
+     * @param string $input
+     * @return false iff $input is very probably not BibTeX format. False positives are
+     *         possible.
+     * @ince 9.0.0
+     * @access public
+     */
+    public static function looks_like_bibtex ($input) {
+        $lines = preg_split("/\r\n|\n|\r/", $input);
+        $result = true;
+        
+        $lines = array_filter($lines, function ($l) { $l = trim($l); return strlen($l) > 0 && substr($l, 0, 1) != "%"; });
+        
+        if (count($lines) > 0) {
+            $first_char = substr(trim($lines[0]), 0, 1);
+            $last_line = trim(end($lines));
+            $last_char = substr($last_line, strlen($last_line) - 1, 1);
+            
+            $result = $first_char == "@" && $last_char == "}";
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Replaces some BibTeX special chars with the UTF-8 versions and secures the input. 
      * Before teachPress 5.0, this function was called replace_bibtex_chars()
      * 
