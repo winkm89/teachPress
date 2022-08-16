@@ -115,7 +115,7 @@ class TP_Publication_Sources_Page {
                             $all_freqs = array("never" => "Never (disable updates)",
                                                "hourly" => "Hourly",
                                                "twicedaily" => "Twice a day",
-                                               "daily" => "Daily");
+                                               "daily" => "Daily (recommended)");
                             foreach ($all_freqs as $val => $render) {
                                 print(sprintf("<option value='%s' %s>%s</option>", $val, $val == $cur_freq ? "selected='selected'" : "", $render));
                             }
