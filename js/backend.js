@@ -1,7 +1,7 @@
 // teachPress javascript for the admin menu
 
 /**
- * Delele node
+ * Delete node
  * @param {type} id
  * @since 5.0.0
  */
@@ -309,3 +309,34 @@ jQuery(document).ready(function() {
         tb_remove();
     };
 });
+
+/**
+ * Function to update sources table
+ * @since 9.0.0
+ */
+function teachpress_edit_sources(){
+    let $source_table = jQuery("#tp_sources_table");
+    let $source_area =jQuery("#tp_sources_area");
+    let $source_area_lbl =jQuery("#tp_sources_area_lbl");
+    let $edit_btn = jQuery("#tp_edit_sources");
+    let $cancel_btn = jQuery("#tp_sources_cancel");
+    let old_value = $source_area.text().trim();
+    $source_area.val(old_value);
+    
+    $source_area.height($source_table.height());
+    $source_table.hide();
+    $source_area.show();
+    $source_area_lbl.show();
+        
+    $edit_btn.prop('disabled', true);
+    $cancel_btn.show();
+    $cancel_btn.on('click', function() {
+                   $source_area.val(old_value);
+                   $source_area.hide();
+                   $source_area_lbl.hide();
+                   $source_table.show();
+                   $edit_btn.prop('disabled', false);
+                   $cancel_btn.hide();
+                   $cancel_btn.off('click');
+                   });
+}

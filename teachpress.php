@@ -78,6 +78,7 @@ if ( is_admin() ) {
     include_once('admin/class-tags-page.php');
     include_once('admin/add-publication.php');
     include_once('admin/import-publications.php');
+    include_once('admin/publication-sources.php');
     include_once('admin/settings.php');
     include_once('admin/show-publications.php');
 }
@@ -103,6 +104,7 @@ function tp_add_menu() {
     global $tp_admin_your_pub_page;
     global $tp_admin_add_pub_page;
     global $tp_admin_import_page;
+    global $tp_admin_sources_page;
     global $tp_admin_show_authors_page;
     global $tp_admin_edit_tags_page;
 
@@ -138,6 +140,13 @@ function tp_add_menu() {
             'use_teachpress', 
             'teachpress/import.php',
             'tp_show_import_publication_page');
+    $tp_admin_sources_page = add_submenu_page(
+            'publications.php',
+            __('Auto-publish'), 
+            __('Auto-publish'), 
+            'use_teachpress', 
+            'teachpress/sources.php',
+            'tp_show_publication_sources_page');
     $tp_admin_show_authors_page = add_submenu_page(
             'publications.php',
             __('Authors', 'teachpress'),
@@ -159,6 +168,7 @@ function tp_add_menu() {
     add_action("load-$tp_admin_your_pub_page", 'tp_show_publications_page_screen_options');
     add_action("load-$tp_admin_add_pub_page", 'tp_add_publication_page_help');
     add_action("load-$tp_admin_import_page", 'tp_import_publication_page_help');
+    add_action("load-$tp_admin_sources_page", 'tp_import_publication_sources_help');
     add_action("load-$tp_admin_show_authors_page", array('TP_Authors_Page','add_screen_options'));
     add_action("load-$tp_admin_edit_tags_page", array('TP_Tags_Page','add_screen_options'));
 }
@@ -255,6 +265,15 @@ function tp_db_sync($table) {
     }
 }
 
+/**
+ * teachPress plugin activation
+ * @since 9.0.0
+ */
+function tp_deactivation () {
+    TP_Publication_Sources_Page::uninstall_cron();
+}
+
+    
 /**
  * teachPress plugin activation
  * @param boolean $network_wide
@@ -467,6 +486,7 @@ function tp_plugin_link($links, $file){
 
 // Register WordPress-Hooks
 register_activation_hook( __FILE__, 'tp_activation');
+register_deactivation_hook( __FILE__, 'tp_deactivation' );
 add_action('init', 'tp_language_support');
 add_action('init', 'tp_feed_init');
 add_action('init', 'tp_register_all_publication_types');

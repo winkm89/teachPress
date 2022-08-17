@@ -539,6 +539,7 @@ class TP_Settings_Page {
         self::list_db_table_index(TEACHPRESS_SETTINGS);
         self::list_db_table_index(TEACHPRESS_TAGS);
         self::list_db_table_index(TEACHPRESS_USER);
+        self::list_db_table_index(TEACHPRESS_MONITORED_SOURCES);
     }
     
     /**
