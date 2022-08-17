@@ -103,8 +103,8 @@ function tp_register_all_publication_types() {
         array(
             'type_slug'         => 'incollection',
             'bibtex_key_ext'    => 'incollection',
-            'i18n_singular'     => __('Incollection','teachpress'), 
-            'i18n_plural'       => __('Incollections','teachpress'), 
+            'i18n_singular'     => __('Book Section','teachpress'),
+            'i18n_plural'       => __('Book Sections','teachpress'),
             'default_fields'    => array('volume', 'number', 'pages', 'publisher', 'address', 'edition', 'chapter', 'series', 'techtype'),  
             'html_meta_row'     => '{IN}{editor}{booktitle}{volume}{number}{pages}{publisher}{address}{year}{isbn}{note}' 
         ) );
@@ -114,8 +114,8 @@ function tp_register_all_publication_types() {
         array(
             'type_slug'         => 'inproceedings',
             'bibtex_key_ext'    => 'inproceedings',
-            'i18n_singular'     => _x('Inproceedings','Singular form of inproceedings, if it exists','teachpress'),
-            'i18n_plural'       => __('Inproceedings','teachpress'),  
+            'i18n_singular'     => __('Proceedings','teachpress'),
+            'i18n_plural'       => __('Proceedings','teachpress'),
             'default_fields'    => array('booktitle', 'volume', 'number', 'pages', 'publisher', 'address', 'organization', 'series'),   
             'html_meta_row'     => '{IN}{editor}{booktitle}{pages}{organization}{publisher}{address}{year}{isbn}{note}' 
         ) );
