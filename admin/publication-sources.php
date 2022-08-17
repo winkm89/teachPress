@@ -81,7 +81,7 @@ class TP_Publication_Sources_Page {
                 $last_res = __("URL not scanned yet.", "teachpress");
             }
             $result .= sprintf("<tr class='%s'><td class='tp_url'>%s</td><td>%s</td></tr>",
-                               $alternate ? "alternate" : "", $src_url['src_url'], $last_res);
+                               $alternate ? "alternate" : "", $src_url['src_url'], __($last_res, "teachpress"));
             $alternate = ! $alternate;
         }
         
@@ -98,16 +98,15 @@ class TP_Publication_Sources_Page {
 
         <div class="wrap">
             <h2><?php echo __('Auto-publish','teachpress'); ?></h2>
-            <p>The following URLs can be scanned regularly and their bibtex entries
+            <p><?php echo __("The following URLs can be scanned regularly and their bibtex entries
                automatically imported if they have changed. The publication log can
-               be consulted on the Import/Export page.</p>
-            <p>Zotero group bibliographies can be downloaded in BibTeX format by using URLs such
-               as <code>https://api.zotero.org/groups/<span style="color:green;">group_id</span>/items/top?direction=asc&format=bibtex&sort=title</code>,
-               where <code>group_id</code> is the group id (numerical) on zotero.org.</p>
+               be consulted on the Import/Export page.", "teachpress");?></p>
+            <p><?php echo __("Zotero group bibliographies can be downloaded in BibTeX format by using special URLs such as <code>zotero://group/&lt;group_id&gt;/</code>,
+                where <code>group_id</code> is the group id (numerical) found on zotero.org.", "teachpress");?></p>
             <form id="tp_sources" name="tp_sources"
                   action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
                 <p>
-                    <label for="tp_source_freq">Update frequency:</label>
+                    <label for="tp_source_freq"><? echo __("Update frequency:", "teachpress");?></label>
 
                     <select name="tp_source_freq" id="tp_source_freq">
                         <?php
@@ -298,17 +297,17 @@ class TP_Publication_Sources_Page {
     public static function update_source_http($url, $previous_sig, &$this_req) {
         $new_signature = '';
         $nb_updates = 0;
-        $status_message = __('Unknown error.', "teachpress");
+        $status_message = 'Unknown error.';
         $success = false;
         
         $req = wp_remote_get($url, array('sslverify' => false));
         $this_req = $req;
         if (is_wp_error($req)) {
-            $status_message = __('Error while retrieving URL.', "teachpress");
+            $status_message = 'Error while retrieving URL.';
         } else {
             $code = $req["response"]["code"];
             if (!preg_match("#^2\d+$#", $code)) {
-                $status_message = sprintf(__('Error code %s while connecting to server.', "teachpress"), $code);
+                $status_message = sprintf('Error code %s while connecting to server.', $code);
             } else {
                 $body = wp_remote_retrieve_body($req);
                 if ($body) {
@@ -319,7 +318,7 @@ class TP_Publication_Sources_Page {
                         }
                         
                         if ( !TP_Bibtex::looks_like_bibtex($body) ) {
-                            $status_message = __("Content does not look like BibTeX.", "teachpress");
+                            $status_message = "Content does not look like BibTeX.";
                         } else {
                             $settings = array(
                                 'keyword_separator' => ',',
@@ -329,17 +328,17 @@ class TP_Publication_Sources_Page {
                             );
 
                             $entries = TP_Bibtex_Import::init($body, $settings);
-                            $status_message = __('Successfully read and imported.', "teachpress");
+                            $status_message = 'Successfully read and imported.';
                             $nb_updates = count($entries);
                             $success = true;
                         }
                     } else {
-                        $status_message = __('File unchanged.', "teachpress");
+                        $status_message = 'File unchanged.';
                         $new_signature = $previous_sig;
                         $success = true;
                     }
                 } else {
-                    $status_message = __('Invalid body in server response.', "teachpress");
+                    $status_message = 'Invalid body in server response.';
                 }
             }
         }
