@@ -285,16 +285,18 @@ class TP_Publication_Sources_Page {
      * Performs update for a single source.
      * @param $url   The URL of the source. URL protocols supported: http://, https://.
      * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
+     * @param this_req   Http Request (callee assigned), by reference.
      * @return new_signature, nb_updates, status_message, success
      * @since 9.0.0
      */
-    public static function update_source_http($url, $previous_sig) {
+    public static function update_source_http($url, $previous_sig, &$this_req) {
         $new_signature = '';
         $nb_updates = 0;
         $status_message = 'Unknown error.';
         $success = false;
         
         $req = wp_remote_get($url, array('sslverify' => false));
+        $this_req = $req;
         if (is_wp_error($req)) {
             $status_message = 'Error while retrieving URL.';
         } else {
@@ -362,12 +364,13 @@ class TP_Publication_Sources_Page {
             $error_encountered = false;
             $current_offset = 0;
             $page_size = 30;
+            $http_req = NULL;
             
             while ($has_more_results && !$error_encountered) {
                 // download a single page
                 $page_url = sprintf("https://api.zotero.org/groups/%s/items?format=bibtex&limit=%d&start=%d",
                                     $group_id, $page_size, $current_offset);
-                $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '');
+                $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '', $http_req);
                 
                 $result[3] = $page_result[3];
                 $error_encountered = !$result[3];
@@ -404,7 +407,8 @@ class TP_Publication_Sources_Page {
             switch ($url_parts[0]) {
                 case "http":
                 case "https":
-                    $result = TP_Publication_Sources_Page::update_source_http($url, $previous_sig);
+                    $http_req = NULL;
+                    $result = TP_Publication_Sources_Page::update_source_http($url, $previous_sig, $http_req);
                     break;
                 case "zotero":
                     $result = TP_Publication_Sources_Page::update_source_zotero($url, $previous_sig);
