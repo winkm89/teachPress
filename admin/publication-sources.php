@@ -280,15 +280,15 @@ class TP_Publication_Sources_Page {
         
         return $result;
     }
-            
+
     /**
      * Performs update for a single source.
-     * @param $url   The URL of the source.
+     * @param $url   The URL of the source. URL protocols supported: http://, https://.
      * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
      * @return new_signature, nb_updates, status_message, success
      * @since 9.0.0
      */
-    public static function update_source($url, $previous_sig) {
+    public static function update_source_http($url, $previous_sig) {
         $new_signature = '';
         $nb_updates = 0;
         $status_message = 'Unknown error.';
@@ -300,7 +300,7 @@ class TP_Publication_Sources_Page {
         } else {
             $code = $req["response"]["code"];
             if (!preg_match("#^2\d+$#", $code)) {
-                $status_message = 'Error code while connecting to URL server.';
+                $status_message = sprintf('Error code %s while connecting to server.', $code);
             } else {
                 $body = wp_remote_retrieve_body($req);
                 if ($body) {
@@ -337,6 +337,85 @@ class TP_Publication_Sources_Page {
         }
         
         return array($new_signature, $nb_updates, $status_message, $success);
+    }
+
+    /**
+     * Performs update for a single source.
+     * @param $url   The URL of the source. URL protocols supported:
+                     zotero://group/<group_id> is special and downloads all group items in group <group_id>
+     * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
+     * @return new_signature, nb_updates, status_message, success
+     * @since 9.0.0
+     * @see Zotero api https://www.zotero.org/support/dev/web_api/v3/basics
+     */
+    public static function update_source_zotero($url, $previous_sig) {
+        $result = array('', 0, 'Zotero group download failed.', false);
+        
+        // find group id
+        $parts = explode("/", $url);
+        
+        if (count($parts) >= 3 && $parts[0] == "zotero:" && $parts[2] == "group") {
+            $group_id = $parts[3];
+            
+            // prepare pagination loop
+            $has_more_results = true;
+            $error_encountered = false;
+            $current_offset = 0;
+            $page_size = 30;
+            
+            while ($has_more_results && !$error_encountered) {
+                // download a single page
+                $page_url = sprintf("https://api.zotero.org/groups/%s/items?format=bibtex&limit=%d&start=%d",
+                                    $group_id, $page_size, $current_offset);
+                $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '');
+                
+                $result[3] = $page_result[3];
+                $error_encountered = !$result[3];
+                
+                if ($error_encountered) {
+                    $result[2] = 'Zotero group download failed. Error was: ' . $page_result[2];
+                } else {
+                    $result[1] += $page_result[1];
+                    $result[2] = $page_result[2];
+                    // stay awhile and listen
+                    usleep(100000);
+                    $current_offset += $page_size;
+                }
+            }
+            
+        }
+        
+        return $result;
+    }
+            
+    /**
+     * Performs update for a single source.
+     * @param $url   The URL of the source. URL protocols supported: http://, https://, zotero://
+                     zotero://group/<group_id> is special and downloads all group items in group <group_id>
+     * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
+     * @return new_signature, nb_updates, status_message, success
+     * @since 9.0.0
+     */
+    public static function update_source($url, $previous_sig) {
+        // what is the protocol?
+        $url_parts = explode("://", strtolower(trim($url)));
+        $result = false;
+        if (count($url_parts) > 1) {
+            switch ($url_parts[0]) {
+                case "http":
+                case "https":
+                    $result = TP_Publication_Sources_Page::update_source_http($url, $previous_sig);
+                    break;
+                case "zotero":
+                    $result = TP_Publication_Sources_Page::update_source_zotero($url, $previous_sig);
+                    break;
+                default:
+                    $result = array('', 0, 'Invalid protocol.', false);
+                    break;
+            }
+        }
+        
+        return $result;
     }
 
 }
