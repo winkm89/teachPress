@@ -124,7 +124,7 @@ class TP_Authors_Page {
         echo '<select name="filter">';
         echo '<option>- ' . __('Select filter','teachpress') . ' -</option>';
         $selected = ( $only_zero === true ) ? 'selected="selected"' : '';
-        echo '<option value="only_zero"' . $selected . '>' . __('Occurence = 0','teachpress') . '</option>';
+        echo '<option value="only_zero"' . $selected . '>' . __('Occurrence = 0','teachpress') . '</option>';
         echo '</select>';
         echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
         echo '</div>';
