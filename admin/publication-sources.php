@@ -365,12 +365,16 @@ class TP_Publication_Sources_Page {
             $current_offset = 0;
             $page_size = 30;
             $http_req = NULL;
+            $total_results = -1;
             
             while ($has_more_results && !$error_encountered) {
                 // download a single page
                 $page_url = sprintf("https://api.zotero.org/groups/%s/items?format=bibtex&limit=%d&start=%d",
                                     $group_id, $page_size, $current_offset);
                 $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '', $http_req);
+                if ($total_results == -1) {  // set on first loop
+                    $total_results = intval($http_req["headers"]["total-results"]);
+                }
                 
                 $result[3] = $page_result[3];
                 $error_encountered = !$result[3];
@@ -380,9 +384,10 @@ class TP_Publication_Sources_Page {
                 } else {
                     $result[1] += $page_result[1];
                     $result[2] = $page_result[2];
-                    // stay awhile and listen
-                    usleep(100000);
+
+                    usleep(100000); // stay awhile and listen
                     $current_offset += $page_size;
+                    $has_more_results = $current_offset < $total_results;
                 }
             }
             
