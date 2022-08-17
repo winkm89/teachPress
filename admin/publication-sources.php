@@ -112,10 +112,10 @@ class TP_Publication_Sources_Page {
                     <select name="tp_source_freq" id="tp_source_freq">
                         <?php
                             $cur_freq = TP_Publication_Sources_Page::get_update_freq();
-                            $all_freqs = array("never" => "Never (disable updates)",
-                                               "hourly" => "Hourly",
-                                               "twicedaily" => "Twice a day",
-                                               "daily" => "Daily (recommended)");
+                            $all_freqs = array("never" => __("Never (disable updates)", "teachpress"),
+                                               "hourly" => __("Hourly", "teachpress"),
+                                               "twicedaily" => __("Twice a day", "teachpress"),
+                                               "daily" => __("Daily (recommended)", "teachpress"));
                             foreach ($all_freqs as $val => $render) {
                                 print(sprintf("<option value='%s' %s>%s</option>", $val, $val == $cur_freq ? "selected='selected'" : "", $render));
                             }
@@ -126,7 +126,10 @@ class TP_Publication_Sources_Page {
                 <p id="tp_sources_holder">
                     <table id="tp_sources_table" class="widefat" cellspacing="0" cellpadding="0" border="0">
                         <thead>
-                            <tr><td>URL</td><td>Previous update result</td></tr>
+                            <tr>
+                                <td>URL</td>
+                                <td><?php echo __("Previous update result", "teachpress");?></td>
+                            </tr>
                         </thead>
                         <tbody>
                             <?php $cur_sources = TP_Publication_Sources_Page::get_current_sources();
@@ -141,12 +144,15 @@ class TP_Publication_Sources_Page {
                 </p>
 
                 <p><button class="button-secondary" name="tp_edit_sources" id="tp_edit_sources"
-                           type="button" onclick="teachpress_edit_sources()">Edit URL list</button>
+                           type="button" onclick="teachpress_edit_sources()">
+                                <?php echo __("Edit URL list", "teachpress");?></button>
                     <button class="button-secondary" name="tp_sources_cancel" id="tp_sources_cancel"
-                    type="button" onclick="teachpress_edit_sources()" style="display: none;">Cancel</button></p>
+                    type="button" onclick="teachpress_edit_sources()" style="display: none;">
+                        <?php echo __("Cancel", "teachpress");?></button></p>
 
                 <p style="margin-top: 60px;"><button class="button-primary"
-                   name="tp_sources_save" type="submit" >Save configuration</button></p>
+                   name="tp_sources_save" type="submit" >
+                    <?php echo __("Save configuration", "teachpress");?></button></p>
             </form>
         </div>
 
@@ -177,8 +183,8 @@ class TP_Publication_Sources_Page {
         }
         
         $new_freq = TP_Publication_Sources_Page::get_update_freq();
-        get_tp_message( __(sprintf('Configuration updated with %d URL(s) at frequency "%s".',
-                                   count($installed), $new_freq),'teachpress') );
+        get_tp_message( sprintf(__('Configuration updated with %d URL(s) at frequency "%s".', "teachpress"),
+                                 count($installed), $new_freq) );
     }
 
     /**
@@ -292,17 +298,17 @@ class TP_Publication_Sources_Page {
     public static function update_source_http($url, $previous_sig, &$this_req) {
         $new_signature = '';
         $nb_updates = 0;
-        $status_message = 'Unknown error.';
+        $status_message = __('Unknown error.', "teachpress");
         $success = false;
         
         $req = wp_remote_get($url, array('sslverify' => false));
         $this_req = $req;
         if (is_wp_error($req)) {
-            $status_message = 'Error while retrieving URL.';
+            $status_message = __('Error while retrieving URL.', "teachpress");
         } else {
             $code = $req["response"]["code"];
             if (!preg_match("#^2\d+$#", $code)) {
-                $status_message = sprintf('Error code %s while connecting to server.', $code);
+                $status_message = sprintf(__('Error code %s while connecting to server.', "teachpress"), $code);
             } else {
                 $body = wp_remote_retrieve_body($req);
                 if ($body) {
@@ -313,7 +319,7 @@ class TP_Publication_Sources_Page {
                         }
                         
                         if ( !TP_Bibtex::looks_like_bibtex($body) ) {
-                            $status_message = "Content does not look like BibTeX.";
+                            $status_message = __("Content does not look like BibTeX.", "teachpress");
                         } else {
                             $settings = array(
                                 'keyword_separator' => ',',
@@ -323,17 +329,17 @@ class TP_Publication_Sources_Page {
                             );
 
                             $entries = TP_Bibtex_Import::init($body, $settings);
-                            $status_message = 'Successfully read and imported.';
+                            $status_message = __('Successfully read and imported.', "teachpress");
                             $nb_updates = count($entries);
                             $success = true;
                         }
                     } else {
-                        $status_message = 'File unchanged.';
+                        $status_message = __('File unchanged.', "teachpress");
                         $new_signature = $previous_sig;
                         $success = true;
                     }
                 } else {
-                    $status_message = 'Invalid body in server response.';
+                    $status_message = __('Invalid body in server response.', "teachpress");
                 }
             }
         }
