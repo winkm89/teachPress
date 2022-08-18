@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: teachPress v5.0.13\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-08-17 14:33-0400\n"
-"PO-Revision-Date: 2022-08-17 15:31-0400\n"
+"PO-Revision-Date: 2022-08-18 11:18-0400\n"
 "Last-Translator: \n"
 "Language-Team: French (Canada)\n"
 "Language: fr_CA\n"
@@ -939,7 +939,7 @@ msgstr "de"
 #: core/general.php:61 admin/show-publications.php:561
 #: admin/class-tags-page.php:196 admin/class-authors-page.php:193
 msgid "entries"
-msgstr "Entrées"
+msgstr "entrées"
 
 # @ teachpress
 #: core/general.php:67
@@ -1153,7 +1153,7 @@ msgstr "Vos publications"
 #: admin/show-publications.php:428 admin/settings.php:410
 #: admin/add-publication.php:119 teachpress.php:131 teachpress.php:132
 msgid "Add new"
-msgstr "Ajouter une publication"
+msgstr "Nouveau..."
 
 # @ teachpress
 #: admin/show-publications.php:435 admin/import-publications.php:388
@@ -1222,7 +1222,7 @@ msgstr "Supprimé"
 # @ teachpress
 #: admin/settings.php:77
 msgid "teachPress settings"
-msgstr "les paramètres de teachPress"
+msgstr "Paramètres de teachPress"
 
 # @ teachpress
 #: admin/settings.php:85
@@ -1236,7 +1236,7 @@ msgstr "Méta"
 
 #: admin/settings.php:88
 msgid "Templates"
-msgstr "Patron"
+msgstr "Styles"
 
 # @ teachpress
 #: admin/settings.php:142
@@ -1348,12 +1348,12 @@ msgstr "Automatic related content"
 # @ teachpress
 #: admin/settings.php:256
 msgid "Create an automatic related content with every new publication"
-msgstr "Create an automatic related content with every new publication"
+msgstr "Créer un contenu connexe automatique pour chaque nouvelle publication"
 
 # @ teachpress
 #: admin/settings.php:260
 msgid "Template for related content"
-msgstr "Template for related content"
+msgstr "Modèle de contenu connexe"
 
 # @ default
 #: admin/settings.php:266
@@ -1369,8 +1369,7 @@ msgstr "Caractères spéciaux BibTeX"
 #: admin/settings.php:271
 msgid "Try to convert utf-8 chars into BibTeX compatible ASCII strings"
 msgstr ""
-"Essayez de convertir les caractères UTF-8 dans BibTeX chaînes ASCII "
-"compatible"
+"Essayer de convertir les caractères UTF-8 en chaînes ASCII compatible BibTeX"
 
 #: admin/settings.php:275 admin/import-publications.php:198
 msgid "Update existing publications"
@@ -1457,7 +1456,7 @@ msgstr "Delete elemtent"
 
 #: admin/settings.php:461
 msgid "Available templates for publication lists"
-msgstr "Patrons disponibles pour les listes de publications"
+msgstr "Styles disponibles pour les listes de publications"
 
 #. Begin change directory message
 #: admin/settings.php:464
@@ -1467,14 +1466,13 @@ msgstr "Veuillez noter"
 #: admin/settings.php:464
 msgid "Changes in the templates will be overwritten by updates of the plugin."
 msgstr ""
-"Les changements dans le patron seront perdus lors de la mise à jour du "
-"plugin."
+"Les changements dans le style seront perdus lors de la mise à jour du plugin."
 
 #: admin/settings.php:464
 msgid "But you can change the directory for the templates."
 msgstr ""
-"Mais vous pouvez tout de même modifier le répertoires des patrons "
-"(templates)."
+"Mais vous pouvez modifier le répertoires des styles (templates) si vous le "
+"désirez."
 
 # @ teachpress
 #: admin/settings.php:478 admin/add-publication.php:741
@@ -2343,3 +2341,7 @@ msgstr ""
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/publication-sources.php:109
 msgid "Update frequency:"
 msgstr "Fréquence de mise à jour :"
+
+msgid "One URL per line. Start each URL with http://, https:// or zotero://."
+msgstr ""
+"Une URL par ligne. Commencez chaque URL avec http://, https:// ou zotero:// ."

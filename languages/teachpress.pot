@@ -2009,3 +2009,6 @@ msgstr ""
 #: teachpress.php:482
 msgid "Settings"
 msgstr ""
+
+msgid "One URL per line. Start each URL with http://, https:// or zotero://."
+msgstr ""

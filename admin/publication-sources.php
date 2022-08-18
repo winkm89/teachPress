@@ -135,7 +135,8 @@ class TP_Publication_Sources_Page {
                                    print(TP_Publication_Sources_Page::get_pages_rows($cur_sources)); ?>
                         <tbody>
                     </table>
-                    <label style="display:none;" id="tp_sources_area_lbl" for="tp_sources_area">One URL per line. Start each URL with http:// or https://.</label>
+                    <label style="display:none;" id="tp_sources_area_lbl" for="tp_sources_area">
+                        <?php echo __("One URL per line. Start each URL with http://, https:// or zotero://.", "teachpress"); ?></label>
                     <textarea id="tp_sources_area" name="tp_sources_area" style="width: 100%; display: none;"><?php
                               $cur_sources = TP_Publication_Sources_Page::get_current_sources();
                               print(implode(array_map('tp_get_source_url', $cur_sources), "\n"));
