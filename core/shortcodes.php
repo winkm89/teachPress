@@ -402,7 +402,7 @@ class TP_Shortcodes {
         $params = '';
         
         foreach ( $keys as $key ) {
-            if ( $key === $hide_key ) {
+            if ( $key === $hide_key || empty($key) ) {
                 continue;
             }
             $url_param = isset ( $url_vars[ $key ] ) ? $url_vars[ $key ] : $key;
