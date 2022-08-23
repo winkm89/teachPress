@@ -416,6 +416,12 @@ class TP_Publications {
                 'import_id'     => $data['import_id'] ),
             array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
         $pub_id = $wpdb->insert_id;
+        
+        // Error message for the user:
+        if ( $pub_id === 0 && $wpdb->last_error !== '' ) {
+            get_tp_message($data['title'] . ': <ul><li>' . $wpdb->last_error . '</li></ul>', 'red');
+            //var_dump($data);
+        }
 
         // Bookmarks
         if ( !empty( $bookmark ) ) {
