@@ -856,7 +856,7 @@ msgid "Jan"
 msgstr "jan"
 
 #: admin/add-publication.php:412 admin/add-publication.php:789
-msgid "JJJJ-MM-TT"
+msgid "YYYY-MM-DD"
 msgstr "DDDD-MM-RR"
 
 #: admin/add-publication.php:553

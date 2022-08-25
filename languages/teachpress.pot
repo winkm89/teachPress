@@ -1752,7 +1752,7 @@ msgstr ""
 
 #: admin/add-publication.php:410
 #: admin/add-publication.php:787
-msgid "JJJJ-MM-TT"
+msgid "YYYY-MM-DD"
 msgstr ""
 
 #: admin/add-publication.php:429

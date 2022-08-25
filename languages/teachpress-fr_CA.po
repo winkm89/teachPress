@@ -2098,8 +2098,8 @@ msgstr "Date de publication"
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:410
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:787
-msgid "JJJJ-MM-TT"
-msgstr "JJJJ-MM-TT"
+msgid "YYYY-MM-DD"
+msgstr "AAAA-MM-JJ"
 
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:429
 msgid "Image"
