@@ -178,6 +178,26 @@ function sort_tp_publication_type_options ($a, $b) {
 }
 
 /**
+ * Get award types
+ * @param string $selected  --> 
+ * @return string
+ * @since 9.0.0
+ */
+function get_tp_award_options ($selected) {
+    global $tp_awards;
+    $award = '';
+    $pub_awards = $tp_awards->get();
+    // usort($pub_awards, 'sort_tp_publication_award_options');
+    foreach ( $pub_awards as $row ) {
+        $title = $row['i18n_singular'];
+        $current = ( $row['award_slug'] == $selected && $selected != '' ) ? 'selected="selected"' : '';
+        $award = $award . '<option value="' . $row['award_slug'] . '" ' . $current . '>' . $title . '</option>';  
+    }
+   return $award;
+}
+
+
+/**
  * Returns the default structure for a publication array
  * @return array 
  * @since 9.0.0
@@ -185,9 +205,10 @@ function sort_tp_publication_type_options ($a, $b) {
 function tp_get_default_structure() {
     $ret = array( 
         'pub_id'            => '',
-        'title'             => '',
-        'type'              => '',
         'bibtex'            => '',
+        'type'              => '',
+        'award'             => '',
+        'title'             => '',
         'author'            => '',
         'editor'            => '',
         'isbn'              => '',

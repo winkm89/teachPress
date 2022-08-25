@@ -67,8 +67,10 @@ include_once('core/publications/class-db-bookmarks.php');
 include_once('core/publications/class-db-publications.php');
 include_once('core/publications/class-db-tags.php');
 include_once('core/publications/class-publication-type.php');
+include_once('core/publications/class-award.php');
 include_once('core/publications/class-pubmed-import.php');
 include_once('core/publications/default-publication-types.php');
+include_once('core/publications/default-awards.php');
 include_once('core/publications/templates.php');
 include_once('core/publications/class-books-widget.php');
 
@@ -490,6 +492,7 @@ register_deactivation_hook( __FILE__, 'tp_deactivation' );
 add_action('init', 'tp_language_support');
 add_action('init', 'tp_feed_init');
 add_action('init', 'tp_register_all_publication_types');
+add_action('init', 'tp_register_all_awards');
 add_action('wp_ajax_teachpress', 'tp_ajax_callback');
 add_action('wp_ajax_teachpressdocman', 'tp_ajax_doc_manager_callback');
 add_action('admin_menu', 'tp_add_menu_settings');

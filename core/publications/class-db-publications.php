@@ -74,6 +74,7 @@ class TP_Publications {
         $defaults = array(
             'user'                      => '',
             'type'                      => '',
+            'award'                     => '',
             'tag'                       => '',
             'key'                       => '',
             'author_id'                 => '', 
@@ -110,7 +111,7 @@ class TP_Publications {
         }
 
         // define basics
-        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn, p.url, p.booktitle, p.issuetitle, p.journal, p.issue, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.comment, p.is_isbn, p.image_url, p.image_target, p.image_ext, p.doi, p.rel_page, p.status, p.added, p.modified, p.import_id $selects FROM " . TEACHPRESS_PUB . " p $joins ";
+        $select = "SELECT DISTINCT p.pub_id, p.title, p.type, p.award, p.bibtex, p.author, p.editor, p.date, DATE_FORMAT(p.date, '%Y') AS year, p.urldate, p.isbn, p.url, p.booktitle, p.issuetitle, p.journal, p.issue, p.volume, p.number, p.pages, p.publisher, p.address, p.edition, p.chapter, p.institution, p.organization, p.school, p.series, p.crossref, p.abstract, p.howpublished, p.key, p.techtype, p.note, p.comment, p.is_isbn, p.image_url, p.image_target, p.image_ext, p.doi, p.rel_page, p.status, p.added, p.modified, p.import_id $selects FROM " . TEACHPRESS_PUB . " p $joins ";
         $select_for_count = "SELECT DISTINCT p.pub_id, DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $joins ";
         $join = '';
 
@@ -372,10 +373,11 @@ class TP_Publications {
 
         $wpdb->insert( 
             TEACHPRESS_PUB, 
-            array( 
-                'title'         => ( $data['title'] === '' ) ? '[' . __('No title','teachpress') . ']' : stripslashes($data['title']),
-                'type'          => $data['type'],
+            array(
                 'bibtex'        => stripslashes( TP_Publications::generate_unique_bibtex_key($data['bibtex']) ),
+                'type'          => $data['type'],
+                'award'         => $data['award'],
+                'title'         => ( $data['title'] === '' ) ? '[' . __('No title','teachpress') . ']' : stripslashes($data['title']),
                 'author'        => stripslashes($data['author']),
                 'editor'        => stripslashes($data['editor']),
                 'isbn'          => $data['isbn'],
@@ -414,8 +416,14 @@ class TP_Publications {
                 'added'         => $post_time,
                 'modified'      => $post_time,
                 'import_id'     => $data['import_id'] ),
-            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
+            array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d' ) );
         $pub_id = $wpdb->insert_id;
+        
+        // Error message for the user:
+        if ( $pub_id === 0 && $wpdb->last_error !== '' ) {
+            get_tp_message($data['title'] . ': <ul><li>' . $wpdb->last_error . '</li></ul>', 'red');
+            //var_dump($data);
+        }
 
         // Bookmarks
         if ( !empty( $bookmark ) ) {
@@ -488,9 +496,10 @@ class TP_Publications {
         $wpdb->update( 
                 TEACHPRESS_PUB, 
                 array( 
-                    'title'         => stripslashes($data['title']), 
-                    'type'          => $data['type'], 
                     'bibtex'        => stripslashes($data['bibtex']), 
+                    'type'          => $data['type'], 
+                    'award'         => $data['award'], 
+                    'title'         => stripslashes($data['title']), 
                     'author'        => stripslashes($data['author']), 
                     'editor'        => stripslashes($data['editor']), 
                     'isbn'          => $data['isbn'], 
@@ -528,7 +537,7 @@ class TP_Publications {
                     'status'        => stripslashes($data['status']), 
                     'modified'      => $post_time ), 
                 array( 'pub_id' => $pub_id ), 
-                array( '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), 
+                array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' ), 
                 array( '%d' ) );
         
         // get_tp_message($wpdb->last_query);
@@ -756,9 +765,10 @@ class TP_Publications {
      */
     public static function get_default_fields () {
         return array(
-            'title'             => '',
             'type'              => '',
             'bibtex'            => '',
+            'award'             => '',
+            'title'             => '',
             'author'            => '',
             'editor'            => '',
             'isbn'              => '',
