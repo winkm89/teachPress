@@ -1261,7 +1261,7 @@ msgstr "Vos publications"
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/teachpress.php:131
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/teachpress.php:132
 msgid "Add new"
-msgstr "Nouveau..."
+msgstr "Créer publi."
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/show-publications.php:435
@@ -1484,7 +1484,7 @@ msgstr "Modèle de contenu connexe"
 # @ default
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/settings.php:266
 msgid "Import / Export"
-msgstr "Importer/Exporter"
+msgstr "Importer / Exporter"
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/settings.php:270
@@ -2087,7 +2087,7 @@ msgstr ""
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:401
 msgid "Editor(s)"
-msgstr "Editeur(s)"
+msgstr "Éditeur(s)"
 
 # @ teachpress
 #. pubdate
@@ -2198,7 +2198,7 @@ msgstr "Le sous-titre d'une publication périodique"
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:539
 msgid "Issuetitle"
-msgstr "Issuetitle"
+msgstr "Titre du numéro"
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:550
@@ -2226,7 +2226,7 @@ msgstr "Numéro du journal"
 
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:574
 msgid "Issue"
-msgstr "Numéro"
+msgstr "Numéro dans la série"
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:584
@@ -2236,7 +2236,7 @@ msgstr "Le numéro d'un ouvrage, d'une revue ou d'un travail dans une série"
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:595
 msgid "The page you are referring to."
-msgstr "La page que vous référencez."
+msgstr "La ou les pages que vous référencez, p.ex. 3-17."
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:607
@@ -2336,7 +2336,7 @@ msgstr "Une méthode inhabituelle pour la publication"
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:729
 msgid "Howpublished"
-msgstr "Howpublished"
+msgstr "Méthode de publication"
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:740
@@ -2384,7 +2384,7 @@ msgstr "La date à laquelle vous avez accédé à la ressource"
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:790
 msgid "Urldate"
-msgstr "Urldate"
+msgstr "Date d'accès"
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:797
