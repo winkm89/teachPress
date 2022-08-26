@@ -2236,7 +2236,7 @@ msgstr "Le numéro d'un ouvrage, d'une revue ou d'un travail dans une série"
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:595
 msgid "The page you are referring to."
-msgstr "La ou les pages que vous référencez, p.ex. 3-17."
+msgstr "La ou les pages que vous référencez, p.ex. 3-17, ou le nombre total de pages, p.ex. 987."
 
 # @ teachpress
 #: /Users/gottif/Sites/olst/wp-content/plugins/teachpress/admin/add-publication.php:607
