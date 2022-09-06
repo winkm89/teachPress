@@ -1025,8 +1025,8 @@ msgstr "Janv."
 
 # @ teachpress
 #: admin/add-publication.php:412 admin/add-publication.php:789
-msgid "JJJJ-MM-TT"
-msgstr "JJJJ-MM-TT"
+msgid "YYYY-MM-DD"
+msgstr "AAAA-MM-JJ"
 
 # @ teachpress
 #: admin/add-publication.php:553
@@ -1888,7 +1888,7 @@ msgid ""
 "The names of the authors, separate by `and`. Example: Mark Twain and Albert "
 "Einstein"
 msgstr ""
-"Les noms des auteurs, séparés par `et`. Exemple: Mark Twain et Albert "
+"Les noms des auteurs, séparés par `and`. Exemple: Mark Twain and Albert "
 "Einstein"
 
 # @ teachpress
@@ -1897,7 +1897,7 @@ msgid ""
 "The names of the editors, separate by `and`. Example: Mark Twain and Albert "
 "Einstein"
 msgstr ""
-"Les noms des éditeurs, séparés par `et`. Exemple: Mark Twain et Albert "
+"Les noms des éditeurs, séparés par `and`. Exemple: Mark Twain and Albert "
 "Einstein"
 
 # @ teachpress

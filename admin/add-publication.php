@@ -423,7 +423,7 @@ class TP_Publication_Page {
         
         // pubdate
         $title = __('Date of publishing','teachpress');
-        $placeholder = __('JJJJ-MM-TT','teachpress');
+        $placeholder = __('YYYY-MM-DD','teachpress');
         $value = ($pub_id != 0) ? $pub_data["date"] : $placeholder;
         $checked = ( $pub_data['status'] === 'forthcoming' ) ? 'checked="checked"' : '';
         TP_HTML::line('<p><label for="pubdate"><b>' . $title . '</b></label></p>');
@@ -825,7 +825,7 @@ class TP_Publication_Page {
         // urldate
         $display = ($pub_data["type"] === 'online' || $pub_data["type"] === 'periodical') ? 'style="display:block;"' : 'style="display:none;"';
         $title = __('The date you have visited the online resource','teachpress');
-        $placeholder = __('JJJJ-MM-TT','teachpress');
+        $placeholder = __('YYYY-MM-DD','teachpress');
         $value = ($pub_id != 0) ? $pub_data["date"] : $placeholder;
         TP_HTML::line('<div id="div_urldate" ' . $display . '>');
         TP_HTML::line('<p><label for="urldate" title="' . $title . '"><b>' . __('Urldate','teachpress') . '</b></label></p>');

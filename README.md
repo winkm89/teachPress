@@ -39,7 +39,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 ## Credits / Licence
 
-Copyright 2008-2021 by Michael Winkler
+Copyright 2008-2022 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -64,3 +64,4 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 * bookmark-new-4.png by Tango Icon Library (License: Public Domain)
 * Font Awesome Free 5.10.1 by fontawesome (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
 * Academicons 1.8.6 by James Walsh (Font: SIL OFL 1.1, CSS: MIT License)
+* Additional code from plugin Papercite by Benjamin Piwowarski 
