@@ -386,7 +386,7 @@ class TP_Publication_Sources_Page {
             }
 
             $current_version = 0;
-            $req = wp_remote_get('https://api.zotero.org/groups/' . $group_id . '/', array('sslverify' => false));
+            $req = wp_remote_get('https://api.zotero.org/groups/' . $group_id . '/items?since=0&limit=1', array('sslverify' => false));
             $headers = wp_remote_retrieve_headers($req);
             if (isset($headers['Last-Modified-Version'])) {
                 $current_version = (int) $headers['Last-Modified-Version'];
