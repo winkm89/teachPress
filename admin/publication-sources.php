@@ -46,6 +46,15 @@ function tp_show_publication_sources_page() {
     
     TP_Publication_Sources_Page::sources_tab();      
 }
+        
+/**
+ * This function is the REST call implementation for updating sources.
+ * @since 9.0.0
+ */
+function tp_rest_update_sources() {
+    sleep(2);  // insert small delay in case of repeated calls
+    return new WP_REST_Response(TP_Publication_Sources_Page::update_sources());
+}
 
 /**
  * This class contains functions for generating the publication sources page.
@@ -276,7 +285,7 @@ class TP_Publication_Sources_Page {
         
         foreach ($source_urls as $src_url) {
             $result[] = array_merge(TP_Publication_Sources_Page::update_source($src_url->name, $src_url->md5),
-                                    array('src_id' => $src_url->src_id));
+                                    array('src_id' => $src_url->src_id, 'src_name' => $src_url->name));
         }
         
         foreach ($result as $cur_res) {
@@ -308,7 +317,7 @@ class TP_Publication_Sources_Page {
         } else {
             $code = $req["response"]["code"];
             if (!preg_match("#^2\d+$#", $code)) {
-                $status_message = sprintf('Error code %s while connecting to server.', $code);
+                $status_message = sprintf('Error code %s while connecting to URL %s.', $code, $url);
             } else {
                 $body = wp_remote_retrieve_body($req);
                 if ($body) {
@@ -351,7 +360,7 @@ class TP_Publication_Sources_Page {
      * Performs update for a single source.
      * @param $url   The URL of the source. URL protocols supported:
                      zotero://group/<group_id> is special and downloads all group items in group <group_id>
-     * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
+     * @param previous_sig   String signature of the last file polled, 0 if this is the first time.
      * @return new_signature, nb_updates, status_message, success
      * @since 9.0.0
      * @see Zotero api https://www.zotero.org/support/dev/web_api/v3/basics
@@ -359,44 +368,74 @@ class TP_Publication_Sources_Page {
     public static function update_source_zotero($url, $previous_sig) {
         $result = array('', 0, 'Zotero group download failed.', false);
         
+        // be robust
+        if (is_int($previous_sig)) {
+            $previous_sig = strval($previous_sig);
+        }
+        
         // find group id
         $parts = explode("/", $url);
         
         if (count($parts) >= 3 && $parts[0] == "zotero:" && $parts[2] == "group") {
             $group_id = $parts[3];
             
-            // prepare pagination loop
-            $has_more_results = true;
-            $error_encountered = false;
-            $current_offset = 0;
-            $page_size = 30;
-            $http_req = NULL;
-            $total_results = -1;
-            
-            while ($has_more_results && !$error_encountered) {
-                // download a single page
-                $page_url = sprintf("https://api.zotero.org/groups/%s/items?format=bibtex&limit=%d&start=%d",
-                                    $group_id, $page_size, $current_offset);
-                $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '', $http_req);
-                if ($total_results == -1) {  // set on first loop
-                    $total_results = intval($http_req["headers"]["total-results"]);
-                }
-                
-                $result[3] = $page_result[3];
-                $error_encountered = !$result[3];
-                
-                if ($error_encountered) {
-                    $result[2] = 'Zotero group download failed. Error was: ' . $page_result[2];
-                } else {
-                    $result[1] += $page_result[1];
-                    $result[2] = $page_result[2];
+            // has the group changed since the last poll?
+            $previous_version = 0;
+            if (is_numeric($previous_sig)) {
+                $previous_version = (int) $previous_sig;
+            }
 
-                    usleep(100000); // stay awhile and listen
-                    $current_offset += $page_size;
-                    $has_more_results = $current_offset < $total_results;
-                }
+            $current_version = 0;
+            $req = wp_remote_get('https://api.zotero.org/groups/' . $group_id . '/', array('sslverify' => false));
+            $headers = wp_remote_retrieve_headers($req);
+            if (isset($headers['Last-Modified-Version'])) {
+                $current_version = (int) $headers['Last-Modified-Version'];
             }
             
+            $group_has_changed = $current_version > $previous_version || $current_version == 0;
+
+            // main loop
+            if (!$group_has_changed) {
+                $result = array(strval($current_version), 0, 'Publications already synchronized with Zotero.', true);
+            } else {
+                // prepare pagination loop
+                $has_more_results = true;
+                $error_encountered = false;
+                $current_offset = 0;
+                $page_size = 30;
+                $total_results = -1;
+                
+                while ($has_more_results && !$error_encountered) {
+                    // download a single page
+                    $page_url = sprintf("https://api.zotero.org/groups/%s/items?since=%d&format=bibtex&limit=%d&start=%d",
+                                        $group_id, $previous_version, $page_size, $current_offset);
+                    $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '', $req);
+                    if ($total_results == -1) {  // set on first loop
+                        $total_results = intval($req["headers"]["total-results"]);
+                    }
+                    
+                    $result[3] = $page_result[3];
+                    $error_encountered = !$result[3];
+                    
+                    if ($error_encountered) {
+                        $result[2] = 'Zotero group download failed. Error was: ' . $page_result[2];
+                        $result[0] = $previous_version;
+                    } else {
+                        $result[1] += $page_result[1];
+                        $result[2] = $page_result[2];
+
+                        usleep(100000); // stay awhile and listen
+                        $current_offset += $page_size;
+                        $has_more_results = $current_offset < $total_results;
+                    }
+                }
+                
+                if (!$error_encountered) {
+                    $result[0] = strval($current_version);
+                }
+            }
+        } else {
+            $result = array('', 0, 'Zotero URL format is incorrect.', false);
         }
         
         return $result;
@@ -434,4 +473,3 @@ class TP_Publication_Sources_Page {
     }
 
 }
-
