@@ -483,6 +483,7 @@ class TP_Tables {
                     `md5` VARCHAR(32) DEFAULT '',
                     `name` VARCHAR(4096),
                     `last_res` VARCHAR(1024) DEFAULT '',
+                    `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     PRIMARY KEY (src_id)
                 ) $charset_collate;");
         

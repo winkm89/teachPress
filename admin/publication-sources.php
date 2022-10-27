@@ -70,7 +70,9 @@ class TP_Publication_Sources_Page {
         $result = array();
         
         foreach ($source_urls as $src_url) {
-            $result[] = array("src_url" => $src_url->name, "last_res" => $src_url->last_res);
+            $result[] = array("src_url" => $src_url->name,
+                              "last_res" => $src_url->last_res,
+                              "update_time" => $src_url->update_time);
         }
         
         return $result;
@@ -89,8 +91,9 @@ class TP_Publication_Sources_Page {
             if (strlen($last_res) == 0) {
                 $last_res = __("URL not scanned yet.", "teachpress");
             }
-            $result .= sprintf("<tr class='%s'><td class='tp_url'>%s</td><td>%s</td></tr>",
-                               $alternate ? "alternate" : "", $src_url['src_url'], __($last_res, "teachpress"));
+            $result .= sprintf("<tr class='%s'><td class='tp_url'>%s</td><td>%s</td><td>%s</td></tr>",
+                               $alternate ? "alternate" : "", $src_url['src_url'],
+                               __($last_res, "teachpress"), $src_url['update_time']);
             $alternate = ! $alternate;
         }
         
@@ -137,6 +140,7 @@ class TP_Publication_Sources_Page {
                             <tr>
                                 <td>URL</td>
                                 <td><?php echo __("Previous update result", "teachpress");?></td>
+                                <td><?php echo __("Date", "teachpress");?></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -313,8 +317,9 @@ class TP_Publication_Sources_Page {
         }
         
         foreach ($result as $cur_res) {
-            $wpdb->update(TEACHPRESS_MONITORED_SOURCES, array('md5' => $cur_res[0], 'last_res' => $cur_res[2]),
-                          array('src_id' => $cur_res['src_id']));
+            $r = $wpdb->update(TEACHPRESS_MONITORED_SOURCES,
+                array('md5' => $cur_res[0], 'last_res' => $cur_res[2], 'update_time' => current_time('mysql', 1)),
+                array('src_id' => $cur_res['src_id']));
         }
         
         return $result;
