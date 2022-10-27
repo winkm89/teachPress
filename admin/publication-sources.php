@@ -117,7 +117,7 @@ class TP_Publication_Sources_Page {
                 <p>
                     <label for="tp_source_freq"><? echo __("Update frequency:", "teachpress");?></label>
 
-                    <select name="tp_source_freq" id="tp_source_freq">
+                    <select name="tp_source_freq" id="tp_source_freq" onchange="tp_source_freq_changed()" >
                         <?php
                             $cur_freq = TP_Publication_Sources_Page::get_update_freq();
                             $all_freqs = array("never" => __("Never (disable updates)", "teachpress"),
@@ -159,8 +159,8 @@ class TP_Publication_Sources_Page {
                     type="button" onclick="teachpress_edit_sources()" style="display: none;">
                         <?php echo __("Cancel", "teachpress");?></button></p>
 
-                <p style="margin-top: 60px;"><button class="button-primary"
-                   name="tp_sources_save" type="submit" >
+                <p style="margin-top: 60px;"><button class="button-primary disabled"
+                   name="tp_sources_save" id="tp_sources_save" type="submit" >
                     <?php echo __("Save configuration", "teachpress");?></button></p>
             </form>
         </div>
@@ -179,21 +179,21 @@ class TP_Publication_Sources_Page {
         $sources_area = isset($post['tp_sources_area']) ? trim($post['tp_sources_area']) : '';
         $sources_to_monitor = array_filter(preg_split("/\r\n|\n|\r/", $sources_area),
                                            function($k) { return strlen(trim($k)) > 0; });
+        $sources_to_monitor = array_map(function ($k) { return trim($k); }, $sources_to_monitor);
         $new_freq = isset($post['tp_source_freq']) ? trim($post['tp_source_freq']) : 'hourly';
         
-        // overwrite the existing entries with the new ones, even if there are none
         $installed = TP_Publication_Sources_Page::install_sources($sources_to_monitor);
                 
         // manage cron hook
-        if (count($installed) == 0 || $new_freq == 'never') {
-            TP_Publication_Sources_Page::uninstall_cron();
+        if (count($sources_to_monitor) == 0 || $new_freq == 'never') {
+            TP_Publication_Sources_Page::uninstall_cron(); // not needed anymore
         } else {
-            TP_Publication_Sources_Page::install_cron($new_freq);
+            TP_Publication_Sources_Page::install_cron($new_freq); // no problem if cron already installed
         }
         
         $new_freq = TP_Publication_Sources_Page::get_update_freq();
         get_tp_message( sprintf(__('Configuration updated with %d URL(s) at frequency "%s".', "teachpress"),
-                                 count($installed), $new_freq) );
+                                 count($sources_to_monitor), $new_freq) );
     }
 
     /**
@@ -211,25 +211,49 @@ class TP_Publication_Sources_Page {
     }
             
     /**
-     * This function installs monitored bibtex sources.
-     * @global object $current_user
-     * @param array $sources    An array of source URLs.
-     * @return URLs monitored.
+     * This function installs monitored bibtex sources. Sources present in the db but not
+     * in the sources specified as a parameter are removed from the db.
+     * @global object $wpdb
+     * @param array $sources    An array of source URL strings.
+     * @return Only the newly added URLs to monitor - can be the empty array.
      * @since 9.0.0
      * @access public
      */
     public static function install_sources($sources) {
-        global $wpdb;
-        $result = array();
+        // find current sources already installed so as not to install them uselessly
+        $cur_sources = TP_Publication_Sources_Page::get_current_sources();
+        $cur_source_names = array();
+        foreach ($cur_sources as $cur_src) {
+            $cur_source_names[] = $cur_src['src_url'];
+        }
         
-        // empty table first 
-        $wpdb->query( "DELETE FROM " . TEACHPRESS_MONITORED_SOURCES );
+        // start installing sources not present in database
+        global $wpdb;
+        $toremove = array();
+        
+        foreach ( $cur_source_names as $existing_source ) {
+            if (!in_array($existing_source, $sources)) {
+                $toremove[] = $existing_source;
+            }
+        }
+        
+        // create the filter set for the delete instruction
+        $filter_set = "''"; // empty set
+        if (count($toremove) > 0) {
+            $filter_set = implode(",", array_map(function ($k) { return "'" . esc_sql($k) . "'"; }, $toremove));
+        }
+
+        // remove useless entries
+        $wpdb->query( "DELETE FROM " . TEACHPRESS_MONITORED_SOURCES . " WHERE name IN ( " . $filter_set . " )");
         
         // write new entries -- could be done in a single statement
+        $result = array();
         foreach( $sources as $element ) {
-            $element = esc_sql( trim($element) );
-            $wpdb->insert(TEACHPRESS_MONITORED_SOURCES, array('name' => $element, 'md5' => 0), array('%s', '%d'));            
-            $result[] = $element;
+            if (! in_array($element, $cur_source_names) ) {
+                $wpdb->insert(TEACHPRESS_MONITORED_SOURCES, array('name' => $element, 'md5' => 0),
+                              array('%s', '%d'));
+                $result[] = $element;
+            }
         }
         
         return $result;
@@ -242,12 +266,12 @@ class TP_Publication_Sources_Page {
      * @access public
      */
     public static function install_cron($freq) {
-        // install action if required
+        // install action if not alreay installed
         if ( ! has_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' ) ) {
             add_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' );
         }
         
-        // schedule hook
+        // schedule hook if freq has changed and freq is not never
         if ( TP_Publication_Sources_Page::get_update_freq() != $freq && $freq != 'never' ) {
             wp_schedule_event( time(), $freq, TEACHPRESS_CRON_SOURCES_HOOK );
         }
