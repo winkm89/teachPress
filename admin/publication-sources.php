@@ -7,14 +7,8 @@
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
  */
 
-if ( !defined('TEACHPRESS_CRON_SOURCES_HOOK') ) {
-/**
- * This constant defines the hook name for cron update task.
- * @since 9.0.0
-*/
-    define('TEACHPRESS_CRON_SOURCES_HOOK', 'tp_sources_cron_hook');
-}
-
+include_once(__DIR__ . '/../core/constants.php');
+    
 /**
  * Add help tab for sources page
  */
@@ -277,6 +271,7 @@ class TP_Publication_Sources_Page {
         
         // schedule hook if freq has changed and freq is not never
         if ( TP_Publication_Sources_Page::get_update_freq() != $freq && $freq != 'never' ) {
+            TP_Publication_Sources_Page::uninstall_cron();
             wp_schedule_event( time(), $freq, TEACHPRESS_CRON_SOURCES_HOOK );
         }
     }
@@ -301,7 +296,7 @@ class TP_Publication_Sources_Page {
     }
         
     /**
-     * Performs update for all sources present.
+     * Performs update for all sources registered in the db.
      * @since 9.0.0
      */
     public static function update_sources() {

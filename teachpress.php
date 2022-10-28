@@ -41,7 +41,7 @@
 
 define('TEACHPRESS_GLOBAL_PATH', plugin_dir_path(__FILE__));
 
-// Loads contstants
+// Loads constants
 include_once('core/constants.php');
 
 // Core functions
@@ -523,6 +523,7 @@ add_filter('plugin_action_links','tp_plugin_link', 10, 2);
 add_action('wp_ajax_tp_document_upload', 'tp_handle_document_uploads' );
 add_filter( 'screen_settings', 'tp_show_screen_options', 10, 2 );
 add_action( 'rest_api_init', 'tp_rest_register_routes' );
+add_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' );
 
 // Register tinyMCE Plugin
 if ( version_compare( tp_get_wp_version() , '3.9', '>=') ) {
