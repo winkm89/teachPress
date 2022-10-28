@@ -85,6 +85,11 @@ if ( is_admin() ) {
     include_once('admin/show-publications.php');
 }
 
+// cron job includes
+if ( wp_doing_cron() ) {
+    include_once('admin/publication-sources.php');
+}
+    
 // BibTeX Parse v2.5
 if ( !class_exists( 'BIBTEXPARSE' ) ) {
     include_once('includes/bibtexParse/BIBTEXPARSE.php');

@@ -8,7 +8,7 @@
  */
 
 include_once(__DIR__ . '/../core/constants.php');
-    
+
 /**
  * Add help tab for sources page
  */
@@ -134,7 +134,7 @@ class TP_Publication_Sources_Page {
                             <tr>
                                 <td>URL</td>
                                 <td><?php echo __("Previous update result", "teachpress");?></td>
-                                <td><?php echo __("Date", "teachpress");?></td>
+                                <td><?php echo __("Date", "teachpress") . " (UTC)";?></td>
                             </tr>
                         </thead>
                         <tbody>
