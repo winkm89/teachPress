@@ -152,6 +152,13 @@ if ( !defined('TEACHPRESS_MONITORED_SOURCES') ) {
      */
     define('TEACHPRESS_MONITORED_SOURCES', $wpdb->prefix . 'teachpress_monitored_sources');}
 
+if ( !defined('TEACHPRESS_CRON_SOURCES_HOOK') ) {
+    /**
+     * This constant defines the hook name for cron update task.
+     * @since 9.0.0
+    */
+    define('TEACHPRESS_CRON_SOURCES_HOOK', 'tp_source_update_cron_hook');}
+    
 if ( !defined('TEACHPRESS_TIME_LIMIT') ) {
     /**
      * This value is used for PHP's set_time_limit(). The plugin sets this value before an import or export of publications

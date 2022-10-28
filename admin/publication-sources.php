@@ -7,13 +7,7 @@
  * @license http://www.gnu.org/licenses/gpl-2.0.html GPLv2 or later
  */
 
-if ( !defined('TEACHPRESS_CRON_SOURCES_HOOK') ) {
-/**
- * This constant defines the hook name for cron update task.
- * @since 9.0.0
-*/
-    define('TEACHPRESS_CRON_SOURCES_HOOK', 'tp_sources_cron_hook');
-}
+include_once(__DIR__ . '/../core/constants.php');
 
 /**
  * Add help tab for sources page
@@ -46,6 +40,15 @@ function tp_show_publication_sources_page() {
     
     TP_Publication_Sources_Page::sources_tab();      
 }
+        
+/**
+ * This function is the REST call implementation for updating sources.
+ * @since 9.0.0
+ */
+function tp_rest_update_sources() {
+    sleep(2);  // insert small delay in case of repeated calls
+    return new WP_REST_Response(TP_Publication_Sources_Page::update_sources());
+}
 
 /**
  * This class contains functions for generating the publication sources page.
@@ -61,7 +64,9 @@ class TP_Publication_Sources_Page {
         $result = array();
         
         foreach ($source_urls as $src_url) {
-            $result[] = array("src_url" => $src_url->name, "last_res" => $src_url->last_res);
+            $result[] = array("src_url" => $src_url->name,
+                              "last_res" => $src_url->last_res,
+                              "update_time" => $src_url->update_time);
         }
         
         return $result;
@@ -80,8 +85,9 @@ class TP_Publication_Sources_Page {
             if (strlen($last_res) == 0) {
                 $last_res = __("URL not scanned yet.", "teachpress");
             }
-            $result .= sprintf("<tr class='%s'><td class='tp_url'>%s</td><td>%s</td></tr>",
-                               $alternate ? "alternate" : "", $src_url['src_url'], __($last_res, "teachpress"));
+            $result .= sprintf("<tr class='%s'><td class='tp_url'>%s</td><td>%s</td><td>%s</td></tr>",
+                               $alternate ? "alternate" : "", $src_url['src_url'],
+                               __($last_res, "teachpress"), $src_url['update_time']);
             $alternate = ! $alternate;
         }
         
@@ -108,7 +114,7 @@ class TP_Publication_Sources_Page {
                 <p>
                     <label for="tp_source_freq"><? echo __("Update frequency:", "teachpress");?></label>
 
-                    <select name="tp_source_freq" id="tp_source_freq">
+                    <select name="tp_source_freq" id="tp_source_freq" onchange="tp_source_freq_changed()" >
                         <?php
                             $cur_freq = TP_Publication_Sources_Page::get_update_freq();
                             $all_freqs = array("never" => __("Never (disable updates)", "teachpress"),
@@ -128,6 +134,7 @@ class TP_Publication_Sources_Page {
                             <tr>
                                 <td>URL</td>
                                 <td><?php echo __("Previous update result", "teachpress");?></td>
+                                <td><?php echo __("Date", "teachpress") . " (UTC)";?></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -150,8 +157,8 @@ class TP_Publication_Sources_Page {
                     type="button" onclick="teachpress_edit_sources()" style="display: none;">
                         <?php echo __("Cancel", "teachpress");?></button></p>
 
-                <p style="margin-top: 60px;"><button class="button-primary"
-                   name="tp_sources_save" type="submit" >
+                <p style="margin-top: 60px;"><button class="button-primary disabled"
+                   name="tp_sources_save" id="tp_sources_save" type="submit" >
                     <?php echo __("Save configuration", "teachpress");?></button></p>
             </form>
         </div>
@@ -170,21 +177,21 @@ class TP_Publication_Sources_Page {
         $sources_area = isset($post['tp_sources_area']) ? trim($post['tp_sources_area']) : '';
         $sources_to_monitor = array_filter(preg_split("/\r\n|\n|\r/", $sources_area),
                                            function($k) { return strlen(trim($k)) > 0; });
+        $sources_to_monitor = array_map(function ($k) { return trim($k); }, $sources_to_monitor);
         $new_freq = isset($post['tp_source_freq']) ? trim($post['tp_source_freq']) : 'hourly';
         
-        // overwrite the existing entries with the new ones, even if there are none
         $installed = TP_Publication_Sources_Page::install_sources($sources_to_monitor);
                 
         // manage cron hook
-        if (count($installed) == 0 || $new_freq == 'never') {
-            TP_Publication_Sources_Page::uninstall_cron();
+        if (count($sources_to_monitor) == 0 || $new_freq == 'never') {
+            TP_Publication_Sources_Page::uninstall_cron(); // not needed anymore
         } else {
-            TP_Publication_Sources_Page::install_cron($new_freq);
+            TP_Publication_Sources_Page::install_cron($new_freq); // no problem if cron already installed
         }
         
         $new_freq = TP_Publication_Sources_Page::get_update_freq();
         get_tp_message( sprintf(__('Configuration updated with %d URL(s) at frequency "%s".', "teachpress"),
-                                 count($installed), $new_freq) );
+                                 count($sources_to_monitor), $new_freq) );
     }
 
     /**
@@ -202,25 +209,49 @@ class TP_Publication_Sources_Page {
     }
             
     /**
-     * This function installs monitored bibtex sources.
-     * @global object $current_user
-     * @param array $sources    An array of source URLs.
-     * @return URLs monitored.
+     * This function installs monitored bibtex sources. Sources present in the db but not
+     * in the sources specified as a parameter are removed from the db.
+     * @global object $wpdb
+     * @param array $sources    An array of source URL strings.
+     * @return Only the newly added URLs to monitor - can be the empty array.
      * @since 9.0.0
      * @access public
      */
     public static function install_sources($sources) {
-        global $wpdb;
-        $result = array();
+        // find current sources already installed so as not to install them uselessly
+        $cur_sources = TP_Publication_Sources_Page::get_current_sources();
+        $cur_source_names = array();
+        foreach ($cur_sources as $cur_src) {
+            $cur_source_names[] = $cur_src['src_url'];
+        }
         
-        // empty table first 
-        $wpdb->query( "DELETE FROM " . TEACHPRESS_MONITORED_SOURCES );
+        // start installing sources not present in database
+        global $wpdb;
+        $toremove = array();
+        
+        foreach ( $cur_source_names as $existing_source ) {
+            if (!in_array($existing_source, $sources)) {
+                $toremove[] = $existing_source;
+            }
+        }
+        
+        // create the filter set for the delete instruction
+        $filter_set = "''"; // empty set
+        if (count($toremove) > 0) {
+            $filter_set = implode(",", array_map(function ($k) { return "'" . esc_sql($k) . "'"; }, $toremove));
+        }
+
+        // remove useless entries
+        $wpdb->query( "DELETE FROM " . TEACHPRESS_MONITORED_SOURCES . " WHERE name IN ( " . $filter_set . " )");
         
         // write new entries -- could be done in a single statement
+        $result = array();
         foreach( $sources as $element ) {
-            $element = esc_sql( trim($element) );
-            $wpdb->insert(TEACHPRESS_MONITORED_SOURCES, array('name' => $element, 'md5' => 0), array('%s', '%d'));            
-            $result[] = $element;
+            if (! in_array($element, $cur_source_names) ) {
+                $wpdb->insert(TEACHPRESS_MONITORED_SOURCES, array('name' => $element, 'md5' => 0),
+                              array('%s', '%d'));
+                $result[] = $element;
+            }
         }
         
         return $result;
@@ -233,13 +264,14 @@ class TP_Publication_Sources_Page {
      * @access public
      */
     public static function install_cron($freq) {
-        // install action if required
+        // install action if not alreay installed
         if ( ! has_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' ) ) {
             add_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' );
         }
         
-        // schedule hook
+        // schedule hook if freq has changed and freq is not never
         if ( TP_Publication_Sources_Page::get_update_freq() != $freq && $freq != 'never' ) {
+            TP_Publication_Sources_Page::uninstall_cron();
             wp_schedule_event( time(), $freq, TEACHPRESS_CRON_SOURCES_HOOK );
         }
     }
@@ -264,7 +296,7 @@ class TP_Publication_Sources_Page {
     }
         
     /**
-     * Performs update for all sources present.
+     * Performs update for all sources registered in the db.
      * @since 9.0.0
      */
     public static function update_sources() {
@@ -276,12 +308,13 @@ class TP_Publication_Sources_Page {
         
         foreach ($source_urls as $src_url) {
             $result[] = array_merge(TP_Publication_Sources_Page::update_source($src_url->name, $src_url->md5),
-                                    array('src_id' => $src_url->src_id));
+                                    array('src_id' => $src_url->src_id, 'src_name' => $src_url->name));
         }
         
         foreach ($result as $cur_res) {
-            $wpdb->update(TEACHPRESS_MONITORED_SOURCES, array('md5' => $cur_res[0], 'last_res' => $cur_res[2]),
-                          array('src_id' => $cur_res['src_id']));
+            $r = $wpdb->update(TEACHPRESS_MONITORED_SOURCES,
+                array('md5' => $cur_res[0], 'last_res' => $cur_res[2], 'update_time' => current_time('mysql', 1)),
+                array('src_id' => $cur_res['src_id']));
         }
         
         return $result;
@@ -308,7 +341,7 @@ class TP_Publication_Sources_Page {
         } else {
             $code = $req["response"]["code"];
             if (!preg_match("#^2\d+$#", $code)) {
-                $status_message = sprintf('Error code %s while connecting to server.', $code);
+                $status_message = sprintf('Error code %s while connecting to URL %s.', $code, $url);
             } else {
                 $body = wp_remote_retrieve_body($req);
                 if ($body) {
@@ -351,7 +384,7 @@ class TP_Publication_Sources_Page {
      * Performs update for a single source.
      * @param $url   The URL of the source. URL protocols supported:
                      zotero://group/<group_id> is special and downloads all group items in group <group_id>
-     * @param previous_sig   Digest the last time the file was polled, 0 if this is the first time.
+     * @param previous_sig   String signature of the last file polled, 0 if this is the first time.
      * @return new_signature, nb_updates, status_message, success
      * @since 9.0.0
      * @see Zotero api https://www.zotero.org/support/dev/web_api/v3/basics
@@ -359,44 +392,74 @@ class TP_Publication_Sources_Page {
     public static function update_source_zotero($url, $previous_sig) {
         $result = array('', 0, 'Zotero group download failed.', false);
         
+        // be robust
+        if (is_int($previous_sig)) {
+            $previous_sig = strval($previous_sig);
+        }
+        
         // find group id
         $parts = explode("/", $url);
         
         if (count($parts) >= 3 && $parts[0] == "zotero:" && $parts[2] == "group") {
             $group_id = $parts[3];
             
-            // prepare pagination loop
-            $has_more_results = true;
-            $error_encountered = false;
-            $current_offset = 0;
-            $page_size = 30;
-            $http_req = NULL;
-            $total_results = -1;
-            
-            while ($has_more_results && !$error_encountered) {
-                // download a single page
-                $page_url = sprintf("https://api.zotero.org/groups/%s/items?format=bibtex&limit=%d&start=%d",
-                                    $group_id, $page_size, $current_offset);
-                $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '', $http_req);
-                if ($total_results == -1) {  // set on first loop
-                    $total_results = intval($http_req["headers"]["total-results"]);
-                }
-                
-                $result[3] = $page_result[3];
-                $error_encountered = !$result[3];
-                
-                if ($error_encountered) {
-                    $result[2] = 'Zotero group download failed. Error was: ' . $page_result[2];
-                } else {
-                    $result[1] += $page_result[1];
-                    $result[2] = $page_result[2];
+            // has the group changed since the last poll?
+            $previous_version = 0;
+            if (is_numeric($previous_sig)) {
+                $previous_version = (int) $previous_sig;
+            }
 
-                    usleep(100000); // stay awhile and listen
-                    $current_offset += $page_size;
-                    $has_more_results = $current_offset < $total_results;
-                }
+            $current_version = 0;
+            $req = wp_remote_get('https://api.zotero.org/groups/' . $group_id . '/items?since=0&limit=1', array('sslverify' => false));
+            $headers = wp_remote_retrieve_headers($req);
+            if (isset($headers['Last-Modified-Version'])) {
+                $current_version = (int) $headers['Last-Modified-Version'];
             }
             
+            $group_has_changed = $current_version > $previous_version || $current_version == 0;
+
+            // main loop
+            if (!$group_has_changed) {
+                $result = array(strval($current_version), 0, 'Publications already synchronized with Zotero.', true);
+            } else {
+                // prepare pagination loop
+                $has_more_results = true;
+                $error_encountered = false;
+                $current_offset = 0;
+                $page_size = 30;
+                $total_results = -1;
+                
+                while ($has_more_results && !$error_encountered) {
+                    // download a single page
+                    $page_url = sprintf("https://api.zotero.org/groups/%s/items?since=%d&format=bibtex&limit=%d&start=%d",
+                                        $group_id, $previous_version, $page_size, $current_offset);
+                    $page_result = TP_Publication_Sources_Page::update_source_http($page_url, '', $req);
+                    if ($total_results == -1) {  // set on first loop
+                        $total_results = intval($req["headers"]["total-results"]);
+                    }
+                    
+                    $result[3] = $page_result[3];
+                    $error_encountered = !$result[3];
+                    
+                    if ($error_encountered) {
+                        $result[2] = 'Zotero group download failed. Error was: ' . $page_result[2];
+                        $result[0] = $previous_version;
+                    } else {
+                        $result[1] += $page_result[1];
+                        $result[2] = $page_result[2];
+
+                        usleep(100000); // stay awhile and listen
+                        $current_offset += $page_size;
+                        $has_more_results = $current_offset < $total_results;
+                    }
+                }
+                
+                if (!$error_encountered) {
+                    $result[0] = strval($current_version);
+                }
+            }
+        } else {
+            $result = array('', 0, 'Zotero URL format is incorrect.', false);
         }
         
         return $result;
@@ -434,4 +497,3 @@ class TP_Publication_Sources_Page {
     }
 
 }
-
