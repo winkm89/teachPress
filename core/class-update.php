@@ -110,11 +110,16 @@ class TP_Update {
             $update_level = '8';
         }
         
-        // force updates to reach structure of teachPress 7.0.0
+        // force updates to reach structure of teachPress 8.0.0
         if ( $db_version[0] === '8' || $update_level === '8' ) {
             TP_Update::upgrade_to_80();
             TP_Update::upgrade_to_81($charset_collate);
-            TP_Update::upgrade_to_82();
+            $update_level = '9';
+        }
+        
+        // force updates to reach structure of teachPress 9.0.0
+        if ( $db_version[0] === '9' || $update_level === '9' ) {
+            TP_Update::upgrade_to_90();
         }
         
         // Add teachPress options
@@ -867,7 +872,7 @@ class TP_Update {
      * @param string $charset_collate
      * @since 9.0.0
      */
-    private static function upgrade_to_82() {
+    private static function upgrade_to_90() {
         global $wpdb;
 
         // add column image_target to table teachpress_pub
