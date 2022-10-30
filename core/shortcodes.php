@@ -712,9 +712,10 @@ class TP_Shortcodes {
         // set headline
         foreach ( $headlines as $key => $value ) {
             if ( $value != '' ) {
+                $args['id'] = $key;
                 $line_title = ( $args['headline'] === 1 ) ? $key : tp_translate_pub_type($key, 'pl');
-                $return .=  $template->get_headline($line_title, $args);
-                $return .=  $value;
+                $return .= $template->get_headline($line_title, $args);
+                $return .= $value;
             }
         }
         return $return;
@@ -748,9 +749,11 @@ class TP_Shortcodes {
             }
         }
         foreach ( $typeHeadlines as $type => $yearHeadlines ) {
+            $args['id'] = $type;
             $return .= $template->get_headline( tp_translate_pub_type($type, 'pl'), $args );
             foreach($yearHeadlines as $year => $pubValue) {
                 if ($pubValue != '' ) {
+                    $args['id'] = $year;
                     $return .= $template->get_headline( $year, $args );
                     $return .= $pubValue;
                 }
@@ -785,9 +788,11 @@ class TP_Shortcodes {
         }
 
         foreach ( $yearHeadlines as $year => $typeHeadlines ) {
+            $args['id'] = $year;
             $return .= $template->get_headline($year, $args);
             foreach($typeHeadlines as $type => $value) {
                 if ($value != '' ) {
+                    $args['id'] = $type;
                     $return .= $template->get_headline( tp_translate_pub_type($type, 'pl'), $args );
                     $return .=  $value;
                 }
@@ -1530,7 +1535,8 @@ function tp_publist_shortcode ($args) {
         $part2 .= TP_Shortcodes::generate_pub_table( 
                         $tparray, 
                         $template, 
-                        array( 'number_publications'    => $tpz, 
+                        array( 'id'                     => '',
+                               'number_publications'    => $tpz, 
                                'headline'               => $settings['headline'],
                                'years'                  => $row_year,
                                'colspan'                => $colspan,

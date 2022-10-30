@@ -41,7 +41,8 @@ class TP_Template_2021 implements TP_Publication_Template {
      * @return string
      */
     public function get_headline ($content, $args = array()) {
-        return '<h3 class="tp_h3" id="tp_h3_' . esc_attr($content) .'">' . $content . '</h3>';
+        $id = ( isset( $args['id'] ) ) ? $args['id'] : $content;
+        return '<h3 class="tp_h3" id="tp_h3_' . esc_attr($id) .'">' . $content . '</h3>';
     }
     
     /**
@@ -51,7 +52,8 @@ class TP_Template_2021 implements TP_Publication_Template {
      * @return string
      */
     public function get_headline_sl ($content, $args = array()) {
-        return '<h4 class="tp_h4" id="tp_h4_' . esc_attr($content) .'">' . $content . '</h4>';
+        $id = ( isset( $args['id'] ) ) ? $args['id'] : $content;
+        return '<h4 class="tp_h4" id="tp_h4_' . esc_attr($id) .'">' . $content . '</h4>';
     }
     
     /**

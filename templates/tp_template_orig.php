@@ -35,9 +35,10 @@ class TP_Template_Orig implements TP_Publication_Template {
      * @return string
      */
     public function get_headline ($content, $args = array()) {
+        $id = ( isset( $args['id'] ) ) ? $args['id'] : $content;
         return '<tr>
                     <td' . $args['colspan'] . '>
-                        <h3 class="tp_h3" id="tp_h3_' . esc_attr($content) .'">' . $content . '</h3>
+                        <h3 class="tp_h3" id="tp_h3_' . esc_attr($id) .'">' . $content . '</h3>
                     </td>
                 </tr>';
     }
@@ -49,9 +50,10 @@ class TP_Template_Orig implements TP_Publication_Template {
      * @return string
      */
     public function get_headline_sl ($content, $args = array()) {
+        $id = ( isset( $args['id'] ) ) ? $args['id'] : $content;
         return '<tr>
                     <td' . $args['colspan'] . '>
-                        <h4 class="tp_h4" id="tp_h4_' . esc_attr($content) .'">' . $content . '</h4>
+                        <h4 class="tp_h4" id="tp_h4_' . esc_attr($id) .'">' . $content . '</h4>
                     </td>
                 </tr>';
     }
