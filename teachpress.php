@@ -508,7 +508,7 @@ function tp_rest_register_routes() {
     $result = register_rest_route( 'teachpress/v1', '/autopublish/update_all', array(
       'methods' => 'GET',
       'callback' => 'tp_rest_update_sources_hook',
-      'permission_callback' => '__return_true',
+      // 'permission_callback' => '__return_false', // change to __return_true to give access to all
     ), true );
 }
     
