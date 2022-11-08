@@ -240,7 +240,7 @@ class TP_Shortcodes {
                                              'group_by'         => true, 
                                              'order'            => 'ASC', 
                                              'exclude'          => $sql_parameter['exclude_tags'] ) );
-            $defaults['url_slug'] = 'thid';
+            $defaults['url_slug'] = 'tgid';
             $defaults['key'] = 'tag';
             $defaults['row_key'] = 'tag_id';
             $defaults['title'] = __('All tags','teachpress');
