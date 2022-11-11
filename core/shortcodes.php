@@ -850,6 +850,36 @@ class TP_Shortcodes {
         }
         return ' colspan="' . $count . '"';
     }
+    
+    /**
+     * Utility function that returns the WordPress userid from either a numerical
+     * id (in which case, it is returned as is) or from the login name (e.g. admin), in
+     * which case the function returns the corresponding userid if found.
+     * @param string $userid
+     * @return int The user id, or 0 if user not found.
+     * @since 9.0.0
+     */
+    public static function get_wordpress_user_id($userid) {
+        $result = 0;
+        
+        $param_type = gettype($userid);
+        
+        if ($param_type == "integer" ||
+            $param_type == "string" &&  is_numeric($userid)) {
+            
+            $wp_user = get_user_by("id", $userid); // validate that id exists
+            if ($wp_user !== false) {
+                $result = $wp_user->id;
+            }
+        } else if ($param_type == "string") {
+            $wp_user = get_user_by(trim("login"), $userid); // validate that id exists
+            if ($wp_user !== false) {
+                $result = $wp_user->id;
+            }
+        }
+        
+        return $result;
+    }
 }
 
 /**
