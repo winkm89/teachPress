@@ -869,15 +869,38 @@ class TP_Shortcodes {
             
             $wp_user = get_user_by("id", $userid); // validate that id exists
             if ($wp_user !== false) {
-                $result = $wp_user->id;
+                $result = $wp_user->ID;
             }
         } else if ($param_type == "string") {
             $wp_user = get_user_by(trim("login"), $userid); // validate that id exists
             if ($wp_user !== false) {
-                $result = $wp_user->id;
+                $result = $wp_user->ID;
             }
         }
         
+        return $result;
+    }
+    
+    /**
+     * Converts a user filter to the proper format. If user logins (WordPress user names)
+     * are detected in the filter, they are converted to the matching user ids.
+     * @param string $user_filter - May be name1,32,name2 or 32 or name1, name2
+     * @return string A filter string containing only valid userids, or empty string.
+     * @since 9.0.0
+     */
+    public static function get_wordpress_user_id_filter($user_filter) {
+        $result = '';
+        $valid_ids = array();
+
+        $parts = explode(",", trim($user_filter));
+        foreach ($parts as $current_part) {
+            $valid_id = TP_Shortcodes::get_wordpress_user_id($current_part);
+            if ($valid_id != 0) {
+                $valid_ids[] = strval($valid_id);
+            }
+        }
+        
+        $result = implode(",", $valid_ids);
         return $result;
     }
 }
@@ -1498,6 +1521,9 @@ function tp_publist_shortcode ($args) {
         'meta_key_search'           => $meta_key_search,
         'output_type'               => ARRAY_A);
 
+    // convert possible logins into user ids
+    $args['user'] = TP_Shortcodes::get_wordpress_user_id_filter($args['user']);
+    
     $all_tags = TP_Tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
     $number_entries = TP_Publications::get_publications($args, true);
     $row = TP_Publications::get_publications( $args );
