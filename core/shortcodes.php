@@ -850,6 +850,59 @@ class TP_Shortcodes {
         }
         return ' colspan="' . $count . '"';
     }
+    
+    /**
+     * Utility function that returns the WordPress userid from either a numerical
+     * id (in which case, it is returned as is) or from the login name (e.g. admin), in
+     * which case the function returns the corresponding userid if found.
+     * @param string $userid
+     * @return int The user id, or 0 if user not found.
+     * @since 9.0.0
+     */
+    public static function get_wordpress_user_id($userid) {
+        $result = 0;
+        
+        $param_type = gettype($userid);
+        
+        if ($param_type == "integer" ||
+            $param_type == "string" &&  is_numeric($userid)) {
+            
+            $wp_user = get_user_by("id", $userid); // validate that id exists
+            if ($wp_user !== false) {
+                $result = $wp_user->ID;
+            }
+        } else if ($param_type == "string") {
+            $wp_user = get_user_by(trim("login"), $userid); // validate that id exists
+            if ($wp_user !== false) {
+                $result = $wp_user->ID;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Converts a user filter to the proper format. If user logins (WordPress user names)
+     * are detected in the filter, they are converted to the matching user ids.
+     * @param string $user_filter - May be name1,32,name2 or 32 or name1, name2
+     * @return string A filter string containing only valid userids, or empty string.
+     * @since 9.0.0
+     */
+    public static function get_wordpress_user_id_filter($user_filter) {
+        $result = '';
+        $valid_ids = array();
+
+        $parts = explode(",", trim($user_filter));
+        foreach ($parts as $current_part) {
+            $valid_id = TP_Shortcodes::get_wordpress_user_id($current_part);
+            if ($valid_id != 0) {
+                $valid_ids[] = strval($valid_id);
+            }
+        }
+        
+        $result = implode(",", $valid_ids);
+        return $result;
+    }
 }
 
 /**
@@ -1133,7 +1186,7 @@ function tp_links_shortcode ($atts) {
  * 
  * 
  * @param array $atts {
- *      @type string user                  the WordPress IDs of on or more users (separated by comma)
+ *      @type string user                  the WordPress IDs or login names of on or more users (separated by commas)
  *      @type string tag                   tag IDs (separated by comma)
  *      @type string type                  the publication types you want to show (separated by comma)
  *      @type string author                author IDs (separated by comma)
@@ -1307,6 +1360,10 @@ function tp_publist_shortcode ($args) {
         'order'         => htmlspecialchars($atts['order']),
     );
     
+    // convert possible logins into user ids
+    $sql_parameter['user'] = TP_Shortcodes::get_wordpress_user_id_filter($sql_parameter['user']);
+    $filter_parameter['user_preselect'] = TP_Shortcodes::get_wordpress_user_id_filter($filter_parameter['user_preselect']);
+    
     // Add values for custom filters
     $meta_key_search = [];
     if ( $settings['custom_filter'] !== '' ) {
@@ -1449,7 +1506,7 @@ function tp_publist_shortcode ($args) {
     if ( $settings['headline'] === 3 || $settings['headline'] === 4 ) {
         $sql_parameter['order'] = "year DESC, type ASC, date DESC";
     }
-
+    
     // Parameters for returning publications
     $args = array(
         'tag'                       => $sql_parameter['tag'], 
@@ -1467,7 +1524,7 @@ function tp_publist_shortcode ($args) {
         'limit'                     => $pagination_limits['limit'],
         'meta_key_search'           => $meta_key_search,
         'output_type'               => ARRAY_A);
-
+    
     $all_tags = TP_Tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
     $number_entries = TP_Publications::get_publications($args, true);
     $row = TP_Publications::get_publications( $args );
