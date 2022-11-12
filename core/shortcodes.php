@@ -1186,7 +1186,7 @@ function tp_links_shortcode ($atts) {
  * 
  * 
  * @param array $atts {
- *      @type string user                  the WordPress IDs of on or more users (separated by comma)
+ *      @type string user                  the WordPress IDs or login names of on or more users (separated by commas)
  *      @type string tag                   tag IDs (separated by comma)
  *      @type string type                  the publication types you want to show (separated by comma)
  *      @type string author                author IDs (separated by comma)
@@ -1360,6 +1360,10 @@ function tp_publist_shortcode ($args) {
         'order'         => htmlspecialchars($atts['order']),
     );
     
+    // convert possible logins into user ids
+    $sql_parameter['user'] = TP_Shortcodes::get_wordpress_user_id_filter($sql_parameter['user']);
+    $filter_parameter['user_preselect'] = TP_Shortcodes::get_wordpress_user_id_filter($filter_parameter['user_preselect']);
+    
     // Add values for custom filters
     $meta_key_search = [];
     if ( $settings['custom_filter'] !== '' ) {
@@ -1502,7 +1506,7 @@ function tp_publist_shortcode ($args) {
     if ( $settings['headline'] === 3 || $settings['headline'] === 4 ) {
         $sql_parameter['order'] = "year DESC, type ASC, date DESC";
     }
-
+    
     // Parameters for returning publications
     $args = array(
         'tag'                       => $sql_parameter['tag'], 
@@ -1520,9 +1524,6 @@ function tp_publist_shortcode ($args) {
         'limit'                     => $pagination_limits['limit'],
         'meta_key_search'           => $meta_key_search,
         'output_type'               => ARRAY_A);
-
-    // convert possible logins into user ids
-    $args['user'] = TP_Shortcodes::get_wordpress_user_id_filter($args['user']);
     
     $all_tags = TP_Tags::get_tags( array('exclude' => $atts['hide_tags'], 'output_type' => ARRAY_A) );
     $number_entries = TP_Publications::get_publications($args, true);
