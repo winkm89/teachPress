@@ -320,6 +320,7 @@ function teachpress_edit_sources(){
     let $source_area_lbl =jQuery("#tp_sources_area_lbl");
     let $edit_btn = jQuery("#tp_edit_sources");
     let $cancel_btn = jQuery("#tp_sources_cancel");
+    let $save_btn = jQuery("#tp_sources_save");
     let old_value = $source_area.text().trim();
     $source_area.val(old_value);
     
@@ -328,15 +329,25 @@ function teachpress_edit_sources(){
     $source_area.show();
     $source_area_lbl.show();
         
-    $edit_btn.prop('disabled', true);
+    $save_btn.removeClass('disabled');
+    $edit_btn.addClass("disabled");
     $cancel_btn.show();
     $cancel_btn.on('click', function() {
                    $source_area.val(old_value);
                    $source_area.hide();
                    $source_area_lbl.hide();
                    $source_table.show();
-                   $edit_btn.prop('disabled', false);
+                   $edit_btn.removeClass('disabled');
                    $cancel_btn.hide();
                    $cancel_btn.off('click');
                    });
+}
+
+/**
+* Function to make update source table saveable when changed.
+* @since 9.0.0
+*/
+function tp_source_freq_changed() {
+    let $save_btn = jQuery("#tp_sources_save");
+    $save_btn.removeClass('disabled');
 }

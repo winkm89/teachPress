@@ -41,7 +41,7 @@
 
 define('TEACHPRESS_GLOBAL_PATH', plugin_dir_path(__FILE__));
 
-// Loads contstants
+// Loads constants
 include_once('core/constants.php');
 
 // Core functions
@@ -85,6 +85,11 @@ if ( is_admin() ) {
     include_once('admin/show-publications.php');
 }
 
+// cron job includes
+if ( wp_doing_cron() ) {
+    include_once('admin/publication-sources.php');
+}
+    
 // BibTeX Parse v2.5
 if ( !class_exists( 'BIBTEXPARSE' ) ) {
     include_once('includes/bibtexParse/BIBTEXPARSE.php');
@@ -486,6 +491,27 @@ function tp_plugin_link($links, $file){
     return $links;
 }
 
+/**
+ * This calls the proper implementation for the update source endpoint.
+ * @since 9.0.0
+ */
+function tp_rest_update_sources_hook() {
+    include_once('admin/publication-sources.php');
+    return new WP_REST_Response(tp_rest_update_sources());
+}
+    
+/**
+ * This function registers REST routes to call the REST endpoints.
+ * @since 9.0.0
+ */
+function tp_rest_register_routes() {
+    $result = register_rest_route( 'teachpress/v1', '/autopublish/update_all', array(
+      'methods' => 'GET',
+      'callback' => 'tp_rest_update_sources_hook',
+      'permission_callback' => '__return_false', // change to __return_true to give access to all
+    ), true );
+}
+    
 // Register WordPress-Hooks
 register_activation_hook( __FILE__, 'tp_activation');
 register_deactivation_hook( __FILE__, 'tp_deactivation' );
@@ -501,6 +527,8 @@ add_action('admin_init','tp_backend_scripts');
 add_filter('plugin_action_links','tp_plugin_link', 10, 2);
 add_action('wp_ajax_tp_document_upload', 'tp_handle_document_uploads' );
 add_filter( 'screen_settings', 'tp_show_screen_options', 10, 2 );
+add_action( 'rest_api_init', 'tp_rest_register_routes' );
+add_action( TEACHPRESS_CRON_SOURCES_HOOK, 'TP_Publication_Sources_Page::tp_cron_exec' );
 
 // Register tinyMCE Plugin
 if ( version_compare( tp_get_wp_version() , '3.9', '>=') ) {
@@ -525,4 +553,3 @@ add_shortcode('tplinks', 'tp_links_shortcode');
 add_shortcode('tpsearch', 'tp_search_shortcode');
 add_shortcode('tpcite', 'tp_cite_shortcode');
 add_shortcode('tpref','tp_ref_shortcode');
-
