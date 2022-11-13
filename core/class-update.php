@@ -119,7 +119,7 @@ class TP_Update {
         
         // force updates to reach structure of teachPress 9.0.0
         if ( $db_version[0] === '9' || $update_level === '9' ) {
-            TP_Update::upgrade_to_90();
+            TP_Update::upgrade_to_90($charset_collate);
         }
         
         // Add teachPress options
@@ -872,8 +872,11 @@ class TP_Update {
      * @param string $charset_collate
      * @since 9.0.0
      */
-    private static function upgrade_to_90() {
+    private static function upgrade_to_90($charset_collate) {
         global $wpdb;
+        
+        // add new tables
+        TP_Tables::add_table_monitored_sources($charset_collate);
 
         // add column image_target to table teachpress_pub
         if ($wpdb->query("SHOW COLUMNS FROM " . TEACHPRESS_PUB . " LIKE 'award'") == '0') { 
