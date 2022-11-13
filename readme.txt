@@ -122,10 +122,24 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 == Changelog ==
 
 = 9.0.0 beta (xx.xx.xxxx) =
-* New: Filters for custom select fields can be added to [tpcloud], [tpsearch]
-* New: Add awards field to the publications
-* Changed: This version no longer contains the course module
+* Important: This version no longer contains the course module!
+* New: Automatic import over API (i.e. for zotero group bibliographies)
+* New: Awards field for publications added
+* New: Canadian French localization
+* New: Support for French diacritics in bibtex entries
+* New: [tpcloud, tpsearch, tplist] user parameter can now handle user names (login name) (#202)
 * Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
+
+= 8.1.8 (08.11.2022) =
+* Bugfix: [tpcloud]: pulldown menu for tags doesn't work (#207)
+
+= 8.1.7 (23.08.2022) =
+* Bugfix: Fixed Warning: Undefined array key "" (#201)
+
+= 8.1.6 (17.08.2022) =
+* New. [tpcloud, tpsearch]: Custom select fields can now be displayed as filters out of the box! Example (field with the ID tp_meta_pub_lang): [tpsearch custom_filter="tp_meta_pub_lang" custom_filter_label="My Label"]
+* New: Flexible position of the search button for pub lists added
+* New: Display error messages why publications could not be imported or added
 
 = 8.1.5 (06.03.2022) =
 * Changed: Add comment field to field list in SQL statement
