@@ -4,7 +4,7 @@ Tags: publications, bibliography, BibTeX
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 5.9
+Tested up to: 6.1.1
 Requires PHP: 5.4
 Stable tag: 9.0.0
 
@@ -125,8 +125,8 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Important: This version no longer contains the course module!
 * New: Automatic import over API (i.e. for zotero group bibliographies)
 * New: Awards field for publications added
-* New: Canadian French localization
-* New: Support for French diacritics in bibtex entries
+* New: Canadian French localization added
+* New: Support for French diacritics in bibtex entries added
 * New: [tpcloud, tpsearch, tplist] user parameter can now handle user names (login name) (#202)
 * Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
 
