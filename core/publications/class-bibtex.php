@@ -275,6 +275,17 @@ class TP_Bibtex {
         "\\H u"                  => "ű",
         "\\v Z"                  => "Ž",
         "\\v z"                  => "ž",
+        
+        // for custom latex packages like ngerman
+        "\\glqq"                 => "„",
+        "\\grqq"                 => "“",
+        "\\flqq"                 => "«",
+        "\\frqq"                 => "»",
+        "\\flq"                  => "‹",
+        "\\frq"                  => "›",
+        "\\glq"                  => "‚",
+        "\\grq"                  => "‘",
+        "\\dq"                   => "",
 
         // a few minor customizations...
         "\\varepsilon"              => "ε",
