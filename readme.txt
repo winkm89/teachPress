@@ -5,7 +5,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 6.1.1
-Requires PHP: 5.4
+Requires PHP: 7.0
 Stable tag: 9.0.0
 
 Manage your publications with teachPress 
@@ -129,6 +129,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * New: Support for French diacritics in bibtex entries added
 * New: [tpcloud, tpsearch, tplist] user parameter can now handle user names (login name) (#202)
 * Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
+* Changed: Improved bibtex char conversion
 
 = 8.1.9 (16.01.2023) =
 * Bugfix: Security fix for CVE-2023-22704
