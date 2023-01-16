@@ -20,7 +20,11 @@ class TP_Settings_Page {
         echo '<div class="wrap">';
 
         $site = 'options-general.php?page=teachpress/settings.php';
-        $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+        
+        // Tab selector
+        $tab_list = ['general', 'publication_data', 'publication_templates', 'db_status' ];
+        $tab_input = isset( $_GET['tab'] ) ? htmlspecialchars($_GET['tab']) : 'general';
+        $tab = ( in_array($tab_input, $tab_list) ) ? $tab_input : '';
 
         // update dababase
         if ( isset($_GET['up']) ) {

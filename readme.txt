@@ -130,6 +130,9 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * New: [tpcloud, tpsearch, tplist] user parameter can now handle user names (login name) (#202)
 * Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
 
+= 8.1.9 (16.01.2023) =
+* Bugfix: Security fix for CVE-2023-22704
+
 = 8.1.8 (08.11.2022) =
 * Bugfix: [tpcloud]: pulldown menu for tags doesn't work (#207)
 
