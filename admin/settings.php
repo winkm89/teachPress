@@ -20,7 +20,11 @@ class TP_Settings_Page {
         echo '<div class="wrap">';
 
         $site = 'options-general.php?page=teachpress/settings.php';
-        $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+        
+        // Tab selector
+        $tab_list = ['general', 'publication_data', 'publication_templates', 'db_status' ];
+        $tab_input = isset( $_GET['tab'] ) ? htmlspecialchars($_GET['tab']) : 'general';
+        $tab = ( in_array($tab_input, $tab_list) ) ? $tab_input : '';
 
         // update dababase
         if ( isset($_GET['up']) ) {
@@ -123,11 +127,11 @@ class TP_Settings_Page {
         // img source: https://unsplash.com/photos/uG1jwfpCRhg
         echo '<div id="dialog" title="About">
                 <div style="text-align: center;">
-                <p><img src="' . plugins_url( 'images/misc/about.jpg', dirname( __FILE__ ) ) . '" style="border-radius: 130px; width: 250px; height: 250px;" title="Photo by Ella Olsson on Unsplash" /></p>
+                <p><img src="' . plugins_url( 'images/misc/about.jpg', dirname( __FILE__ ) ) . '" style="border-radius: 130px; width: 250px; height: 250px;" title="Photo by Bruna Branco (@brunabranco) on Unsplash" /></p>
                 <p><img src="' . plugins_url( 'images/full.png', dirname( __FILE__ ) ) . '" width="400" /></p>
-                <p style="font-size: 20px; font-weight: bold; color: #e6005c;">' . get_tp_option('db-version') . ' "Raspberry Brownie"</p>
+                <p style="font-size: 20px; font-weight: bold; color: #EEC83F;">' . get_tp_option('db-version') . ' "Lemon Tart"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="https://github.com/winkm89/teachPress/">teachPress on GitHub</a> | <a href="https://github.com/winkm89/teachPress/wiki">Dokumentation</a> | <a href="https://github.com/winkm89/teachPress/wiki/Changelog">Changelog</a></p>
-                <p>&copy;2008-2022 by Michael Winkler | License: GPLv2 or later<br/></p>
+                <p>&copy;2008-2023 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
               </div>';
     }

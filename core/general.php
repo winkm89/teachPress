@@ -370,27 +370,6 @@ function tp_write_data_for_tinymce () {
         return;
     }
     
-    // List of courses
-    $course_list = array();
-    $course_list[] = array( 'text' => '=== SELECT ===' , 'value' => 0 );
-    $semester = get_tp_options('semester', '`setting_id` DESC');
-    foreach ( $semester as $row ) {
-        $courses = TP_Courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
-        foreach ($courses as $course) {
-            $course_list[] = array( 'text' => $course->name . ' (' . $course->semester . ')' , 'value' => $course->course_id );
-        }
-        if ( count($courses) > 0 ) {
-            $course_list[] = array( 'text' => '====================' , 'value' => 0 );
-        }
-    }
-    
-    // List of semester/term
-    $semester_list = array();
-    $semester_list[] = array( 'text' => __('Default','teachpress') , 'value' => '' );
-    foreach ($semester as $sem) { 
-        $semester_list[] = array( 'text' => stripslashes($sem->value) , 'value' => stripslashes($sem->value) );
-    }
-    
     // List of publication users
     $pub_user_list = array();
     $pub_user_list[] = array( 'text' => __('All','teachpress') , 'value' => '' );
@@ -431,8 +410,6 @@ function tp_write_data_for_tinymce () {
     // Write javascript
     ?>
     <script type="text/javascript">
-        var teachpress_courses = <?php echo json_encode($course_list); ?>;
-        var teachpress_semester = <?php echo json_encode($semester_list); ?>;
         var teachpress_pub_user = <?php echo json_encode($pub_user_list); ?>;
         var teachpress_pub_types = <?php echo json_encode($pub_type_list); ?>;
         var teachpress_pub_tags = <?php echo json_encode($pub_tag_list) ?>;
@@ -440,7 +417,6 @@ function tp_write_data_for_tinymce () {
         var teachpress_editor_url = '<?php echo admin_url( 'admin-ajax.php' ) . '?action=teachpressdocman&post_id=' . $post_id; ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
         var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
-        var teachpress_course_module = true;
         var teachpress_publication_module = true;
     </script>
     <?php

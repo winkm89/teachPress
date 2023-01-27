@@ -1,12 +1,12 @@
 teachPress
 ==========
 
-This is the offical development repository of teachPress, a plugin for WordPress which unites a course management system (with modules for enrollments and assessments) and a powerful BibTeX compatible publication management. Both modules can be operated independently. You can use it with WordPress 3.9.0 or higher.
+This is the offical development repository of teachPress, a powerful BibTeX compatible publication management plugin for WordPress.
 
 Offical teachPress versions are available in the WordPress Plugin Directory:
 https://wordpress.org/plugins/teachpress/
 
-Pre-Releases and the offical versions are available in the Release-Section:
+Pre-Releases and offical versions are available in the Release-Section:
 https://github.com/winkm89/teachPress/releases
 
 Documentation : https://github.com/winkm89/teachPress/wiki
@@ -15,12 +15,14 @@ Documentation : https://github.com/winkm89/teachPress/wiki
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
-* RSS feed for publications
-* Template system for publication lists
-* Course management with integrated modules for enrollments, assessments and documents
-* XLS/CSV export for course lists
-* Many shortcodes for an easy using of publication lists, publication searches, enrollments and course overviews
-* Dymamic meta data system for courses, students and publications
+* Direct data import from NCBI PubMed 
+* Automatic import over API (with version 9.0.0)
+* RSS feeds for publications
+* Many shortcodes for an easy using of publication lists, publication searches or for text references
+* Dymamic meta data system for adding new custom fields to publication entries
+
+## Note 
+Due to the fact that the most (all?) teachpress users uses only the publication module, the course management modul is no longer a part of the plugin (with version 9.0.0). The last version with the course management modul is 8.1.x. 
 
 ## Supported Languages
 * English
@@ -39,7 +41,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 ## Credits / Licence
 
-Copyright 2008-2022 by Michael Winkler
+Copyright 2008-2023 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -56,7 +58,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 ## Licence information of external resources
-* Wikindx bibtex import classes (bibtexParse) by Mark Grimshaw-Aagaard & Stéphane Aulery (Licence: ISC License)
+* Wikindx bibtex import classes (bibtexParse) by Mark Grimshaw-Aagaard & StÃ©phane Aulery (Licence: ISC License)
 * OSBib by Mark Grimshaw-Aagaard (Licence: GPL)
 * Graphics for mimetypes, user-new-3.png, folder-new-7.png and document-new-6.png by Oxygen Icons 4.3.1 http://www.oxygen-icons.org/ (Licence: LPGL)
 * jquery-ui-icons.png by The jQuery Foundation (License: MIT)
