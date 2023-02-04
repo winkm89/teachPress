@@ -63,6 +63,50 @@ class TP_DB_Helpers {
     }
     
     /**
+     * Generate a between clause
+     * 
+     * The $input should be "start,end". For an open end, you can use 0. 
+     * Examples: 
+     * "2017,2022"  --> between 2017 AND 2022
+     * "0,2017"     --> all <= 2017
+     * "2017,0"     --> all >= 2017
+     * 
+     * @param string $input     Start and end value separated by comma
+     * @param string $column    database column
+     * @return string
+     * @since 9.0.0
+     */
+    public static function generate_between_clause ($input, $column) {
+        
+        // Return if there is nothing to do
+        if ($input === '') {
+            return;
+        }
+        
+        $array = explode(",", $input);
+        
+        // we need an array length of two
+        if ( count($array) != 2 ) {
+            return;
+        }
+        
+        $start = esc_sql( trim($array[0]));
+        $end = esc_sql( trim($array[1]));
+        $element = esc_sql( trim($column) );
+        
+        if ( $start == '0' ) {
+            return "$element <= '$end'";
+        }
+        
+        if ( $end == '0' ) {
+            return "$element >= '$start'";
+        }
+        
+        return "$element BETWEEN '$start' AND '$end'"; 
+        
+    }
+    
+    /**
      * Sets clause parts from the $parts[] array together to one clause string
      * 
      * Example: 

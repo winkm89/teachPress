@@ -42,11 +42,12 @@ class TP_Shortcodes {
         
         // year filter
         if ( $key === 'year' ) {
-            $row = TP_Publications::get_years( array( 'user'        => $filter_parameter['user_preselect'], 
-                                                      'type'        => $filter_parameter['type_preselect'],
-                                                      'include'     => $filter_parameter['year_preselect'],
-                                                      'order'       => 'DESC', 
-                                                      'output_type' => ARRAY_A ) );
+            $row = TP_Publications::get_years( array( 'user'            => $filter_parameter['user_preselect'], 
+                                                      'type'            => $filter_parameter['type_preselect'],
+                                                      'include'         => $filter_parameter['year_preselect'],
+                                                      'years_between'   => $sql_parameter['years_between'],
+                                                      'order'           => 'DESC', 
+                                                      'output_type'     => ARRAY_A ) );
             $defaults['url_slug'] = 'yr';
             $defaults['key'] = 'year';
             $defaults['row_key'] = 'year';
@@ -1096,6 +1097,7 @@ function tp_publist_shortcode ($args) {
         'type'                  => '',
         'author'                => '',
         'year'                  => '',
+        'years_between'         => '',
         'exclude'               => '',
         'include'               => '',
         'include_editor_as_author' => 1,
@@ -1208,6 +1210,7 @@ function tp_publist_shortcode ($args) {
         'author'        => ( $filter_parameter['author'] !== '' ) ? $filter_parameter['author'] : htmlspecialchars($atts['author']),
         'year'          => ( $filter_parameter['year'] !== '' ) ? $filter_parameter['year'] : htmlspecialchars($atts['year']),
         'tag'           => ( $filter_parameter['tag'] !== '' ) ? $filter_parameter['tag'] : htmlspecialchars($atts['tag']),
+        'years_between' => htmlspecialchars($atts['years_between']),
         'exclude'       => htmlspecialchars($atts['exclude']),
         'exclude_tags'  => htmlspecialchars($atts['exclude_tags']),
         'exclude_types' => htmlspecialchars($atts['exclude_types']),
@@ -1364,7 +1367,8 @@ function tp_publist_shortcode ($args) {
     // Parameters for returning publications
     $args = array(
         'tag'                       => $sql_parameter['tag'], 
-        'year'                      => $sql_parameter['year'], 
+        'year'                      => $sql_parameter['year'],
+        'years_between'             => $sql_parameter['years_between'],
         'type'                      => $sql_parameter['type'], 
         'user'                      => $sql_parameter['user'], 
         'search'                    => $filter_parameter['search'],
@@ -1491,6 +1495,7 @@ function tp_cloud_shortcode($atts) {
         'type'                      => '',
         'author'                    => '',
         'year'                      => '',
+        'years_between'             => '',
         'exclude'                   => '', 
         'include'                   => '',
         'include_editor_as_author'  => 1,
@@ -1555,6 +1560,7 @@ function tp_list_shortcode($atts){
        'type'                       => '',
        'author'                     => '',
        'year'                       => '',
+       'years_between'              => '',
        'exclude'                    => '',
        'include'                    => '',
        'include_editor_as_author'   => 1,
@@ -1612,6 +1618,7 @@ function tp_search_shortcode ($atts) {
        'type'                       => '',
        'author'                     => '',
        'year'                       => '',
+       'years_between'              => '',
        'exclude'                    => '',
        'include'                    => '',
        'include_editor_as_author'   => 1,
