@@ -53,6 +53,7 @@ class TP_Publications {
      *      @type string author_id              Author IDs (separated by comma)
      *      @type string import_id              Import IDs (separated by comma)
      *      @type string year                   Years (separated by comma)
+     *      @type string years_between          start/end year separated by comma, use 0 for unlimited
      *      @type string author                 Author name (separated by comma)
      *      @type string editor                 Editor name (separated by comma)
      *      @type string exclude                The ids of the publications you want to exclude (separated by comma)
@@ -80,6 +81,7 @@ class TP_Publications {
             'author_id'                 => '', 
             'import_id'                 => '',
             'year'                      => '',
+            'years_between'             => '',
             'author'                    => '',
             'editor'                    => '',
             'include'                   => '',
@@ -200,6 +202,9 @@ class TP_Publications {
         if ( !empty($atts['year']) ) {
             $having = ' HAVING ' . TP_DB_Helpers::generate_where_clause($atts['year'], "year", "OR", "=");
         }
+        if ( empty($atts['year']) && !empty($atts['years_between']) ) {
+            $having = ' HAVING ' . TP_DB_Helpers::generate_between_clause($atts['years_between'], "year");
+        }
         
         // LIMIT clause
         $limit = ( !empty($atts['limit']) ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
@@ -317,6 +322,7 @@ class TP_Publications {
             'type'          => '',
             'user'          => '',
             'include'       => '',
+            'years_between' => '',
             'order'         => 'ASC',
             'output_type'   => OBJECT
         ); 
@@ -337,6 +343,9 @@ class TP_Publications {
         $having = '';
         if ( $atts['include'] != '' && $atts['include'] !== '0' ) {
             $having = ' HAVING ' . TP_DB_Helpers::generate_where_clause($atts['include'], "year", "OR", "=");
+        }
+        if ( $atts['include'] === '' && $atts['years_between'] != '' ) {
+            $having = ' HAVING ' . TP_DB_Helpers::generate_between_clause($atts['years_between'], "year");
         }
 
         // END
