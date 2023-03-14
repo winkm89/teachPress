@@ -62,6 +62,7 @@ include_once('core/publications/class-bibtex.php');
 include_once('core/publications/class-bibtex-import.php');
 include_once('core/publications/class-bibtex-macros.php');
 include_once('core/publications/class-cite-object.php');
+include_once('core/publications/class-crossref-import.php');
 include_once('core/publications/class-db-authors.php');
 include_once('core/publications/class-db-bookmarks.php');
 include_once('core/publications/class-db-publications.php');
@@ -89,7 +90,7 @@ if ( is_admin() ) {
 if ( wp_doing_cron() ) {
     include_once('admin/publication-sources.php');
 }
-    
+
 // BibTeX Parse v2.5
 if ( !class_exists( 'BIBTEXPARSE' ) ) {
     include_once('includes/bibtexParse/BIBTEXPARSE.php');
@@ -119,12 +120,12 @@ function tp_add_menu() {
     $pos = TEACHPRESS_MENU_POSITION;
 
     $tp_admin_all_pub_page = add_menu_page (
-            __('Publications','teachpress'), 
-            __('Publications','teachpress'), 
-            'use_teachpress', 
-            'publications.php', 
-            'tp_show_publications_page', 
-            $logo, 
+            __('Publications','teachpress'),
+            __('Publications','teachpress'),
+            'use_teachpress',
+            'publications.php',
+            'tp_show_publications_page',
+            $logo,
             $pos);
     $tp_admin_your_pub_page = add_submenu_page(
             'publications.php',
@@ -135,23 +136,23 @@ function tp_add_menu() {
             'tp_show_publications_page');
     $tp_admin_add_pub_page = add_submenu_page(
             'publications.php',
-            __('Add new', 'teachpress'), 
+            __('Add new', 'teachpress'),
             __('Add new','teachpress'),
             'use_teachpress',
             'teachpress/addpublications.php',
             'tp_add_publication_page');
     $tp_admin_import_page = add_submenu_page(
             'publications.php',
-            __('Import/Export'), 
-            __('Import/Export'), 
-            'use_teachpress', 
+            __('Import/Export'),
+            __('Import/Export'),
+            'use_teachpress',
             'teachpress/import.php',
             'tp_show_import_publication_page');
     $tp_admin_sources_page = add_submenu_page(
             'publications.php',
-            __('Auto-publish'), 
-            __('Auto-publish'), 
-            'use_teachpress', 
+            __('Auto-publish'),
+            __('Auto-publish'),
+            'use_teachpress',
             'teachpress/sources.php',
             'tp_show_publication_sources_page');
     $tp_admin_show_authors_page = add_submenu_page(
@@ -198,11 +199,11 @@ function tp_add_menu_settings() {
  */
 function tp_show_screen_options($current, $screen) {
     global $tp_admin_show_authors_page;
-    
+
     if( !is_object($screen) ) {
         return;
     }
-    
+
     // Show screen options for the authors page
     if ( $screen->id == $tp_admin_show_authors_page ) {
         return $current . TP_Authors_Page::print_screen_options();
@@ -280,7 +281,7 @@ function tp_deactivation () {
     TP_Publication_Sources_Page::uninstall_cron();
 }
 
-    
+
 /**
  * teachPress plugin activation
  * @param boolean $network_wide
@@ -385,12 +386,12 @@ function tp_register_tinymce_js ($plugins) {
 function tp_backend_scripts() {
     $version = get_tp_version();
     $page = isset($_GET['page']) ? $_GET['page'] : '';
-    
+
     // Load scripts only, if it's a teachpress page
     if ( strpos($page, 'teachpress') === false && strpos($page, 'publications') === false ) {
         return;
     }
-    
+
     wp_enqueue_style('teachpress-print-css', plugins_url( 'styles/print.css', __FILE__ ), false, $version, 'print');
     wp_enqueue_script('teachpress-standard', plugins_url( 'js/backend.js', __FILE__ ) );
     wp_enqueue_style('teachpress.css', plugins_url( 'styles/teachpress.css', __FILE__ ), false, $version);
@@ -406,16 +407,16 @@ function tp_backend_scripts() {
     if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
         wp_enqueue_style('font-awesome', plugins_url( 'includes/fontawesome/css/all.min.css', __FILE__ ) );
     }
-    
+
     /* SlimSelect v1.27 */
     wp_enqueue_script('slim-select', plugins_url( 'includes/slim-select/slimselect.min.js', __FILE__ ) );
     wp_enqueue_style('slim-select.css', plugins_url( 'includes/slim-select/slimselect.min.css', __FILE__ ) );
-    
+
     // Load jQuery + ui plugins + plupload
     wp_enqueue_script(array('jquery-ui-core', 'jquery-ui-datepicker', 'jquery-ui-resizable', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-dialog', 'plupload'));
     wp_enqueue_style('teachpress-jquery-ui.css', plugins_url( 'styles/jquery.ui.css', __FILE__ ) );
     wp_enqueue_style('teachpress-jquery-ui-dialog.css', includes_url() . '/css/jquery-ui-dialog.min.css');
-    
+
     // Languages for plugins
     $current_lang = ( version_compare( tp_get_wp_version() , '4.0', '>=') ) ? get_option('WPLANG') : WPLANG;
     $array_lang = array('de_DE','it_IT','es_ES', 'sk_SK');
@@ -471,8 +472,8 @@ function tp_language_support() {
     $locale = apply_filters( 'plugin_locale', determine_locale(), $domain );
     $path = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
     $mofile = WP_PLUGIN_DIR . '/' . $path . $domain . '-' . $locale . '.mo';
-    
-    // Load the plugins language files first instead of language files from WP languages directory 
+
+    // Load the plugins language files first instead of language files from WP languages directory
     if ( !load_textdomain($domain, $mofile) ) {
         load_plugin_textdomain($domain, false, $path);
     }
@@ -499,7 +500,7 @@ function tp_rest_update_sources_hook() {
     include_once('admin/publication-sources.php');
     return new WP_REST_Response(tp_rest_update_sources());
 }
-    
+
 /**
  * This function registers REST routes to call the REST endpoints.
  * @since 9.0.0
@@ -511,7 +512,7 @@ function tp_rest_register_routes() {
       'permission_callback' => '__return_false', // change to __return_true to give access to all
     ), true );
 }
-    
+
 // Register WordPress-Hooks
 register_activation_hook( __FILE__, 'tp_activation');
 register_deactivation_hook( __FILE__, 'tp_deactivation' );
