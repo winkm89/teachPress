@@ -251,6 +251,15 @@ if ( !defined('TEACHPRESS_DEBUG') ) {
     define('TEACHPRESS_DEBUG', false);
 }
 
+if ( !defined('TEACHPRESS_DIMENSIONS_SUPPORT') ) {
+    /**
+     * This value defines if Dimensions support is available (loads
+     * external sources)
+     * @since 9.X.X
+     */
+    define('TEACHPRESS_DIMENSIONS_SUPPORT', false);
+}
+
 if ( !defined('TEACHPRESS_PLUMX_SUPPORT') ) {
     /**
      * This value defines if PlumX support is available (loads external sources)

@@ -458,6 +458,11 @@ function tp_frontend_scripts() {
         wp_enqueue_style('font-awesome', plugins_url( 'includes/fontawesome/css/all.min.css', __FILE__ ) );
     }
 
+    /* Dimensions Badge support */
+    if ( TEACHPRESS_DIMENSIONS_SUPPORT === true ) {
+        echo '<script async' . $type_attr . ' src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>' . PHP_EOL;
+    }
+
     /* PlumX support */
     if ( TEACHPRESS_PLUMX_SUPPORT === true ) {
         echo '<script' . $type_attr . ' src="https://cdn.plu.mx/widget-popup.js"></script>' . PHP_EOL;
