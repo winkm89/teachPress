@@ -700,6 +700,10 @@ class TP_Shortcodes {
             $count++;
         }
         
+        if ( $settings['show_plumx_widget'] ) {
+            $count++;
+        }
+
         if ( $count < 2 ) {
             return '';
         }
@@ -1084,6 +1088,7 @@ function tp_links_shortcode ($atts) {
  *      @type string filter_class          The CSS class for filter/select menus, default: default
  *      @type int show_altmetric_donut     0 (false) or 1 (true), default: 0
  *      @type int show_altmetric_entrx     0 (false) or 1 (true), default: 0
+ *      @type int show_plumx_widget        0 (false) or 1 (true), default: 0
  *      @type int use_jumpmenu             Use filter as jumpmenu (1) or not (0), default: 1
  *      @type int use_as_filter            Show all entries by default (1) o not (0), default 1
  * }
@@ -1139,6 +1144,7 @@ function tp_publist_shortcode ($args) {
         'custom_filter_label'   => '',
         'show_altmetric_donut'  => 0,
         'show_altmetric_entry'  => 0,
+        'show_plumx_widget'     => 0,
         'use_jumpmenu'          => 1,
         'use_as_filter'         => 1
     ), $args);
@@ -1179,6 +1185,7 @@ function tp_publist_shortcode ($args) {
         'custom_filter_label'   => htmlspecialchars($atts['custom_filter_label']),
         'show_altmetric_entry'  => ($atts['show_altmetric_entry'] == '1') ? true : false,
         'show_altmetric_donut'  => ($atts['show_altmetric_donut'] == '1') ? true : false,
+        'show_plumx_widget'     => ('1' === $atts['show_plumx_widget']) ? true : false,
         'use_jumpmenu'          => ( $atts['use_jumpmenu'] == '1' ) ? true : false
     );
     
@@ -1392,7 +1399,7 @@ function tp_publist_shortcode ($args) {
     
     // colspan setup
     $colspan = TP_Shortcodes::set_colspan($settings);
-    if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut'] == true) {
+    if ($settings['image'] == 'left' || $settings['image'] == 'right' || $settings['show_altmetric_donut'] == true || true === $settings['show_plumx_widget']) {
         $settings['pad_size'] = intval($atts['image_size']) + 5;
     }
     
@@ -1534,6 +1541,7 @@ function tp_cloud_shortcode($atts) {
         'container_suffix'          => '',
         'show_altmetric_donut'      => 0,
         'show_altmetric_entry'      => 0,
+        'show_plumx_widget'         => 0,
         'use_jumpmenu'              => 1,
         'use_as_filter'             => 1,
         'filter_class'              => 'default',
@@ -1595,6 +1603,7 @@ function tp_list_shortcode($atts){
        'container_suffix'           => '',
        'show_altmetric_donut'       => 0,
        'show_altmetric_entry'       => 0,
+       'show_plumx_widget'          => 0,
        'use_jumpmenu'               => 1,
        'use_as_filter'              => 1,
        'filter_class'               => 'default'
@@ -1653,6 +1662,7 @@ function tp_search_shortcode ($atts) {
        'container_suffix'           => '',
        'show_altmetric_donut'       => 0,
        'show_altmetric_entry'       => 0,
+       'show_plumx_widget'          => 0,
        'use_jumpmenu'               => 0,
        'use_as_filter'              => 1,
        'filter_class'               => 'block',

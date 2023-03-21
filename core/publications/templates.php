@@ -356,6 +356,10 @@ class TP_Publication_Template_API {
             $content .= TP_HTML_Publication_Template::get_info_container( TP_HTML_Publication_Template::prepare_altmetric($row['doi']), 'altmetric', $container_id );
         }
 
+        if ( $settings['show_plumx_widget'] && $row['doi'] != '' ) {
+            $content .= TP_HTML_Publication_Template::get_info_container( TP_HTML_Publication_Template::prepare_plumx( $row['doi'] ), 'plumx', $container_id );
+        }
+
         // div bibtex
         $content .= TP_HTML_Publication_Template::get_info_container( nl2br( TP_Bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ), 'bibtex', $container_id );
         
@@ -428,6 +432,7 @@ class TP_HTML_Publication_Template {
         $all_authors = '';
         $is_button = false;
         $altmetric = '';
+        $plumx = '';
 
         // show tags
         if ( $settings['show_tags_as'] != 'none' ) {
@@ -450,6 +455,11 @@ class TP_HTML_Publication_Template {
             $is_button = true;
         }
         
+        if ( true === TEACHPRESS_PLUMX_SUPPORT && $settings['show_plumx_widget'] &&  $row['doi'] != '' ) {
+            $plumx = self::get_info_button( __( 'PlumX', 'teachpress' ), __( 'Show PlumX Widget', 'teachpress' ), 'plumx', $container_id ) . $separator;
+            $is_button = true;
+        }
+
         // if there is an abstract
         if ( $row['abstract'] != '' ) {
             $abstract = self::get_info_button(__('Abstract','teachpress'), __('Show abstract','teachpress'), 'abstract', $container_id) . $separator;
@@ -475,10 +485,10 @@ class TP_HTML_Publication_Template {
 
         // link style
         if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
-            $tag_string = $abstract . $url . $bibtex . $altmetric . $tag_string ;
+            $tag_string = $abstract . $url . $bibtex . $altmetric . $plumx. $tag_string ;
         }
         else {
-            $tag_string = $abstract . $bibtex . $altmetric . $tag_string . $url ;
+            $tag_string = $abstract . $bibtex . $altmetric . $plumx . $tag_string . $url ;
         }
         
         // load template interface
@@ -834,6 +844,21 @@ class TP_HTML_Publication_Template {
 
     
     /**
+     * Prepares an Artifact Plum Print Widget
+     * @param string $doi       The DOI number
+     * @return string
+     * @since 9.X.X
+     * @access public
+     */
+    public static function prepare_plumx($doi = '') {
+        if ( $doi != '' ) {
+            return '<a href="https://plu.mx/plum/a/?doi=' . urlencode( $doi ) . '" data-popup="right" class="plumx-plum-print-popup"></a>';
+        }
+        return '';
+    }
+
+
+    /**
      * Generates the tag string for a single publication
      * @param array $row        The publication array
      * @param array $all_tags   An array of all tags
@@ -905,19 +930,24 @@ class TP_HTML_Publication_Template {
         if( $settings['show_altmetric_donut']) {
            $altmetric = '<div class="tp_pub_image_bottom"><div data-badge-type="medium-donut" data-doi="' . $row['doi']  . '" data-condensed="true" data-hide-no-mentions="true" class="altmetric-embed"></div></div>';
         }
+
+        if ( $settings['show_plumx_widget'] ) {
+            $plumx = '<div class="tp_pub_image_bottom"><a href="https://plu.mx/plum/a/?doi=' . urlencode( $row['doi'] ) . '" data-popup="hidden" class="plumx-plum-print-popup"></a></div>';
+        }
+
         // left position
         if ( $settings['image'] === 'left' ) {
-            $return['left'] = $template->get_image($image . $altmetric, 'left', 'width="' . $settings['pad_size'] . '"');
+            $return['left'] = $template->get_image($image . $altmetric . $plumx, 'left', 'width="' . $settings['pad_size'] . '"');
         }
         
         // right position
         if ( $settings['image'] === 'right' ) {
-            $return['right'] = $template->get_image($image . $altmetric, 'right', 'width="' . $settings['pad_size'] . '"');
+            $return['right'] = $template->get_image($image . $altmetric . $plumx, 'right', 'width="' . $settings['pad_size'] . '"');
         }
         
         // bottom position
         if ( $settings['image'] === 'bottom' ) {
-            $return['bottom'] = $template->get_image($image . $altmetric, 'bottom');
+            $return['bottom'] = $template->get_image($image . $altmetric . $plumx, 'bottom');
         }
         
         return $return;

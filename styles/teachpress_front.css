@@ -93,7 +93,7 @@ a.tp_show_block {font-weight: bold; text-decoration: none;}
 
 /* images */
 td.tp_pub_image_left, td.tp_pub_image_right{vertical-align: top; padding: 8px; border-bottom: 1px solid silver;}
-.tp_pub_image_bottom {text-align:center;}
+.tp_pub_image_bottom {display: inline-block; margin: auto; vertical-align: middle;}
 
 /*******************************************************/
 /* single publication, shortcode: [tpsingle], [tpcite] */

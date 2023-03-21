@@ -458,6 +458,11 @@ function tp_frontend_scripts() {
         wp_enqueue_style('font-awesome', plugins_url( 'includes/fontawesome/css/all.min.css', __FILE__ ) );
     }
 
+    /* PlumX support */
+    if ( TEACHPRESS_PLUMX_SUPPORT === true ) {
+        echo '<script' . $type_attr . ' src="https://cdn.plu.mx/widget-popup.js"></script>' . PHP_EOL;
+    }
+
     /* END */
     echo '<!-- END teachPress -->' . PHP_EOL;
 }
