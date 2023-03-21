@@ -455,7 +455,7 @@ class TP_HTML_Publication_Template {
         }
 
         // if the publication has a doi -> altmetric
-        if ( $settings['show_altmetric_entry']  &&  $row['doi'] != '' ) {
+        if ( true === TEACHPRESS_ALTMETRIC_SUPPORT && $settings['show_altmetric_entry']  &&  $row['doi'] != '' ) {
             $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
             $is_button = true;
         }
