@@ -14,11 +14,11 @@
 function tp_detect_templates() {
     $folder = TEACHPRESS_TEMPLATE_PATH;
     $files = scandir($folder);
-    
+
     if ( $files === false ) {
         return array();
     }
-    
+
     $return = array();
     foreach ( $files as $file ) {
         $infos = pathinfo($folder.$file);
@@ -57,17 +57,17 @@ function tp_load_template($slug) {
     if ( $slug === '' ) {
         return false;
     }
-    
+
     $slug = esc_attr($slug);
     $templates = tp_detect_templates();
-    
+
     // load template file
     if ( array_key_exists($slug, $templates) ) {
         include_once $templates[$slug];
         wp_enqueue_style($slug, TEACHPRESS_TEMPLATE_URL . $slug. '.css', array(), get_tp_version() );
         return new $slug();
     }
-    
+
     return false;
 
 }
@@ -83,7 +83,7 @@ interface TP_Publication_Template {
      * @since 6.0.0
      */
     public function get_settings();
-    
+
     /**
      * Returns the body element for a publication list
      * @param string $content   The content of the publication list itself
@@ -92,7 +92,7 @@ interface TP_Publication_Template {
      * @since 6.0.0
      */
     public function get_body($content, $args = array());
-    
+
     /**
      * Returns the headline for a publication list or a part of that
      * @param string $content     The content of the headline
@@ -101,7 +101,7 @@ interface TP_Publication_Template {
      * @since 6.0.0
      */
     public function get_headline($content, $args = array());
-    
+
     /**
      * Returns the headline (second level) for a publication list or a part of that
      * @param string $content     The content of the headline
@@ -110,7 +110,7 @@ interface TP_Publication_Template {
      * @since 6.0.0
      */
     public function get_headline_sl($content, $args = array());
-    
+
     /**
      * Returns the container for publication images
      * @param string $content               The image element
@@ -120,7 +120,7 @@ interface TP_Publication_Template {
      * @since 8.0.0
      */
     public function get_image($content, $position, $optional_attributes = '');
-    
+
     /**
      * Returns the single entry of a publication list
      * @param object $interface     The interface object
@@ -136,7 +136,7 @@ interface TP_Publication_Template {
  */
 class TP_Publication_Template_API {
     protected $data;
-    
+
     /**
      * Returns the data for a publication row
      * @return array
@@ -146,7 +146,7 @@ class TP_Publication_Template_API {
     public function get_data() {
         return $this->data;
     }
-    
+
     /**
      * Sets the data for a publication row
      * @param array $data
@@ -156,7 +156,7 @@ class TP_Publication_Template_API {
     public function set_data($data) {
         $this->data = $data;
     }
-    
+
     /**
      * Generates a span element for the selected publication data field
      * @param string $element   The data field (for example: status, journal, type )
@@ -178,7 +178,7 @@ class TP_Publication_Template_API {
             return '<span class="tp_pub_label_' . $element . ' ' . esc_attr($data) . '">' . $title . '</span>';
         }
     }
-    
+
     /**
      * Returns the number for a numbered publication list
      * @param string $before
@@ -189,14 +189,14 @@ class TP_Publication_Template_API {
      */
     public function get_number ($before = '', $after = '') {
         $settings = $this->data['settings'];
-        
+
         if ( $settings['style'] === 'std_num' || $settings['style'] === 'std_num_desc' || $settings['style'] === 'numbered' || $settings['style'] === 'numbered_desc' ) {
             return $before . $this->data['counter'] . $after;
         }
-        
+
         return '';
-    } 
-    
+    }
+
     /**
      * Returns the title
      * @return string
@@ -206,7 +206,7 @@ class TP_Publication_Template_API {
     public function get_title () {
         return $this->data['title'];
     }
-    
+
     /**
      * Returns the type of a publication (as html element)
      * @param string container      Default is span, For a plain retun use get_type(''), New since 7.0.0
@@ -221,7 +221,7 @@ class TP_Publication_Template_API {
         }
         return $type;
     }
-    
+
     /**
      * Returns the authors
      * @param string $before
@@ -236,8 +236,8 @@ class TP_Publication_Template_API {
         }
         return $before . $this->data['all_authors']  . $after;
     }
-    
-    /** 
+
+    /**
      * Returns the award (as html element)
      * @return string
      * @since 9.0.0
@@ -266,7 +266,7 @@ class TP_Publication_Template_API {
     public function get_meta () {
         return TP_HTML_Publication_Template::get_publication_meta_row($this->data['row'], $this->data['settings']);
     }
-    
+
     /**
      * Returns the tags
      * @param string $before
@@ -278,7 +278,7 @@ class TP_Publication_Template_API {
     public function get_menu_line ($before = '', $after = '') {
         $tag_string = $this->data['tag_line'];
         $separator = $this->data['template_settings']['button_separator'];
-        
+
         // meta line formatting
         if ( $tag_string !== '' ) {
             // Hack fix: Replace empty sections in tag string
@@ -290,7 +290,7 @@ class TP_Publication_Template_API {
         }
         return $tag_string;
     }
-    
+
     /**
      * Checks if a publication has a specific tag
      * @param string $tag_name
@@ -308,7 +308,7 @@ class TP_Publication_Template_API {
 
         return false;
     }
-    
+
     /**
      * Returns the year
      * @return string
@@ -318,7 +318,7 @@ class TP_Publication_Template_API {
     public function get_year () {
         return $this->data['row']['year'];
     }
-    
+
     /**
      * Returns the images
      * @param string $position
@@ -337,7 +337,7 @@ class TP_Publication_Template_API {
             return $this->data['images']['bottom'];
         }
     }
-    
+
     /**
      * Returns an info container
      * @return string
@@ -366,12 +366,12 @@ class TP_Publication_Template_API {
 
         // div bibtex
         $content .= TP_HTML_Publication_Template::get_info_container( nl2br( TP_Bibtex::get_single_publication_bibtex($row, $keywords, $settings['convert_bibtex']) ), 'bibtex', $container_id );
-        
+
         // div abstract
         if ( $row['abstract'] != '' ) {
             $content .= TP_HTML_Publication_Template::get_info_container( TP_HTML::prepare_text($row['abstract']), 'abstract', $container_id );
         }
-        
+
         // div links
         if ( ($row['url'] != '' || $row['doi'] != '') && ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) ) {
             $content .= TP_HTML_Publication_Template::get_info_container( TP_HTML_Publication_Template::prepare_url($row['url'], $row['doi'], 'list'), 'links', $container_id );
@@ -379,9 +379,9 @@ class TP_Publication_Template_API {
 
         return $content;
 
-        
-    }                      
-                        
+
+    }
+
 }
 
 /**
@@ -389,13 +389,13 @@ class TP_Publication_Template_API {
  * @since 6.0.0
  */
 class TP_HTML_Publication_Template {
-    
+
     public static function load_settings($template) {
         // default values
         $settings = array(
-            'name'                  => '', 
-            'description'           => '', 
-            'author'                => '', 
+            'name'                  => '',
+            'description'           => '',
+            'author'                => '',
             'version'               => '0.0',
             'button_separator'      => ' | ',
             'menu_label_tags'       => __('Tags') . ': ',
@@ -409,7 +409,7 @@ class TP_HTML_Publication_Template {
         }
         return $settings;
     }
-    
+
     /**
      * Gets a single publication in html format
      * @param array $row                The publication array (used keys: title, image_url, ...)
@@ -420,7 +420,7 @@ class TP_HTML_Publication_Template {
      * @param int $pub_count            The counter for numbered publications (default: 0)
      * @return string
      * @since 6.0.0
-    */
+     */
     public static function get_single ($row, $all_tags, $settings, $template, $template_settings, $pub_count = 0) {
         $container_id = ( $settings['container_suffix'] != '' ) ? $row['pub_id'] . '_' . $settings['container_suffix'] : $row['pub_id'];
         $separator = $template_settings['button_separator'];
@@ -445,7 +445,7 @@ class TP_HTML_Publication_Template {
             $keywords = $generated['keywords'];
             $tag_string = '<span class="tp_pub_tags_label">' . $template_settings['menu_label_tags'] . '</span>' . $generated['tags'];
         }
-        
+
         // parse author names for teachPress style
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
             $all_authors = TP_Bibtex::parse_author($row['editor'], $settings['author_separator'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
@@ -459,7 +459,7 @@ class TP_HTML_Publication_Template {
             $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
             $is_button = true;
         }
-        
+
         if ( true === TEACHPRESS_DIMENSIONS_SUPPORT && $settings['show_dimensions_badge'] &&  $row['doi'] != '' ) {
             $dimensions = self::get_info_button( __( 'Dimensions', 'teachpress' ), __( 'Show Dimensions Badge', 'teachpress' ), 'dimensions', $container_id ) . $separator;
             $is_button = true;
@@ -475,7 +475,7 @@ class TP_HTML_Publication_Template {
             $abstract = self::get_info_button(__('Abstract','teachpress'), __('Show abstract','teachpress'), 'abstract', $container_id) . $separator;
             $is_button = true;
         }
-        
+
         // if there are links
         if ( $row['url'] != '' || $row['doi'] != '' ) {
             if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
@@ -486,7 +486,7 @@ class TP_HTML_Publication_Template {
                 $url = '<span class="tp_resource_link">' . $separator . '<span class="tp_pub_links_label">' . $template_settings['menu_label_links'] . '</span>' . self::prepare_url($row['url'], $row['doi'], 'enumeration') . '</span>';
             }
         }
-        
+
         // if with bibtex
         if ( $settings['show_bibtex'] === true ) {
             $bibtex = self::get_info_button(__('BibTeX','teachpress'), __('Show BibTeX entry','teachpress'), 'bibtex', $container_id) . $separator;
@@ -500,7 +500,7 @@ class TP_HTML_Publication_Template {
         else {
             $tag_string = $abstract . $bibtex . $altmetric . $dimensions . $plumx . $tag_string . $url ;
         }
-        
+
         // load template interface
         $interface_data = array (
             'row'               => $row,
@@ -514,47 +514,47 @@ class TP_HTML_Publication_Template {
             'container_id'      => $container_id,
             'template_settings' => $template_settings
         );
-        
+
         $interface = new TP_Publication_Template_API();
         $interface->set_data($interface_data);
-        
+
         // load entry template
         $s = $template->get_entry($interface);
         return $s;
     }
-    
+
     /**
      * Gets the second line of the publications with editor, year, volume, address, edition, etc.
      * @param array $row            The data array of a single publication
      * @param array $settings       The settings array
      * @return string
      * @since 6.0.0
-    */
+     */
     public static function get_publication_meta_row($row, $settings) {
         global $tp_publication_types;
-        $use_span = $settings['use_span']; 
+        $use_span = $settings['use_span'];
         // For ISBN or ISSN number
         $isbn = '';
         if ( $row['isbn'] != '' ) {
             // test if ISBN or ISSN
-            $after = ( $use_span === true ) ? '</span>' : ''; 
+            $after = ( $use_span === true ) ? '</span>' : '';
             if ($row['is_isbn'] == '0') {
                 $before = ( $use_span === true ) ? '<span class="tp_pub_additional_issn">' : '';
-                $isbn = ', ' . $before . 'ISSN: ' . $row['isbn'] . $after; 
+                $isbn = ', ' . $before . 'ISSN: ' . $row['isbn'] . $after;
             }
             else {
                 $before = ( $use_span === true ) ? '<span class="tp_pub_additional_isbn">' : '';
                 $isbn = ', ' . $before . 'ISBN: ' . $row['isbn'] . $after;
             }
         }
-        
+
         // for urldate
         $urldate = '';
         if ( isset( $row['urldate'] ) && $row['urldate'] !== '0000-00-00'  ) {
             $row['urldate'] = ( array_key_exists('date_format', $settings) === true ) ? date( $settings['date_format'], strtotime($row['urldate']) ) : $row['urldate'];
-            $urldate = TP_HTML_Publication_Template::prepare_field('urldate', $row['urldate'],', ' . __('visited','teachpress') . ': ', '', $use_span); 
+            $urldate = TP_HTML_Publication_Template::prepare_field('urldate', $row['urldate'],', ' . __('visited','teachpress') . ': ', '', $use_span);
         }
-        
+
         // for number
         if ( $row['type'] === 'patent' ) {
             $number = isset( $row['number'] ) ? TP_HTML_Publication_Template::prepare_field('number', $row['number'],'',', ',$use_span) : '';
@@ -562,7 +562,7 @@ class TP_HTML_Publication_Template {
         else {
             $number = isset( $row['number'] ) ? TP_HTML_Publication_Template::prepare_field('number', $row['number'],__('no.','teachpress') . ' ',', ', $use_span) : '';
         }
-        
+
         // for forthcoming publications
         if ( $row['status'] === 'forthcoming' ) {
             $year = __('Forthcoming','teachpress');
@@ -570,7 +570,7 @@ class TP_HTML_Publication_Template {
         else {
             $year = isset( $row['year'] ) ? TP_HTML_Publication_Template::prepare_field('year', $row['year'],'','',$use_span) : '';
         }
-        
+
         // isset() doesn't work for $editor
         $editor = ( $row['editor'] != '' ) ? TP_Bibtex::parse_author($row['editor'], $settings['editor_separator'], $settings['editor_name']) . ' (' . __('Ed.','teachpress') . '): ' : '';
         $pages = isset( $row['pages'] ) ? TP_HTML_Publication_Template::prepare_field('pages', TP_Bibtex::prepare_page_number($row['pages']) , __('pp.','teachpress') . ' ',', ', $use_span) : '';
@@ -578,7 +578,7 @@ class TP_HTML_Publication_Template {
         $issuetitle = isset( $row['issuetitle'] ) ? TP_HTML_Publication_Template::prepare_field('issuetitle', $row['issuetitle'],'',', ',$use_span) : '';
         $journal = isset( $row['journal'] ) ? TP_HTML_Publication_Template::prepare_field('journal', $row['journal'],'',', ',$use_span) : '';
         $volume = isset( $row['volume'] ) ? TP_HTML_Publication_Template::prepare_field('volume', $row['volume'],__('vol.','teachpress') . ' ',', ',$use_span) : '';
-        $issue = isset( $row['issue'] ) ? TP_HTML_Publication_Template::prepare_field('issue', $row['issue'],__('iss.','teachpress') . ' ',', ',$use_span) : '';   
+        $issue = isset( $row['issue'] ) ? TP_HTML_Publication_Template::prepare_field('issue', $row['issue'],__('iss.','teachpress') . ' ',', ',$use_span) : '';
         $publisher = isset( $row['publisher'] ) ? TP_HTML_Publication_Template::prepare_field('publisher', $row['publisher'],'',', ',$use_span) : '';
         $address = isset( $row['address'] ) ? TP_HTML_Publication_Template::prepare_field('address', $row['address'],'',', ',$use_span) : '';
         $edition = isset( $row['edition'] ) ? TP_HTML_Publication_Template::prepare_field('edition', $row['edition'],'',', ',$use_span) : '';
@@ -591,10 +591,10 @@ class TP_HTML_Publication_Template {
         $techtype = isset( $row['techtype'] ) ? TP_HTML_Publication_Template::prepare_field('techtype', $row['techtype'],'',', ',$use_span) : '';
         $note = isset( $row['techtype'] ) ? TP_HTML_Publication_Template::prepare_field('note', $row['note'],', (',')',$use_span) : '';
         $date = ( array_key_exists('date_format', $settings) === true ) ? TP_HTML_Publication_Template::prepare_field('date', date( $settings['date_format'], strtotime($row['date']) ) ,'','',$use_span) : '';
-        
+
         // special cases for article/incollection/inbook/inproceedings
         $in = ( $use_span === true ) ? '<span class="tp_pub_additional_in">' . $settings['meta_label_in'] . '</span>' : $settings['meta_label_in'];
-        
+
         // end formator
         $type = $tp_publication_types->get_data($row['type']);
         $meta_row_template = '{year}{note}';
@@ -617,18 +617,18 @@ class TP_HTML_Publication_Template {
             '{note}'            => $note,
             '{number}'          => $number,
             '{organization}'    => $organization,
-            '{pages}'           => $pages, 
+            '{pages}'           => $pages,
             '{publisher}'       => $publisher,
             '{school}'          => $school,
             '{series}'          => $series,
             '{techtype}'        => $techtype,
             '{urldate}'         => $urldate,
-            '{volume}'          => $volume, 
-            '{issue}'           => $issue, 
+            '{volume}'          => $volume,
+            '{issue}'           => $issue,
             '{year}'            => $year,
         );
         $end = strtr($meta_row_template, $replace_pairs) . '.';
-        
+
         return stripslashes($end);
     }
 
@@ -647,7 +647,7 @@ class TP_HTML_Publication_Template {
         $s = '<span class="tp_' . $class . '_link"><a id="tp_' . $type . '_sh_' . $container_id . '" class="tp_show" onclick="teachpress_pub_showhide(' . "'" . $container_id . "','tp_" . $type . "'" . ')" title="' . $title . '" style="cursor:pointer;">' . $name . '</a></span>';
         return $s;
     }
-    
+
     /**
      * Returns the info container for a publication
      * @param string $content       The content you want to show
@@ -668,14 +668,14 @@ class TP_HTML_Publication_Template {
         $s .= '</div>';
         return $s;
     }
-    
+
     /**
      * Prepares a single publication field for HTML
      * @param string $element
      * @param string $content
      * @param string $before
      * @param string $after
-     * @param string $use_span 
+     * @param string $use_span
      * @return string
      * @since 6.0.0
      */
@@ -688,7 +688,7 @@ class TP_HTML_Publication_Template {
         }
         return $before . $content . $after;
     }
-    
+
     /**
      * Generates the visible sorting number of a publication
      * @param int $number_entries       The number of selected publications
@@ -704,7 +704,7 @@ class TP_HTML_Publication_Template {
         }
         return $entry_limit + $tpz + 1;
     }
-    
+
     /**
      * This function prepares the publication title for html publication lists.
      * @param array $row                The publication array
@@ -714,42 +714,42 @@ class TP_HTML_Publication_Template {
      * @since 6.0.0
      */
     public static function prepare_publication_title ($row, $settings, $container_id) {
-        
+
         // open abstracts instead of links (ignores the rest of the method)
         if ( $settings['title_ref'] === 'abstract' ) {
             return self::prepare_title_link_to_abstracts($row, $container_id);
         }
-        
+
         // Use a related page as link
         if ( $row['rel_page'] != 0 ) {
             return '<a href="' . get_permalink($row['rel_page']) . '">' . stripslashes($row['title']) . '</a>';
         }
-        
+
         // for inline style
         elseif ( ($row['url'] != '' || $row['doi'] != '') && $settings['link_style'] === 'inline' ) {
             return '<a class="tp_title_link" onclick="teachpress_pub_showhide(' . "'" . $container_id . "'" . ',' . "'" . 'tp_links' . "'" . ')" style="cursor:pointer;">' . TP_HTML::prepare_title($row['title'], 'decode') . '</a>';
         }
-        
+
         // for direct style (if a DOI numer exists)
         elseif ( $row['doi'] != '' && $settings['link_style'] === 'direct' ) {
             $doi_url = TEACHPRESS_DOI_RESOLVER . $row['doi'];
             $title = TP_HTML::prepare_title($row['title'], 'decode');
-            return '<a class="tp_title_link" href="' . $doi_url . '" title="' . $title . '" target="blank">' . $title . '</a>'; 
+            return '<a class="tp_title_link" href="' . $doi_url . '" title="' . $title . '" target="blank">' . $title . '</a>';
         }
-        
+
         // for direct style (use the first available URL)
-        elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) { 
-            $parts = TP_Bibtex::explode_url($row['url']); 
-            return '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . TP_HTML::prepare_title($row['title'], 'decode') . '</a>'; 
-        } 
-        
+        elseif ( $row['url'] != '' && $settings['link_style'] === 'direct' ) {
+            $parts = TP_Bibtex::explode_url($row['url']);
+            return '<a class="tp_title_link" href="' . $parts[0][0] . '" title="' . $parts[0][1] . '" target="blank">' . TP_HTML::prepare_title($row['title'], 'decode') . '</a>';
+        }
+
         // if there is no link
         else {
             return TP_HTML::prepare_title($row['title'], 'decode');
         }
 
     }
-    
+
     /**
      * Prepares a title if the link should refers to the abstract
      * @param array $row                The publication array
@@ -766,9 +766,9 @@ class TP_HTML_Publication_Template {
             return TP_HTML::prepare_title($row['title'], 'decode');
         }
     }
-    
+
     /**
-     * Prepares a url link for publication resources 
+     * Prepares a url link for publication resources
      * @param string $url       The url string
      * @param string $doi       The DOI number
      * @param string $mode      list or enumeration
@@ -789,7 +789,7 @@ class TP_HTML_Publication_Template {
             $parts[0] = trim( $parts[0] );
             $parts[1] = isset( $parts[1] ) ? $parts[1] : $parts[0];
             array_push($url_displayed, $parts[0]);
-            // list mode 
+            // list mode
             if ( $mode === 'list' ) {
                 $length = strlen($parts[1]);
                 $parts[1] = substr($parts[1], 0 , 80);
@@ -803,7 +803,7 @@ class TP_HTML_Publication_Template {
                 $end .= '<a class="tp_pub_link" href="' . $parts[0] . '" title="' . $parts[1] . '" target="_blank"><i class="' . TP_Icons::get_class( $parts[0] ).'"></i></a>';
             }
         }
-        
+
         /**
          * Add DOI-URL
          * @since 5.0.0
@@ -819,16 +819,16 @@ class TP_HTML_Publication_Template {
                 }
             }
         }
-        
+
         if ( $mode === 'list' ) {
             $end = '<ul class="tp_pub_list">' . $end . '</ul>';
         }
-        
+
         return $end;
     }
 
     /**
-     * Prepares an altmetric info block 
+     * Prepares an altmetric info block
      * @param string $doi       The DOI number
      * @return string
      * @since 3.0.0
@@ -846,13 +846,13 @@ class TP_HTML_Publication_Template {
 
             $end .= '<div data-badge-details="right" data-badge-type="large-donut" data-doi="'.$doi .'" data-condensed="true" class="altmetric-embed"></div>';
         }
-        
+
         return $end;
     }
 
-    
 
-    
+
+
     /**
      * Prepares a Dimensions Badge
      * @param string $doi       The DOI number
@@ -903,7 +903,7 @@ class TP_HTML_Publication_Template {
         return array('tags' => substr($tag_string, 0, -2),
                      'keywords' => $keywords);
     }
-    
+
     /**
      * Prepares a single tag (plain or with HTML link)
      * @param array $tag        with tag_id and name
@@ -919,7 +919,7 @@ class TP_HTML_Publication_Template {
             return '<a rel="nofollow" href="' . $settings['permalink'] . 'tgid=' . $tag["tag_id"] . $settings['html_anchor'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($tag["name"]) . '</a>, ';
         }
     }
-    
+
     /**
      * Generates the HTML output for images
      * @param array $row        The publication array
@@ -931,25 +931,25 @@ class TP_HTML_Publication_Template {
         $return = array('bottom' => '',
                         'left' => '',
                         'right' => '');
-        
+
         $image = '';
 
         // return if no images is set
         if ( $settings['image'] === 'none' ) {
             return $return;
         }
-        
+
         // define the width of the image
         $width = ( $settings['image'] === 'bottom' ) ? 'style="max-width:' . ($settings['pad_size']  - 5) .'px;"' : 'width="' . ( $settings['pad_size'] - 5 ) .'"';
-        
+
         // general html output
         if ( $row['image_url'] !== '' ) {
             $image = '<img name="' . TP_HTML::prepare_title($row['title'], 'replace') . '" src="' . $row['image_url'] . '" ' . $width . ' alt="' . TP_HTML::prepare_title($row['title'], 'replace') . '" />';
         }
-        
+
         // image link
         $image = TP_HTML_Publication_Template::handle_image_link ($image, $row, $settings);
-        
+
         // Altmetric donut
         $altmetric = '';
         if( $settings['show_altmetric_donut']) {
@@ -968,20 +968,20 @@ class TP_HTML_Publication_Template {
         if ( $settings['image'] === 'left' ) {
             $return['left'] = $template->get_image($image . $altmetric . $dimensions . $plumx, 'left', 'width="' . $settings['pad_size'] . '"');
         }
-        
+
         // right position
         if ( $settings['image'] === 'right' ) {
             $return['right'] = $template->get_image($image . $altmetric . $dimensions . $plumx, 'right', 'width="' . $settings['pad_size'] . '"');
         }
-        
+
         // bottom position
         if ( $settings['image'] === 'bottom' ) {
             $return['bottom'] = $template->get_image($image . $altmetric . $dimensions . $plumx, 'bottom');
         }
-        
+
         return $return;
     }
-    
+
     /**
      * Handles the image link generation
      * @param array $row
@@ -1000,7 +1000,7 @@ class TP_HTML_Publication_Template {
         if ( $row['image_target'] === 'external' && $row['image_ext'] != '' ) {
             return '<a href="' . $row['image_ext'] . '" target="_blank">' . $image . '</a>';
         }
-        
+
         // global shortcode settings (lower priority)
         if ( $settings['image_link'] === 'self'  ) {
             return '<a href="' . $row['image_url'] . '" target="_blank">' . $image . '</a>';
@@ -1014,5 +1014,5 @@ class TP_HTML_Publication_Template {
 
         return $image;
     }
-    
+
 }
