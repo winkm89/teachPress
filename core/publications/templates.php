@@ -857,7 +857,7 @@ class TP_HTML_Publication_Template {
      * Prepares a Dimensions Badge
      * @param string $doi       The DOI number
      * @return string
-     * @since 9.X.X
+     * @since 9.0.0
      * @access public
      */
     public static function prepare_dimensions($doi = '') {
@@ -872,7 +872,7 @@ class TP_HTML_Publication_Template {
      * Prepares an Artifact Plum Print Widget
      * @param string $doi       The DOI number
      * @return string
-     * @since 9.X.X
+     * @since 9.0.0
      * @access public
      */
     public static function prepare_plumx($doi = '') {
