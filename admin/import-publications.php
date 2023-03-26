@@ -23,7 +23,7 @@ function tp_import_publication_page_help() {
 /**
  * The controller for the import page of teachPress
  * @since 6.0.0
-*/
+ */
 function tp_show_import_publication_page() {
     $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
     $import_id = isset( $_GET['import_id'] ) ? intval($_GET['import_id']) : 0;
@@ -176,7 +176,7 @@ class TP_Import_Publication_Page {
      * @param string $tab
      * @since 6.0.0
      * @access public
-    */
+     */
     public static function import_tab () {
         ?>
         <form id="tp_file" name="tp_file" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
@@ -260,7 +260,7 @@ class TP_Import_Publication_Page {
      * @param array $entries
      * @param string $mode
      * @since 6.0.0
-    */
+     */
     public static function show_results($entries, $mode = 'history') {
 
         // WordPress User information
@@ -375,12 +375,12 @@ class TP_Import_Publication_Page {
     }
 
     /**
-      * Displays the exist tab of the import page
-      * @param int      $import_id    The ID of the import
-      * @param string   $delete_import
-      * @param array    $checkbox
-      * @since 6.1.0
-      * @access public
+     * Displays the exist tab of the import page
+     * @param int      $import_id    The ID of the import
+     * @param string   $delete_import
+     * @param array    $checkbox
+     * @since 6.1.0
+     * @access public
      */
     public static function exist_tab ($import_id, $delete_import, $checkbox) {
 

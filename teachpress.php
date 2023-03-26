@@ -13,7 +13,7 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI:   https://github.com/winkm89/teachPress
  * GitHub Branch:       master
-*/
+ */
 
 /*
    LICENCE
@@ -217,7 +217,7 @@ function tp_show_screen_options($current, $screen) {
 /**
  * Returns the current teachPress version
  * @return string
-*/
+ */
 function get_tp_version() {
     return '9.0.0beta';
 }
@@ -457,6 +457,16 @@ function tp_frontend_scripts() {
     /* Font Awesome Free 5.10.1 */
     if (TEACHPRESS_LOAD_FONT_AWESOME === true) {
         wp_enqueue_style('font-awesome', plugins_url( 'includes/fontawesome/css/all.min.css', __FILE__ ) );
+    }
+
+    /* Dimensions Badge support */
+    if ( TEACHPRESS_DIMENSIONS_SUPPORT === true ) {
+        echo '<script async' . $type_attr . ' src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>' . PHP_EOL;
+    }
+
+    /* PlumX support */
+    if ( TEACHPRESS_PLUMX_SUPPORT === true ) {
+        echo '<script' . $type_attr . ' src="https://cdn.plu.mx/widget-popup.js"></script>' . PHP_EOL;
     }
 
     /* END */
