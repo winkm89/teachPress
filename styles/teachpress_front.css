@@ -14,7 +14,7 @@
 /* enrollment menu */
 #enrollments .tp_user_menu {padding:5px;}
 
-/* table for user's old enrollments / table fo results */ 
+/* table for user's old enrollments / table fo results */
 #enrollments .teachpress_enr_old, #enrollments .teachpress_enr_results {border-collapse: collapse; border-bottom: 1px solid #ededed; font-size:11px; width: 100%}
 #enrollments .teachpress_enr_old th, #enrollments .teachpress_enr_results th{padding:5px; color:#333333; background-repeat:repeat-x; margin:5px; border-collapse: collapse; border-bottom: 1px solid #ededed; font-size:12px; font-weight:bold;}
 #enrollments .teachpress_enr_old tr, #enrollments .teachpress_enr_results tr {padding:5px; background-color:#FFFFFF; color:#000000; margin:5px; border-collapse: collapse; border-bottom: 1px solid #ededed; font-size:12px;}
@@ -93,7 +93,7 @@ a.tp_show_block {font-weight: bold; text-decoration: none;}
 
 /* images */
 td.tp_pub_image_left, td.tp_pub_image_right{vertical-align: top; padding: 8px; border-bottom: 1px solid silver;}
-.tp_pub_image_bottom {text-align:center;}
+.tp_pub_image_bottom {display: inline-block; margin: auto; vertical-align: middle;}
 
 /*******************************************************/
 /* single publication, shortcode: [tpsingle], [tpcite] */
