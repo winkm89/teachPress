@@ -114,7 +114,7 @@ class TP_Import_Publication_Page {
         if ( $file_name !== '' ) {
             $file_type = substr(htmlentities($_FILES['file']['name']),-4,4);
             if ( substr($file_type,-4,4) !== '.txt' && substr($file_type,-4,4) !== '.bib' ) {
-                get_tp_message(__('No suported file type','teachpress'));
+                get_tp_message(__('No supported file type','teachpress'));
                 exit();
             }
         }
@@ -145,13 +145,22 @@ class TP_Import_Publication_Page {
         }
 
         // import from PubMed
-        elseif ( isset($post['tp_pmid']) ) {
-
+        elseif ( $post['tp_pmid'] !== '' ) {
             $settings = array(
-                'overwrite'         => isset( $post['overwrite'] ),
-                'ignore_tags'       => isset( $post['ignore_tags'] ) ? true : false
+                'overwrite'   => isset( $post['overwrite'] ),
+                'ignore_tags' => isset( $post['ignore_tags'] ),
             );
-            $entries = TP_PubMed_Import::init($post['tp_pmid'], $settings);
+            $entries = TP_PubMed_Import::init( $post['tp_pmid'], $settings );
+        }
+
+        // import from Crossref
+        elseif ( $post['tp_crossref'] !== '' ) {
+            $settings = array(
+                'overwrite'   => isset( $post['overwrite'] ),
+                'ignore_tags' => isset( $post['ignore_tags'] ),
+            );
+            $entries = TP_Crossref_Import::init(
+                $post['tp_crossref'], $settings );
         }
 
         // if there is no import
@@ -182,8 +191,13 @@ class TP_Import_Publication_Page {
                 <div style="text-align: center;">
                     <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
                     <label for="tp_pmid">PMID</label>
-                    <input name="tp_pmid" id="tp_pmid" style="width:350px;" title="<?php _e('Comma-separated list of PubMed identifiers','teachpress'); ?>" type="text">
+                    <input name="tp_pmid" id="tp_pmid" style="width:350px;" title="<?php _e('Space-separated list of PubMed identifiers','teachpress'); ?>" type="text">
                     <p style="text-align: center; font-size: small;"><a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a></p>
+                </div>
+                <div style="text-align: center;">
+                    <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
+                    <label for="tp_crossref">DOI</label>
+                    <input name="tp_crossref" id="tp_crossref" title="<?php _e('Space-separated list of DOIs','teachpress'); ?>" type="text">
                 </div>
             </div>
             <div class="tp_postcontent_right">
@@ -249,7 +263,7 @@ class TP_Import_Publication_Page {
      */
     public static function show_results($entries, $mode = 'history') {
 
-        // WordPress User informations
+        // WordPress User information
         $current_user = wp_get_current_user();
 
         // Debug info

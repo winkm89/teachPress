@@ -62,6 +62,7 @@ include_once('core/publications/class-bibtex.php');
 include_once('core/publications/class-bibtex-import.php');
 include_once('core/publications/class-bibtex-macros.php');
 include_once('core/publications/class-cite-object.php');
+include_once('core/publications/class-crossref-import.php');
 include_once('core/publications/class-db-authors.php');
 include_once('core/publications/class-db-bookmarks.php');
 include_once('core/publications/class-db-publications.php');
