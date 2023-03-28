@@ -255,7 +255,7 @@ if ( !defined('TEACHPRESS_DIMENSIONS_SUPPORT') ) {
     /**
      * This value defines if Dimensions support is available (loads
      * external sources)
-     * @since 9.X.X
+     * @since 9.0.0
      */
     define('TEACHPRESS_DIMENSIONS_SUPPORT', false);
 }
@@ -263,7 +263,7 @@ if ( !defined('TEACHPRESS_DIMENSIONS_SUPPORT') ) {
 if ( !defined('TEACHPRESS_PLUMX_SUPPORT') ) {
     /**
      * This value defines if PlumX support is available (loads external sources)
-     * @since 9.X.X
+     * @since 9.0.0
      */
     define('TEACHPRESS_PLUMX_SUPPORT', false);
 }

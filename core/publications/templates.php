@@ -455,17 +455,17 @@ class TP_HTML_Publication_Template {
         }
 
         // if the publication has a doi -> altmetric
-        if ( true === TEACHPRESS_ALTMETRIC_SUPPORT && $settings['show_altmetric_entry']  &&  $row['doi'] != '' ) {
+        if ( TEACHPRESS_ALTMETRIC_SUPPORT === true && $settings['show_altmetric_entry']  &&  $row['doi'] != '' ) {
             $altmetric = self::get_info_button(__('Altmetric','teachpress'), __('Show Altmetric','teachpress'), 'altmetric', $container_id) . $separator;
             $is_button = true;
         }
 
-        if ( true === TEACHPRESS_DIMENSIONS_SUPPORT && $settings['show_dimensions_badge'] &&  $row['doi'] != '' ) {
+        if ( TEACHPRESS_DIMENSIONS_SUPPORT === true && $settings['show_dimensions_badge'] &&  $row['doi'] != '' ) {
             $dimensions = self::get_info_button( __( 'Dimensions', 'teachpress' ), __( 'Show Dimensions Badge', 'teachpress' ), 'dimensions', $container_id ) . $separator;
             $is_button = true;
         }
 
-        if ( true === TEACHPRESS_PLUMX_SUPPORT && $settings['show_plumx_widget'] &&  $row['doi'] != '' ) {
+        if ( TEACHPRESS_PLUMX_SUPPORT === true && $settings['show_plumx_widget'] &&  $row['doi'] != '' ) {
             $plumx = self::get_info_button( __( 'PlumX', 'teachpress' ), __( 'Show PlumX Widget', 'teachpress' ), 'plumx', $container_id ) . $separator;
             $is_button = true;
         }
@@ -857,7 +857,7 @@ class TP_HTML_Publication_Template {
      * Prepares a Dimensions Badge
      * @param string $doi       The DOI number
      * @return string
-     * @since 9.X.X
+     * @since 9.0.0
      * @access public
      */
     public static function prepare_dimensions($doi = '') {
@@ -872,7 +872,7 @@ class TP_HTML_Publication_Template {
      * Prepares an Artifact Plum Print Widget
      * @param string $doi       The DOI number
      * @return string
-     * @since 9.X.X
+     * @since 9.0.0
      * @access public
      */
     public static function prepare_plumx($doi = '') {
