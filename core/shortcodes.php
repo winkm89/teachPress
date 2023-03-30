@@ -244,7 +244,7 @@ class TP_Shortcodes {
      * @param string $hide_key          The key you don't want to add to the URL here
      * @param array $additional_keys    An array iwht the custom keys in the filter_parameters array
      * @return string
-     * @since 8.2
+     * @since 8.1.6
      */
     private static function generate_jumpmenu_url($filter_parameter, $hide_key = '', $additional_keys = [] ) {
         $basic_keys = ['tag', 'year', 'type', 'author', 'user'];
@@ -262,7 +262,7 @@ class TP_Shortcodes {
             }
             $url_param = isset ( $url_vars[ $key ] ) ? $url_vars[ $key ] : $key;
             $element = $url_param . '=' . $filter_parameter[ $key ];
-            $params .= ( $params === '' ) ? $element  : '&amp;' . $element;
+            $params .= ( $params === '' ) ? $element : '&amp;' . $element;
         }
         return $params;
     }
@@ -1104,6 +1104,7 @@ function tp_publist_shortcode ($args) {
     $atts = shortcode_atts(array(
         'user'                  => '',
         'tag'                   => '',
+        'tag_name'              => '',
         'type'                  => '',
         'author'                => '',
         'year'                  => '',
@@ -1199,6 +1200,7 @@ function tp_publist_shortcode ($args) {
     // Settings for and from form fields
     $filter_parameter = array(
         'tag'                   => ( isset ($_GET['tgid']) && $_GET['tgid'] != '' ) ? tp_convert_input_to_string($_GET['tgid'], 'int') : '',
+        'tag_name'              => isset ($_GET['tgname']) ? htmlspecialchars( $_GET['tgname'] ) : '',
         'year'                  => ( isset ($_GET['yr']) && $_GET['yr'] != '' ) ? intval($_GET['yr']) : '',
         'type'                  => isset ($_GET['type']) ? htmlspecialchars( $_GET['type'] ) : '',
         'author'                => ( isset ($_GET['auth']) && $_GET['auth'] != '' ) ? intval($_GET['auth']) : '',
@@ -1224,6 +1226,7 @@ function tp_publist_shortcode ($args) {
         'author'        => ( $filter_parameter['author'] !== '' ) ? $filter_parameter['author'] : htmlspecialchars($atts['author']),
         'year'          => ( $filter_parameter['year'] !== '' ) ? $filter_parameter['year'] : htmlspecialchars($atts['year']),
         'tag'           => ( $filter_parameter['tag'] !== '' ) ? $filter_parameter['tag'] : htmlspecialchars($atts['tag']),
+        'tag_name'      => ( $filter_parameter['tag_name'] !== '' ) ? $filter_parameter['tag_name'] : htmlspecialchars($atts['tag_name']),
         'years_between' => htmlspecialchars($atts['years_between']),
         'exclude'       => htmlspecialchars($atts['exclude']),
         'exclude_tags'  => htmlspecialchars($atts['exclude_tags']),
@@ -1381,6 +1384,7 @@ function tp_publist_shortcode ($args) {
     // Parameters for returning publications
     $args = array(
         'tag'                       => $sql_parameter['tag'],
+        'tag_name'                  => $sql_parameter['tag_name'], 
         'year'                      => $sql_parameter['year'],
         'years_between'             => $sql_parameter['years_between'],
         'type'                      => $sql_parameter['type'],
@@ -1506,6 +1510,7 @@ function tp_cloud_shortcode($atts) {
     $atts = shortcode_atts(array(
         'user'                      => '',
         'tag'                       => '',
+        'tag_name'                  => '',
         'type'                      => '',
         'author'                    => '',
         'year'                      => '',
@@ -1573,6 +1578,7 @@ function tp_list_shortcode($atts){
     $atts = shortcode_atts(array(
        'user'                       => '',
        'tag'                        => '',
+       'tag_name'                   => '',
        'type'                       => '',
        'author'                     => '',
        'year'                       => '',
@@ -1633,6 +1639,7 @@ function tp_search_shortcode ($atts) {
     $atts = shortcode_atts(array(
        'user'                       => '',
        'tag'                        => '',
+       'tag_name'                   => '',
        'type'                       => '',
        'author'                     => '',
        'year'                       => '',
