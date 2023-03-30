@@ -184,29 +184,36 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
                 . $work->published->{'date-parts'}[0][0] );
             $entry['doi'] = (string) $work->DOI;
 
-            if ( count( $work->title ) > 0 )
+            if ( count( $work->title ) > 0 ) {
                 $entry['title'] = (string) $work->title[0];
-
-            $entry['volume'] = (string) $work->volume;
-            $entry['number'] = (string) $work->issue;
-            $entry['publisher'] = (string) $work->publisher;
-
-            if ( $work->abstract )
-                $entry['abstract'] = (string) $work->abstract;
-
-            foreach ( $work->author as $author ) {
-                $entry['author'] .= $author->given . " "
-                                 . $author->family;
-                if ( $author !== end( $work->author ) ) {
-                    $entry['author'] .= " and ";
+            }
+            
+            $entry['volume'] = ( isset($work->volume) ) ? (string) $work->volume : '';
+            $entry['number'] = ( isset($work->issue) ) ? (string) $work->issue: '';
+            $entry['publisher'] = ( isset($work->publisher) ) ? (string) $work->publisher : '';
+            $entry['abstract'] = ( isset($work->abstract) ) ? (string) $work->abstract : '';
+            $entry['author'] = '';
+            $entry['editor'] = '';
+            
+            // Read authors
+            if ( isset( $work->author ) ) {
+                foreach ( $work->author as $author ) {
+                    $entry['author'] .= $author->given . " "
+                                     . $author->family;
+                    if ( $author !== end( $work->author ) ) {
+                        $entry['author'] .= " and ";
+                    }
                 }
             }
 
-            foreach ( $work->editor as $editor ) {
-                $entry['editor'] .= $editor->given . " "
-                                 . $editor->family;
-                if ( $editor !== end( $work->editor ) ) {
-                    $entry['editor'] .= " and ";
+            // Read editors
+            if ( isset( $work->editor ) ) {
+                foreach ( $work->editor as $editor ) {
+                    $entry['editor'] .= $editor->given . " "
+                                     . $editor->family;
+                    if ( $editor !== end( $work->editor ) ) {
+                        $entry['editor'] .= " and ";
+                    }
                 }
             }
 
@@ -217,9 +224,11 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
 
 
             // Use LaTeX syntax for en-dash ('--') in the page range.
-            $pages = explode( '-', $work->page );
-            if ( count( $pages ) === 2 ) {
-                $entry['pages'] = implode( '--', $pages );
+            if ( isset( $work->page ) ) {
+                $pages = explode( '-', $work->page );
+                if ( count( $pages ) === 2 ) {
+                    $entry['pages'] = implode( '--', $pages );
+                }
             }
 
 
@@ -267,8 +276,9 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
                     $entry['is_isbn'] = 0;
                 }
 
-                $issue = $work->{'journal-issue'};
-                if ( $issue ) {
+                
+                if ( isset( $work->{'journal-issue'} ) ) {
+                    $issue = $work->{'journal-issue'};
                     $entry['number'] = (string) $issue->issue;
                     if ( $issue->{'published-print'} ) {
                         self::parse_date_parts(
