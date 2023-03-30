@@ -121,16 +121,19 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 9.0.0 beta (xx.xx.xxxx) =
+= 9.0.0 beta (xx.xx.2023) =
 * Important: This version no longer contains the course module!
-* New: Automatic import over API (i.e. for zotero group bibliographies)
-* New: Awards field for publications added
-* New: Canadian French localization added
-* New: Support for French diacritics in bibtex entries added
+* New: Automatic import over API (i.e. for zotero group bibliographies) (Thanks to fabricebg)
+* New: Crossref import added (Thanks to Johan Hattne)
+* New: Awards field for publications added (Thanks to Sven Mayer)
+* New: Canadian French localization added (Thanks to fabricebg)
+* New: Support for French diacritics in bibtex entries added (Thanks to fabricebg)
 * New: [tpcloud, tpsearch, tplist] user parameter can now handle user names (login name) (#202)
 * New: [tpcloud, tpsearch, tplist] new parameter "years_between" added
+* New: [tpcloud, tpsearch, tplist] new parameter "tag_name" added (#219)
 * Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
 * Changed: Improved bibtex char conversion
+* Changed: PMIDs for Import over PubMed are now space separated instead of comma separated
 * Bugfix: Fixed some navigation bugs in the backend
 
 = 8.1.9 (16.01.2023) =
