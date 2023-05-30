@@ -4,7 +4,7 @@ Tags: publications, bibliography, BibTeX
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 6.1.1
+Tested up to: 6.2.2
 Requires PHP: 7.0
 Stable tag: 9.0.0
 
