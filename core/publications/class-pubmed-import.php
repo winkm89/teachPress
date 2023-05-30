@@ -191,14 +191,16 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
                 }
             }
             $entry['pages'] = implode( '--', $pages );
-
+            
+            // Set a default entry type
+            $entry['type'] = 'misc';
 
             // Although PubMed does have references to book chapters
             // or book sections (i.e. 'inbook'), they appear to be
             // indistinguishable from regular articles.
             foreach ( $citation
                       ->PublicationTypeList->PublicationType as $type ) {
-                if ( $type === 'Journal Article' ) {
+                if ( $type == 'Journal Article' ) {
                     $entry['type'] = 'article';
                     break;
                 }
