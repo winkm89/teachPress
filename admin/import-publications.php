@@ -180,25 +180,57 @@ class TP_Import_Publication_Page {
     public static function import_tab () {
         ?>
         <form id="tp_file" name="tp_file" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
+            
         <input type="hidden" name="page" value="teachpress/import.php"/>
         <div class="tp_postbody">
             <div class="tp_postcontent">
-                <div style="text-align: center;">
-                    <input name="file" id="upload_file" type="file" title="<?php _e('Choose a BibTeX file for upload','teachpress'); ?>" /> (<?php echo __('max file size','teachpress') . ': ' . ini_get('upload_max_filesize'); ?> )
-                    <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
-                </div>
-                <textarea name="bibtex_area" id="bibtex_area" rows="20" style="width:100%;" title="<?php _e('Insert your BibTeX entries here','teachpress'); ?>"></textarea>
-                <div style="text-align: center;">
-                    <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
-                    <label for="tp_pmid">PMID</label>
-                    <input name="tp_pmid" id="tp_pmid" style="width:350px;" title="<?php _e('Space-separated list of PubMed identifiers','teachpress'); ?>" type="text">
-                    <p style="text-align: center; font-size: small;"><a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a></p>
-                </div>
-                <div style="text-align: center;">
-                    <p style="text-align: center; font-weight: bold;"><?php _e('or','teachpress'); ?></p>
-                    <label for="tp_crossref">DOI</label>
-                    <input name="tp_crossref" id="tp_crossref" title="<?php _e('Space-separated list of DOIs','teachpress'); ?>" type="text">
-                </div>
+                
+                <div class="postbox">
+                    <h3 class="tp_postbox"><?php _e('Import','teachpress'); ?></h3>
+                    <div class="inside">
+                        
+                        <p><label><b><?php _e('Select an import type','teachpress'); ?></b></label></p>
+                        <select name="tp_import_type" id="tp_import_file" onchange="teachpress_importFields()">
+                            <option value="bibtex">BibTeX</option>
+                            <option value="doi">crossref.org (DOI)</option>
+                            <option value="pmid">NCBI PubMed</option>
+                        </select>
+                        <hr style="margin-top: 20px;"/>
+                        <p><label><b>Insert data</b></label></p>
+                    
+                        <!-- BibTex -->
+                        <div id="div_import_bibtex"style="display:block;">
+
+                            <div class="teachpress_message teachpress_message_blue">
+                                <?php _e('Choose a BibTeX file for upload or insert your BibTeX entries into the textarea field','teachpress'); ?>
+                            </div>
+                            <input name="file" id="upload_file" type="file" title="<?php _e('Choose a BibTeX file for upload','teachpress'); ?>" /> (<?php echo __('max file size','teachpress') . ': ' . ini_get('upload_max_filesize'); ?> )
+                            <p style="font-weight: bold;"><?php _e('or','teachpress'); ?></p>
+                            <textarea name="bibtex_area" id="bibtex_area" rows="20" style="width:100%;" title="<?php _e('Insert your BibTeX entries here','teachpress'); ?>"></textarea>
+
+                        </div>
+            
+                        <!-- PMID -->
+                        <div id="div_import_pmid" style="display:none;">
+                            <div class="teachpress_message teachpress_message_blue">
+                                <?php _e('Insert a space-separated list of PubMed identifiers.','teachpress'); ?> <?php _e('Please note','teachpress'); ?>: <a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a>
+                            </div>
+                            <label for="tp_pmid">PMID</label>
+                            <input name="tp_pmid" id="tp_pmid" style="width:450px;" title="<?php _e('Insert a space-separated list of PubMed identifiers','teachpress'); ?>" type="text">
+                        </div>
+            
+                        <!-- DOI -->
+                        <div id="div_import_doi" style="display:none;">
+                            <div class="teachpress_message teachpress_message_blue">
+                                <?php _e('Insert a space-separated list of DOIs','teachpress'); ?>
+                            </div>
+                            <label for="tp_crossref">DOI</label>
+                            <input name="tp_crossref" id="tp_crossref" style="width:450px;" title="<?php _e('Insert a space-separated list of DOIs','teachpress'); ?>" type="text">
+                        </div>
+                
+                    </div>
+                </div> 
+                     
             </div>
             <div class="tp_postcontent_right">
                 <div class="postbox">

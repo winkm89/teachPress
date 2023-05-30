@@ -203,6 +203,29 @@ function teachpress_validateForm() {
 } }
 
 /**
+ * for show/hide publication import forms
+ * @since 9.0.0
+ */
+function teachpress_importFields() {
+    var import_type = document.getElementsByName("tp_import_type")[0].value;
+    if ( import_type == 'bibtex' ) {
+        document.getElementById("div_import_bibtex").style.display = "block";
+        document.getElementById("div_import_pmid").style.display = "none";
+        document.getElementById("div_import_doi").style.display = "none";
+    }
+    if ( import_type == 'pmid' ) {
+        document.getElementById("div_import_bibtex").style.display = "none";
+        document.getElementById("div_import_pmid").style.display = "block";
+        document.getElementById("div_import_doi").style.display = "none";
+    }
+    if ( import_type == 'doi' ) {
+        document.getElementById("div_import_bibtex").style.display = "none";
+        document.getElementById("div_import_pmid").style.display = "none";
+        document.getElementById("div_import_doi").style.display = "block";
+    }
+}
+
+/**
  * for show/hide bibtex fields
  * @param {string} mode     std (= the action is called from the type select form) or 
  *                          std2 (= the action is called from the show fields buttons)
