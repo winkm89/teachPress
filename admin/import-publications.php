@@ -186,17 +186,15 @@ class TP_Import_Publication_Page {
             <div class="tp_postcontent">
                 
                 <div class="postbox">
-                    <h3 class="tp_postbox"><?php _e('Import','teachpress'); ?></h3>
                     <div class="inside">
                         
-                        <p><label><b><?php _e('Select an import type','teachpress'); ?></b></label></p>
-                        <select name="tp_import_type" id="tp_import_file" onchange="teachpress_importFields()">
+                        <h3><label><?php _e('Select an import type','teachpress'); ?></label></h3>
+                        <select name="tp_import_type" id="tp_import_file" onchange="teachpress_importFields()" title="<?php _e('Select an import type','teachpress'); ?>">
                             <option value="bibtex">BibTeX</option>
                             <option value="doi">crossref.org (DOI)</option>
                             <option value="pmid">NCBI PubMed</option>
                         </select>
-                        <hr style="margin-top: 20px;"/>
-                        <p><label><b>Insert data</b></label></p>
+                        <hr style="margin-top: 20px; margin-bottom: 20px;"/>
                     
                         <!-- BibTex -->
                         <div id="div_import_bibtex"style="display:block;">
@@ -273,7 +271,7 @@ class TP_Import_Publication_Page {
                         </label>
                         <br />
                         <label>
-                            <input type="radio" name="author_format" value="lastfirst" id="author_format_1" />
+                            <input type="radio" name="author_format" value="lastfirst" id="author_format_2" />
                             Lastname1, Firstname1 and Lastname2, Firstname2 and ...
                         </label>
                         <br />
