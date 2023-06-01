@@ -374,7 +374,7 @@ class TP_Publication_Page {
         TP_HTML::line('</td>');
         
         // BibTex key
-        TP_HTML::line('<td style="border:none; padding:0; margin: 0;">');
+        TP_HTML::line('<td style="border:none; padding: 0 0 0 30px; margin: 0;">');
         $title = __('A simple unique key without spaces','teachpress');
         TP_HTML::line('<p><label for="bibtex" title="' . $title . '"><b>' . __('BibTeX key') . '</b></label></p>');
         $tabindex++;
@@ -383,7 +383,7 @@ class TP_Publication_Page {
         TP_HTML::line('</td>');
 
         // Award of publication
-        TP_HTML::line('<td style="border:none; padding:0; margin: 0;">');
+        TP_HTML::line('<td style="border:none; padding: 0 0 0 30px; margin: 0;">');
         $title = __('Award','teachpress');
         TP_HTML::line('<p><label for="award" title="'.$title.'"><b>'.__('Award').'</b></label></p>');
         $tabindex++;

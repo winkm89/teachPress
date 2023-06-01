@@ -460,11 +460,13 @@ class TP_HTML_Publication_Template {
             $is_button = true;
         }
 
+        // Dimensions
         if ( TEACHPRESS_DIMENSIONS_SUPPORT === true && $settings['show_dimensions_badge'] &&  $row['doi'] != '' ) {
             $dimensions = self::get_info_button( __( 'Dimensions', 'teachpress' ), __( 'Show Dimensions Badge', 'teachpress' ), 'dimensions', $container_id ) . $separator;
             $is_button = true;
         }
 
+        // PlumX
         if ( TEACHPRESS_PLUMX_SUPPORT === true && $settings['show_plumx_widget'] &&  $row['doi'] != '' ) {
             $plumx = self::get_info_button( __( 'PlumX', 'teachpress' ), __( 'Show PlumX Widget', 'teachpress' ), 'plumx', $container_id ) . $separator;
             $is_button = true;

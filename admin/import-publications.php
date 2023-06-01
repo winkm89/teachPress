@@ -211,7 +211,7 @@ class TP_Import_Publication_Page {
                         <!-- PMID -->
                         <div id="div_import_pmid" style="display:none;">
                             <div class="teachpress_message teachpress_message_blue">
-                                <?php _e('Insert a space-separated list of PubMed identifiers.','teachpress'); ?> <?php _e('Please note','teachpress'); ?>: <a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a>
+                                <?php _e('Insert a space-separated list of PubMed identifiers','teachpress'); ?> <?php _e('Please note','teachpress'); ?>: <a href="https://www.ncbi.nlm.nih.gov/home/about/policies" target="_blank">NCBI Website and Data Usage Policies and Disclaimers</a>
                             </div>
                             <label for="tp_pmid">PMID</label>
                             <input name="tp_pmid" id="tp_pmid" style="width:450px;" title="<?php _e('Insert a space-separated list of PubMed identifiers','teachpress'); ?>" type="text">
