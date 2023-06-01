@@ -219,7 +219,7 @@ function tp_show_screen_options($current, $screen) {
  * @return string
  */
 function get_tp_version() {
-    return '9.0.0beta';
+    return '9.0.0';
 }
 
 /**

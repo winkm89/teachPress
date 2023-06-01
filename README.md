@@ -15,7 +15,7 @@ Documentation : https://github.com/winkm89/teachPress/wiki
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
-* Direct data import from NCBI PubMed 
+* Direct data import from NCBI PubMed or crossref.org
 * Automatic import over API (with version 9.0.0)
 * RSS feeds for publications
 * Many shortcodes for an easy using of publication lists, publication searches or for text references
@@ -28,6 +28,7 @@ Due to the fact that the most (all?) teachpress users uses only the publication 
 * English
 * German
 * French (o)
+* French (Canada)
 * Italian (o)
 * Portuguese (Brazil) (o)
 * Slovak (o)

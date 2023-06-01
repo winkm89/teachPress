@@ -65,7 +65,7 @@ An example: [tplist image="left" image_size="70"]. Important: You must specify b
 
 == Credits ==
 
-Copyright 2008-2022 by Michael Winkler
+Copyright 2008-2023 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -121,13 +121,16 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 9.0.0 beta (xx.xx.2023) =
+= 9.0.0 (01.06.2023) =
 * Important: This version no longer contains the course module!
 * New: Automatic import over API (i.e. for zotero group bibliographies) (Thanks to fabricebg)
-* New: Crossref import added (Thanks to Johan Hattne)
+* New: UI for publication imports improved
+* New: Crossref.org import added (Thanks to Johan Hattne)
+* New: Support for French diacritics in bibtex entries added (Thanks to fabricebg)
+* New: Sort order for backend publication overview can be switched between default, pub_id (ASC, DESC) and title (ASC, DESC)
 * New: Awards field for publications added (Thanks to Sven Mayer)
 * New: Canadian French localization added (Thanks to fabricebg)
-* New: Support for French diacritics in bibtex entries added (Thanks to fabricebg)
+* New: Support for PlumX and Dimension badges in publication lists added
 * New: [tpcloud, tpsearch, tplist] user parameter can now handle user names (login name) (#202)
 * New: [tpcloud, tpsearch, tplist] new parameter "years_between" added
 * New: [tpcloud, tpsearch, tplist] new parameter "tag_name" added (#219)
@@ -135,6 +138,9 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Changed: Improved bibtex char conversion
 * Changed: PMIDs for Import over PubMed are now space separated instead of comma separated
 * Bugfix: Fixed some navigation bugs in the backend
+
+= 8.1.11 (16.01.2023) =
+* Bugfix: Fix possible security issue in course system backend
 
 = 8.1.9 (16.01.2023) =
 * Bugfix: Security fix for CVE-2023-22704
