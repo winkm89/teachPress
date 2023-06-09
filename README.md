@@ -15,19 +15,20 @@ Documentation : https://github.com/winkm89/teachPress/wiki
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
-* Direct data import from NCBI PubMed 
+* Direct data import from NCBI PubMed or crossref.org
 * Automatic import over API (with version 9.0.0)
 * RSS feeds for publications
 * Many shortcodes for an easy using of publication lists, publication searches or for text references
 * Dymamic meta data system for adding new custom fields to publication entries
 
 ## Note 
-Due to the fact that the most (all?) teachpress users uses only the publication module, the course management modul is no longer a part of the plugin (with version 9.0.0). The last version with the course management modul is 8.1.x. 
+Due to the fact that the most (all?) teachpress users uses only the publication module, the course management module is no longer a part of the plugin (with version 9.0.0). The last version with the course management module is 8.1.x. 
 
 ## Supported Languages
 * English
 * German
 * French (o)
+* French (Canada)
 * Italian (o)
 * Portuguese (Brazil) (o)
 * Slovak (o)

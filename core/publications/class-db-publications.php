@@ -77,6 +77,7 @@ class TP_Publications {
             'type'                      => '',
             'award'                     => '',
             'tag'                       => '',
+            'tag_name'                  => '',
             'key'                       => '',
             'author_id'                 => '', 
             'import_id'                 => '',
@@ -132,7 +133,7 @@ class TP_Publications {
         if ( !empty($atts['user']) ) {
             $join .= "INNER JOIN " . TEACHPRESS_USER . " u ON u.pub_id = p.pub_id ";
         }
-        if ( !empty($atts['tag']) ) {
+        if ( !empty($atts['tag']) || !empty($atts['tag_name']) ) {
             $join .= "INNER JOIN " . TEACHPRESS_RELATION . " b ON p.pub_id = b.pub_id INNER JOIN " . TEACHPRESS_TAGS . " t ON t.tag_id = b.tag_id ";
         }
         if ( !empty($atts['author_id'] ) ) {
@@ -172,6 +173,7 @@ class TP_Publications {
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['type'], "p.type", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['tag'], "b.tag_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['tag_name'], "t.name", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['key'], "p.bibtex", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['import_id'], "p.import_id", "OR", "=");

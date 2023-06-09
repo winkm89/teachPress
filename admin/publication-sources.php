@@ -104,11 +104,13 @@ class TP_Publication_Sources_Page {
 
         <div class="wrap">
             <h2><?php echo __('Auto-publish','teachpress'); ?></h2>
-            <p><?php echo __("The following URLs can be scanned regularly and their bibtex entries
+            <div class="teachpress_message teachpress_message_blue">
+            <?php echo __("The following URLs can be scanned regularly and their bibtex entries
                automatically imported if they have changed. The publication log can
-               be consulted on the Import/Export page.", "teachpress");?></p>
-            <p><?php echo __("Zotero group bibliographies can be downloaded in BibTeX format by using special URLs such as <code>zotero://group/&lt;group_id&gt;/</code>,
-                where <code>group_id</code> is the group id (numerical) found on zotero.org.", "teachpress");?></p>
+               be consulted on the Import/Export page.", "teachpress");?><br/><br/>
+            <?php echo __("Zotero group bibliographies can be downloaded in BibTeX format by using special URLs such as <code>zotero://group/&lt;group_id&gt;/</code>,
+                where <code>group_id</code> is the group id (numerical) found on zotero.org.", "teachpress");?>
+            </div>
             <form id="tp_sources" name="tp_sources"
                   action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
                 <p>

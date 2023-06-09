@@ -129,7 +129,7 @@ class TP_Tags_Page {
         TP_HTML::line('<select name="filter">');
         TP_HTML::line('<option>- ' . __('Select filter','teachpress') . ' -</option>');
         $selected = ( $only_zero === true ) ? 'selected="selected"' : '';
-        TP_HTML::line('<option value="only_zero"' . $selected . '>' . __('Occurence = 0','teachpress') . '</option>');
+        TP_HTML::line('<option value="only_zero"' . $selected . '>' . __('Occurrence = 0','teachpress') . '</option>');
         TP_HTML::line('</select>');
         
         TP_HTML::line('<input name="OK" value="OK" type="submit" class="button-secondary"/>');

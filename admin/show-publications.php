@@ -69,12 +69,14 @@ function tp_show_publications_page() {
     $array_variables['page'] = isset( $_GET['page'] ) ? htmlspecialchars($_GET['page']) : '';
     $array_variables['type'] = ( isset( $_GET['type'] ) && intval($_GET['type']) !== 0 ) ? tp_convert_input_to_string($_GET['type']) : '';
     $array_variables['year'] = ( isset( $_GET['tp_year'] ) && intval($_GET['tp_year']) !== 0 ) ? tp_convert_input_to_string($_GET['tp_year'], 'int') : '';
+    $array_variables['order'] = isset( $_GET['orderby'] ) ? htmlspecialchars($_GET['orderby']) : 'date DESC, title ASC';
     $array_variables['search'] = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
     $array_variables['tag_id'] = isset( $_GET['tag'] ) ? tp_convert_input_to_string($_GET['tag'], 'int') : '';
     $user = $current_user->ID;
 
     // Page menu
     $array_variables['per_page'] = $per_page;
+    
     // Handle limits
     if ( isset($_GET['limit']) ) {
         $array_variables['curr_page'] = intval($_GET['limit']);
@@ -88,6 +90,10 @@ function tp_show_publications_page() {
         $array_variables['curr_page'] = 1;
     }
     echo '<div class="wrap">';
+    
+    // Chech order statements
+    $acceaptable = ['date DESC, title ASC', 'pub_id ASC', 'pub_id DESC', 'date ASC', 'date DESC', 'title ASC', 'title DESC'];
+    $array_variables['order'] = in_array($array_variables['order'], $acceaptable) ? $array_variables['order'] : 'date DESC, title ASC';
     
     // test if teachpress database is up to date
     TP_Admin::database_test();
@@ -158,7 +164,7 @@ class TP_Publications_Page {
         $sel = '';
         echo '<h2>' . __('BibTeX','teachpress') . '</h2>';
         echo '<form name="form1">';
-        echo '<p><a href="admin.php?page=' . $array_variables['page'] . '&amp;search=' . $array_variables['search'] . '&amp;limit=' . $array_variables['curr_page'] . '" class="button-secondary">&larr; ' . __('Back','teachpress') . '</a></p>';
+        echo '<p><a href="admin.php?page=' . $array_variables['page'] . '&amp;search=' . $array_variables['search'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;orderby=' . $array_variables['order'] . '" class="button-secondary">&larr; ' . __('Back','teachpress') . '</a></p>';
         
         echo '<textarea name="bibtex_area" rows="20" style="width:90%;" >';
 
@@ -309,7 +315,7 @@ class TP_Publications_Page {
         if ( $row->status === 'forthcoming' ) {
             echo '<span class="tp_pub_label_status">' . __('Forthcoming','teachpress') . '</span>';
         }
-        echo '<div class="tp_row_actions"><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&cite_id=' . $row->pub_id . '" class="teachpress_cite_pub teachpress_link">' . __('Cite', 'teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=' . $array_variables['page']  .'&amp;checkbox%5B%5D=' . $row->pub_id . '&amp;action=delete' . $get_string . '" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
+        echo '<div class="tp_row_actions"><a href="admin.php?page=teachpress/addpublications.php&amp;pub_id=' . $row->pub_id . $get_string . '" class="teachpress_link" title="' . __('Click to edit','teachpress') . '">' . __('Edit','teachpress') . '</a> | <a href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&cite_id=' . $row->pub_id . '" class="teachpress_cite_pub teachpress_link">' . __('Cite', 'teachpress') . '</a> | <a class="tp_row_delete" href="admin.php?page=' . $array_variables['page'] . '&amp;orderby=' . $array_variables['order'] . '&amp;checkbox%5B%5D=' . $row->pub_id . '&amp;action=delete' . $get_string . '" title="' . __('Delete','teachpress') . '">' . __('Delete','teachpress') . '</a></div>';
         TP_HTML::line('</td>');
         TP_HTML::line('<td>' . $row->pub_id . '</td>');
         TP_HTML::line('<td>' . tp_translate_pub_type($row->type) . '</td>');
@@ -342,10 +348,10 @@ class TP_Publications_Page {
                continue;
             }
             if ( $temp["tag_id"] == $array_variables['tag_id'] ) {
-               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;tp_year=' . $array_variables['year'] . '" title="' . __('Delete tag as filter','teachpress') . '"><strong>' . stripslashes($temp["name"]) . '</strong></a>, ';
+               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;tp_year=' . $array_variables['year'] . '&amp;orderby=' . $array_variables['order'] . '" title="' . __('Delete tag as filter','teachpress') . '"><strong>' . stripslashes($temp["name"]) . '</strong></a>, ';
             }
             else {
-               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $temp["tag_id"] . '&amp;tp_year=' . $array_variables['year'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($temp["name"]) . '</a>, ';
+               $tag_string .= '<a href="admin.php?page=' . $array_variables['page']  . '&amp;search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $temp["tag_id"] . '&amp;tp_year=' . $array_variables['year'] . '&amp;orderby=' . $array_variables['order'] . '" title="' . __('Show all publications which have a relationship to this tag','teachpress') . '">' . stripslashes($temp["name"]) . '</a>, ';
             }
         }
         return substr($tag_string, 0, -2);
@@ -428,13 +434,14 @@ class TP_Publications_Page {
         TP_HTML::line('<h2>' . $title . '<a href="admin.php?page=teachpress/addpublications.php" class="add-new-h2">' . __('Add new','teachpress') . '</a></h2>');
         TP_HTML::line('<form id="show_publications_form" name="form1" method="get" action="admin.php">');
         TP_HTML::line('<input type="hidden" name="page" id="page" value="' . $array_variables['page'] . '" />');
+        TP_HTML::line('<input type="hidden" name="orderby" id="orderby" value="' . $array_variables['order'] . '" />');
 
         // Delete publications - part 1
         if ( $array_variables['action'] == "delete" ) {
             TP_HTML::line('<div class="teachpress_message">
                   <p class="teachpress_message_headline">' . __('Do you want to delete the selected items?','teachpress') . '</p>
                   <p><input name="delete_ok" type="submit" class="button-primary" value="' . __('Delete','teachpress') . '"/>
-                  <a href="admin.php?page=publications.php&search=' . $array_variables['search'] . '&amp;limit=' . $array_variables['curr_page'] . '" class="button-secondary"> ' . __('Cancel','teachpress') . '</a></p>
+                  <a href="admin.php?page=publications.php&search=' . $array_variables['search'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;orderby=' . $array_variables['order'] . '" class="button-secondary"> ' . __('Cancel','teachpress') . '</a></p>
                   </div>');
         }
         
@@ -444,7 +451,7 @@ class TP_Publications_Page {
                       'year'    => $array_variables['year'],
                       'limit'   => $array_variables['entry_limit'] . ',' .  $array_variables['per_page'],
                       'type'    => $array_variables['type'],
-                      'order'   => 'date DESC, title ASC'
+                      'order'   => $array_variables['order']
                      );
         $test = TP_Publications::get_publications($args, true);
         
@@ -457,7 +464,7 @@ class TP_Publications_Page {
         // Searchbox
         TP_HTML::line('<div id="tp_searchbox">');
         if ( $array_variables['search'] != '' ) { 
-              TP_HTML::line( '<a href="admin.php?page=' . $array_variables['page'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'] . '" class="tp_search_cancel" title="' . __('Cancel the search','teachpress') . '">X</a>');
+              TP_HTML::line( '<a href="admin.php?page=' . $array_variables['page'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'] . '&amp;orderby=' . $array_variables['order'] . '" class="tp_search_cancel" title="' . __('Cancel the search','teachpress') . '">X</a>');
            } 
         TP_HTML::line('<input type="search" name="search" id="pub_search_field" value="' . stripslashes($array_variables['search']) . '"/>');
         TP_HTML::line('<input type="submit" name="pub_search_button" id="pub_search_button" value="' . __('Search','teachpress') . '" class="button-secondary"/>');
@@ -485,11 +492,11 @@ class TP_Publications_Page {
         TP_Publications_Page::get_year_filter($array_variables, $user);
         TP_Publications_Page::get_tag_filter($array_variables, $user);
         TP_HTML::line('<button class="button-secondary" name="filter-ok" type="submit" >' . __('Limit selection','teachpress') . '</button>');
-        // TP_HTML::line('<input name="filter-ok" value="' . __('Limit selection','teachpress') . '" type="submit" class="button-secondary"/>');
+
         TP_HTML::div_close('alignleft actions');
            
         // Page Menu
-        $link = 'search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'];
+        $link = 'search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'] . '&amp;orderby=' . $array_variables['order'];
         echo tp_page_menu(array('number_entries'    => $test,
                                 'entries_per_page'  => $array_variables['per_page'],
                                 'current_page'      => $array_variables['curr_page'],
@@ -504,8 +511,8 @@ class TP_Publications_Page {
         TP_HTML::line('<tr>');
         TP_HTML::line('<th>&nbsp;</th>');
         TP_HTML::line('<td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" onclick="teachpress_checkboxes(' . "'checkbox', 'tp_check_all'" . ');" /></td>');
-        TP_HTML::line('<th>' . __('Title','teachpress') . '</th>');
-        TP_HTML::line('<th>' . __('ID') . '</th>');
+        TP_HTML::line('<th>' . TP_Publications_Page::get_order_link( 'title', __('Title','teachpress'), $array_variables)  . '</th>');
+        TP_HTML::line('<th width="30">' . TP_Publications_Page::get_order_link( 'pub_id', __('ID'), $array_variables) . '</th>');
         TP_HTML::line('<th>' . __('Type') . '</th>');
         TP_HTML::line('<th>' . __('Author(s)','teachpress') . '</th>');
         TP_HTML::line('<th>' . __('Tags') . '</th>');
@@ -526,7 +533,7 @@ class TP_Publications_Page {
         else {
             $row = TP_Publications::get_publications($args);
             $class_alternate = true;
-            $get_string = '&amp;search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;site=' . $array_variables['page'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'];
+            $get_string = '&amp;search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;limit=' . $array_variables['curr_page'] . '&amp;site=' . $array_variables['page'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'] . '&amp;orderby=' . $array_variables['order'];
             foreach ($row as $row) { 
                 if ( $class_alternate === true ) {
                     $tr_class = 'class="alternate"';
@@ -569,6 +576,62 @@ class TP_Publications_Page {
         
         TP_HTML::line( '</form>' );
     } 
+    
+    /**
+     * Returns the navigations link for changing the sort order of the table
+     * @param string $field     table field
+     * @param string $title
+     * @param array $array_variables
+     */
+    private static function get_order_link ($field, $title, $array_variables) {
+        // pub_id
+        if ( $field === 'pub_id' ) {
+            switch ( $array_variables['order'] ) {
+                case 'date DESC, title ASC' :
+                    $val = 'pub_id ASC';
+                    $sim = '';
+                    break;
+                case 'pub_id ASC':
+                    $val = 'pub_id DESC';
+                    $sim = '&darr;';
+                    break;
+                case 'pub_id DESC':
+                    $val = 'date DESC, title ASC';
+                    $sim = '&uarr;';
+                    break;
+                default:
+                    $val = 'pub_id ASC';
+                    $sim = '';
+            }
+        }
+        
+        // title
+        if ( $field === 'title' ) {
+            switch ( $array_variables['order'] ) {
+                case 'date DESC, title ASC' :
+                    $val = 'title ASC';
+                    $sim = '';
+                    break;
+                case 'title ASC':
+                    $val = 'title DESC';
+                    $sim = '&darr;';
+                    break;
+                case 'title DESC':
+                    $val = 'date DESC, title ASC';
+                    $sim = '&uarr;';
+                    break;
+                default:
+                    $val = 'title ASC';
+                    $sim = '';
+            }
+        }
+        
+        // set link attributes
+        $link = 'search=' . $array_variables['search'] . '&amp;type=' . $array_variables['type'] . '&amp;tag=' . $array_variables['tag_id'] . '&amp;tp_year=' . $array_variables['year'] . '&amp;orderby=' . $val;
+        
+        // return link
+        return '<a href="admin.php?page=' . $array_variables['page'] . '&amp;=1&amp;' . $link . '" title="' . __('Change sort order','teachpress') . '">' . $title . ' </a>' . $sim . '</span>';
+    }
     
     /**
      * Prints the js scripts
