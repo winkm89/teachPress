@@ -39,6 +39,26 @@ class TP_Admin {
     }
     
     /**
+     * Extracts checkbox data for meta data fields and returns an array with the saved values. 
+     * 
+     * A string for checkbox data has the following structure:
+     * {value1},{value2},{value3}
+     * 
+     * @param string $input
+     * @return array
+     * @since 5.0.0
+     */
+    public static function extract_checkbox_data($input) {
+        $values = array();
+        $array_values = explode(',', $input);
+        foreach( $array_values as $element ) {
+            $element = str_replace(array('{','}'), array('',''), $element);
+            array_push($values, $element);
+        }
+        return $values;
+    }
+    
+    /**
      * Returns a select field for assessment types
      * @param string $field_name    The name of the field
      * @param string $value         The value of the field
@@ -100,8 +120,9 @@ class TP_Admin {
         $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
         $ro = ( $readonly === true ) ? 'readonly="true" ' : '' ;
         $rq = ( $required === true ) ? 'required="required"' : '';
+        
         // extrakt checkbox_values
-        $array_checked = TP_Enrollments::extract_checkbox_data($checked);
+        $array_checked = self::extract_checkbox_data($checked);
         $return .= '<p><label for="' . $field_name . '"><b>' . stripslashes($label) . '</b></label></p>';
         $i = 1;
         $max = count($options);
