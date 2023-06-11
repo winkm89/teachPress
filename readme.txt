@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 6.2.2
 Requires PHP: 7.0
-Stable tag: 9.0.0
+Stable tag: 9.0.1
 
 Manage your publications with teachPress 
 
@@ -17,7 +17,7 @@ This plugin is a powerful BibTeX compatible multi user publication management fo
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
 * BibTeX and RTF export for publications
-* Direct data import from NCBI PubMed 
+* Direct data import from NCBI PubMed and Crossref.org
 * RSS feeds for publications
 * Many shortcodes for an easy using of publication lists, publication searches or for text references
 * Dymamic meta data system for adding new custom fields to publication entries
@@ -121,6 +121,11 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 9.0.1 (11.06.2023) =
+* Bugfix: Fix Class 'TP_Enrollments' not found error when managing custom met data (#228)
+* Bugfix: Fixed undefined variable warnings if images where used in publication lists
+* Bugfix: Fixed diacritic parsing (Thanks to fabricebg) (#212)
+
 = 9.0.0 (01.06.2023) =
 * Important: This version no longer contains the course module!
 * New: Automatic import over API (i.e. for zotero group bibliographies) (Thanks to fabricebg)
@@ -137,6 +142,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 * Changed: Removed deprecated methods tp_admin_page_menu(), tp_date_shortcode(), get_tp_course(), get_tp_courses(), get_tp_course_free_places(), tp_is_user_subscribed()
 * Changed: Improved bibtex char conversion
 * Changed: PMIDs for Import over PubMed are now space separated instead of comma separated
+* Changed: course module removed
 * Bugfix: Fixed some navigation bugs in the backend
 
 = 8.1.11 (16.01.2023) =
