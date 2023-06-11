@@ -11,6 +11,8 @@ https://github.com/winkm89/teachPress/releases
 
 Documentation : https://github.com/winkm89/teachPress/wiki
 
+![Publication overview screen](https://github.com/winkm89/teachPress/blob/master/screenshot-1.jpg?raw=true)
+
 ## Features
 * BibTeX compatible multi user publication management
 * BibTeX import for publications
