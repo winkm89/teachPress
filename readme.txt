@@ -49,6 +49,9 @@ The following article describes the fist steps for [starting with teachPress](ht
 1. Publication overview screen
 2. Add publication screen
 3. Example for a publication list created with [tpcloud]
+4. Example for a publication list created with [tpsearch]
+5. Example for a reference list created with [tpcite] and [tpref]
+6. Import publications screen
 
 == Frequently Asked Questions ==
 
