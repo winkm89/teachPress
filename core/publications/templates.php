@@ -952,8 +952,11 @@ class TP_HTML_Publication_Template {
         // image link
         $image = TP_HTML_Publication_Template::handle_image_link ($image, $row, $settings);
 
-        // Altmetric donut
+        // Altmetric / Dimensions / Plumx
         $altmetric = '';
+        $dimensions = '';
+        $plumx = '';
+        
         if( $settings['show_altmetric_donut']) {
            $altmetric = '<div class="tp_pub_image_bottom"><div data-badge-type="medium-donut" data-doi="' . $row['doi']  . '" data-condensed="true" data-hide-no-mentions="true" class="altmetric-embed"></div></div>';
         }
