@@ -1562,7 +1562,7 @@ msgstr "Record-ID"
 
 #: core/shortcodes.php:860
 msgid "References"
-msgstr ""
+msgstr "Références"
 
 # @ teachpress
 #: core/class-export.php:41 core/class-export.php:162
