@@ -358,7 +358,7 @@ class TP_Publication_Sources_Page {
                         } else {
                             $settings = array(
                                 'keyword_separator' => ',',
-                                'author_format'     => 'author_format_1',
+                                'author_format'     => 'dynamic',
                                 'overwrite'         => true,
                                 'ignore_tags'       => false,
                             );
