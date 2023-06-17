@@ -129,7 +129,7 @@ class TP_Import_Publication_Page {
                 }
             }
             else {
-                $bibtex = $bibtex_area;
+                $bibtex = stripslashes($bibtex_area);
             }
 
             $settings = array(

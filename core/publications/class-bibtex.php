@@ -44,7 +44,7 @@ class TP_Bibtex {
         "\\textuparrow"          => "↑",
         "\\textrightarrow"       => "→",
         "\\textdownarrow"        => "↓",
-        "$\\infty$"                => "∞",
+        "$\\infty$"              => "∞",
         "\\textlangle"           => "〈",
         "\\textrangle"           => "〉",
         "\\textvisiblespace"     => "␣",
@@ -153,9 +153,6 @@ class TP_Bibtex {
         "\\dh"                   => "ð",
         "\\DJ"                   => "Đ",
         "\\dj"                   => "đ",
-        "\\i"                    => "ı",
-        "\\L"                    => "Ł",
-        "\\l"                    => "ł",
         "\\NG"                   => "Ŋ",
         "\\ng"                   => "ŋ",
         "\\O"                    => "Ø",
@@ -283,7 +280,12 @@ class TP_Bibtex {
         "\\H u"                  => "ű",
         "\\v Z"                  => "Ž",
         "\\v z"                  => "ž",
-        
+   
+        // later in the dict so that they don't match longer entries like "\\'\\i"
+        "\\i"                    => "ı",
+        "\\L"                    => "Ł",
+        "\\l"                    => "ł",
+                                               
         // for custom latex packages like ngerman
         "\\glqq"                 => "„",
         "\\grqq"                 => "“",
