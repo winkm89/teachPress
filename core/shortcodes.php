@@ -91,10 +91,11 @@ class TP_Shortcodes {
 
         // tag filter
         if ( $key === 'tag' ) {
+            $exclude = self::generate_merged_string($sql_parameter['exclude_tags'], $settings['hide_tags']);
             $row = TP_Tags::get_tags( array( 'output_type'      => ARRAY_A,
                                              'group_by'         => true,
                                              'order'            => 'ASC',
-                                             'exclude'          => $sql_parameter['exclude_tags'] ) );
+                                             'exclude'          => $exclude ) );
             $defaults['url_slug'] = 'tgid';
             $defaults['key'] = 'tag';
             $defaults['row_key'] = 'tag_id';
@@ -107,6 +108,25 @@ class TP_Shortcodes {
         }
         return self::generate_filter_selectmenu($row, $defaults);
     }
+    
+    /**
+     * Merges for example the input for the exclude_tags and hide_tags filter to one single entry
+     * @param string $string1
+     * @param string $string2
+     * @return string
+     * @since 9.0.2
+     */
+    private static function generate_merged_string($string1, $string2) {
+        // reduce processing 
+        if ( $string1 === '' ) {
+            return $string2;
+        }
+        
+        $array1 = explode(',', $string1);
+        $array2 = explode(',', $string2);
+        $array = array_merge($array1, $array2);
+        return implode(',', $array);
+    }
 
     /**
      * Generates a filter for a custom select field
@@ -114,7 +134,7 @@ class TP_Shortcodes {
      * @param array $filter_parameter
      * @param int $tabindex
      * @return type
-     * @since 8.2
+     * @since 8.1
      */
     public static function generate_custom_filter($settings, $filter_parameter, $tabindex) {
         if ( $settings['custom_filter'] === '') {
