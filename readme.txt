@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 6.2.2
 Requires PHP: 7.0
-Stable tag: 9.0.1
+Stable tag: 9.0.2
 
 Manage your publications with teachPress 
 
@@ -123,6 +123,11 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 9.0.2 (17.06.2023) =
+* Bugifx: [tpcloud] hide_tags and show_tags_as="pulldown" are not working (#230)
+* Bugfix: Changed author format to 'dynamic' in auto-publish (Thanks to fabricebg) (#225)
+* Bugfix: Improved diacritic import (Thanks to fabricebg) (#212)
 
 = 9.0.1 (11.06.2023) =
 * Bugfix: Fix Class 'TP_Enrollments' not found error when managing custom met data (#228)
