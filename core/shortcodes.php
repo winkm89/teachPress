@@ -818,14 +818,11 @@ function tp_cite_shortcode ($atts) {
         $publication = TP_Publications::get_publication($param['id'], ARRAY_A);
     }
 
-    // Count ref number
-    $count = $tp_cite_object->get_count();
-
     // Add ref to cite object
-    $tp_cite_object->add_ref($publication);
+    $index = $tp_cite_object->add_ref($publication);
 
     // Return
-    return '<sup><a href="#tp_cite_' . $publication['pub_id'] . '">[' . ( $count + 1 ) . ']</a></sup>';
+    return '<sup><a href="#tp_cite_' . $publication['pub_id'] . '">[' . $index . ']</a></sup>';
 }
 
 /**

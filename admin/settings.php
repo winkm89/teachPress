@@ -297,6 +297,17 @@ class TP_Settings_Page {
                   </td>';  
         echo '</tr>';
 
+
+        // Bibliography style
+        echo '<tr>';
+        echo '<th colspan="3"><h3>' . __('Bibliography style','teachpress') . '</h3></th>';
+        echo '</tr>';
+
+        echo '<tr>';
+        echo '<th>' . __('Repeated citations','teachpress') . '</th>';
+        echo '<td colspan="2">' . TP_Admin::get_checkbox('ref_grouped', __('Cite every reference only once','teachpress'), get_tp_option('ref_grouped')) . '</td>';
+        echo '</tr>';
+
         // Misc
         echo '<tr>';
         echo '<th colspan="3"><h3>' . __('Misc','teachpress') . '</h3></th>';
@@ -734,6 +745,7 @@ class TP_Settings_Page {
         $checkbox_convert_bibtex = isset( $_POST['convert_bibtex'] ) ? 1 : '';
         $checkbox_import_overwrite = isset( $_POST['import_overwrite'] ) ? 1 : '';
         $checkbox_rel_content_auto = isset( $_POST['rel_content_auto'] ) ? 1 : '';
+        $checkbox_ref_grouped = isset( $_POST['ref_grouped'] ) ? 1 : '';
     
         TP_Options::change_option('sem', $option_semester);
         TP_Options::change_option('rel_page_publications', $option_rel_page_publications);
@@ -745,6 +757,7 @@ class TP_Settings_Page {
         TP_Options::change_option('rel_content_template', $_POST['rel_content_template']);
         TP_Options::change_option('rel_content_category', $_POST['rel_content_category']);
         tp_update_userrole($option_userrole_publications, 'use_teachpress');
+        TP_Options::change_option('ref_grouped', $checkbox_ref_grouped, 'checkbox');
 
         get_tp_message( __('Settings are changed. Please note that access changes are visible, until you have reloaded this page a second time.','teachpress') );
     }
