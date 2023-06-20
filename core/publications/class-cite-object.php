@@ -5,7 +5,7 @@
  */
 class TP_Cite_Object {
     
-    // stores the citations
+    // stores the association between id and citation
     var $cite_object = array();
     
     /**
@@ -14,19 +14,38 @@ class TP_Cite_Object {
      * @since 5.2.0
      */
     public function get_count() {
-        $count = count($this->cite_object);
-        return $count;
+        return count($this->cite_object);
     }
     
     /**
      * Adds a citation to the cite object
      * @param array $cite
+     * @return the index of the citation in the cite object
      * @since 5.2.0
      */
     public function add_ref($cite) {
-        $count = $this->get_count();
-        $count = $count + 1;
-        array_push($this->cite_object, $cite);
+        // Get global option
+        $ref_grouped = ( get_tp_option('ref_grouped') == '1' ) ? true : false;
+
+        // add the citation
+        if ($ref_grouped) {
+            // did we already added this citation?
+            $existing_index = array_search($cite['pub_id'], array_keys($this->cite_object));
+            if ($existing_index === false) {
+                // first time we see this publication, adding it
+                $this->cite_object[$cite['pub_id']] = $cite;
+                // so this publication is the last of our list
+                return $this->get_count();
+            } else {
+                // we already added this publication in the past
+                return $existing_index + 1;
+            }
+        } else {
+            // add this citation
+            array_push($this->cite_object, $cite);
+            // so this publication is the last of our list
+            return $this->get_count();
+        }
     }
     
     /**
@@ -35,7 +54,7 @@ class TP_Cite_Object {
      * @since 5.2.0
      */
     public function get_ref() {
-        return $this->cite_object;
+        return array_values($this->cite_object);
     }
 }
 

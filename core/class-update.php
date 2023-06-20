@@ -1113,10 +1113,17 @@ class TP_Update {
             $value = 'name = {matriculation_number}, title = {Matriculation number}, type = {INT}, required = {false}, min = {1}, max = {1000000}, step = {1}, visibility = {admin}';
             $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('matriculation_number', '$value', 'teachpress_stud')");
         }
+
         /**** since version 5.0.3 ****/
         // Fix an installer bug (wrong template for related content)
         if ( get_tp_option('rel_content_template') == 'page' ) {
             TP_Options::change_option('rel_content_template', '[tpsingle [key]]<!--more-->' . "\n\n[tpabstract]\n\n[tplinks]\n\n[tpbibtex]");
+        }
+
+        /**** since version 9.0.3 ****/
+        // group references
+        if ($wpdb->query("SELECT value FROM " . TEACHPRESS_SETTINGS . " WHERE `variable` = 'ref_grouped' AND `category` = 'system'") == '0') {
+            $wpdb->query("INSERT INTO " . TEACHPRESS_SETTINGS . " (`variable`, `value`, `category`) VALUES ('ref_grouped', '0', 'system')");
         }
     }
     

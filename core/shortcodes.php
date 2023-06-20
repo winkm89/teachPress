@@ -17,8 +17,8 @@ class TP_Shortcodes {
      * Generates and returns filter for the shortcodes
      * @param string $key                   year/type/author/user/tag
      * @param array $filter_parameter       An associative array with filter parameter (user input). The keys are: year, type, author, user
-     * @param array $sql_parameter          An assosciative array with SQL search parameter (user, type, exclude, exclude_tags, order)
-     * @param array $settings               An assosciative array with settings (permalink, html_anchor,...)
+     * @param array $sql_parameter          An associative array with SQL search parameter (user, type, exclude, exclude_tags, order)
+     * @param array $settings               An associative array with settings (permalink, html_anchor,...)
      * @param int $tabindex                 The tabindex
      * @return string
      * @since 5.0.0
@@ -429,8 +429,8 @@ class TP_Shortcodes {
      * Returns a tag cloud
      * @param int $user                 The user ID
      * @param array $filter_parameter   An associative array with filter parameter (user input). The keys are: year, type, author, user
-     * @param array $sql_parameter      An assosciative array with SQL search parameter (user, type)
-     * @param array $settings           An assosciative array with settings (permalink, html_anchor, tag_limit, maxsize, minsize)
+     * @param array $sql_parameter      An associative array with SQL search parameter (user, type)
+     * @param array $settings           An associative array with settings (permalink, html_anchor, tag_limit, maxsize, minsize)
      * @return string
      * @since 5.0.0
      * @access public
@@ -818,14 +818,11 @@ function tp_cite_shortcode ($atts) {
         $publication = TP_Publications::get_publication($param['id'], ARRAY_A);
     }
 
-    // Count ref number
-    $count = $tp_cite_object->get_count();
-
     // Add ref to cite object
-    $tp_cite_object->add_ref($publication);
+    $index = $tp_cite_object->add_ref($publication);
 
     // Return
-    return '<sup><a href="#tp_cite_' . $publication['pub_id'] . '">[' . ( $count + 1 ) . ']</a></sup>';
+    return '<sup><a href="#tp_cite_' . $publication['pub_id'] . '">[' . $index . ']</a></sup>';
 }
 
 /**
