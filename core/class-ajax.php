@@ -265,6 +265,7 @@ class TP_Ajax {
      * @access public
      */
     public static function get_meta_field_screen ( $meta_field_id ) {
+        $meta_field_id = intval( $meta_field_id );
         if ( $meta_field_id === 0 ) {
             $data = array(
                 'name' => '',
@@ -400,8 +401,8 @@ class TP_Ajax {
      */
     public static function set_sort_order( $array ) {
         $i = 0;
-        foreach ($array as $value) {
-            TP_Documents::set_sort($value, $i);
+        foreach ( $array as $value ) {
+            TP_Documents::set_sort( intval($value), $i );
             $i++;
         }
     }
