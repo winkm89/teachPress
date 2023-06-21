@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 6.2.2
 Requires PHP: 7.0
-Stable tag: 9.0.2
+Stable tag: 9.0.3
 
 Manage your publications with teachPress 
 
@@ -123,6 +123,11 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 9.0.3 (21.06.2023) =
+* New: [tpcite],[tpref] Citations with the same key can be grouped, which means a bibtex-like citation with one unique id = one ref instead of one cite = one ref will be generated (#226, #233) (Thanks to Samuel Thiriot)
+* Bugfix: Fixed a french translation (Thanks to Samuel Thiriot)
+* Bugfix: Fixed a security vulnerability in ajax callbacks (Thanks for reporting to Le Ngoc Anh)
 
 = 9.0.2 (17.06.2023) =
 * Bugifx: [tpcloud] hide_tags and show_tags_as="pulldown" are not working (#230)
