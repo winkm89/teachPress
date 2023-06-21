@@ -205,6 +205,7 @@ class TP_Ajax {
      */
     public static function get_cite_screen ($cite_id) {
         $publication = TP_Publications::get_publication($cite_id, ARRAY_A);
+        $cite_id = intval($cite_id);
         echo '<!doctype html>';
         echo '<html>';
         echo '<head>';

@@ -101,7 +101,8 @@ function tp_ajax_callback () {
          * @since 6.0.0
          */
         if ( isset( $_GET['cite_id'] ) ) {
-            TP_Ajax::get_cite_screen($_GET['cite_id']);
+            $cite_id = intval( $_GET['cite_id'] );
+            TP_Ajax::get_cite_screen($cite_id);
         }
 
         /**
