@@ -4,9 +4,9 @@ Tags: publications, bibliography, BibTeX
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 6.3.0
+Tested up to: 6.4.1
 Requires PHP: 7.0
-Stable tag: 9.0.4
+Stable tag: 9.0.5
 
 Manage your publications with teachPress 
 
@@ -124,8 +124,13 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 9.0.5 (26.11.2023) =
+* Bugfix: Fixed a Cross Site Request Forgery (CSRF) vulnerability in [tp_bibtex] shortcode
+* Bugfix: Fixed Cross Site Request Forgery (CSRF) vulnerabilities in teachPress admin screens
+* Bugfix: Return proper string value in filter hook handler. (Thanks to Tobias Bäthge) (#242)
+
 = 9.0.4 (24.07.2023) = 
-* Changed: Introduce using of target=blank for edit publication links; removed unused parameters from edit links 
+* Changed: Introduce using of target=blank for edit publication links; Unused parameters from edit links removed
 
 = 9.0.3 (21.06.2023) =
 * New: [tpcite],[tpref] Citations with the same key can be grouped, which means a bibtex-like citation with one unique id = one ref instead of one cite = one ref will be generated (#226, #233) (Thanks to Samuel Thiriot)
