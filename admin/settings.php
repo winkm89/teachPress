@@ -17,6 +17,11 @@ class TP_Settings_Page {
      * @since 5.0.0
      */
     public static function load_page (){
+        // Just for administrators
+        if ( !current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        
         echo '<div class="wrap">';
 
         $site = 'options-general.php?page=teachpress/settings.php';
@@ -50,27 +55,32 @@ class TP_Settings_Page {
         
         // delete database
         if ( isset( $_GET['drop_tp'] ) || isset( $_GET['drop_tp_ok'] ) ) {
+            self::check_nonce_field();
             TP_Settings_Page::delete_database();
         }
 
         // change general options
-        if (isset( $_POST['einstellungen'] )) {
+        if ( isset( $_POST['einstellungen'] ) ) {
+            self::check_nonce_field();
             TP_Settings_Page::change_general_options();
         }
 
         // delete settings
         if ( isset( $_GET['delete'] ) ) {
+            self::check_nonce_field();
             TP_Options::delete_option($_GET['delete']);
             get_tp_message(__('Deleted', 'teachpress'));
         }
         
         // Delete data field
         if ( isset( $_GET['delete_field'] ) || isset( $_GET['delete_field_ok'] ) ) {
+            self::check_nonce_field();
             TP_Settings_Page::delete_meta_fields($tab);
         }
 
         // add meta field options
         if ( isset($_POST['add_field']) ) {
+            self::check_nonce_field();
             $table = 'teachpress_pub';
             TP_Settings_Page::add_meta_fields($table);
         }
@@ -93,6 +103,7 @@ class TP_Settings_Page {
         echo '</h3>';
 
         echo '<form id="form1" name="form1" method="post" action="' . $site . '&amp;tab=' . $tab . '">';
+        echo wp_nonce_field( 'save_teachpress_settings', 'tp_nonce', true, false );
         echo '<input name="page" type="hidden" value="teachpress/settings.php" />';
         echo '<input name="tab" type="hidden" value="<?php echo $tab; ?>" />';
 
@@ -717,6 +728,11 @@ class TP_Settings_Page {
      * @since 5.0.0
      */
     private static function delete_meta_fields ($tab) {
+        // Just for administrators
+        if ( !current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        
         if ( isset($_GET['delete_field']) ) {
             $message = '<p>' . __('Do you really want to delete the selected meta field?','teachpress') . '</p>' . '<a class="button-primary" href="options-general.php?page=teachpress/settings.php&amp;delete_field_ok=' . intval($_GET['delete_field']) . '&amp;tab=' . $tab . '">'. __('OK') . '</a> <a class="button-secondary" href="options-general.php?page=teachpress/settings.php&amp;tab=student_data">'. __('Cancel') . '</a>';
             get_tp_message($message,'orange');
@@ -738,6 +754,11 @@ class TP_Settings_Page {
      * @since 5.0.0
      */
     private static function change_general_options () {
+        // Just for administrators
+        if ( !current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        
         $option_semester = isset( $_POST['semester'] ) ? htmlspecialchars($_POST['semester']) : '';
         $option_rel_page_publications = isset( $_POST['rel_page_publications'] ) ? htmlspecialchars($_POST['rel_page_publications']) : '';
         $option_stylesheet = isset( $_POST['stylesheet'] ) ? intval($_POST['stylesheet']) : '';
@@ -790,6 +811,11 @@ class TP_Settings_Page {
      * @since 5.0.0
      */
     private static function delete_database () {
+        // Just for administrators
+        if ( !current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        
         if ( isset($_GET['drop_tp']) ) {
             $message = '<p>' . __('Do you really want to delete all teachpress database tables?','teachpress') . '</p>' . '<a class="button-primary" href="options-general.php?page=teachpress/settings.php&amp;tab=general&amp;drop_tp_ok=1">'. __('OK') . '</a> <a class="button-secondary" href="options-general.php?page=teachpress/settings.php&amp;tab=general">'. __('Cancel') . '</a>';
             get_tp_message($message,'orange');
@@ -797,6 +823,18 @@ class TP_Settings_Page {
         if ( isset($_GET['drop_tp_ok']) ) {
             tp_uninstall();
             get_tp_message( __('Database uninstalled','teachpress') );
+        }
+    }
+    
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     */
+    private static function check_nonce_field () {
+        if ( ! isset( $_POST['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_POST['tp_nonce'], 'save_teachpress_settings' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
         }
     }
 }
