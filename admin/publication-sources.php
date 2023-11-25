@@ -162,6 +162,7 @@ class TP_Publication_Sources_Page {
                 <p style="margin-top: 60px;"><button class="button-primary disabled"
                    name="tp_sources_save" id="tp_sources_save" type="submit" >
                     <?php echo __("Save configuration", "teachpress");?></button></p>
+                <?php wp_nonce_field( 'verify_teachpress_auto_publish', 'tp_nonce', false, true ); ?>
             </form>
         </div>
 
@@ -176,6 +177,9 @@ class TP_Publication_Sources_Page {
      * @access public
      */
     public static function sources_actions ($post) {
+        // Check nonce field
+        TP_Publication_Sources_Page::check_nonce_field();
+        
         $sources_area = isset($post['tp_sources_area']) ? trim($post['tp_sources_area']) : '';
         $sources_to_monitor = array_filter(preg_split("/\r\n|\n|\r/", $sources_area),
                                            function($k) { return strlen(trim($k)) > 0; });
@@ -496,6 +500,19 @@ class TP_Publication_Sources_Page {
         }
         
         return $result;
+    }
+    
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     * @since 9.0.5
+     */
+    private static function check_nonce_field () {
+        if ( ! isset( $_POST['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_POST['tp_nonce'], 'verify_teachpress_auto_publish' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
+        }
     }
 
 }

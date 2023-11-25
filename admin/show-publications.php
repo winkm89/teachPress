@@ -110,6 +110,7 @@ function tp_show_publications_page() {
     
     // Add a bookmark for the publication (bulk version)
     if ( $array_variables['action'] === 'add_list' ) {
+        TP_Publications_Page::check_nonce_field();
         $max = count( $array_variables['checkbox'] );
         for( $i = 0; $i < $max; $i++ ) {
             $array_variables['checkbox'][$i] = intval($array_variables['checkbox'][$i]);
@@ -123,12 +124,14 @@ function tp_show_publications_page() {
     
     // delete publications - part 2
     if ( isset($_GET['delete_ok']) ) {
+        TP_Publications_Page::check_nonce_field();
         TP_Publications::delete_publications($array_variables['checkbox']);
         get_tp_message( __('Removing successful','teachpress') );
     }
     
     // Bulk edit of publications
     if ( isset($_GET['bulk_edit']) ) {
+        TP_Publications_Page::check_nonce_field();
         $mass_edit = ( isset($_GET['mass_edit']) ) ? $_GET['mass_edit'] : '';
         $tags = ( isset($_GET['add_tags']) ) ? TP_Publication_Page::prepare_tags($_GET['add_tags']) : '';
         $delbox = ( isset($_GET['delbox']) ) ? $_GET['delbox'] : array();
@@ -435,6 +438,7 @@ class TP_Publications_Page {
         TP_HTML::line('<form id="show_publications_form" name="form1" method="get" action="admin.php">');
         TP_HTML::line('<input type="hidden" name="page" id="page" value="' . $array_variables['page'] . '" />');
         TP_HTML::line('<input type="hidden" name="orderby" id="orderby" value="' . $array_variables['order'] . '" />');
+        echo wp_nonce_field( 'verify_teachpress_pub_ui', 'tp_nonce', false, false );
 
         // Delete publications - part 1
         if ( $array_variables['action'] == "delete" ) {
@@ -631,6 +635,19 @@ class TP_Publications_Page {
         
         // return link
         return '<a href="admin.php?page=' . $array_variables['page'] . '&amp;=1&amp;' . $link . '" title="' . __('Change sort order','teachpress') . '">' . $title . ' </a>' . $sim . '</span>';
+    }
+    
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     * @since 9.0.5
+     */
+    public static function check_nonce_field () {
+        if ( ! isset( $_GET['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_GET['tp_nonce'], 'verify_teachpress_pub_ui' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
+        }
     }
     
     /**

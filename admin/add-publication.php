@@ -95,14 +95,17 @@ function tp_add_publication_page() {
     }
     
     echo '<form name="form1" method="post" action="' . esc_url($_SERVER['REQUEST_URI']) . '" id="form1">';
+    echo wp_nonce_field( 'verify_teachpress_pub_edit', 'tp_nonce', true, false );
    
     // create related content (post/page/...)
     if ( isset($_POST['create_rel_content']) ) {
+        TP_Publication_Page::check_nonce_field();
         $data['rel_page'] = tp_add_publication_as_post( $data['title'], $data['bibtex'], $data['date'], get_tp_option('rel_page_publications'), $tags, array(get_tp_option('rel_content_category')) );
     }
     
     // create publication and related page
     if ( isset($_POST['create_pub']) ) {
+        TP_Publication_Page::check_nonce_field();
         $pub_id = TP_Publications::add_publication($data, $tags, $new_bookmarks);
         TP_DB_Helpers::prepare_meta_data($pub_id, $fields, $_POST, 'publications');
         $message = __('Publication added','teachpress') . ' <a href="admin.php?page=teachpress/addpublications.php">' . __('Add new','teachpress') . '</a>';
@@ -111,6 +114,7 @@ function tp_add_publication_page() {
     
     // save publication
     if ( isset($_POST['speichern']) ) {
+        TP_Publication_Page::check_nonce_field();
         TP_Publications::delete_pub_meta($pub_id);
         TP_Publications::change_publication($pub_id, $data, $tags, $delbox, $new_bookmarks, $del_bookmarks);
         TP_DB_Helpers::prepare_meta_data($pub_id, $fields, $_POST, 'publications');
@@ -857,12 +861,30 @@ class TP_Publication_Page {
         TP_HTML::div_close('postbox');
     }
     
+    /**
+     * Convert $tags array to a comma separate string
+     * @param array $tags
+     * @return string
+     */
     public static function prepare_tags($tags) {
         $end = '';
         foreach ( $tags as $element ) {
             $end = ( $end === '' ) ? $element : $end . ',' . $element;
         }
         return $end;
+    }
+    
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     * @since 9.0.5
+     */
+    public static function check_nonce_field () {
+        if ( ! isset( $_POST['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_POST['tp_nonce'], 'verify_teachpress_pub_edit' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
+        }
     }
     
     /**

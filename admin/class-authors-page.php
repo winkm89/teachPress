@@ -46,6 +46,7 @@ class TP_Authors_Page {
         }
         // delete tags - part 2
         if ( isset( $_GET['delete_ok'] ) ) {
+            TP_Authors_Page::check_nonce_field();
             TP_Authors::delete_authors($checkbox);
             get_tp_message( __('Removing successful','teachpress') );
         }
@@ -100,6 +101,7 @@ class TP_Authors_Page {
         echo '<h2>' . __('Authors','teachpress') . '</h2>';
         echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
         echo '<input name="page" type="hidden" value="' . $page . '" />';
+        echo wp_nonce_field( 'verify_teachpress_author_edit', 'tp_nonce', false, false );
 
         // actions
         self::actions($action, $checkbox, $page, $search, $curr_page);
@@ -315,6 +317,18 @@ class TP_Authors_Page {
         }
     }
 
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     * @since 9.0.5
+     */
+    private static function check_nonce_field () {
+        if ( ! isset( $_GET['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_GET['tp_nonce'], 'verify_teachpress_author_edit' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
+        }
+    }
 
     /**
      * Prints js scripts for the page

@@ -103,7 +103,7 @@ class TP_Settings_Page {
         echo '</h3>';
 
         echo '<form id="form1" name="form1" method="post" action="' . $site . '&amp;tab=' . $tab . '">';
-        echo wp_nonce_field( 'save_teachpress_settings', 'tp_nonce', true, false );
+        echo wp_nonce_field( 'verify_teachpress_settings', 'tp_nonce', true, false );
         echo '<input name="page" type="hidden" value="teachpress/settings.php" />';
         echo '<input name="tab" type="hidden" value="<?php echo $tab; ?>" />';
 
@@ -831,7 +831,7 @@ class TP_Settings_Page {
      */
     private static function check_nonce_field () {
         if ( ! isset( $_POST['tp_nonce'] ) 
-            || ! wp_verify_nonce( $_POST['tp_nonce'], 'save_teachpress_settings' ) 
+            || ! wp_verify_nonce( $_POST['tp_nonce'], 'verify_teachpress_settings' ) 
         ) {
            wp_die('teachPress error: This request could not be verified!');
            exit;

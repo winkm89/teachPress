@@ -11,6 +11,7 @@ class TP_Tags_Page {
         echo '<div class="wrap" style="max-width:900px;">';
         echo '<h2>' . __('Tags') . '</h2>';
         echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
+        echo wp_nonce_field( 'verify_teachpress_tags_edit', 'tp_nonce', false, false );
         echo '<input name="page" type="hidden" value="teachpress/tags.php" />';
 
         TP_Tags_Page::get_page();
@@ -41,10 +42,12 @@ class TP_Tags_Page {
         
         // delete tags - part 2
         if ( isset($_GET['delete_ok']) ) {
+            TP_Tags_Page::check_nonce_field();
             TP_Tags::delete_tags($checkbox);
             get_tp_message( __('Removing successful','teachpress') );
         }
         if ( isset( $_GET['tp_edit_tag_submit'] )) {
+            TP_Tags_Page::check_nonce_field();
             $name = htmlspecialchars($_GET['tp_edit_tag_name']);
             $tag_id = intval($_GET['tp_edit_tag_id']);
             TP_Tags::edit_tag($tag_id, $name);
@@ -242,6 +245,19 @@ class TP_Tags_Page {
             TP_HTML::line('<td>' . $row['count'] . '</td>');
             TP_HTML::line('</tr>');
             
+        }
+    }
+    
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     * @since 9.0.5
+     */
+    private static function check_nonce_field () {
+        if ( ! isset( $_GET['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_GET['tp_nonce'], 'verify_teachpress_tags_edit' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
         }
     }
     

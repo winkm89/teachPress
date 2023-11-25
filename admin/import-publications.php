@@ -121,6 +121,9 @@ class TP_Import_Publication_Page {
 
         // if there is something to import
         if ( $file_name !== '' || $bibtex_area !== '' ) {
+            // Check nonce field
+            TP_Import_Publication_Page::check_nonce_field();
+            
             if ( $file_name !== '' ) {
                 $bibtex =  file_get_contents ( $file_name );
                 // Check if string is utf8 or not
@@ -180,7 +183,8 @@ class TP_Import_Publication_Page {
     public static function import_tab () {
         ?>
         <form id="tp_file" name="tp_file" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
-            
+        
+        <?php wp_nonce_field( 'verify_teachpress_import', 'tp_nonce', true, true ); ?>
         <input type="hidden" name="page" value="teachpress/import.php"/>
         <div class="tp_postbody">
             <div class="tp_postcontent">
@@ -497,5 +501,17 @@ class TP_Import_Publication_Page {
         }
         echo '</table>';
 
+    }
+    
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     */
+    public static function check_nonce_field () {
+        if ( ! isset( $_POST['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_POST['tp_nonce'], 'verify_teachpress_import' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
+        }
     }
 }
