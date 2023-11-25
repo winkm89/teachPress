@@ -201,7 +201,7 @@ function tp_show_screen_options($current, $screen) {
     global $tp_admin_show_authors_page;
 
     if( !is_object($screen) ) {
-        return;
+        return $current;
     }
 
     // Show screen options for the authors page
