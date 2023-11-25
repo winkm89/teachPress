@@ -594,7 +594,7 @@ class TP_Bibtex {
             return '';
         }
         
-        $text = htmlspecialchars_decode($text);
+        $text = TP_HTML::prepare_title($text);
         // Replace expressions
         $search = array ('/<sub>/i', '/<sup>/i',
                          '/<i>/i', '/<b>/i', '/<em>/i', '/<u>/i', 
