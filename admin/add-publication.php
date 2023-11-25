@@ -25,12 +25,6 @@ function tp_add_publication_page_help () {
  * New publication / edit publication
  * from show_publications.php (GET):
  * @param int $pub_id       publication ID
- * @param string $search    for a return to the search
- * @param string $filter    for a return to the search
- * @param string $tag       for a return to the search
- * @param string $tp_year      for a return to the search
- * @param string $site      for a return to the search
- * @param string $limit      for a return to the search
  * @since 5.0.0
 */
 function tp_add_publication_page() {
@@ -89,12 +83,6 @@ function tp_add_publication_page() {
 
     // from show_publications.php
     $pub_id = isset( $_REQUEST['pub_id'] ) ? intval($_REQUEST['pub_id']) : 0;
-    $search = isset( $_GET['search'] ) ? htmlspecialchars($_GET['search']) : '';
-    $filter = isset( $_GET['filter'] ) ? htmlspecialchars($_GET['filter']) : '';
-    $site = isset( $_GET['site'] ) ? htmlspecialchars($_GET['site']) : '';
-    $tag_id = isset( $_GET['tag'] ) ? htmlspecialchars($_GET['tag']) : '';
-    $year = isset( $_GET['tp_year'] ) ? intval($_GET['tp_year']) : '';
-    $entry_limit = isset( $_GET['limit'] ) ? htmlspecialchars($_GET['limit']) : '';
 
     echo '<div class="wrap">';
     
@@ -151,12 +139,6 @@ function tp_add_publication_page() {
     echo '<input name="page" type="hidden" value="teachpress/addpublications.php">';
     if ($pub_id != 0) {
         echo '<input type="hidden" name="pub_id" value="' . $pub_id . '" />';
-        echo '<input type="hidden" name="search" value="' . stripslashes($search) . '" />';
-        echo '<input type="hidden" name="limit" id="limit" value="' . $entry_limit . '" />';
-        echo '<input type="hidden" name="site" id="site" value="' . $site . '" />';
-        echo '<input type="hidden" name="filter" id="filter" value="' . $filter . '" />';
-        echo '<input type="hidden" name="tag" id="tag" value="' . $tag_id . '" />';
-        echo '<input type="hidden" name="tp_year" id="tp_year" value="' . $year . '" />';
     }
     
     echo '<div class="tp_postbody">';
@@ -264,26 +246,26 @@ class TP_Publication_Page {
         // comment
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'comment',
-                'title' => __('A not vissible private comment','teachpress'),
-                'label' => __('Private comment','teachpress'),
-                'type' => 'textarea',
-                'value' => $pub_data['comment'],
-                'tabindex' => 31,
-                'display' => 'block', 
-                'style' => 'width:95%; height: 75px;') );
+                'name'      => 'comment',
+                'title'     => __('A not vissible private comment','teachpress'),
+                'label'     => __('Private comment','teachpress'),
+                'type'      => 'textarea',
+                'value'     => $pub_data['comment'],
+                'tabindex'  => 31,
+                'display'   => 'block', 
+                'style'     => 'width:95%; height: 75px;') );
         
         // note
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'note',
-                'title' => __('Additional information','teachpress'),
-                'label' => __('Note','teachpress'),
-                'type' => 'textarea',
-                'value' => $pub_data['note'],
-                'tabindex' => 32,
-                'display' => 'block', 
-                'style' => 'width:95%; height: 75px;') );
+                'name'      => 'note',
+                'title'     => __('Additional information','teachpress'),
+                'label'     => __('Note','teachpress'),
+                'type'      => 'textarea',
+                'value'     => $pub_data['note'],
+                'tabindex'  => 32,
+                'display'   => 'block', 
+                'style'     => 'width:95%; height: 75px;') );
         
         TP_HTML::div_close('inside');
         TP_HTML::div_close('postbox');
@@ -399,27 +381,27 @@ class TP_Publication_Page {
         $tabindex++;
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'author',
-                'title' => __('The names of the authors, separate by `and`. Example: Mark Twain and Albert Einstein','teachpress'),
-                'label' => __('Author(s)','teachpress'),
-                'type' => 'textarea',
-                'value' => $pub_data['author'],
-                'tabindex' => $tabindex,
-                'display' => 'block', 
-                'style' => 'width:95%; height: 65px;') );
+                'name'      => 'author',
+                'title'     => __('The names of the authors, separate by `and`. Example: Mark Twain and Albert Einstein','teachpress'),
+                'label'     => __('Author(s)','teachpress'),
+                'type'      => 'textarea',
+                'value'     => $pub_data['author'],
+                'tabindex'  => $tabindex,
+                'display'   => 'block', 
+                'style'     => 'width:95%; height: 65px;') );
         
         // editor
         $tabindex++;
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'editor',
-                'title' => __('The names of the editors, separate by `and`. Example: Mark Twain and Albert Einstein','teachpress'),
-                'label' => __('Editor(s)','teachpress'),
-                'type' => 'textarea',
-                'value' => $pub_data['editor'],
-                'tabindex' => $tabindex,
-                'display' => 'block', 
-                'style' => 'width:95%; height: 65px;') );
+                'name'      => 'editor',
+                'title'     => __('The names of the editors, separate by `and`. Example: Mark Twain and Albert Einstein','teachpress'),
+                'label'     => __('Editor(s)','teachpress'),
+                'type'      => 'textarea',
+                'value'     => $pub_data['editor'],
+                'tabindex'  => $tabindex,
+                'display'   => 'block', 
+                'style'     => 'width:95%; height: 65px;') );
         
         // pubdate
         $title = __('Date of publishing','teachpress');
@@ -471,14 +453,14 @@ class TP_Publication_Page {
         // External Image Link
         echo TP_Admin::get_form_field(
             array(
-                'name' => 'image_ext',
-                'title' => __('If you choice an external link target for the image, then you can define the URL of this target here.','teachpress'),
-                'label' => __('External Image Link','teachpress'),
-                'type' => 'input',
-                'value' => $pub_data['image_ext'],
-                'tabindex' => 36,
-                'display' => 'block', 
-                'style' => 'width:90%;') );
+                'name'      => 'image_ext',
+                'title'     => __('If you choice an external link target for the image, then you can define the URL of this target here.','teachpress'),
+                'label'     => __('External Image Link','teachpress'),
+                'type'      => 'input',
+                'value'     => $pub_data['image_ext'],
+                'tabindex'  => 36,
+                'display'   => 'block', 
+                'style'     => 'width:90%;') );
                
         TP_HTML::div_close('inside');
         TP_HTML::div_close('postbox');
