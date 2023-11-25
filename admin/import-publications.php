@@ -148,7 +148,10 @@ class TP_Import_Publication_Page {
         }
 
         // import from PubMed
-        elseif ( $post['tp_pmid'] !== '' ) {
+        elseif ( array_key_exists('tp_pmid', $post) && $post['tp_pmid'] !== '' ) {
+            // Check nonce field
+            TP_Import_Publication_Page::check_nonce_field();
+            
             $settings = array(
                 'overwrite'   => isset( $post['overwrite'] ),
                 'ignore_tags' => isset( $post['ignore_tags'] ),
@@ -157,7 +160,10 @@ class TP_Import_Publication_Page {
         }
 
         // import from Crossref
-        elseif ( $post['tp_crossref'] !== '' ) {
+        elseif ( array_key_exists('tp_crossref', $post) && $post['tp_crossref'] !== '' ) {
+            // Check nonce field
+            TP_Import_Publication_Page::check_nonce_field();
+            
             $settings = array(
                 'overwrite'   => isset( $post['overwrite'] ),
                 'ignore_tags' => isset( $post['ignore_tags'] ),

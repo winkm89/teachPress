@@ -179,10 +179,10 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             $entry['date'] = self::set_date_of_publishing( $entry );
 
 
-
             // Use LaTeX syntax for en-dash ('--') in the page range
             // and convert e.g. '349-60' to '349--360'.
-            $pages = explode( '-', $citation->Pagination->MedlinePgn );
+            $medlinepgn = ( $citation->Pagination->MedlinePgn !== null ) ? $citation->Pagination->MedlinePgn : "";
+            $pages = explode( '-', $medlinepgn );
             if ( count( $pages ) === 2 ) {
                 $missing_digits = strlen( $pages[0] ) - strlen( $pages[1] );
                 if ( $missing_digits > 0 ) {
