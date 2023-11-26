@@ -143,6 +143,7 @@ class TP_Icons {
     private static function web () {
         $web = array(
             'arxiv.org' => 'ai ai-arxiv',
+            'osf.io' => 'ai ai-osf',
             'github.com' => 'fab fa-github',
             'gitlab.com' => 'fab fa-gitlab',
             'mendeley.com' => 'ai ai-mendeley',
