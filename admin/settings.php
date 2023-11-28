@@ -54,8 +54,7 @@ class TP_Settings_Page {
         }
         
         // delete database
-        if ( isset( $_GET['drop_tp'] ) || isset( $_GET['drop_tp_ok'] ) ) {
-            self::check_nonce_field();
+        if ( isset( $_GET['drop_tp'] ) || isset( $_POST['drop_tp_ok'] ) ) {
             TP_Settings_Page::delete_database();
         }
 
@@ -105,7 +104,7 @@ class TP_Settings_Page {
         echo '<form id="form1" name="form1" method="post" action="' . $site . '&amp;tab=' . $tab . '">';
         echo wp_nonce_field( 'verify_teachpress_settings', 'tp_nonce', true, false );
         echo '<input name="page" type="hidden" value="teachpress/settings.php" />';
-        echo '<input name="tab" type="hidden" value="<?php echo $tab; ?>" />';
+        echo '<input name="tab" type="hidden" value="' . $tab . '" />';
 
         /* General */
         if ($tab === '' || $tab === 'general') {
@@ -806,7 +805,7 @@ class TP_Settings_Page {
     }
     
     /**
-     * Hanldes start of database deletion
+     * Handles database deletion
      * @access private
      * @since 5.0.0
      */
@@ -816,11 +815,21 @@ class TP_Settings_Page {
             return;
         }
         
-        if ( isset($_GET['drop_tp']) ) {
-            $message = '<p>' . __('Do you really want to delete all teachpress database tables?','teachpress') . '</p>' . '<a class="button-primary" href="options-general.php?page=teachpress/settings.php&amp;tab=general&amp;drop_tp_ok=1">'. __('OK') . '</a> <a class="button-secondary" href="options-general.php?page=teachpress/settings.php&amp;tab=general">'. __('Cancel') . '</a>';
+        // Form for delete database question
+        if ( isset($_GET['drop_tp']) && ! isset($_POST['drop_tp_ok']) ) {
+            echo '<form id="tp_del_db" method="post">';
+            echo wp_nonce_field( 'verify_teachpress_del_db', 'tp_nonce_del_db', true, false );
+            $message = '<p>' . __('Do you really want to delete all teachpress database tables?','teachpress') . '</p>' . '<button name="drop_tp_ok" class="button-primary">'. __('OK') . '</button> <a class="button-secondary" href="options-general.php?page=teachpress/settings.php&amp;tab=general">'. __('Cancel') . '</a>';
             get_tp_message($message,'orange');
+            echo '</form>';
         }
-        if ( isset($_GET['drop_tp_ok']) ) {
+        
+        // Delete if wp_nonce is ok
+        if ( isset($_POST['drop_tp_ok']) ) {
+            if ( ! wp_verify_nonce( $_POST['tp_nonce_del_db'], 'verify_teachpress_del_db' ) ) {
+                wp_die('teachPress error: This request could not be verified!');
+                exit;
+            }
             tp_uninstall();
             get_tp_message( __('Database uninstalled','teachpress') );
         }
