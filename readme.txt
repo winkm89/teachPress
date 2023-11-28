@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 6.4.1
 Requires PHP: 7.0
-Stable tag: 9.0.5
+Stable tag: 9.0.6
 
 Manage your publications with teachPress 
 
@@ -124,9 +124,13 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 9.0.6 (28.11.2023) =
+* New: Added OSF logo to the links (Thanks to Sven Mayer)
+* Bugfix: Fixes another CSRF vulnerability in tp settings dialog (Thanks to LVT-tholv2k for reporting)
+
 = 9.0.5 (26.11.2023) =
-* Bugfix: Fixed a Cross Site Request Forgery (CSRF) vulnerability in [tp_bibtex] shortcode
-* Bugfix: Fixed Cross Site Request Forgery (CSRF) vulnerabilities in teachPress admin screens
+* Bugfix: Fixed a Cross Site Request Forgery (CSRF) vulnerability in [tp_bibtex] shortcode (Thanks to LVT-tholv2k for reporting)
+* Bugfix: Fixed Cross Site Request Forgery (CSRF) vulnerabilities in teachPress admin screens (Thanks to LVT-tholv2k for reporting)
 * Bugfix: Return proper string value in filter hook handler. (Thanks to Tobias Bäthge) (#242)
 
 = 9.0.4 (24.07.2023) = 
