@@ -723,36 +723,33 @@ class TP_Bibtex {
      * @access public
      * @uses BIBTEXCREATORPARSE()    This class is a part of bibtexParse
      */
-    public static function parse_author_default ($input, $separator = ';', $mode = 'initials') {
+    public static function parse_author_default ($input, $separator = ';', $mode = 'initials', $max_authors_display = 3) {
         $creator = new BIBTEXCREATORPARSE();
         $creator->separateInitials = false;
         $creatorArray = $creator->parse($input);
         $all_authors = '';
         $max = count($creatorArray);
-        for ( $i = 0; $i < $max; $i++ ) {
+        $display_count = ($max > $max_authors_display) ? $max_authors_display : $max; // Calculate display count based on condition
+        for ( $i = 0; $i < $display_count; $i++ ) {
             $one_author = '';
-            /* 
-             * Set the author name together with the parsing result of bibtexParse
-             * 
-             * $creatorArray[][0] => firstname
-             * $creatorArray[][1] => initials
-             * $creatorArray[][2] => surname
-             * $creatorArray[][3] => jr
-             * $creatorArray[][4] => von
-            */
-            if ($creatorArray[$i][4] != '') { $one_author .= trim($creatorArray[$i][4]);}
-            if ($creatorArray[$i][3] != '') { $one_author = trim($creatorArray[$i][3]);}
-            if ($creatorArray[$i][2] != '') { $one_author .= ' ' .trim($creatorArray[$i][2]) . ',';}
-            if ($creatorArray[$i][0] != '') { $one_author .= ' ' .trim($creatorArray[$i][0]);}
+            // Existing logic to construct author name...
+            if ($creatorArray[$i][4] != '') { $one_author .= trim($creatorArray[$i][4]); }
+            if ($creatorArray[$i][3] != '') { $one_author = trim($creatorArray[$i][3]); }
+            if ($creatorArray[$i][2] != '') { $one_author .= ' ' .trim($creatorArray[$i][2]) . ','; }
+            if ($creatorArray[$i][0] != '') { $one_author .= ' ' .trim($creatorArray[$i][0]); }
             if ( $mode == 'initials' && $creatorArray[$i][1] != '' ) { 
                 $one_author .= ' ' .trim($creatorArray[$i][1]);
             }
-            
-            // Add author to the main result
+
+            // Append author to the main result
             $all_authors .= stripslashes($one_author);
-            if ( $i < count($creatorArray) -1 ) {
+            if ( $i < $display_count - 1 ) {
                 $all_authors .= $separator . ' ';
             }
+        }
+        // If there are more authors than the display limit, append "et al."
+        if ($max > $max_authors_display) {
+            $all_authors .= $separator . ' et al.';
         }
         return $all_authors;
     }
