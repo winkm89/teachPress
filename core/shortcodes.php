@@ -1105,6 +1105,9 @@ function tp_links_shortcode ($atts) {
  *      @type int show_search_filter       0 (false) or 1 (true), default: 1
  *      @type int show_year_filter         0 (false) or 1 (true), default: 1
  *      @type int show_bibtex              Show bibtex container under each entry (1) or not (0), default: 1
+ *      @type int show_comment             Show comment as a container, default: 0
+ *      @type string comment_text          Set the text used for the comment link, if shown. Default: 'Comment'
+ *      @type string comment_tooltip       Set the tooltip text for the comment link, if shown. Default: 'Show comment'
  *      @type string container_suffix      a suffix which can optionally set to modify container IDs in publication lists. It's not set by default.
  *      @type string filter_class          The CSS class for filter/select menus, default: default
  *      @type int show_altmetric_donut     0 (false) or 1 (true), default: 0
@@ -1161,6 +1164,9 @@ function tp_publist_shortcode ($args) {
         'show_search_filter'    => 1,
         'show_year_filter'      => 1,
         'show_bibtex'           => 1,
+        'show_comment'          => 0,
+        'comment_text'          => 'Comment',
+        'comment_tooltip'       => 'Show comment',
         'container_suffix'      => '',
         'filter_class'          => 'default',
         'custom_filter'         => '',
@@ -1198,6 +1204,9 @@ function tp_publist_shortcode ($args) {
         'show_year_filter'      => ( $atts['show_year_filter'] == '1' ) ? true : false,
         'show_search_filter'    => ( $atts['show_search_filter'] == '1' ) ? true : false,
         'show_bibtex'           => ( $atts['show_bibtex'] == '1' ) ? true : false,
+        'show_comment'          => ( $atts['show_comment'] == '1') ? true : false,
+        'comment_text'          => htmlspecialchars($atts['comment_text']),
+        'comment_tooltip'       => htmlspecialchars($atts['comment_tooltip']),
         'show_tags_as'          => htmlspecialchars($atts['show_tags_as']),
         'tag_limit'             => intval($atts['tag_limit']),
         'hide_tags'             => htmlspecialchars($atts['hide_tags']),
@@ -1567,6 +1576,9 @@ function tp_cloud_shortcode($atts) {
         'show_search_filter'        => 0,
         'show_year_filter'          => 1,
         'show_bibtex'               => 1,
+        'show_comment'              => 0,
+        'comment_text'              => 'Comment',
+        'comment_tooltip'           => 'Show comment',
         'container_suffix'          => '',
         'show_altmetric_donut'      => 0,
         'show_altmetric_entry'      => 0,
@@ -1624,6 +1636,9 @@ function tp_list_shortcode($atts){
        'entries_per_page'           => 50,
        'sort_list'                  => '',
        'show_bibtex'                => 1,
+       'show_comment'               => 0,
+       'comment_text'               => 'Comment',
+       'comment_tooltip'            => 'Show comment',
        'show_type_filter'           => 0,
        'show_author_filter'         => 0,
        'show_in_author_filter'      => '',
@@ -1685,6 +1700,9 @@ function tp_search_shortcode ($atts) {
        'entries_per_page'           => 20,
        'sort_list'                  => '',
        'show_bibtex'                => 1,
+       'show_comment'               => 0,
+       'comment_text'               => 'Comment',
+       'comment_tooltip'            => 'Show comment',
        'show_tags_as'               => 'none',
        'show_author_filter'         => 0,
        'show_in_author_filter'      => '',
