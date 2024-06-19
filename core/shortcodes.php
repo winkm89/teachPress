@@ -1055,6 +1055,7 @@ function tp_links_shortcode ($atts) {
 
 /**
  * General interface for [tpcloud], [tplist] and [tpsearch]
+
  *
  * Parameters from $_GET:
  *      $yr (INT)               Year
@@ -1073,6 +1074,7 @@ function tp_links_shortcode ($atts) {
  *      @type string year                  one or more years (separated by comma)
  *      @type string exclude               one or more IDs of publications you don't want to show (separated by comma)
  *      @type string include               one or more IDs of publications you want to show (separated by comma)
+ *      @type string meta_keys             Meta keys array, in the format "key1=value1;key2=value2;...", where each "value" may be a comma-separated string
  *      @type string include_editor_as_author  0 (false) or 1 (true), default: 1
  *      @type string order                 title, year, bibtex or type, default: date DESC
  *      @type int headline                 show headlines with years(1), with publication types(2), with years and types (3), with types and years (4) or not(0), default: 1
@@ -1128,6 +1130,7 @@ function tp_publist_shortcode ($args) {
         'years_between'         => '',
         'exclude'               => '',
         'include'               => '',
+        'meta_keys'             => '',
         'include_editor_as_author' => 1,
         'order'                 => 'date DESC',
         'headline'              => 1,
@@ -1257,6 +1260,23 @@ function tp_publist_shortcode ($args) {
 
     // Add values for custom filters
     $meta_key_search = [];
+
+    if ( $atts['meta_keys'] !== '' ) {
+        $meta_kvs = explode( ";", htmlspecialchars($atts['meta_keys']) );
+        foreach ( $meta_kvs as $meta_kv ) {
+            // skips the iteration if there is no "=" or if it's the first char
+            if ( !strpos($meta_kv, '=') ) {
+                continue;
+            }
+            $parts = explode( "=", $meta_kv );
+            if ( $parts[1] !== '' ) {
+                $k = $parts[0];
+                $v = $parts[1];
+                $sql_parameter[$k] = $filter_parameter[$k] = $meta_key_search[$k] = $v;
+            }
+        }
+    }
+
     if ( $settings['custom_filter'] !== '' ) {
         $custom_fields = explode(',', $settings['custom_filter']);
         foreach ( $custom_fields as $field ) {
@@ -1602,6 +1622,7 @@ function tp_list_shortcode($atts){
        'years_between'              => '',
        'exclude'                    => '',
        'include'                    => '',
+       'meta_keys'                  => '',
        'include_editor_as_author'   => 1,
        'exclude_tags'               => '',
        'exclude_types'              => '',
