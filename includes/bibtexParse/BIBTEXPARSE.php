@@ -81,8 +81,26 @@ This array will be empty unless the following condition is met:
  */
 class BIBTEXPARSE {
 
+    public array $preamble;
+    public array $strings;
+    public array $undefinedStrings;
+    public array $entries;
+    public int $count;
+    public bool $fieldExtract;
+    public bool $removeDelimit;
+    public bool $expandMacro;
+    public bool $parseFile;
+    public bool $outsideEntry;
+	public array $userStrings= [];
+	public array $bibtexString = [];
+	public int $currentLine;
+
     public function __construct() {
-        $this->preamble = $this->strings = $this->undefinedStrings = $this->entries = array();
+        $this->preamble = [];
+        $this->strings = [];
+        $this->undefinedStrings = [];
+        $this->entries = [];
+
         $this->count = 0;
         $this->fieldExtract = TRUE;
         $this->removeDelimit = TRUE;
