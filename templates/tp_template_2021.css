@@ -39,6 +39,8 @@ div.tp_pub_number {
     word-wrap: break-word;}
 .tp_abstract_entry {
     font-size: 1.0rem;}
+.tp_comment_entry {
+    font-size: 1.0rem;}
 .tp_pub_author, #content p.tp_pub_author {
     font-size:1.0rem; 
     margin-bottom:1px; 

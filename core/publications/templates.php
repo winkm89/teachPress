@@ -477,13 +477,13 @@ class TP_HTML_Publication_Template {
             $is_button = true;
         }
 
-	// Comment
-	if ( $settings['show_comment'] && $row['comment'] != '' ) {
-	    $link_text = isset($settings['comment_text']) ? $settings['comment_text'] : 'Comment';
-            $link_tooltip = isset($settings['comment_tooltip']) ? $settings['comment_tooltip'] : 'Show comment';
+        // Comment
+        if ( $settings['show_comment'] && $row['comment'] != '' ) {
+            $link_text = ( $settings['comment_text'] != '' ) ? $settings['comment_text'] : __('Comment', 'teachpress');
+            $link_tooltip = ( $settings['comment_tooltip'] != '' ) ? $settings['comment_tooltip'] : __('Show comment', 'teachpress');
             $comment = self::get_info_button($link_text, $link_tooltip, 'comment', $container_id) . $separator;
             $is_button = true;
-	}
+        }
 
         // if there is an abstract
         if ( $row['abstract'] != '' ) {
