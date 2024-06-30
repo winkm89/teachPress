@@ -1081,7 +1081,7 @@ function tp_links_shortcode ($atts) {
  *      @type string user                  the WordPress IDs or login names of on or more users (separated by commas)
  *      @type string tag                   tag IDs (separated by comma)
  *      @type string type                  the publication types you want to show (separated by comma)
- *      @type string author                author IDs (separated by comma)
+ *      @type string author                author IDs or names (separated by comma). If the entry is numeric then it is interpreted as an ID, otherwise as an author name.
  *      @type string year                  one or more years (separated by comma)
  *      @type string exclude               one or more IDs of publications you don't want to show (separated by comma)
  *      @type string include               one or more IDs of publications you want to show (separated by comma)
