@@ -217,7 +217,7 @@ class TP_Publication_Template_API {
     public function get_type($container = 'span') {
         $type = $this->data['row']['type'];
         if ( $container !== '' ) {
-            return '<' . $container . ' class="tp_pub_type ' . $type . '">' . tp_translate_pub_type($type) . '</' . $container . '>';
+            return '<' . $container . ' class="tp_pub_type tp_  ' . $type . '">' . tp_translate_pub_type($type) . '</' . $container . '>';
         }
         return $type;
     }
