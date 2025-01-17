@@ -904,7 +904,7 @@ function tp_ref_shortcode($atts) {
  */
 function tp_single_shortcode ($atts) {
     global $tp_single_publication;
-    $param = shortcode_atts(array(
+    $param = shortcode_atts([
        'id'                 => 0,
        'key'                => '',
        'author_name'        => 'simple',
@@ -916,9 +916,9 @@ function tp_single_shortcode ($atts) {
        'image_size'         => 0,
        'meta_label_in'      => __('In','teachpress') . ': ',
        'link'               => ''
-    ), $atts);
+    ], $atts);
 
-    $settings = array(
+    $settings = [
        'author_name'        => htmlspecialchars($param['author_name']),
        'editor_name'        => htmlspecialchars($param['editor_name']),
        'author_separator'   => htmlspecialchars($param['author_separator']),
@@ -927,7 +927,7 @@ function tp_single_shortcode ($atts) {
        'style'              => 'simple',
        'meta_label_in'      => htmlspecialchars($param['meta_label_in']),
        'use_span'           => true
-    );
+    ];
 
     // Set publication
     if ( $param['key'] != '' ) {
@@ -937,6 +937,11 @@ function tp_single_shortcode ($atts) {
         $publication = TP_Publications::get_publication($param['id'], ARRAY_A);
     }
     $tp_single_publication = $publication;
+    
+    // Return if there os no publication
+    if ( !is_array($publication ) ) {
+        return;
+    }
 
     // Set author name
     if ( $publication['type'] === 'collection' || $publication['type'] === 'periodical' || ( $publication['author'] === '' && $publication['editor'] !== '' ) ) {
@@ -993,6 +998,11 @@ function tp_bibtex_shortcode ($atts) {
 
     $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
     $publication = TP_Shortcodes::set_publication($param, $tp_single_publication);
+    
+    // Return if there os no publication
+    if ( !is_array($publication ) ) {
+        return;
+    }
 
     $tags = TP_Tags::get_tags( array('pub_id' => $publication['pub_id'], 'output_type' => ARRAY_A) );
 
