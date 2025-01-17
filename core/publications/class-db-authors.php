@@ -21,6 +21,7 @@ class TP_Authors  {
     * In this case you should ignore the columns con_id and pub_id from return   
     * 
     * @param array $args {
+    *       @type string author         Author names (separated by comma)
     *       @type string author_id      Author IDs (separated by comma)
     *       @type string pub_id         Publication IDs (separated by comma)
     *       @type string user           User IDs (separated by comma)
@@ -39,6 +40,7 @@ class TP_Authors  {
     */
     public static function get_authors ( $args = array() ) {
         $defaults = array(
+           'author'             => '',
            'author_id'          => '',
            'pub_id'             => '',
            'user'               => '',
@@ -74,7 +76,9 @@ class TP_Authors  {
         $search = esc_sql(htmlspecialchars(stripslashes($atts['search'])));
         
         $nwhere = array();
-        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::compose_clause( array(
+                    TP_DB_Helpers::generate_where_clause($atts['author'], "r.name", "OR", "="),
+                    TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=")), "OR", '' );
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['pub_id'], "r.pub_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['exclude'], "r.author_id", "AND", "!=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
