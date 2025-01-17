@@ -302,6 +302,10 @@ class TP_Import_Publication_Page {
      * @since 6.0.0
      */
     public static function show_results($entries, $mode = 'history') {
+        
+        if ( !is_array($entries) ) {
+            $entries = [];
+        }
 
         // WordPress User information
         $current_user = wp_get_current_user();
