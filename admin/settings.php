@@ -66,14 +66,14 @@ class TP_Settings_Page {
 
         // delete settings
         if ( isset( $_GET['delete'] ) ) {
-            self::check_nonce_field();
+            self::check_nonce_url();
             TP_Options::delete_option($_GET['delete']);
             get_tp_message(__('Deleted', 'teachpress'));
         }
         
         // Delete data field
         if ( isset( $_GET['delete_field'] ) || isset( $_GET['delete_field_ok'] ) ) {
-            self::check_nonce_field();
+            self::check_nonce_url();
             TP_Settings_Page::delete_meta_fields($tab);
         }
 
@@ -395,6 +395,8 @@ class TP_Settings_Page {
                     TP_Options::add_option($_POST['new_' . $field->variable], $_POST['new_' . $field->variable], $field->variable);
                 }
             }
+            
+            // Switch class style per row
             if ( $class_alternate === true ) {
                 $tr_class = 'class="alternate"';
                 $class_alternate = false;
@@ -403,10 +405,13 @@ class TP_Settings_Page {
                 $tr_class = '';
                 $class_alternate = true;
             }
+            
+            $del_url_nonce = wp_nonce_url('options-general.php?page=teachpress/settings.php&amp;delete_field=' . $field->setting_id . '&amp;tab=' . $tab, 'verify_teachpress_settings', 'tp_nonce');
+            
             echo '<tr ' . $tr_class . '>
                 <td>' . $field->variable . '
                     <div class="tp_row_actions">
-                    <a class="tp_edit_meta_field" title="' . __('Click to edit','teachpress') . '" href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&meta_field_id=' . $field->setting_id . '">' . __('Edit','teachpress') . '</a> | <a class="tp_row_delete" title="' . __('Delete','teachpress') . '" href="options-general.php?page=teachpress/settings.php&amp;delete_field=' . $field->setting_id . '&amp;tab=' . $tab . '">' . __('Delete','teachpress') . '</a>
+                    <a class="tp_edit_meta_field" title="' . __('Click to edit','teachpress') . '" href="' . admin_url( 'admin-ajax.php' ) . '?action=teachpress&meta_field_id=' . $field->setting_id . '">' . __('Edit','teachpress') . '</a> | <a class="tp_row_delete" title="' . __('Delete','teachpress') . '" href="' .  $del_url_nonce . '">' . __('Delete','teachpress') . '</a>
                     </div>
                 </td>
                 <td>';
@@ -445,7 +450,7 @@ class TP_Settings_Page {
             $args1 = array ( 
                  'element_title'    => __('Name','teachpress'),
                  'count_title'      => __('Number of students','teachpress'),
-                 'delete_title'     => __('Delete elemtent','teachpress'),
+                 'delete_title'     => __('Delete element','teachpress'),
                  'add_title'        => __('Add element','teachpress'),
                  'tab'              => $tab
                  );
@@ -733,7 +738,7 @@ class TP_Settings_Page {
         }
         
         if ( isset($_GET['delete_field']) ) {
-            $message = '<p>' . __('Do you really want to delete the selected meta field?','teachpress') . '</p>' . '<a class="button-primary" href="options-general.php?page=teachpress/settings.php&amp;delete_field_ok=' . intval($_GET['delete_field']) . '&amp;tab=' . $tab . '">'. __('OK') . '</a> <a class="button-secondary" href="options-general.php?page=teachpress/settings.php&amp;tab=student_data">'. __('Cancel') . '</a>';
+            $message = '<p>' . __('Do you really want to delete the selected meta field?','teachpress') . '</p>' . '<a class="button-primary" href="options-general.php?page=teachpress/settings.php&amp;delete_field_ok=' . intval($_GET['delete_field']) . '&amp;tab=' . $tab . '&amp;tp_nonce=' . htmlspecialchars($_GET['tp_nonce']) . '">'. __('OK') . '</a> <a class="button-secondary" href="options-general.php?page=teachpress/settings.php&amp;tab=student_data">'. __('Cancel') . '</a>';
             get_tp_message($message,'orange');
         }
         if ( isset($_GET['delete_field_ok']) ) {
@@ -841,6 +846,18 @@ class TP_Settings_Page {
     private static function check_nonce_field () {
         if ( ! isset( $_POST['tp_nonce'] ) 
             || ! wp_verify_nonce( $_POST['tp_nonce'], 'verify_teachpress_settings' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
+        }
+    }
+    
+    /**
+     * Checks the nonce field of an url. If the check fails wp_die() will be executed
+     */
+    private static function check_nonce_url () {
+        if ( ! isset( $_GET['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_GET['tp_nonce'], 'verify_teachpress_settings' ) 
         ) {
            wp_die('teachPress error: This request could not be verified!');
            exit;

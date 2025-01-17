@@ -386,6 +386,7 @@ class TP_Admin {
         $row = $wpdb->get_results($sql);
         $class_alternate = true;
         foreach ($row as $row) {
+            // Switch class style per row
             if ( $class_alternate === true ) {
                 $tr_class = 'class="alternate"';
                 $class_alternate = false;
@@ -394,8 +395,11 @@ class TP_Admin {
                 $tr_class = '';
                 $class_alternate = true;
             }
+            
+            $del_url_nonce = wp_nonce_url('options-general.php?page=teachpress/settings.php&amp;delete=' . $row->setting_id . '&amp;tab=' . $options['tab'], 'verify_teachpress_settings', 'tp_nonce');
+            
             echo '<tr ' . $tr_class . '>';
-            echo '<td><a title="' . $options['delete_title'] . '" href="options-general.php?page=teachpress/settings.php&amp;delete=' . $row->setting_id . '&amp;tab=' . $options['tab'] . '" class="teachpress_delete">X</a></td>';
+            echo '<td><a title="' . $options['delete_title'] . '" href="' . $del_url_nonce . '" class="teachpress_delete">X</a></td>';
             echo '<td>' . stripslashes($row->value) . '</td>';
             if ( $type === 'term' || $type === 'course_of_studies' || $type === 'type' ) {
                 echo '<td>' . $row->number . '</td>';

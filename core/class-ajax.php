@@ -268,14 +268,14 @@ class TP_Ajax {
         $meta_field_id = intval( $meta_field_id );
         if ( $meta_field_id === 0 ) {
             $data = array(
-                'name' => '',
-                'title' => '',
-                'type' => '',
-                'min' => '',
-                'max' => '',
-                'step' => '',
-                'visibility' => '',
-                'required'
+                'name'          => '',
+                'title'         => '',
+                'type'          => '',
+                'min'           => '',
+                'max'           => '',
+                'step'          => '',
+                'visibility'    => '',
+                'required'      => ''
             );
         }
         else {
@@ -292,6 +292,7 @@ class TP_Ajax {
         echo '<body>';
         echo '<div id="content">';
         echo '<form method="post">';
+        echo wp_nonce_field( 'verify_teachpress_settings', 'tp_nonce', true, false );
         echo '<input name="field_edit" type="hidden" value="' . $meta_field_id . '">';
         echo '<table class="form-table">';
         
