@@ -80,8 +80,8 @@ a.tp_search_reset:hover {color:red;}
 /* numbered style */
 td.tp_pub_number, td.tp_pub_number_simple {vertical-align: top; padding: 8px; border-bottom: 1px solid silver;}
 
-/* abstract, bibtex, link boxes */
-.tp_bibtex_entry, .tp_abstract_entry, .tp_links_entry{padding:8px 8px 8px 8px;}
+/* abstract, bibtex, comment, link boxes */
+.tp_bibtex_entry, .tp_abstract_entry, .tp_comment_entry, .tp_links_entry{padding:8px 8px 8px 8px;}
 .tp_close_menu {margin-top:1px; margin-bottom:1px;}
 .tp_close {cursor:pointer; font-weight: bold;}
 .tp_pub_link img {margin: 0; width: 17px; height: 17px; padding: 0 1px 0 1px; display: inline;}
