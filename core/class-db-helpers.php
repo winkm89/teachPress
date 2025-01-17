@@ -45,7 +45,7 @@ class TP_DB_Helpers {
      */
     public static function generate_where_clause($input, $column, $connector = 'AND', $operator = '=', $pattern = '') {
         $end = '';
-        if ($input === '' || $input === 0) {
+        if ($input === '' || $input === 0 || $input === null) {
             return;
         }
         
