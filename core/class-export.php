@@ -184,20 +184,23 @@ class TP_Export {
      * @param string $format - bibtex or rtf
      * @sinsce 4.2.0 
      */
-    public static function get_publications($user_id, $format = 'bibtex') {
-        $user_id = intval($user_id);
+    public static function get_publications($user_id, $format = 'bibtex', $private_comments = false) {
         
         // Try to set the time limit for the script
         set_time_limit(TEACHPRESS_TIME_LIMIT);
         
-        $row = TP_Publications::get_publications( array('user' => $user_id, 'output_type' => ARRAY_A) );
+        $row = TP_Publications::get_publications( array('user' => intval($user_id), 'output_type' => ARRAY_A) );
+        
+        // Export BibTeX
         if ( $format === 'bibtex' ) {
             $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
             foreach ($row as $row) {
                 $tags = TP_Tags::get_tags( array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A ) );
-                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex, $private_comments);
             }
-        }     
+        }
+        
+        // Export RTF
         if ( $format === 'rtf' ) {
             echo self::rtf($row);
         }

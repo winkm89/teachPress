@@ -412,6 +412,10 @@ class TP_Import_Publication_Page {
                     </select>
                 </td>
             </tr>
+            <tr>
+                <th style="width: 150px;"><?php _e('BibTeX Additions'); ?></th>
+                <td><input name="tp_private_comment" id="tp_private_comment" type="checkbox"/> <label for="tp_private_comment"><?php _e('Include private comment'); ?></label></td>
+            </tr>
         </table>
         <p><input name="tp_submit_2" type="submit" class="button-primary" value="<?php _e('Export'); ?>"/></p>
         </form>

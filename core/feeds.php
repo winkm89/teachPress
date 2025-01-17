@@ -121,6 +121,7 @@ function tp_pub_bibtex_feed_func () {
  */
 function tp_export_feed_func() {
     $key = isset ( $_GET['key'] ) ? $_GET['key'] : '';
+
     // Export single publication
     if ( $key != '' ) {
         header('Content-Type: text/plain; charset=utf-8' );
@@ -133,6 +134,7 @@ function tp_export_feed_func() {
         $course_id = isset ( $_GET['course_id'] ) ? intval($_GET['course_id']) : 0;
         $user_id = isset ( $_GET['tp_user'] ) ? intval($_GET['tp_user']) : 0;
         $format = isset ( $_GET['tp_format'] ) ?  htmlspecialchars($_GET['tp_format']) : '';
+        $private_comment = isset ( $_GET['tp_private_comment'] ) ? true : false;
         $sel = isset ( $_GET['tp_sel'] ) ?  htmlspecialchars($_GET['tp_sel']) : '';
         $filename = 'teachpress_course_' . $course_id . '_' . date('dmY');
 
@@ -159,7 +161,7 @@ function tp_export_feed_func() {
                 echo '% This file was created with teachPress ' . get_tp_version() . chr(13) . chr(10);
                 echo '% Encoding: ' . $encoding . chr(13) . chr(10) . chr(13) . chr(10);
                 if ( $sel == '' ) {
-                    TP_Export::get_publications($user_id);
+                    TP_Export::get_publications($user_id,'bibtex', $private_comment);
                 }
                 else {
                     TP_Export::get_selected_publications($sel);
@@ -168,7 +170,7 @@ function tp_export_feed_func() {
             if ( $format === 'txt' ) {
                 header('Content-Type: text/plain; charset=utf-8' );
                 header("Content-Disposition: attachment; filename=" . $filename . ".txt");
-                TP_Export::get_publications($user_id,'bibtex');
+                TP_Export::get_publications($user_id,'bibtex', $private_comment);
             }
             if ( $format === 'rtf' ) {
                 header('Content-Type: text/plain; charset=utf-8' );

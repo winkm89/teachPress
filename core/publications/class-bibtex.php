@@ -308,12 +308,13 @@ class TP_Bibtex {
      * @param array $row
      * @param array $all_tags               optional
      * @param boolean $convert_bibtex       Flag for the utf-8 to TeX char convertion, Default is false
+     * @param boolean $private_comment      Flag for adding private notes or not, Default is false
      * @return string
      * @since 3.0.0
     */
-    public static function get_single_publication_bibtex ($row, $all_tags = '', $convert_bibtex = false) {
+    public static function get_single_publication_bibtex ($row, $all_tags = '', $convert_bibtex = false, $private_comment = false) {
         $string = '';
-        $pub_fields = array('type', 'bibtex', 'title', 'author', 'editor', 'url', 'doi', 'isbn', 'date', 'urldate', 'booktitle', 'issuetitle', 'journal', 'volume', 'number', 'issue', 'pages', 'publisher', 'address', 'edition', 'chapter', 'institution', 'organization', 'school', 'series', 'crossref', 'abstract', 'howpublished', 'key', 'techtype', 'note');
+        $pub_fields = ['type', 'bibtex', 'title', 'author', 'editor', 'url', 'doi', 'isbn', 'date', 'urldate', 'booktitle', 'issuetitle', 'journal', 'volume', 'number', 'issue', 'pages', 'publisher', 'address', 'edition', 'chapter', 'institution', 'organization', 'school', 'series', 'crossref', 'abstract', 'howpublished', 'key', 'techtype', 'note'];
         $isbn_label = ( $row['is_isbn'] == 1 ) ? 'isbn' : 'issn';
         
         // initial string
@@ -379,6 +380,12 @@ class TP_Bibtex {
         }
         else {
             $string .= 'keywords = {}';
+        }
+        
+        // Add private comment
+        if ( $private_comment === true ) {
+            $string .= ',' . chr(13) . chr(10);
+            $string .= 'annote = {' . TP_HTML::convert_special_chars( stripslashes($row['comment'])) . '}';
         }
         
         // Add teachPress/biblatex extensions
