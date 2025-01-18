@@ -175,10 +175,11 @@ class TP_Publications {
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['tag'], "b.tag_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['tag_name'], "t.name", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['key'], "p.bibtex", "OR", "=");
-        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=");
+        $nwhere[] = TP_DB_Helpers::compose_clause( array(
+                    TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "="),
+                    TP_DB_Helpers::generate_where_clause($atts['author'], "p.author", "OR", "LIKE", '%')), "OR", '' );
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['import_id'], "p.import_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['editor'], "p.editor", "OR", "LIKE", '%');
-        $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['author'], "p.author", "OR", "LIKE", '%');
         $nwhere[] = ( $atts['author_id'] != '' && $atts['include_editor_as_author'] === false) ? " AND ( r.is_author = 1 ) " : null;
         $nwhere[] = ( $search != '') ? $search : null;
         
@@ -218,9 +219,10 @@ class TP_Publications {
             // get_tp_message($sql,'red');
         }
         else {
+
             $sql = "SELECT COUNT( pub_id ) AS `count` FROM ( $select_for_count $join $where $having) p ";
         }
-        
+
         $sql = ( $count != true ) ? $wpdb->get_results($sql, $atts['output_type']): $wpdb->get_var($sql);
         return $sql;
     }

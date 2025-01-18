@@ -70,8 +70,20 @@ class TP_Shortcodes {
             // Use the visible filter o the SQL parameter
             $author_id = ($filter_parameter['show_in_author_filter'] !== '') ? $filter_parameter['show_in_author_filter'] : $filter_parameter['author_preselect'];
 
+            $author_ids = '';
+            $author_names = '';
+            $authors = explode(",", $author_id);
+            foreach ( $authors as $author ) {
+                if ( ctype_digit($author) ) {
+                    $author_ids .= $author . ',';
+                } else {
+                    $author_names .= $author . ',';
+                }
+            }
+
             $row = TP_Authors::get_authors( array( 'user'           => $sql_parameter['user'],
-                                                   'author_id'      => $author_id,
+                                                   'author'         => $author_names,
+                                                   'author_id'      => $author_ids,
                                                    'output_type'    => ARRAY_A,
                                                    'group_by'       => true ) );
             $defaults['url_slug'] = 'auth';
@@ -1080,7 +1092,7 @@ function tp_links_shortcode ($atts) {
  *      @type string user                  the WordPress IDs or login names of on or more users (separated by commas)
  *      @type string tag                   tag IDs (separated by comma)
  *      @type string type                  the publication types you want to show (separated by comma)
- *      @type string author                author IDs (separated by comma)
+ *      @type string author                author IDs or names (separated by comma). If the entry is numeric then it is interpreted as an ID, otherwise as an author name.
  *      @type string year                  one or more years (separated by comma)
  *      @type string exclude               one or more IDs of publications you don't want to show (separated by comma)
  *      @type string include               one or more IDs of publications you want to show (separated by comma)
@@ -1437,6 +1449,18 @@ function tp_publist_shortcode ($args) {
         $sql_parameter['order'] = "year DESC, type ASC, date DESC";
     }
 
+    // Separate authors names from authors IDs
+    $author_ids = '';
+    $author_names = '';
+    $authors = explode(",", $sql_parameter['author']);
+    foreach ( $authors as $author ) {
+        if ( ctype_digit($author) ) {
+            $author_ids .= $author . ',';
+        } else {
+            $author_names .= $author . ',';
+        }
+    }
+
     // Parameters for returning publications
     $args = array(
         'tag'                       => $sql_parameter['tag'],
@@ -1446,7 +1470,8 @@ function tp_publist_shortcode ($args) {
         'type'                      => $sql_parameter['type'],
         'user'                      => $sql_parameter['user'],
         'search'                    => $filter_parameter['search'],
-        'author_id'                 => $sql_parameter['author'],
+        'author'                    => $author_names,
+        'author_id'                 => $author_ids,
         'order'                     => $sql_parameter['order'],
         'exclude'                   => $sql_parameter['exclude'],
         'exclude_tags'              => $sql_parameter['exclude_tags'],
