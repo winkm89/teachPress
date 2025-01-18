@@ -198,8 +198,10 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
             // Read authors
             if ( isset( $work->author ) ) {
                 foreach ( $work->author as $author ) {
-                    $entry['author'] .= $author->given . " "
-                                     . $author->family;
+                    $author_given = isset($author->given) ? $author->given : '';
+                    $author_family = isset($author->family) ? $author->family : '';
+                    $entry['author'] .= $author_given . " "
+                                     . $author_family;
                     if ( $author !== end( $work->author ) ) {
                         $entry['author'] .= " and ";
                     }
@@ -209,8 +211,10 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
             // Read editors
             if ( isset( $work->editor ) ) {
                 foreach ( $work->editor as $editor ) {
-                    $entry['editor'] .= $editor->given . " "
-                                     . $editor->family;
+                    $editor_given = isset($editor->given) ? $editor->given : '';
+                    $editor_family = isset($editor->family) ? $editor->family : '';
+                    $entry['editor'] .= $editor_given . " "
+                                     . $editor_family;
                     if ( $editor !== end( $work->editor ) ) {
                         $entry['editor'] .= " and ";
                     }
