@@ -135,6 +135,7 @@ function tp_export_feed_func() {
         $user_id = isset ( $_GET['tp_user'] ) ? intval($_GET['tp_user']) : 0;
         $format = isset ( $_GET['tp_format'] ) ?  htmlspecialchars($_GET['tp_format']) : '';
         $private_comment = isset ( $_GET['tp_private_comment'] ) ? true : false;
+        $convert_bibtex = isset ( $_GET['tp_convert_bibtex'] ) ? true : false;
         $sel = isset ( $_GET['tp_sel'] ) ?  htmlspecialchars($_GET['tp_sel']) : '';
         $filename = 'teachpress_course_' . $course_id . '_' . date('dmY');
 
@@ -154,23 +155,23 @@ function tp_export_feed_func() {
         // Export publication lists
         if ( $type === 'pub' ) {
             $filename = 'teachpress_pub_' . date('dmY');
-            $encoding = ( get_tp_option('convert_bibtex') == '1' ) ? 'Cp1252' : 'UTF-8';
+            $encoding = ( $convert_bibtex == true ) ? 'Cp1252' : 'UTF-8';
             if ( $format === 'bib' ) {
                 header('Content-Type: text/plain; charset=utf-8' );
                 header("Content-Disposition: attachment; filename=" . $filename . ".bib");
                 echo '% This file was created with teachPress ' . get_tp_version() . chr(13) . chr(10);
                 echo '% Encoding: ' . $encoding . chr(13) . chr(10) . chr(13) . chr(10);
                 if ( $sel == '' ) {
-                    TP_Export::get_publications($user_id,'bibtex', $private_comment);
+                    TP_Export::get_publications($user_id,'bibtex', $convert_bibtex, $private_comment);
                 }
                 else {
-                    TP_Export::get_selected_publications($sel);
+                    TP_Export::get_selected_publications($sel,'bibtex', $convert_bibtex, $private_comment);
                 }
             }
             if ( $format === 'txt' ) {
                 header('Content-Type: text/plain; charset=utf-8' );
                 header("Content-Disposition: attachment; filename=" . $filename . ".txt");
-                TP_Export::get_publications($user_id,'bibtex', $private_comment);
+                TP_Export::get_publications($user_id,'bibtex', false, $private_comment);
             }
             if ( $format === 'rtf' ) {
                 header('Content-Type: text/plain; charset=utf-8' );

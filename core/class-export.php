@@ -182,9 +182,11 @@ class TP_Export {
      * Export publications
      * @param int $user_id 
      * @param string $format - bibtex or rtf
+     * @param boolean $convert_bibtex   Convert utf-8 chars to bibtex special chars, default: false
+     * @param boolean $private_comments Add private comments as annote field, default: false
      * @sinsce 4.2.0 
      */
-    public static function get_publications($user_id, $format = 'bibtex', $private_comments = false) {
+    public static function get_publications($user_id, $format = 'bibtex', $convert_bibtex = false, $private_comments = false) {
         
         // Try to set the time limit for the script
         set_time_limit(TEACHPRESS_TIME_LIMIT);
@@ -193,7 +195,6 @@ class TP_Export {
         
         // Export BibTeX
         if ( $format === 'bibtex' ) {
-            $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
             foreach ($row as $row) {
                 $tags = TP_Tags::get_tags( array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A ) );
                 echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex, $private_comments);
@@ -208,18 +209,19 @@ class TP_Export {
     
     /**
      * Export a selection of publications
-     * @param string $selection     A string of publication IDs which are separated by comma
-     * @param string $format        bibtex or rtf
+     * @param string $selection         A string of publication IDs which are separated by comma
+     * @param string $format            bibtex or rtf
+     * @param boolean $convert_bibtex   Convert utf-8 chars to bibtex special chars, default: false
+     * @param boolean $private_comment  Add private comments as annote field, default: false
      * @since 5.0.0
      */
-    public static function get_selected_publications($selection, $format = 'bibtex') {
+    public static function get_selected_publications($selection, $format = 'bibtex', $convert_bibtex = false, $private_comment = false) {
         $row = TP_Publications::get_publications( array( 'include' => $selection, 'output_type' => ARRAY_A) );
         
         if ( $format === 'bibtex' ) {
-            $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
             foreach ($row as $row) {
                 $tags = TP_Tags::get_tags( array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A) );
-                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex, $private_comment);
             }
         }     
         if ( $format === 'rtf' ) {
