@@ -438,6 +438,7 @@ class TP_HTML_Publication_Template {
         $settings['meta_label_in'] = $template_settings['meta_label_in'];
         $tag_string = '';
         $keywords = '';
+        $comment = '';
         $all_authors = '';
         $is_button = false;
         $altmetric = '';
