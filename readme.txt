@@ -124,7 +124,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 9.0.7 (18.01.2025)
+= 9.0.7 (18.01.2025) =
 * New: Meta keys search to shortcodes added (Thanks to Juma7C9) (#259)
 * New: [tpcloud, tplist, tpsearch]: Optional private comment box for publication entries (Thanks to Juma7C9) (#257)
 * New: [tpcloud, tplist, tpsearch]: New parameters "show_comment", "comment_text", "comment_tooltip" added 
