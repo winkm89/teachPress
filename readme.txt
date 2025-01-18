@@ -4,9 +4,9 @@ Tags: publications, bibliography, BibTeX
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 6.4.1
+Tested up to: 6.7.1
 Requires PHP: 7.0
-Stable tag: 9.0.6
+Stable tag: 9.0.7
 
 Manage your publications with teachPress 
 
@@ -68,7 +68,7 @@ An example: [tplist image="left" image_size="70"]. Important: You must specify b
 
 == Credits ==
 
-Copyright 2008-2023 by Michael Winkler
+Copyright 2008-2025 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -123,6 +123,19 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 9.0.7 (18.01.2025)
+* New: Meta keys search to shortcodes added (Thanks to Juma7C9) (#259)
+* New: [tpcloud, tplist, tpsearch]: Optional private comment box for publication entries (Thanks to Juma7C9) (#257)
+* New: [tpcloud, tplist, tpsearch]: New parameters "show_comment", "comment_text", "comment_tooltip" added 
+* New: Author search by name for API calls added  (Thanks to Juma7C9) (#258)
+* New: BibTeX export option for private comments as annote field added (#263)
+* New: BibTeX export option for chars conversion added (#265)
+* New: Number of publications (ASC or DESC) as sorting options in authors screen added (#264)
+* Bugfix: Fix nonce checks on meta settings page (#254)
+* Bugfix: Fix warning "Deprecated Creation of dynamic property" - PHP 8.2  (Thanks to rgarofalo) (#256)
+* Bugfix: [tpsingle, tpbibtex]: Fix PHP errors if there is no publication to display
+* Bugfix: Fix possible usage of missing objects in crossref import
 
 = 9.0.6 (28.11.2023) =
 * New: Added OSF logo to the links (Thanks to Sven Mayer)

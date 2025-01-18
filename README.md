@@ -44,7 +44,7 @@ Use at your own risk. No warranty expressed or implied is provided.
 
 ## Credits / Licence
 
-Copyright 2008-2023 by Michael Winkler
+Copyright 2008-2025 by Michael Winkler
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

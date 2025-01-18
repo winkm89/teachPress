@@ -141,7 +141,7 @@ class TP_Settings_Page {
                 <p><img src="' . plugins_url( 'images/full.png', dirname( __FILE__ ) ) . '" width="400" /></p>
                 <p style="font-size: 20px; font-weight: bold; color: #EEC83F;">' . get_tp_option('db-version') . ' "Lemon Tart"</p>
                 <p><a href="http://mtrv.wordpress.com/teachpress/">Website</a> | <a href="https://github.com/winkm89/teachPress/">teachPress on GitHub</a> | <a href="https://github.com/winkm89/teachPress/wiki">Dokumentation</a> | <a href="https://github.com/winkm89/teachPress/wiki/Changelog">Changelog</a></p>
-                <p>&copy;2008-2023 by Michael Winkler | License: GPLv2 or later<br/></p>
+                <p>&copy;2008-2025 by Michael Winkler | License: GPLv2 or later<br/></p>
                 </div>
               </div>';
     }
