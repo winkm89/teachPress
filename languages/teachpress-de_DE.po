@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: teachPress v5.0.13\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-25 14:25+0000\n"
-"PO-Revision-Date: 2023-06-01 18:29+0000\n"
+"PO-Revision-Date: 2025-01-18 10:55+0000\n"
 "Last-Translator: \n"
-"Language-Team: Deutsch\n"
+"Language-Team: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,20 +27,20 @@ msgstr ""
 msgid "A database update is necessary"
 msgstr "Ein Update der Datenbank ist notwendig"
 
-#: admin/add-publication.php:268
+#: admin/add-publication.php:254
 msgid "A not vissible private comment"
 msgstr "Für nicht sichtbare private Kommentare"
 
-#: admin/add-publication.php:750
+#: admin/add-publication.php:736
 msgid "A short summary of the publication"
 msgstr "Eine kurze Inhaltszusammenfassung"
 
-#: admin/add-publication.php:378
+#: admin/add-publication.php:364
 msgid "A simple unique key without spaces"
 msgstr "Ein einfacher Schlüssel ohne Leerzeichen"
 
-#: admin/add-publication.php:751 core/shortcodes.php:1007
-#: core/publications/templates.php:477
+#: admin/add-publication.php:737 core/shortcodes.php:1046
+#: core/publications/templates.php:491
 msgid "Abstract"
 msgstr "Abstract"
 
@@ -52,11 +52,11 @@ msgstr "Zugriff verweigert"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: admin/add-publication.php:103
+#: admin/add-publication.php:91
 msgid "Add a new publication"
 msgstr "Neue Publikation hinzufügen"
 
-#: admin/settings.php:373 admin/settings.php:428
+#: admin/settings.php:394 admin/settings.php:454
 msgid "Add element"
 msgstr "Element hinzufügen"
 
@@ -64,34 +64,34 @@ msgstr "Element hinzufügen"
 msgid "Add headline"
 msgstr "Überschrift hinzufügen"
 
-#: admin/add-publication.php:458
+#: admin/add-publication.php:444
 msgid "Add Image"
 msgstr "Bild hinzufügen"
 
-#: teachpress.php:139 teachpress.php:140 admin/add-publication.php:120
-#: admin/settings.php:414 admin/settings.php:414
-#: admin/show-publications.php:434
+#: teachpress.php:139 teachpress.php:140 admin/add-publication.php:111
+#: admin/settings.php:440 admin/settings.php:440
+#: admin/show-publications.php:437
 msgid "Add new"
 msgstr "Neu erstellen"
 
-#: admin/settings.php:617
+#: admin/settings.php:643
 msgid "Add term"
 msgstr "Semester hinzufügen"
 
-#: admin/import-publications.php:311 admin/show-publications.php:294
-#: admin/show-publications.php:481
+#: admin/import-publications.php:325 admin/show-publications.php:297
+#: admin/show-publications.php:485
 msgid "Add to your own list"
 msgstr "Zur eigenen Publikationsliste hinzufügen"
 
-#: admin/settings.php:613
+#: admin/settings.php:639
 msgid "Add type"
 msgstr "Typ hinzufügen"
 
-#: admin/add-publication.php:839
+#: admin/add-publication.php:825
 msgid "Add/Upload"
 msgstr "Hinzufügen/Hochladen"
 
-#: admin/add-publication.php:280
+#: admin/add-publication.php:266
 msgid "Additional information"
 msgstr "Zusätzliche Informationen"
 
@@ -99,20 +99,20 @@ msgstr "Zusätzliche Informationen"
 msgid "Additional publication sources to scan regularly."
 msgstr "Weitere Publikations-Quelle zum Scan hinzufügen"
 
-#: admin/add-publication.php:646
+#: admin/add-publication.php:632
 #| msgid "address"
 msgid "Address"
 msgstr "Adresse"
 
-#: core/class-ajax.php:360
+#: core/class-ajax.php:363
 msgid "Admin"
 msgstr "Admin"
 
-#: admin/import-publications.php:377 core/general.php:375 core/general.php:386
+#: admin/import-publications.php:391 core/general.php:375 core/general.php:386
 msgid "All"
 msgstr "Alle"
 
-#: core/shortcodes.php:80
+#: core/shortcodes.php:92
 msgid "All authors"
 msgstr "Alle Autoren"
 
@@ -120,41 +120,41 @@ msgstr "Alle Autoren"
 msgid "All books"
 msgstr "Alle Bücher"
 
-#: admin/show-publications.php:433
+#: admin/show-publications.php:436
 msgid "All publications"
 msgstr "Alle Publikationen"
 
-#: admin/show-publications.php:374 core/shortcodes.php:101
+#: admin/show-publications.php:377 core/shortcodes.php:114
 msgid "All tags"
 msgstr "Alle Schlagworte"
 
-#: admin/show-publications.php:394 core/shortcodes.php:65
+#: admin/show-publications.php:397 core/shortcodes.php:65
 msgid "All types"
 msgstr "Alle Typen"
 
-#: core/shortcodes.php:89
+#: core/shortcodes.php:101
 msgid "All users"
 msgstr "Alle Nutzer"
 
-#: admin/show-publications.php:417 core/shortcodes.php:54
+#: admin/show-publications.php:420 core/shortcodes.php:54
 msgid "All years"
 msgstr "Alle Jahre"
 
-#: admin/settings.php:280
+#: admin/settings.php:290
 msgid "Allow optional updating for publication import"
 msgstr ""
 "Erlaube die Option zum automatischen Aktualisieren für den Publikations-"
 "Import"
 
-#: core/class-ajax.php:300
+#: core/class-ajax.php:303
 msgid "Allowed chars"
 msgstr "Erlaubte Zeichen"
 
-#: core/publications/templates.php:459
+#: core/publications/templates.php:465
 msgid "Altmetric"
 msgstr "Altmetric"
 
-#: admin/add-publication.php:763
+#: admin/add-publication.php:749
 msgid "An unusual method for publishing"
 msgstr "Bei ungewöhnlichen Veröffentlichungswegen"
 
@@ -162,7 +162,7 @@ msgstr "Bei ungewöhnlichen Veröffentlichungswegen"
 msgid "An update is not necessary."
 msgstr "Ein Update ist nicht erforderlich."
 
-#: core/admin.php:136
+#: core/admin.php:157
 msgid "Apr"
 msgstr "Apr"
 
@@ -178,20 +178,20 @@ msgstr "als Autor"
 msgid "as editor"
 msgstr "als Herausgeber"
 
-#: core/admin.php:140
+#: core/admin.php:161
 msgid "Aug"
 msgstr "Aug"
 
-#: admin/add-publication.php:404 admin/import-publications.php:319
-#: admin/show-publications.php:517
+#: admin/add-publication.php:390 admin/import-publications.php:333
+#: admin/show-publications.php:521
 msgid "Author(s)"
 msgstr "Autor(en)"
 
-#: admin/import-publications.php:262
+#: admin/import-publications.php:272
 msgid "Author/Editor Format"
 msgstr "Autor/Herausgeber Format"
 
-#: teachpress.php:160 teachpress.php:161 admin/class-authors-page.php:100
+#: teachpress.php:160 teachpress.php:161 admin/class-authors-page.php:108
 msgid "Authors"
 msgstr "Autoren"
 
@@ -199,15 +199,15 @@ msgstr "Autoren"
 msgid "Auto-publish"
 msgstr "Auto-Import"
 
-#: admin/settings.php:259
+#: admin/settings.php:269
 msgid "Automatic related content"
 msgstr "Automatische weiterführende Inhalte"
 
-#: admin/settings.php:465
+#: admin/settings.php:491
 msgid "Available templates for publication lists"
 msgstr "Verfügbare Templates für Publikationslisten"
 
-#: admin/add-publication.php:387
+#: admin/add-publication.php:373
 msgid "Award"
 msgstr "Auszeichnung"
 
@@ -219,15 +219,15 @@ msgstr "Bachelorarbeiten"
 msgid "Bachelor Thesis"
 msgstr "Bachelorarbeiten"
 
-#: admin/import-publications.php:307 admin/show-publications.php:167
+#: admin/import-publications.php:321 admin/show-publications.php:170
 msgid "Back"
 msgstr "Zurück"
 
-#: admin/settings.php:174
+#: admin/settings.php:184
 msgid "Backend access for course module"
 msgstr "Verwaltungszugriff für Veranstaltungsmodul"
 
-#: admin/settings.php:174
+#: admin/settings.php:184
 msgid "Backend access for publication module"
 msgstr "Verwaltungszugriff für Publikationsmodul"
 
@@ -239,12 +239,16 @@ msgstr "Best Paper"
 msgid "Best Papers"
 msgstr "Best Papers"
 
-#: admin/show-publications.php:165 core/class-ajax.php:217
-#: core/publications/templates.php:494
+#: admin/settings.php:313
+msgid "Bibliography style"
+msgstr "Bibliographiestil"
+
+#: admin/show-publications.php:168 core/class-ajax.php:218
+#: core/publications/templates.php:508
 msgid "BibTeX"
 msgstr "BibTeX"
 
-#: admin/settings.php:274
+#: admin/settings.php:284
 msgid "BibTeX special chars"
 msgstr "BibTeX Sonderzeichen"
 
@@ -276,7 +280,7 @@ msgstr "Booklet"
 msgid "Booklets"
 msgstr "Booklets"
 
-#: admin/add-publication.php:233
+#: admin/add-publication.php:219
 msgid "Bookmarks"
 msgstr "Bookmarks"
 
@@ -285,65 +289,65 @@ msgstr "Bookmarks"
 msgid "Books"
 msgstr "Bücher"
 
-#: admin/add-publication.php:545
+#: admin/add-publication.php:531
 #| msgid "booktitle"
 msgid "Booktitle"
 msgstr "Buchtitel"
 
-#: admin/class-authors-page.php:121 admin/class-tags-page.php:125
-#: admin/show-publications.php:477
+#: admin/class-authors-page.php:130 admin/class-tags-page.php:128
+#: admin/show-publications.php:481
 msgid "Bulk actions"
 msgstr "Aktion wählen"
 
-#: admin/show-publications.php:136
+#: admin/show-publications.php:139
 msgid "Bulk edit executed"
 msgstr "Massenbearbeitung ausgeführt"
 
-#: admin/show-publications.php:219
+#: admin/show-publications.php:222
 msgid "Bulk editing"
 msgstr "Massenbearbeitung"
 
-#: admin/settings.php:468
+#: admin/settings.php:494
 msgid "But you can change the directory for the templates."
 msgstr ""
 "Du kannst allerdings das Verzeichnis, in dem die Templates liegen, ändern."
 
-#: admin/settings.php:520
+#: admin/settings.php:546
 msgid "by"
 msgstr "von"
 
-#: admin/class-authors-page.php:44 admin/class-tags-page.php:38
-#: admin/import-publications.php:434 admin/publication-sources.php:160
-#: admin/show-publications.php:444
+#: admin/class-authors-page.php:44 admin/class-tags-page.php:39
+#: admin/import-publications.php:458 admin/publication-sources.php:160
+#: admin/show-publications.php:448
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: admin/class-authors-page.php:110 admin/class-tags-page.php:114
-#: admin/show-publications.php:467
+#: admin/class-authors-page.php:119 admin/class-tags-page.php:117
+#: admin/show-publications.php:471
 msgid "Cancel the search"
 msgstr "Suche abbrechen"
 
-#: admin/settings.php:566
+#: admin/settings.php:592
 msgid "Cardinality"
 msgstr "Kardinalität"
 
-#: admin/show-publications.php:633
+#: admin/show-publications.php:637
 msgid "Change sort order"
 msgstr "Sortierreihenfolge ändern"
 
-#: admin/settings.php:468
+#: admin/settings.php:494
 msgid "Changes in the templates will be overwritten by updates of the plugin."
 msgstr "Änderungen in den Templates werden durch Plugin-Updates überschrieben."
 
-#: admin/add-publication.php:673 core/publications/templates.php:587
+#: admin/add-publication.php:659 core/publications/templates.php:601
 msgid "Chapter"
 msgstr "Kapitel"
 
-#: admin/import-publications.php:205
+#: admin/import-publications.php:215
 msgid "Choose a BibTeX file for upload"
 msgstr "Wähle eine BibTeX-Datei für den Upload"
 
-#: admin/import-publications.php:203
+#: admin/import-publications.php:213
 msgid ""
 "Choose a BibTeX file for upload or insert your BibTeX entries into the "
 "textarea field"
@@ -351,25 +355,29 @@ msgstr ""
 "Wähle eine BibTeX-Datei für den Upload oder füge BibTeX-Einträge in das "
 "Textfeld ein"
 
-#: admin/show-publications.php:318
+#: admin/show-publications.php:321
 msgid "Cite"
 msgstr "Zitieren"
 
-#: admin/show-publications.php:670
+#: admin/settings.php:318
+msgid "Cite every reference only once"
+msgstr "Zitiere jede Referenz nur einmal"
+
+#: admin/show-publications.php:687
 msgid "Cite publication"
 msgstr "Publikation zitieren"
 
-#: admin/class-tags-page.php:232 admin/class-tags-page.php:236
-#: admin/import-publications.php:338 admin/settings.php:388
-#: admin/show-publications.php:314 admin/show-publications.php:318
+#: admin/class-tags-page.php:235 admin/class-tags-page.php:239
+#: admin/import-publications.php:352 admin/settings.php:414
+#: admin/show-publications.php:317 admin/show-publications.php:321
 msgid "Click to edit"
 msgstr "Zum Bearbeiten klicken"
 
-#: core/publications/templates.php:669
+#: core/publications/templates.php:683
 msgid "Close"
 msgstr "Schließen"
 
-#: admin/settings.php:567
+#: admin/settings.php:593
 msgid "Collation"
 msgstr "Kollation"
 
@@ -381,15 +389,16 @@ msgstr "Sammelband"
 msgid "Collections"
 msgstr "Sammelbände"
 
-#: admin/settings.php:565
+#: admin/settings.php:591
 msgid "Column"
 msgstr "Spalte"
 
 #: core/class-ajax.php:143 core/class-export.php:117
+#: core/publications/templates.php:483
 msgid "Comment"
 msgstr "Kommentar"
 
-#: admin/add-publication.php:261
+#: admin/add-publication.php:247
 msgid "Comments"
 msgstr "Kommentare"
 
@@ -405,18 +414,18 @@ msgstr "Konferenz"
 msgid "Conferences"
 msgstr "Konferenzen"
 
-#: admin/publication-sources.php:195
+#: admin/publication-sources.php:199
 #, php-format
 msgid "Configuration updated with %d URL(s) at frequency \"%s\"."
 msgstr ""
 "Konfiguration aktualisiert mit %d URL(s) und der Aktualisierungsrate \"%s\"."
 
-#: admin/settings.php:770
+#: admin/settings.php:808
 msgid "Continue"
 msgstr "Weiter"
 
-#: admin/add-publication.php:106 admin/add-publication.php:214
-#: core/admin.php:387
+#: admin/add-publication.php:94 admin/add-publication.php:200
+#: core/admin.php:412
 msgid "Create"
 msgstr "Erstellen"
 
@@ -424,13 +433,13 @@ msgstr "Erstellen"
 msgid "Create a new publication"
 msgstr "Neue Publikation erstellen"
 
-#: admin/settings.php:260
+#: admin/settings.php:270
 msgid "Create an automatic related content with every new publication"
 msgstr ""
 "Erstelle automatisch weiterführende Inhalte, wenn eine neue Publikation "
 "erstellt wird"
 
-#: admin/add-publication.php:508
+#: admin/add-publication.php:494
 msgid "Create related content"
 msgstr "Erstelle weiterführende Inhalte"
 
@@ -438,16 +447,16 @@ msgstr "Erstelle weiterführende Inhalte"
 msgid "Created on"
 msgstr "Erstellt am"
 
-#: admin/add-publication.php:738
+#: admin/add-publication.php:724
 #| msgid "crossref"
 msgid "Crossref"
 msgstr "BibTeX-Querverweis"
 
-#: admin/add-publication.php:303 admin/add-publication.php:328
+#: admin/add-publication.php:289 admin/add-publication.php:314
 msgid "Current"
 msgstr "Aktuell"
 
-#: core/admin.php:403
+#: core/admin.php:428
 msgid "Custom meta data"
 msgstr "Benutzerdefinierte Metadaten"
 
@@ -455,15 +464,15 @@ msgstr "Benutzerdefinierte Metadaten"
 msgid "Daily (recommended)"
 msgstr "Täglich (empfohlen)"
 
-#: admin/import-publications.php:260
+#: admin/import-publications.php:270
 msgid "Data options"
 msgstr "Datenoptionen"
 
-#: admin/settings.php:306
+#: admin/settings.php:327
 msgid "Database"
 msgstr "Datenbank"
 
-#: admin/settings.php:786
+#: admin/settings.php:839
 msgid "Database uninstalled"
 msgstr "Datenbank deinstalliert"
 
@@ -472,67 +481,68 @@ msgstr "Datenbank deinstalliert"
 msgid "Date"
 msgstr "Termin"
 
-#: admin/add-publication.php:425
+#: admin/add-publication.php:411
 #| msgid "date of publishing"
 msgid "Date of publishing"
 msgstr "Veröffentlichungsdatum"
 
-#: core/admin.php:144
+#: core/admin.php:165
 msgid "Dec"
 msgstr "Dez"
 
-#: admin/settings.php:251
+#: admin/settings.php:261
 msgid "Default category for related content"
 msgstr "Kategorie für weiterführende Inhalte"
 
-#: admin/add-publication.php:461 admin/add-publication.php:462
+#: admin/add-publication.php:447 admin/add-publication.php:448
 msgid "Define the link target for the image."
 msgstr "Definiere ein Linkziel für das Bild"
 
-#: admin/add-publication.php:308 admin/class-authors-page.php:43
-#: admin/class-authors-page.php:122 admin/class-authors-page.php:239
-#: admin/class-authors-page.php:239 admin/class-tags-page.php:37
-#: admin/class-tags-page.php:126 admin/class-tags-page.php:236
-#: admin/class-tags-page.php:236 admin/import-publications.php:311
-#: admin/import-publications.php:433 admin/import-publications.php:441
-#: admin/settings.php:388 admin/settings.php:388
-#: admin/show-publications.php:235 admin/show-publications.php:318
-#: admin/show-publications.php:318 admin/show-publications.php:443
-#: admin/show-publications.php:482 core/class-ajax.php:87
+#: admin/add-publication.php:294 admin/class-authors-page.php:43
+#: admin/class-authors-page.php:131 admin/class-authors-page.php:248
+#: admin/class-authors-page.php:248 admin/class-tags-page.php:38
+#: admin/class-tags-page.php:129 admin/class-tags-page.php:239
+#: admin/class-tags-page.php:239 admin/import-publications.php:325
+#: admin/import-publications.php:457 admin/import-publications.php:465
+#: admin/settings.php:414 admin/settings.php:414
+#: admin/show-publications.php:238 admin/show-publications.php:321
+#: admin/show-publications.php:321 admin/show-publications.php:447
+#: admin/show-publications.php:486 core/class-ajax.php:87
 #: core/class-ajax.php:159 core/class-document-manager.php:99
 #: core/class-document-manager.php:193 core/class-document-manager.php:231
 msgid "Delete"
 msgstr "Löschen"
 
-#: admin/add-publication.php:345
+#: admin/add-publication.php:331
 msgid "Delete bookmark for"
 msgstr "Lösche Bookmark für"
 
-#: admin/show-publications.php:229
+#: admin/show-publications.php:232
 msgid "Delete current tags"
 msgstr "Aktuelle Tags löschen"
 
-#: admin/settings.php:427
-msgid "Delete elemtent"
-msgstr "Element gelöscht"
+#: admin/settings.php:453
+#| msgid "Delete elemtent"
+msgid "Delete element"
+msgstr "Element löschen"
 
-#: admin/show-publications.php:299
+#: admin/show-publications.php:302
 msgid "Delete from your own list"
 msgstr "Von eigener Liste entfernen"
 
-#: admin/show-publications.php:351 core/shortcodes.php:453
+#: admin/show-publications.php:354 core/shortcodes.php:485
 msgid "Delete tag as filter"
 msgstr "Tag als Filter entfernen"
 
-#: admin/settings.php:64
+#: admin/settings.php:71
 msgid "Deleted"
 msgstr "Gelöscht"
 
-#: admin/add-publication.php:535
+#: admin/add-publication.php:521
 msgid "Detailed information"
 msgstr "Erweiterte Informationen"
 
-#: core/publications/templates.php:465
+#: core/publications/templates.php:471
 msgid "Dimensions"
 msgstr "Dimension"
 
@@ -548,16 +558,16 @@ msgstr "Diplomarbeit"
 msgid "Display publications"
 msgstr "Anzeige von Publikationen"
 
-#: admin/settings.php:781
+#: admin/settings.php:827
 msgid "Do you really want to delete all teachpress database tables?"
 msgstr "Möchtest du wirklich alle Daten des Plugins aus der Datenbank löschen?"
 
-#: admin/settings.php:710
+#: admin/settings.php:741
 msgid "Do you really want to delete the selected meta field?"
 msgstr "Möchtest du wirklich das ausgewählte Metadatenfeld löschen?"
 
-#: admin/class-authors-page.php:42 admin/class-tags-page.php:36
-#: admin/import-publications.php:432 admin/show-publications.php:442
+#: admin/class-authors-page.php:42 admin/class-tags-page.php:37
+#: admin/import-publications.php:456 admin/show-publications.php:446
 msgid "Do you want to delete the selected items?"
 msgstr "Bist du sicher, dass du die ausgewählten Elemente löschen willst?"
 
@@ -565,28 +575,28 @@ msgstr "Bist du sicher, dass du die ausgewählten Elemente löschen willst?"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: admin/add-publication.php:817 admin/add-publication.php:818
+#: admin/add-publication.php:803 admin/add-publication.php:804
 msgid "DOI number"
 msgstr "DOI-Nummer"
 
-#: admin/import-publications.php:265
+#: admin/import-publications.php:275
 msgid "Dynamic detection"
 msgstr "Automatische Erkennung"
 
-#: admin/show-publications.php:323 core/class-export.php:274
-#: core/class-export.php:303 core/feeds.php:59 core/shortcodes.php:926
-#: core/publications/templates.php:451 core/publications/templates.php:577
+#: admin/show-publications.php:326 core/class-export.php:279
+#: core/class-export.php:308 core/feeds.php:59 core/shortcodes.php:960
+#: core/publications/templates.php:457 core/publications/templates.php:591
 msgid "Ed."
 msgstr "Hrsg."
 
-#: admin/class-tags-page.php:236 admin/settings.php:388
-#: admin/show-publications.php:318 admin/show-publications.php:478
+#: admin/class-tags-page.php:239 admin/settings.php:414
+#: admin/show-publications.php:321 admin/show-publications.php:482
 #: core/class-document-manager.php:99 core/class-document-manager.php:193
 #: core/class-document-manager.php:231
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: admin/add-publication.php:106 core/class-ajax.php:178
+#: admin/add-publication.php:94 core/class-ajax.php:178
 msgid "Edit publication"
 msgstr "Publikation bearbeiten"
 
@@ -594,26 +604,26 @@ msgstr "Publikation bearbeiten"
 msgid "Edit URL list"
 msgstr "URL-Liste bearbeiten"
 
-#: admin/add-publication.php:660
+#: admin/add-publication.php:646
 #| msgid "edition"
 msgid "Edition"
 msgstr "Auflage"
 
-#: admin/add-publication.php:417
+#: admin/add-publication.php:403
 msgid "Editor(s)"
 msgstr "Herausgeber"
 
-#: core/shortcodes.php:1324
+#: core/shortcodes.php:1392
 msgid "Enter search word"
 msgstr "Suchbegriff eingeben"
 
-#: admin/class-authors-page.php:193 admin/class-tags-page.php:196
-#: admin/show-publications.php:568 core/general.php:61
+#: admin/class-authors-page.php:202 admin/class-tags-page.php:199
+#: admin/show-publications.php:572 core/general.php:61
 msgid "entries"
 msgstr "Einträge"
 
-#: admin/class-authors-page.php:190 admin/class-tags-page.php:193
-#: admin/show-publications.php:565
+#: admin/class-authors-page.php:199 admin/class-tags-page.php:196
+#: admin/show-publications.php:569
 msgid "entry"
 msgstr "Eintrag"
 
@@ -633,48 +643,48 @@ msgstr "Fehler: Nicht unterstützte Crossref-Nachricht"
 msgid "Examiner"
 msgstr "Prüfer"
 
-#: admin/settings.php:295
+#: admin/settings.php:305
 msgid "Example for publications of a single tag (tag = tag-id):"
 msgstr "Beispiel für Publikationen mit einem bestimmten Tag (tag = tag-id):"
 
-#: admin/settings.php:293
+#: admin/settings.php:303
 msgid "Example for publications of a single user (id = WordPress user-ID):"
 msgstr ""
 "Beispiel für Publikationen eines einzelnen Nutzers (id = WordPress User-ID):"
 
-#: admin/show-publications.php:201
+#: admin/show-publications.php:204
 msgid "Export"
 msgstr "Export"
 
-#: admin/add-publication.php:476
+#: admin/add-publication.php:462
 msgid "External Image Link"
 msgstr "Externes Linkziel"
 
-#: admin/add-publication.php:467
+#: admin/add-publication.php:453
 msgid "External URL"
 msgstr "Externe URL"
 
-#: core/admin.php:134
+#: core/admin.php:155
 msgid "Feb"
 msgstr "Feb"
 
-#: admin/settings.php:664
+#: admin/settings.php:690
 msgid "Field added"
 msgstr "Feld hinzugefügt"
 
-#: admin/settings.php:720
+#: admin/settings.php:751
 msgid "Field deleted"
 msgstr "Feld gelöscht"
 
-#: admin/settings.php:357 admin/settings.php:648 core/class-ajax.php:299
+#: admin/settings.php:378 admin/settings.php:674 core/class-ajax.php:302
 msgid "Field name"
 msgstr "Feldname"
 
-#: core/class-ajax.php:316
+#: core/class-ajax.php:319
 msgid "Field type"
 msgstr "Feldtyp"
 
-#: admin/class-authors-page.php:289 core/class-export.php:31
+#: admin/class-authors-page.php:298 core/class-export.php:31
 #: core/class-export.php:162
 msgid "First name"
 msgstr "Vorname"
@@ -683,7 +693,7 @@ msgstr "Vorname"
 msgid "first page"
 msgstr "Erste Seite"
 
-#: core/publications/templates.php:817 core/publications/templates.php:820
+#: core/publications/templates.php:831 core/publications/templates.php:834
 msgid "Follow DOI:"
 msgstr "Folge der DOI-Nummer:"
 
@@ -695,11 +705,11 @@ msgstr "Für eine Publikationsliste mit Tag-Cloud:"
 msgid "For a single publication:"
 msgstr "Für eine einzelne Publikation:"
 
-#: admin/settings.php:291
+#: admin/settings.php:301
 msgid "For all publications:"
 msgstr "Für alle Publikationen:"
 
-#: admin/settings.php:146
+#: admin/settings.php:156
 #| msgid "for courses"
 msgid "For courses"
 msgstr "für Veranstaltungen"
@@ -708,13 +718,13 @@ msgstr "für Veranstaltungen"
 msgid "For normal publication lists:"
 msgstr "Für normale Publikationsliste:"
 
-#: admin/settings.php:146
+#: admin/settings.php:156
 #| msgid "for publications"
 msgid "For publications"
 msgstr "Für Publikationen"
 
-#: admin/add-publication.php:433 admin/show-publications.php:316
-#: core/publications/templates.php:175 core/publications/templates.php:570
+#: admin/add-publication.php:419 admin/show-publications.php:319
+#: core/publications/templates.php:175 core/publications/templates.php:584
 msgid "Forthcoming"
 msgstr "Geplante Veröffentlichung"
 
@@ -722,19 +732,19 @@ msgstr "Geplante Veröffentlichung"
 msgid "free places"
 msgstr "freie Pl&auml;tze"
 
-#: admin/settings.php:216 admin/settings.php:218
+#: admin/settings.php:226 admin/settings.php:228
 msgid "Frontend styles"
 msgstr "Aussehen"
 
-#: admin/settings.php:89
+#: admin/settings.php:98
 msgid "General"
 msgstr "Allgemein"
 
-#: admin/add-publication.php:360
+#: admin/add-publication.php:346
 msgid "General information"
 msgstr "Allgemeine Informationen"
 
-#: admin/add-publication.php:382
+#: admin/add-publication.php:368
 msgid "Generate BibTeX key"
 msgstr "Generiere BibTeX-Schlüssel"
 
@@ -770,7 +780,7 @@ msgstr ""
 "get_tp_tags() is deprecated since teachpress 5.0.0. Use tp_tags::get_tags() "
 "instead."
 
-#: core/admin.php:53
+#: core/admin.php:73
 msgid "Grade"
 msgstr "Note"
 
@@ -778,7 +788,7 @@ msgstr "Note"
 msgid "Has passed"
 msgstr "Bestanden"
 
-#: core/class-ajax.php:364
+#: core/class-ajax.php:367
 msgid "Hidden"
 msgstr "Versteckt"
 
@@ -794,7 +804,7 @@ msgstr "Besondere Erwähnungen"
 msgid "Hourly"
 msgstr "Stündlich"
 
-#: admin/add-publication.php:764
+#: admin/add-publication.php:750
 #| msgid "howpublished"
 msgid "Howpublished"
 msgstr "Art der Veröffentlichung"
@@ -807,11 +817,11 @@ msgstr "http://mtrv.wordpress.com/"
 msgid "http://mtrv.wordpress.com/teachpress/"
 msgstr "http://mtrv.wordpress.com/teachpress/"
 
-#: admin/class-authors-page.php:152
+#: admin/class-authors-page.php:161
 msgid "ID"
 msgstr "ID"
 
-#: admin/import-publications.php:244
+#: admin/import-publications.php:254
 msgid ""
 "If the bibtex key is similar with a publication in the database, teachPress "
 "updates this publication with the import information."
@@ -820,12 +830,12 @@ msgstr ""
 "übereinstimmt, wird teachPress diese Publikation mit den Daten aus dem "
 "Import aktualisieren."
 
-#: admin/add-publication.php:776
+#: admin/add-publication.php:762
 msgid ""
 "If there is no author or editor given, so this field is used for the sorting."
 msgstr "Sortierfeld, falls kein Autor oder Herausgeber gegeben ist"
 
-#: admin/add-publication.php:475
+#: admin/add-publication.php:461
 msgid ""
 "If you choice an external link target for the image, then you can define the "
 "URL of this target here."
@@ -833,7 +843,7 @@ msgstr ""
 "Wenn du ein externes Linkziel für das Bild auswählst, kannst du die URL "
 "dieses Ziels hier definieren."
 
-#: admin/settings.php:247
+#: admin/settings.php:257
 msgid ""
 "If you create a publication you can define a link to related content. It is "
 "kind of a \"more information link\", which helps you to connect a "
@@ -845,61 +855,61 @@ msgstr ""
 "Seite in WordPress verknüpfen. Wenn du anstatt Seiten einen "
 "benutzerdefinierten Inhaltstyp nutzen willst, kannst du das hier einstellen."
 
-#: admin/import-publications.php:251
+#: admin/import-publications.php:261
 msgid "Ignore Tags"
 msgstr "Schlagwörter ignorieren"
 
-#: admin/import-publications.php:253
+#: admin/import-publications.php:263
 msgid "Ignore tags or keywords in the import data."
 msgstr "Ignoriert Schlagwörter (Tags, Keywords) in den Importdaten"
 
-#: admin/add-publication.php:446
+#: admin/add-publication.php:432
 msgid "Image"
 msgstr "Bild"
 
-#: admin/add-publication.php:461
+#: admin/add-publication.php:447
 msgid "Image Link Target"
 msgstr "Linkziel für das Bild"
 
-#: admin/add-publication.php:455
+#: admin/add-publication.php:441
 msgid "Image URL"
 msgstr "Bild URL"
 
-#: admin/settings.php:270
+#: admin/settings.php:280
 msgid "Import / Export"
 msgstr "Import / Export"
 
-#: admin/import-publications.php:235
+#: admin/import-publications.php:245
 msgid "Import options"
 msgstr "Importoptionen"
 
-#: admin/import-publications.php:309
+#: admin/import-publications.php:323
 msgid "Imported Publications"
 msgstr "Importierte Publikationen"
 
-#: core/class-export.php:270 core/class-export.php:299 core/feeds.php:72
-#: core/shortcodes.php:848 core/shortcodes.php:900
-#: templates/tp_template_2021.php:22 core/publications/templates.php:403
+#: core/class-export.php:275 core/class-export.php:304 core/feeds.php:72
+#: core/shortcodes.php:877 core/shortcodes.php:929
+#: templates/tp_template_2021.php:22 core/publications/templates.php:408
 msgid "In"
 msgstr "In"
 
-#: admin/settings.php:308
+#: admin/settings.php:329
 msgid "Index status"
 msgstr "Index Status"
 
-#: admin/add-publication.php:839
+#: admin/add-publication.php:825
 msgid "Insert a file from the WordPress Media Library"
 msgstr "Füge eine Datei aus der WordPress Mediathek hinzu."
 
-#: admin/import-publications.php:223 admin/import-publications.php:226
+#: admin/import-publications.php:233 admin/import-publications.php:236
 msgid "Insert a space-separated list of DOIs"
 msgstr "Füge Leerzeichen-getrennte Liste von DOI-Nr. ein"
 
-#: admin/import-publications.php:214 admin/import-publications.php:217
+#: admin/import-publications.php:224 admin/import-publications.php:227
 msgid "Insert a space-separated list of PubMed identifiers"
 msgstr "Füge Leerzeichen-getrennte Liste von PMIDs ein"
 
-#: admin/import-publications.php:207
+#: admin/import-publications.php:217
 msgid "Insert your BibTeX entries here"
 msgstr "Füge die BibTeX Einträge in dieses Feld ein"
 
@@ -907,46 +917,46 @@ msgstr "Füge die BibTeX Einträge in dieses Feld ein"
 msgid "Install database"
 msgstr "Datenbank installieren"
 
-#: admin/add-publication.php:686
+#: admin/add-publication.php:672
 #| msgid "institution"
 msgid "Institution"
 msgstr "Institution"
 
-#: admin/add-publication.php:806
+#: admin/add-publication.php:792
 msgid "ISBN"
 msgstr "ISBN"
 
-#: admin/add-publication.php:801
+#: admin/add-publication.php:787
 msgid "ISBN/ISSN"
 msgstr "ISBN/ISSN"
 
-#: core/publications/templates.php:583
+#: core/publications/templates.php:597
 msgid "iss."
 msgstr "Ausg."
 
-#: admin/add-publication.php:808
+#: admin/add-publication.php:794
 msgid "ISSN"
 msgstr "ISSN"
 
-#: admin/add-publication.php:596
+#: admin/add-publication.php:582
 msgid "Issue"
 msgstr "Ausgabe (Issue)"
 
-#: admin/add-publication.php:558
+#: admin/add-publication.php:544
 #| msgid "issuetitle"
 msgid "Issuetitle"
 msgstr "Eigener Titel einer Zeitschrift zusätzlich zum Hauptitel"
 
-#: admin/class-authors-page.php:264 admin/class-tags-page.php:262
+#: admin/class-authors-page.php:273 admin/class-tags-page.php:278
 #: admin/show-publications.php:22
 msgid "Items per page"
 msgstr "Einträge pro Seite"
 
-#: core/admin.php:133
+#: core/admin.php:154
 msgid "Jan"
 msgstr "Jan"
 
-#: admin/add-publication.php:571
+#: admin/add-publication.php:557
 #| msgid "journal"
 msgid "Journal"
 msgstr "Zeitschrift"
@@ -959,31 +969,31 @@ msgstr "Artikel"
 msgid "Journal Articles"
 msgstr "Artikel"
 
-#: core/admin.php:139
+#: core/admin.php:160
 msgid "Jul"
 msgstr "Jul"
 
-#: core/admin.php:138
+#: core/admin.php:159
 msgid "Jun"
 msgstr "Jun"
 
-#: admin/add-publication.php:777
+#: admin/add-publication.php:763
 msgid "Key"
 msgstr "BibTeX-Sortierschlüssel"
 
-#: admin/settings.php:561
+#: admin/settings.php:587
 msgid "Key_name"
 msgstr "Schlüssel"
 
-#: admin/import-publications.php:278 admin/import-publications.php:279
+#: admin/import-publications.php:288 admin/import-publications.php:289
 msgid "Keyword Separator"
 msgstr "Keyword Separator"
 
-#: admin/settings.php:656 core/class-ajax.php:309
+#: admin/settings.php:682 core/class-ajax.php:312
 msgid "Label"
 msgstr "Label"
 
-#: admin/class-authors-page.php:293 core/class-export.php:30
+#: admin/class-authors-page.php:302 core/class-export.php:30
 #: core/class-export.php:162
 msgid "Last name"
 msgstr "Nachname"
@@ -996,20 +1006,20 @@ msgstr "Letzte Seite"
 msgid "Lecturer"
 msgstr "Dozent"
 
-#: admin/show-publications.php:494
+#: admin/show-publications.php:498
 msgid "Limit selection"
 msgstr "Auswahl beschränken"
 
-#: core/shortcodes.php:1034 templates/tp_template_2021.php:21
-#: core/publications/templates.php:402 core/publications/templates.php:484
+#: core/shortcodes.php:1073 templates/tp_template_2021.php:21
+#: core/publications/templates.php:407 core/publications/templates.php:498
 msgid "Links"
 msgstr "Links"
 
-#: admin/import-publications.php:37 admin/import-publications.php:417
+#: admin/import-publications.php:37 admin/import-publications.php:441
 msgid "List of imports"
 msgstr "Liste der Importe"
 
-#: core/admin.php:135
+#: core/admin.php:156
 msgid "Mar"
 msgstr "Mär"
 
@@ -1021,15 +1031,15 @@ msgstr "Abschlussarbeiten"
 msgid "Masters Thesis"
 msgstr "Abschlussarbeit"
 
-#: core/class-ajax.php:337
+#: core/class-ajax.php:340
 msgid "Max"
 msgstr "Max"
 
-#: admin/import-publications.php:205
+#: admin/import-publications.php:215
 msgid "max file size"
 msgstr "maximale Dateigröße"
 
-#: core/admin.php:137
+#: core/admin.php:158
 msgid "May"
 msgstr "Mai"
 
@@ -1041,15 +1051,15 @@ msgstr "Media"
 msgid "Medium"
 msgstr "Medium"
 
-#: admin/settings.php:90
+#: admin/settings.php:99
 msgid "Meta"
 msgstr "Meta"
 
-#: admin/settings.php:350
+#: admin/settings.php:371
 msgid "Meta data fields"
 msgstr "Metadatenfelder"
 
-#: admin/settings.php:444
+#: admin/settings.php:470
 msgid "Meta Field Settings"
 msgstr "Einstellungen für Metadaten-Felder"
 
@@ -1057,11 +1067,11 @@ msgstr "Einstellungen für Metadaten-Felder"
 msgid "Michael Winkler"
 msgstr "Michael Winkler"
 
-#: core/class-ajax.php:330
+#: core/class-ajax.php:333
 msgid "Min"
 msgstr "Min"
 
-#: admin/settings.php:302
+#: admin/settings.php:323
 msgid "Misc"
 msgstr "Sonstiges"
 
@@ -1070,7 +1080,7 @@ msgstr "Sonstiges"
 msgid "Miscellaneous"
 msgstr "Sonstige"
 
-#: core/admin.php:148
+#: core/admin.php:169
 msgid "Month"
 msgstr "Monat"
 
@@ -1078,8 +1088,8 @@ msgstr "Monat"
 msgid "More information"
 msgstr "Weitere Informationen"
 
-#: admin/class-authors-page.php:151 admin/class-tags-page.php:155
-#: admin/settings.php:425 core/class-ajax.php:127
+#: admin/class-authors-page.php:160 admin/class-tags-page.php:158
+#: admin/settings.php:451 core/class-ajax.php:127
 msgid "Name"
 msgstr "Name"
 
@@ -1087,8 +1097,8 @@ msgstr "Name"
 msgid "Never (disable updates)"
 msgstr "Nie"
 
-#: admin/add-publication.php:240 admin/add-publication.php:866
-#: admin/show-publications.php:238
+#: admin/add-publication.php:226 admin/add-publication.php:852
+#: admin/show-publications.php:241
 msgid "New"
 msgstr "Neu"
 
@@ -1101,11 +1111,11 @@ msgstr "Nächste Seite"
 msgid "No supported file type"
 msgstr "Kein unterstützter Dateityp"
 
-#: core/publications/class-db-publications.php:391
+#: core/publications/class-db-publications.php:393
 msgid "No title"
 msgstr "Kein Titel"
 
-#: core/publications/templates.php:565
+#: core/publications/templates.php:579
 msgid "no."
 msgstr "Nr."
 
@@ -1114,46 +1124,54 @@ msgstr "Nr."
 msgid "None"
 msgstr "Keiner"
 
-#: admin/add-publication.php:464 admin/settings.php:253 core/admin.php:220
-#: core/admin.php:558 core/admin.php:769
+#: admin/add-publication.php:450 admin/settings.php:263 core/admin.php:241
+#: core/admin.php:583 core/admin.php:794
 #: core/publications/class-books-widget.php:79
 msgid "none"
 msgstr "keine"
 
-#: core/class-ajax.php:356
+#: core/class-ajax.php:359
 msgid "Normal"
 msgstr "Normal"
 
-#: core/admin.php:76
+#: core/admin.php:96
 msgid "not passed"
 msgstr "nicht bestanden"
 
-#: admin/add-publication.php:281
+#: admin/add-publication.php:267
 #| msgid "note"
 msgid "Note"
 msgstr "Beschreibung"
 
-#: core/admin.php:143
+#: core/admin.php:164
 msgid "Nov"
 msgstr "Nov"
 
-#: admin/add-publication.php:608 admin/class-tags-page.php:157
+#: admin/add-publication.php:594 admin/class-tags-page.php:160
 msgid "Number"
 msgstr "Anzahl"
 
-#: admin/settings.php:426
+#: admin/class-authors-page.php:310
+msgid "Number of publications (Ascending)"
+msgstr "Anzahl Publikationen (aufsteigend)"
+
+#: admin/class-authors-page.php:306
+msgid "Number of publications (Descending)"
+msgstr "Anzahl Publikationen (absteigend)"
+
+#: admin/settings.php:452
 msgid "Number of students"
 msgstr "Anzahl Studenten"
 
-#: admin/class-authors-page.php:153 admin/import-publications.php:473
+#: admin/class-authors-page.php:162 admin/import-publications.php:497
 msgid "Number publications"
 msgstr "Anzahl Publikationen"
 
-#: admin/class-authors-page.php:127 admin/class-tags-page.php:132
+#: admin/class-authors-page.php:136 admin/class-tags-page.php:135
 msgid "Occurrence = 0"
 msgstr "Anzahl = 0"
 
-#: core/admin.php:142
+#: core/admin.php:163
 msgid "Oct"
 msgstr "Okt"
 
@@ -1161,7 +1179,7 @@ msgstr "Okt"
 msgid "of"
 msgstr "von"
 
-#: admin/show-publications.php:485
+#: admin/show-publications.php:489
 msgid "OK"
 msgstr "OK"
 
@@ -1175,29 +1193,29 @@ msgstr ""
 msgid "Online"
 msgstr "Online"
 
-#: core/class-ajax.php:330 core/class-ajax.php:337 core/class-ajax.php:344
+#: core/class-ajax.php:333 core/class-ajax.php:340 core/class-ajax.php:347
 msgid "Only for INT fields"
 msgstr "Nur für INT-Felder"
 
-#: admin/import-publications.php:206
+#: admin/import-publications.php:216
 msgid "or"
 msgstr "oder"
 
-#: admin/add-publication.php:699
+#: admin/add-publication.php:685
 #| msgid "organization"
 msgid "Organization"
 msgstr "Organisation"
 
-#: admin/settings.php:564
+#: admin/settings.php:590
 msgid "Packed"
 msgstr "Gepackt"
 
-#: admin/add-publication.php:620
+#: admin/add-publication.php:606
 #| msgid "pages"
 msgid "Pages"
 msgstr "Seiten"
 
-#: core/admin.php:77
+#: core/admin.php:97
 msgid "passed"
 msgstr "bestanden"
 
@@ -1209,7 +1227,7 @@ msgstr "Patent"
 msgid "Patents"
 msgstr "Patente"
 
-#: core/admin.php:54
+#: core/admin.php:74
 msgid "Percentage"
 msgstr "Prozent"
 
@@ -1233,7 +1251,7 @@ msgstr "Promotionsarbeit"
 msgid "Places"
 msgstr "Pl&auml;tze"
 
-#: admin/add-publication.php:146
+#: admin/add-publication.php:138
 msgid ""
 "Please check the format of author/editor information and correct it to the "
 "following format: firstname1 lastname1 and firstname2 lastname 2. Example: "
@@ -1243,23 +1261,23 @@ msgstr ""
 "vorname1 nachname1 and vorname2 nachname2. Beispiel: Adam Smith and John M. "
 "Keynes"
 
-#: admin/add-publication.php:934
+#: admin/add-publication.php:938
 msgid "Please enter an author before!"
 msgstr "Bitte gib vorher einen Autor an!"
 
-#: admin/add-publication.php:942
+#: admin/add-publication.php:946
 msgid "Please enter the date before!"
 msgstr "Bitte gib vorher ein Datum an!"
 
-#: admin/import-publications.php:214 admin/settings.php:468
+#: admin/import-publications.php:224 admin/settings.php:494
 msgid "Please note"
 msgstr "Bitte beachte"
 
-#: core/publications/templates.php:471
+#: core/publications/templates.php:477
 msgid "PlumX"
 msgstr "PlumX"
 
-#: core/admin.php:55
+#: core/admin.php:75
 msgid "Points"
 msgstr "Punkte"
 
@@ -1267,7 +1285,7 @@ msgstr "Punkte"
 msgid "Powerful publication management for WordPress"
 msgstr "Powerful publication management for WordPress"
 
-#: core/publications/templates.php:578
+#: core/publications/templates.php:592
 msgid "pp."
 msgstr "S."
 
@@ -1287,7 +1305,7 @@ msgstr "Vorherige Seite"
 msgid "Previous update result"
 msgstr "Vorheriges Aktualisierungsergebnis"
 
-#: admin/add-publication.php:269
+#: admin/add-publication.php:255
 #| msgid "private comment"
 msgid "Private comment"
 msgstr "Private Notiz"
@@ -1305,31 +1323,31 @@ msgstr "Proceedings Article"
 msgid "Proceedings Articles"
 msgstr "Proceedings Articles"
 
-#: admin/settings.php:358
+#: admin/settings.php:379
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: core/shortcodes.php:437
+#: core/shortcodes.php:469
 #| msgid "publication"
 msgid "Publication"
 msgstr "Publikation"
 
-#: admin/add-publication.php:120
+#: admin/add-publication.php:111
 msgid "Publication added"
 msgstr "Publikation hinzugefügt"
 
-#: core/class-ajax.php:220
+#: core/class-ajax.php:221
 msgid "Publication entry"
 msgstr "Publikationseintrag"
 
-#: teachpress.php:123 teachpress.php:124 admin/add-publication.php:207
-#: admin/class-authors-page.php:337 admin/class-tags-page.php:236
-#: admin/import-publications.php:36 admin/settings.php:90
-#: core/shortcodes.php:437
+#: teachpress.php:123 teachpress.php:124 admin/add-publication.php:193
+#: admin/class-authors-page.php:368 admin/class-tags-page.php:239
+#: admin/import-publications.php:36 admin/settings.php:99
+#: core/shortcodes.php:469
 msgid "Publications"
 msgstr "Publikationen"
 
-#: admin/show-publications.php:121
+#: admin/show-publications.php:122
 msgid "Publications added"
 msgstr "Publikationen hinzugefügt"
 
@@ -1337,11 +1355,11 @@ msgstr "Publikationen hinzugefügt"
 msgid "Publications added to your list."
 msgstr "Die Publikationen wurden deiner Liste hinzugefügt."
 
-#: admin/import-publications.php:373
+#: admin/import-publications.php:387
 msgid "Publications by user"
 msgstr "Publikationen von Nutzern"
 
-#: admin/add-publication.php:633
+#: admin/add-publication.php:619
 #| msgid "publisher"
 msgid "Publisher"
 msgstr "Verlag"
@@ -1350,7 +1368,7 @@ msgstr "Verlag"
 msgid "Record-ID"
 msgstr "Datensatz-ID"
 
-#: core/shortcodes.php:860
+#: core/shortcodes.php:889
 msgid "References"
 msgstr "Quellen"
 
@@ -1362,8 +1380,8 @@ msgstr "Eingeschrieben am"
 msgid "Registered participants"
 msgstr "Registrierte Teilnehmer"
 
-#: admin/add-publication.php:466 admin/add-publication.php:494
-#: admin/add-publication.php:496 admin/settings.php:239
+#: admin/add-publication.php:452 admin/add-publication.php:480
+#: admin/add-publication.php:482 admin/settings.php:249
 msgid "Related content"
 msgstr "Weiterführender Inhalt"
 
@@ -1371,7 +1389,7 @@ msgstr "Weiterführender Inhalt"
 msgid "Releated Page for &laquo;all books&raquo; link:"
 msgstr "Verlinkte Seite für  &laquo;Alle Bücher&raquo; Link:"
 
-#: admin/settings.php:315
+#: admin/settings.php:336
 msgid "Remove teachPress from database"
 msgstr "teachPress aus der Datenbank löschen"
 
@@ -1379,13 +1397,17 @@ msgstr "teachPress aus der Datenbank löschen"
 msgid "Removing failed"
 msgstr "Löschen ist fehlgeschlagen"
 
-#: admin/class-authors-page.php:50 admin/class-tags-page.php:45
-#: admin/import-publications.php:101 admin/import-publications.php:425
-#: admin/show-publications.php:127 core/class-document-manager.php:308
+#: admin/class-authors-page.php:51 admin/class-tags-page.php:47
+#: admin/import-publications.php:101 admin/import-publications.php:449
+#: admin/show-publications.php:129 core/class-document-manager.php:308
 msgid "Removing successful"
 msgstr "Löschen war erfolgreich"
 
-#: core/class-ajax.php:373
+#: admin/settings.php:317
+msgid "Repeated citations"
+msgstr "Wiederholte Zitate"
+
+#: core/class-ajax.php:376
 msgid "Required field"
 msgstr "Pflichtfeld"
 
@@ -1393,7 +1415,7 @@ msgstr "Pflichtfeld"
 msgid "Required fields"
 msgstr "Benötigte Felder"
 
-#: admin/add-publication.php:213
+#: admin/add-publication.php:199
 msgid "Reset"
 msgstr "Reset"
 
@@ -1401,15 +1423,15 @@ msgstr "Reset"
 msgid "Room"
 msgstr "Raum"
 
-#: admin/settings.php:286
+#: admin/settings.php:296
 msgid "RSS"
 msgstr "RSS"
 
-#: admin/settings.php:290
+#: admin/settings.php:300
 msgid "RSS feed addresses"
 msgstr "RSS Feed Adressen"
 
-#: core/class-ajax.php:377
+#: core/class-ajax.php:380
 msgid "Save"
 msgstr "Speichern"
 
@@ -1417,13 +1439,13 @@ msgstr "Speichern"
 msgid "Save configuration"
 msgstr "Konfiguration speichern"
 
-#: admin/add-publication.php:712
+#: admin/add-publication.php:698
 #| msgid "school"
 msgid "School"
 msgstr "Hochschule"
 
-#: admin/class-authors-page.php:113 admin/class-tags-page.php:117
-#: admin/show-publications.php:470 core/shortcodes.php:1317
+#: admin/class-authors-page.php:122 admin/class-tags-page.php:120
+#: admin/show-publications.php:474 core/shortcodes.php:1385
 msgid "Search"
 msgstr "Suche"
 
@@ -1431,11 +1453,11 @@ msgstr "Suche"
 msgid "Select"
 msgstr "Auswählen"
 
-#: admin/add-publication.php:496 admin/add-publication.php:500
+#: admin/add-publication.php:482 admin/add-publication.php:486
 msgid "Select a post/page with releated content."
 msgstr "Wähle einen Beitrag/Seite mit weiterführenden Inhalten"
 
-#: admin/import-publications.php:191 admin/import-publications.php:192
+#: admin/import-publications.php:201 admin/import-publications.php:202
 msgid "Select an import type"
 msgstr "Wähle einen Import-Typ"
 
@@ -1443,15 +1465,15 @@ msgstr "Wähle einen Import-Typ"
 msgid "Select Course"
 msgstr "Veranstaltung auswählen"
 
-#: admin/class-authors-page.php:125 admin/class-tags-page.php:130
+#: admin/class-authors-page.php:134 admin/class-tags-page.php:133
 msgid "Select filter"
 msgstr "Filter auswählen"
 
-#: admin/show-publications.php:312
+#: admin/show-publications.php:315
 msgid "Select the entry"
 msgstr "Eintrag auswählen"
 
-#: admin/settings.php:231
+#: admin/settings.php:241
 msgid ""
 "Select which style sheet you will use. teachpress_front.css is the "
 "teachPress default style. If you have created your own style in the default "
@@ -1463,31 +1485,31 @@ msgstr ""
 "hast, dann kannst du dieses hier aktivieren und entsprechend das Standard-"
 "Design ausschalten."
 
-#: admin/settings.php:191
+#: admin/settings.php:201
 msgid ""
 "Select which userrole your users must have to use the teachPress backend."
 msgstr ""
 "Wähle, welche Nutzerrollen Zugriff auf den teachPress Verwaltungsbereich "
 "haben."
 
-#: admin/add-publication.php:465
+#: admin/add-publication.php:451
 msgid "Self"
 msgstr "Eigene Bild-URL"
 
-#: core/admin.php:141
+#: core/admin.php:162
 msgid "Sep"
 msgstr "Sep"
 
-#: admin/settings.php:569
+#: admin/settings.php:595
 msgid "Seq index"
 msgstr "Seq-Index"
 
-#: admin/add-publication.php:725
+#: admin/add-publication.php:711
 #| msgid "series"
 msgid "Series"
 msgstr "Reihe"
 
-#: admin/settings.php:749
+#: admin/settings.php:787
 msgid ""
 "Settings are changed. Please note that access changes are visible, until you "
 "have reloaded this page a second time."
@@ -1495,57 +1517,61 @@ msgstr ""
 "Einstellungen wurden geändert. Bitte beachte, dass Änderungen in den "
 "Zugriffsrechten erst sichtbar sind, wenn die Seite neu geladen wurde."
 
-#: admin/settings.php:292 admin/settings.php:294 admin/settings.php:296
+#: admin/settings.php:302 admin/settings.php:304 admin/settings.php:306
 #: core/class-document-manager.php:99 core/class-document-manager.php:193
 msgid "Show"
 msgstr "Anzeigen"
 
-#: core/publications/templates.php:477
+#: core/publications/templates.php:491
 msgid "Show abstract"
 msgstr "Zeige Abstract"
 
-#: core/shortcodes.php:495
+#: core/shortcodes.php:527
 msgid "Show all"
 msgstr "Zeige alle"
 
-#: admin/add-publication.php:535
+#: admin/add-publication.php:521
 msgid "Show all fields"
 msgstr "Zeige alle Felder"
 
-#: admin/class-tags-page.php:236 admin/show-publications.php:354
-#: core/publications/templates.php:921
+#: admin/class-tags-page.php:239 admin/show-publications.php:357
+#: core/publications/templates.php:935
 msgid "Show all publications which have a relationship to this tag"
 msgstr "Alle Publikationen anzeigen, die mit diesem Tag verbunden sind."
 
-#: core/publications/templates.php:459
+#: core/publications/templates.php:465
 msgid "Show Altmetric"
 msgstr "Zeige Altmetric"
 
-#: admin/show-publications.php:479
+#: admin/show-publications.php:483
 msgid "Show as BibTeX entry"
 msgstr "Als BibTeX Eintrag anzeigen"
 
-#: core/publications/templates.php:494
+#: core/publications/templates.php:508
 msgid "Show BibTeX entry"
 msgstr "Zeige BibTeX-Eintrag"
 
-#: core/publications/templates.php:465
+#: core/publications/templates.php:484
+msgid "Show comment"
+msgstr "Zeige Kommentar"
+
+#: core/publications/templates.php:471
 msgid "Show Dimensions Badge"
 msgstr "Zeige Dimensions Badge"
 
-#: core/publications/templates.php:484
+#: core/publications/templates.php:498
 msgid "Show links and resources"
 msgstr "Zeige Links und Ressourcen"
 
-#: core/publications/templates.php:471
+#: core/publications/templates.php:477
 msgid "Show PlumX Widget"
 msgstr "Zeige PlumX Widget"
 
-#: admin/class-authors-page.php:235
+#: admin/class-authors-page.php:244
 msgid "Show publications"
 msgstr "Zeige Publikationen"
 
-#: admin/add-publication.php:535
+#: admin/add-publication.php:521
 msgid "Show recommend fields"
 msgstr "Zeige notwendige Felder"
 
@@ -1553,20 +1579,20 @@ msgstr "Zeige notwendige Felder"
 msgid "Shows a random book in the sidebar"
 msgstr "Zeigt ein zufälliges Buch in der Sidebar an"
 
-#: admin/class-authors-page.php:157 admin/class-tags-page.php:162
-#: admin/import-publications.php:326 admin/show-publications.php:530
+#: admin/class-authors-page.php:166 admin/class-tags-page.php:165
+#: admin/import-publications.php:340 admin/show-publications.php:534
 msgid "Sorry, no entries matched your criteria."
 msgstr "Es sind leider keine Einträge vorhanden."
 
-#: core/shortcodes.php:1482
+#: core/shortcodes.php:1563
 msgid "Sorry, no publications matched your criteria."
 msgstr "Es sind leider keine Einträge vorhanden."
 
-#: admin/class-authors-page.php:296
+#: admin/class-authors-page.php:313
 msgid "Sorting"
 msgstr "Sortierung"
 
-#: core/class-ajax.php:344
+#: core/class-ajax.php:347
 msgid "Step"
 msgstr "Schritt"
 
@@ -1590,7 +1616,7 @@ msgstr "Schritt 2: Daten hinzufügen"
 msgid "Supported file types"
 msgstr "Unterstützte Dateitypen"
 
-#: admin/class-tags-page.php:51
+#: admin/class-tags-page.php:54
 msgid "Tag saved"
 msgstr "Tag gespeichert"
 
@@ -1606,21 +1632,21 @@ msgstr "teachPress books"
 msgid "teachPress Settings"
 msgstr "teachPress Einstellungen"
 
-#: admin/settings.php:81
+#: admin/settings.php:90
 msgid "teachPress settings"
 msgstr "teachPress Einstellungen"
 
-#: admin/settings.php:208
+#: admin/settings.php:218
 msgid "teachPress version"
 msgstr "teachPress Version"
 
-#: admin/settings.php:770
+#: admin/settings.php:808
 msgid "teachPress wants to fill up the new database. This can take some time."
 msgstr ""
 "teachPress wird nun die neuen Datenbanken befüllen. Dies kann einige Zeit in "
 "Anspruch nehmen."
 
-#: admin/settings.php:222 admin/settings.php:226
+#: admin/settings.php:232 admin/settings.php:236
 msgid "teachpress_front.css"
 msgstr "teachpress_front.css"
 
@@ -1640,35 +1666,35 @@ msgstr "Forschungsbericht"
 msgid "Technical Reports"
 msgstr "Forschungsberichte"
 
-#: admin/settings.php:264
+#: admin/settings.php:274
 msgid "Template for related content"
 msgstr "Template für weiterführende Inhalte"
 
-#: admin/settings.php:92
+#: admin/settings.php:101
 msgid "Templates"
 msgstr "Templates"
 
-#: core/class-ajax.php:217
+#: core/class-ajax.php:218
 msgid "Text"
 msgstr "Text"
 
-#: admin/add-publication.php:645
+#: admin/add-publication.php:631
 msgid "The address of the publisher or the place of confernece"
 msgstr "Die Adresse des Verlages oder der Ort der Konferenz"
 
-#: admin/add-publication.php:737
+#: admin/add-publication.php:723
 msgid "The BibTeX key this work is referring to"
 msgstr "Der BibTeX-Schlüssel der Publikation, auf die sich die Arbeit bezieht"
 
-#: admin/add-publication.php:672
+#: admin/add-publication.php:658
 msgid "The chapter or the section number"
 msgstr "Kapitel- oder Abschnittsnummer"
 
-#: admin/add-publication.php:827
+#: admin/add-publication.php:813
 msgid "The date you have visited the online resource"
 msgstr "Das Datum, an dem du die Online Ressource besucht hast"
 
-#: admin/add-publication.php:659
+#: admin/add-publication.php:645
 msgid "The edition of a book"
 msgstr "Die Ausgabe eines Buches"
 
@@ -1685,35 +1711,35 @@ msgstr ""
 "Publikations-Log\n"
 "               kann über den Bereich Import/Export eingesehen werden."
 
-#: admin/add-publication.php:803
+#: admin/add-publication.php:789
 msgid "The ISBN or ISSN of the publication"
 msgstr "Die ISBN oder ISSN der Publikation"
 
-#: admin/add-publication.php:595
+#: admin/add-publication.php:581
 msgid "The issue of a journal"
 msgstr "Nummer der Zeitschriftenausgabe, in der sich der Artikel befindet"
 
-#: admin/add-publication.php:724
+#: admin/add-publication.php:710
 msgid "The name of a series"
 msgstr "Der Name einer Serie"
 
-#: admin/add-publication.php:685
+#: admin/add-publication.php:671
 msgid "The name of a sponsoring institution"
 msgstr "Der Name der Einrichtung"
 
-#: admin/add-publication.php:698
+#: admin/add-publication.php:684
 msgid "The names of a sponsoring organization"
 msgstr "Der Name der Organisation"
 
-#: admin/add-publication.php:632
+#: admin/add-publication.php:618
 msgid "The names of publisher"
 msgstr "Der Name des Herausgebers"
 
-#: admin/add-publication.php:711
+#: admin/add-publication.php:697
 msgid "The names of the academic instituion where a thesis was written"
 msgstr "Der Name der Einrichtung, an der die Arbeit geschrieben wurde."
 
-#: admin/add-publication.php:403
+#: admin/add-publication.php:389
 msgid ""
 "The names of the authors, separate by `and`. Example: Mark Twain and Albert "
 "Einstein"
@@ -1721,7 +1747,7 @@ msgstr ""
 "Die Namen der Autoren, getrennt durch `and`. Beispiel: Mark Twain and Albert "
 "Einstein"
 
-#: admin/add-publication.php:416
+#: admin/add-publication.php:402
 msgid ""
 "The names of the editors, separate by `and`. Example: Mark Twain and Albert "
 "Einstein"
@@ -1729,12 +1755,12 @@ msgstr ""
 "Die Namen der Herausgeber, getrennt durch `and`. Beispiel: Mark Twain and "
 "Albert Einstein"
 
-#: admin/add-publication.php:607
+#: admin/add-publication.php:593
 msgid "The number of a book, journal or work in a series"
 msgstr ""
 "Die Nummer eines Buches, Journals oder einer Arbeit innerhalb einer Serie"
 
-#: admin/add-publication.php:619
+#: admin/add-publication.php:605
 msgid "The page you are referring to."
 msgstr "Die Seitenzahlen, auf die sich bezogen wird."
 
@@ -1742,39 +1768,39 @@ msgstr "Die Seitenzahlen, auf die sich bezogen wird."
 msgid "The required fields for a new publication:"
 msgstr "Die Pflichtfelder für eine neue Publikation:"
 
-#: admin/add-publication.php:557
+#: admin/add-publication.php:543
 msgid "The subtitle of a periodical publication"
 msgstr "Der Titel oder Untertitel einer Zeitschrift"
 
-#: admin/add-publication.php:544
+#: admin/add-publication.php:530
 msgid "The title of a book"
 msgstr "Der Titel des Buches"
 
-#: admin/add-publication.php:570
+#: admin/add-publication.php:556
 msgid "The title of a journal"
 msgstr "Der Titel des Journals"
 
-#: admin/add-publication.php:789
+#: admin/add-publication.php:775
 msgid "The type of a technical report, thesis, incollection or inbook."
 msgstr ""
 "Der Typ eines Technischen Berichts, einer Abschlussarbeit oder eines "
 "Buchkapitels."
 
-#: admin/add-publication.php:368
+#: admin/add-publication.php:354
 msgid "The type of publication"
 msgstr "Der Typ der Publikation"
 
-#: core/class-ajax.php:310
+#: core/class-ajax.php:313
 msgid "The visible name of the field"
 msgstr "Der sichtbare Name des Feldes"
 
-#: admin/add-publication.php:583
+#: admin/add-publication.php:569
 msgid "The volume of a journal or book"
 msgstr "Die Ausgabe eines Journals oder Buches"
 
-#: admin/add-publication.php:170 admin/add-publication.php:171
-#: admin/add-publication.php:171 admin/import-publications.php:316
-#: admin/show-publications.php:514 core/class-ajax.php:83
+#: admin/add-publication.php:156 admin/add-publication.php:157
+#: admin/add-publication.php:157 admin/import-publications.php:330
+#: admin/show-publications.php:518 core/class-ajax.php:83
 #: core/publications/class-books-widget.php:67
 msgid "Title"
 msgstr "Titel"
@@ -1791,7 +1817,7 @@ msgstr ""
 "tp_check_bookmark() ist veraltet seit teachpress 5.0.0. Bitte nutze "
 "tp_bookmarks::bookmark_exists()."
 
-#: admin/settings.php:275
+#: admin/settings.php:285
 msgid "Try to convert utf-8 chars into BibTeX compatible ASCII strings"
 msgstr ""
 "Versuche UTF-8 Zeichen in BibTeX kompatible ASCII-Zeichenketten umzuwandeln"
@@ -1800,16 +1826,16 @@ msgstr ""
 msgid "Twice a day"
 msgstr "Zweimal am Tag"
 
-#: admin/settings.php:243 admin/settings.php:562 core/class-ajax.php:135
+#: admin/settings.php:253 admin/settings.php:588 core/class-ajax.php:135
 #: templates/tp_template_orig_s.php:88
 msgid "Type"
 msgstr "Typ"
 
-#: admin/settings.php:313
+#: admin/settings.php:334
 msgid "Uninstalling"
 msgstr "Deinstallation"
 
-#: admin/settings.php:563
+#: admin/settings.php:589
 msgid "Unique"
 msgstr "Eindeutig"
 
@@ -1818,12 +1844,12 @@ msgstr "Eindeutig"
 msgid "Unpublished"
 msgstr "Unveröffentlicht"
 
-#: admin/import-publications.php:242 admin/settings.php:279
+#: admin/import-publications.php:252 admin/settings.php:289
 msgid "Update existing publications"
 msgstr "Aktualisiere bestehende Publikationen"
 
 #: core/class-update.php:1011 core/class-update.php:1035
-#: core/class-update.php:1132
+#: core/class-update.php:1139
 msgid "Update successful"
 msgstr "Update erfolgreich"
 
@@ -1835,12 +1861,12 @@ msgstr "Update auf"
 msgid "URL not scanned yet."
 msgstr "Aktuell werden keine URLs gescannt."
 
-#: admin/add-publication.php:19 admin/add-publication.php:838
-#: admin/add-publication.php:838
+#: admin/add-publication.php:19 admin/add-publication.php:824
+#: admin/add-publication.php:824
 msgid "URL/Files"
 msgstr "URL/Dateien"
 
-#: admin/add-publication.php:831
+#: admin/add-publication.php:817
 msgid "Urldate"
 msgstr "Urldate"
 
@@ -1848,7 +1874,7 @@ msgstr "Urldate"
 msgid "use &lt;Ctrl&gt; key to select multiple books"
 msgstr "nutze die &lt;Strg&gt;-Taste um mehrere Bücher auszuwählen"
 
-#: admin/settings.php:191
+#: admin/settings.php:201
 msgid "use &lt;Ctrl&gt; key to select multiple roles"
 msgstr "&lt;Strg&gt;-Taste gedrückt halten um mehrere Rollen auszuwählen"
 
@@ -1861,7 +1887,7 @@ msgstr ""
 "Beachte: teachPress kann keine nicht-numerischen Monats- oder Tagesangaben "
 "konvertieren."
 
-#: admin/settings.php:255
+#: admin/settings.php:265
 #| msgid ""
 #| "Used if the related content type for publicaitons is set on \"Posts\""
 msgid "Used if the related content type for publicaitons is set on"
@@ -1869,7 +1895,7 @@ msgstr ""
 "Wird genutzt, wenn der Typ von weiterführenden Inhalten für Publikationen "
 "auf \\\"Beiträge\\\" steht"
 
-#: admin/import-publications.php:472
+#: admin/import-publications.php:496
 msgid "User"
 msgstr "Nutzer"
 
@@ -1881,23 +1907,23 @@ msgstr "Nutzerkennzeichen"
 msgid "Value/Grade"
 msgstr "Wert/Note"
 
-#: admin/settings.php:520
+#: admin/settings.php:546
 msgid "Version"
 msgstr "Version"
 
-#: core/class-ajax.php:350
+#: core/class-ajax.php:353
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: core/publications/templates.php:557
+#: core/publications/templates.php:571
 msgid "visited"
 msgstr "besucht am"
 
-#: core/publications/templates.php:582
+#: core/publications/templates.php:596
 msgid "vol."
 msgstr "Bd."
 
-#: admin/add-publication.php:584
+#: admin/add-publication.php:570
 #| msgid "volume"
 msgid "Volume"
 msgstr "Band"
@@ -1910,11 +1936,11 @@ msgstr "Warteliste"
 msgid "Warning: No publication was selected."
 msgstr "Warnung: Es wurde keine Publikation ausgewählt"
 
-#: admin/settings.php:667
+#: admin/settings.php:693
 msgid "Warning: This field name is not possible."
 msgstr "Warnung: Dieser Feldname ist nicht möglich."
 
-#: admin/add-publication.php:454
+#: admin/add-publication.php:440
 msgid ""
 "With the image field you can add an image to a publication. You can display "
 "images in all publication lists"
@@ -1938,12 +1964,12 @@ msgstr "Workshop"
 msgid "Workshops"
 msgstr "Workshops"
 
-#: admin/import-publications.php:320 admin/show-publications.php:519
-#: core/admin.php:155
+#: admin/import-publications.php:334 admin/show-publications.php:523
+#: core/admin.php:176
 msgid "Year"
 msgstr "Jahr"
 
-#: admin/add-publication.php:20 admin/add-publication.php:842
+#: admin/add-publication.php:20 admin/add-publication.php:828
 msgid ""
 "You can add one URL or file per line. Insert the name of the URL/file behind "
 "the address and separate it by a comma and a space. Example:"
@@ -1963,15 +1989,15 @@ msgstr ""
 msgid "You have no capabilities to use this course"
 msgstr "Du hast nicht die nötigen Berechtigungen, um diesen Kurs zu verwenden"
 
-#: teachpress.php:132 teachpress.php:133 admin/show-publications.php:433
+#: teachpress.php:132 teachpress.php:133 admin/show-publications.php:436
 msgid "Your publications"
 msgstr "Eigene Publikationen"
 
-#: admin/settings.php:223 admin/settings.php:227
+#: admin/settings.php:233 admin/settings.php:237
 msgid "your theme.css"
 msgstr "CSS-Datei deines Themes"
 
-#: admin/add-publication.php:426 admin/add-publication.php:828
+#: admin/add-publication.php:412 admin/add-publication.php:814
 msgid "YYYY-MM-DD"
 msgstr "YYYY-MM-DD"
 
