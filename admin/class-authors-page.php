@@ -75,12 +75,19 @@ class TP_Authors_Page {
         if ( empty ( $per_page) || $per_page < 1 ) {
             $per_page = $screen->get_option( 'per_page', 'default' );
         }
+        
         // sorting
         $option = get_user_meta($user, 'tp_authors_sorting', true);
         $order = 'a.sort_name ASC, a.name ASC';
         
         if ( $option == 'firstname' ) {
             $order = 'a.name ASC, a.sort_name ASC';
+        }
+        if ( $option == 'number_desc' ) {
+            $order = 'count DESC, a.name ASC, a.sort_name ASC';
+        }
+        if ( $option == 'number_asc' ) {
+            $order = 'count ASC, a.name ASC, a.sort_name ASC';
         }
 
         // Handle limits
@@ -130,18 +137,18 @@ class TP_Authors_Page {
         echo '</select>';
         echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
         echo '</div>';
-        $test = TP_Authors::get_authors_occurence( array( 
+        $test = TP_Authors::get_authors_occurence( [ 
                     'count'         => true, 
                     'search'        => $search, 
                     'only_zero'     => $only_zero
-        ));
-        $args = array(
+        ]);
+        $args = [
                     'number_entries'    => $test,
                     'entries_per_page'  => $number_messages,
                     'current_page'      => $curr_page,
                     'entry_limit'       => $entry_limit,
                     'page_link'         => "admin.php?page=$page&amp;",
-                    'link_attributes'   => "search=$search");
+                    'link_attributes'   => "search=$search"];
         echo tp_page_menu($args);
         echo '</div>';
         // END Tablenav actions
@@ -262,17 +269,17 @@ class TP_Authors_Page {
             return;
         }
 
-        $args = array(
-            'label' => __('Items per page', 'teachpress'),
-            'default' => 50,
-            'option' => 'tp_authors_per_page'
-        );
+        $args = [
+            'label'     => __('Items per page', 'teachpress'),
+            'default'   => 50,
+            'option'    => 'tp_authors_per_page'
+        ];
         add_screen_option( 'per_page', $args );
 
-        $args = array(
-            'default' => 'lastname',
-            'option' => 'tp_authors_sorting'
-        );
+        $args = [
+            'default'   => 'lastname',
+            'option'    => 'tp_authors_sorting'
+        ];
         add_screen_option( 'tp_authors_sorting', $args );
     }
     
@@ -286,14 +293,22 @@ class TP_Authors_Page {
         $value = ( $option ) ? $option : 'lastname';
         
         // Available options
-        $options[] = array(
+        $options[] = [
             'key'   => 'firstname',
             'label' => __('First name', 'teachpress')
-        );
-        $options[] = array(
+        ];
+        $options[] = [
             'key'   => 'lastname',
             'label' => __('Last name', 'teachpress')
-        );
+        ];
+        $options[] = [
+            'key'   => 'number_desc',
+            'label' => __('Number of publications (Descending)', 'teachpress')
+        ];
+        $options[] = [
+            'key'   => 'number_asc',
+            'label' => __('Number of publications (Ascending)', 'teachpress')
+        ];
         
         $r = '<label for="tp_authors_sorting"><b>' . __('Sorting', 'teachpress') . '</b></label><br/>';
         $r .= '<select name="tp_authors_sorting" id="tp_authors_sorting">';
@@ -312,7 +327,9 @@ class TP_Authors_Page {
      */
     public static function save_screen_options () {
         $sorting = htmlspecialchars($_POST['tp_authors_sorting']);
-        if ( $sorting === 'firstname' || $sorting === 'lastname' ) {
+        $values = ['firstname', 'lastname', 'number_desc', 'number_asc'];
+        if ( in_array($sorting, $values) ) {
+            
             update_user_meta(get_current_user_id(), 'tp_authors_sorting', $sorting);
         }
     }
