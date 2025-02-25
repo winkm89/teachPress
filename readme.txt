@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 6.7.1
 Requires PHP: 7.0
-Stable tag: 9.0.7
+Stable tag: 9.0.8
 
 Manage your publications with teachPress 
 
@@ -123,6 +123,9 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 9.0.8 (25.02.2025) =
+* Bugfix: Fix an authenticated (Contributor) SQL Injection issue (Thanks to truonghuuphuc for reporting)
 
 = 9.0.7 (18.01.2025) =
 * New: Meta keys search to shortcodes added (Thanks to Juma7C9) (#259)

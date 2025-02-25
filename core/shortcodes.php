@@ -400,9 +400,9 @@ class TP_Shortcodes {
         }
 
         return array(
-            'entry_limit' => $entry_limit,
-            'current_page' => $current_page,
-            'limit' => $limit
+            'entry_limit'   => $entry_limit,
+            'current_page'  => $current_page,
+            'limit'         => $limit
         );
 
     }
