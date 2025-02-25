@@ -581,7 +581,7 @@ class tp_copy_course {
 function get_tp_wp_drafts($post_type, $post_status = 'publish', $sort_column = 'menu_order', $sort_order = 'ASC') {
     global $wpdb;
     echo "\n\t<option value='0'>" . __('none','teachpress') . "</option>";
-    $items = $wpdb->get_results( "SELECT `ID`, `post_title` FROM $wpdb->posts WHERE `post_type` = '" . esc_sql($post_type) . "' AND `post_status` = '" . esc_sql($post_status) . "' ORDER BY " . esc_sql($sort_column) . " " . esc_sql($sort_order) );
+    $items = $wpdb->get_results( "SELECT `ID`, `post_title` FROM $wpdb->posts WHERE `post_type` = '" . esc_sql($post_type) . "' AND `post_status` = '" . esc_sql($post_status) . "' ORDER BY " . TP_DB_Helpers::validate_qualifier($sort_column) . " " . TP_DB_Helpers::validate_qualifier($sort_order) );
     foreach ( $items as $item ) {
         echo "\n\t<option value='$item->ID'>" . get_the_title($item->ID) . "</option>";
     }
@@ -793,7 +793,7 @@ function get_tp_wp_pages($sort_column = "menu_order", $sort_order = "ASC", $sele
         }
         echo "\n\t<option value='0'$current>$pad " . __('none','teachpress') . "</option>";
     }
-    $items = $wpdb->get_results( "SELECT `ID`, `post_parent`, `post_title` FROM $wpdb->posts WHERE `post_parent` = '" . intval($parent) . "' AND `post_type` = '" . esc_sql($post_type) . "' AND `post_status` = 'publish' ORDER BY " . esc_sql($sort_column) . " " . esc_sql($sort_order) );
+    $items = $wpdb->get_results( "SELECT `ID`, `post_parent`, `post_title` FROM $wpdb->posts WHERE `post_parent` = '" . intval($parent) . "' AND `post_type` = '" . esc_sql($post_type) . "' AND `post_status` = 'publish' ORDER BY " . TP_DB_Helpers::validate_qualifier($sort_column) . " " . TP_DB_Helpers::validate_qualifier($sort_order) );
     if ( $items ) {
         foreach ( $items as $item ) {
             $pad = str_repeat( '&nbsp;', $level * 3 );

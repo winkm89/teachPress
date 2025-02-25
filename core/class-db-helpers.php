@@ -212,4 +212,19 @@ class TP_DB_Helpers {
         return $wpdb->get_results("SHOW INDEX FROM " . $db_name, ARRAY_A);
     }
     
+    /**
+     * Validates qualifiers for order or limit clauses. Returns the default if the input contains not allowed chars  
+     * @param string $input
+     * @param string $default
+     * @return string
+     * @since 9.0.8
+     */
+    public static function validate_qualifier ($input, $default = '') {
+        if ( preg_match("#^[a-zA-Z0-9 \.,_\]]+$#", $input) ) {
+            return $input;
+        } else {
+            return $default;
+        }
+    }
+    
 }

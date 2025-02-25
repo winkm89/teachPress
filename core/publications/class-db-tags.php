@@ -75,13 +75,13 @@ class TP_Tags {
         $where = TP_DB_Helpers::compose_clause($nwhere);
 
         // LIMIT clause
-        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . TP_DB_Helpers::validate_qualifier($atts['limit']) : '';
 
         // GROUP BY clause
         $group_by = ( $atts['group_by'] === true ) ? " GROUP BY t.name" : '';
 
         // End
-        $order = esc_sql($atts['order']);
+        $order = TP_DB_Helpers::validate_qualifier($atts['order']);
         $sql = $select . $join . $where . $group_by . " ORDER BY t.name $order $limit";
 
         // echo get_tp_message($sql, 'orange');
@@ -230,7 +230,7 @@ class TP_Tags {
         $search = esc_sql( htmlspecialchars( stripslashes( $atts['search'] ) ) );
         
         // LIMIT clause
-        $l = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        $l = ( $atts['limit'] != '' ) ? 'LIMIT ' . TP_DB_Helpers::validate_qualifier($atts['limit']) : '';
         
         // WHERE clause
         $awhere = array();
@@ -241,7 +241,7 @@ class TP_Tags {
         $having = ( $atts['only_zero'] === true ) ? 'HAVING count = 0' : '';
         
         // ORDER clause
-        $order = esc_sql($atts['order']);
+        $order = TP_DB_Helpers::validate_qualifier($atts['order']);
         
         $sql = "SELECT DISTINCT DISTINCT t.name, t.tag_id, count(r.tag_id) AS count 
                 FROM " . TEACHPRESS_TAGS . " t 
@@ -314,7 +314,7 @@ class TP_Tags {
         $where = TP_DB_Helpers::compose_clause($nwhere);
         
         // LIMIT clause
-        $limit = ( $atts['number_tags'] != '' ) ? 'LIMIT ' . esc_sql($atts['number_tags']) : '';
+        $limit = ( $atts['number_tags'] != '' ) ? 'LIMIT ' . TP_DB_Helpers::validate_qualifier($atts['number_tags']) : '';
 
         $sql = "SELECT anzahlTags FROM ( 
                     SELECT COUNT(*) AS anzahlTags 

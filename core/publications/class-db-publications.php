@@ -102,13 +102,13 @@ class TP_Publications {
         // define all things for meta data integration
         $joins = '';
         $selects = '';
-        $meta_fields = $wpdb->get_results("SELECT variable FROM " . TEACHPRESS_SETTINGS . " WHERE category = 'teachpress_pub'", ARRAY_A);
+        $meta_fields = $wpdb->get_results("SELECT variable FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = 'teachpress_pub'", ARRAY_A);
         if ( !empty($meta_fields) ) {
             $i = 1;
             foreach ($meta_fields as $field) {
                 $table_id = 'm' . $i; 
                 $selects .= ', ' . $table_id .'.meta_value AS ' . $field['variable'];
-                $joins .= ' LEFT JOIN ' . TEACHPRESS_PUB_META . ' ' . $table_id . " ON ( " . $table_id . ".pub_id = p.pub_id AND " . $table_id . ".meta_key = '" . $field['variable'] . "' ) ";
+                $joins .= ' LEFT JOIN ' . TEACHPRESS_PUB_META . ' ' . $table_id . " ON ( " . $table_id . ".pub_id = p.pub_id AND " . $table_id . ".meta_key = '" . esc_sql($field['variable']) . "' ) ";
                 $i++;
             }
         }
@@ -142,7 +142,7 @@ class TP_Publications {
 
         // define order_by clause
         $order = '';
-        $array = explode(",", esc_sql( $atts['order'] ) );
+        $array = explode(",", TP_DB_Helpers::validate_qualifier( $atts['order'], $defaults['order'] ) );
         foreach($array as $element) {
             $element = trim($element);
             // order by year
@@ -210,7 +210,7 @@ class TP_Publications {
         }
         
         // LIMIT clause
-        $limit = ( !empty($atts['limit']) ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        $limit = ( !empty($atts['limit']) ) ? 'LIMIT ' . TP_DB_Helpers::validate_qualifier($atts['limit']) : '';
 
         // End
         if ( $count !== true ) {
@@ -289,7 +289,7 @@ class TP_Publications {
         $atts = wp_parse_args( $args, $defaults );
 
         global $wpdb;
-        $output_type = esc_sql($atts['output_type']);
+        $output_type = $atts['output_type'];
         $include = TP_DB_Helpers::generate_where_clause($atts['include'], "type", "OR", "=");
         $exclude = TP_DB_Helpers::generate_where_clause($atts['exclude'], "type", "OR", "!=");
         $user = TP_DB_Helpers::generate_where_clause($atts['user'], "u.user", "OR", "=");
@@ -353,7 +353,7 @@ class TP_Publications {
         }
 
         // END
-        $order = esc_sql($atts['order']);
+        $order = TP_DB_Helpers::validate_qualifier($atts['order']);
         $result = $wpdb->get_results("SELECT DISTINCT DATE_FORMAT(p.date, '%Y') AS year FROM " . TEACHPRESS_PUB . " p $join $where $having ORDER BY year $order", $atts['output_type']);
         return $result;
     }

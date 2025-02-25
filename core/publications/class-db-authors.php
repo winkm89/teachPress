@@ -60,7 +60,7 @@ class TP_Authors  {
         // Define basics
         $select = "SELECT DISTINCT a.name, r.author_id, r.pub_id, r.con_id, r.is_author, r.is_editor FROM " . TEACHPRESS_REL_PUB_AUTH . " r INNER JOIN " . TEACHPRESS_AUTHORS . " a ON a.author_id = r.author_id";
         $join = '';
-        $order = esc_sql($atts['order']);
+        $order = TP_DB_Helpers::validate_qualifier($atts['order']);
 
         // if the user needs only the number of rows
         if ( $atts['count'] === true ) {
@@ -88,7 +88,7 @@ class TP_Authors  {
         $where = TP_DB_Helpers::compose_clause($nwhere);
 
         // LIMIT clause
-        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        $limit = ( $atts['limit'] != '' ) ? 'LIMIT ' . TP_DB_Helpers::validate_qualifier($atts['limit']) : '';
 
         // GROUP BY clause
         $group_by = ( $atts['group_by'] === true ) ? " GROUP BY a.name" : '';
@@ -127,7 +127,7 @@ class TP_Authors  {
         $search = esc_sql( htmlspecialchars( stripslashes( $atts['search'] ) ) );
         
         // LIMIT clause
-        $l = ( $atts['limit'] != '' ) ? 'LIMIT ' . esc_sql($atts['limit']) : '';
+        $l = ( $atts['limit'] != '' ) ? 'LIMIT ' . TP_DB_Helpers::validate_qualifier($atts['limit']) : '';
         
         // WHERE clause
         $awhere = array();
@@ -138,7 +138,7 @@ class TP_Authors  {
         $having = ( $atts['only_zero'] === true ) ? 'HAVING count = 0' : '';
         
         // ORDER clause
-        $order = esc_sql($atts['order']);
+        $order = TP_DB_Helpers::validate_qualifier($atts['order']);
         
         $sql = "SELECT DISTINCT a.name, a.author_id, count(r.author_id) AS count 
                 FROM " . TEACHPRESS_AUTHORS . " a 
