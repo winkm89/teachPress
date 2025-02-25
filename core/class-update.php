@@ -990,7 +990,7 @@ class TP_Update {
         set_time_limit(TEACHPRESS_TIME_LIMIT);
         
         if ( $limit !== '' ) {
-            $limit = ' LIMIT ' . esc_sql($limit);
+            $limit = ' LIMIT ' . TP_DB_Helpers::validate_qualifier($limit);
         }
         
         $relation = '';
