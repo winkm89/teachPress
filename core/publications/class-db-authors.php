@@ -77,7 +77,7 @@ class TP_Authors  {
         
         $nwhere = array();
         $nwhere[] = TP_DB_Helpers::compose_clause( array(
-                    TP_DB_Helpers::generate_where_clause($atts['author'], "r.name", "OR", "="),
+                    TP_DB_Helpers::generate_where_clause($atts['author'], "a.name", "OR", "="),
                     TP_DB_Helpers::generate_where_clause($atts['author_id'], "r.author_id", "OR", "=")), "OR", '' );
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['pub_id'], "r.pub_id", "OR", "=");
         $nwhere[] = TP_DB_Helpers::generate_where_clause($atts['exclude'], "r.author_id", "AND", "!=");
