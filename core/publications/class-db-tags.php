@@ -206,7 +206,7 @@ class TP_Tags {
     /**
      * Returns an array|object with the name, tag_id and occurence of all_tags
      * @param array $args {
-     *      @type string order          Default: a.name ASC 
+     *      @type string order          Default: t.name ASC 
      *      @type string limit          SQL limit like 0,50
      *      @type string search         a full text search through name field
      *      @type boolean only_zero     If true: only tags with 0 occurence will be returned
