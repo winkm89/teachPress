@@ -19,9 +19,9 @@ function tp_show_publications_page_screen_options() {
     }
 
     $args = array(
-        'label' => __('Items per page', 'teachpress'),
-        'default' => 50,
-        'option' => 'tp_pubs_per_page'
+        'label'     => __('Items per page', 'teachpress'),
+        'default'   => 50,
+        'option'    => 'tp_pubs_per_page'
     );
     add_screen_option( 'per_page', $args );
 }

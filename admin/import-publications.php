@@ -53,7 +53,7 @@ function tp_show_import_publication_page() {
 
         // List of Imports
         if ( $tab === 'exist' && $import_id === 0 ) {
-            TP_Import_Publication_Page::exist_tab($import_id, $delete_import, $checkbox);
+            TP_Import_Publication_Page::exist_tab($delete_import, $checkbox);
         }
 
         // Show the list of publications, which were imported with the selected import
@@ -430,21 +430,25 @@ class TP_Import_Publication_Page {
 
     /**
      * Displays the exist tab of the import page
-     * @param int      $import_id    The ID of the import
      * @param string   $delete_import
      * @param array    $checkbox
      * @since 6.1.0
      * @access public
      */
-    public static function exist_tab ($import_id, $delete_import, $checkbox) {
+    public static function exist_tab ($delete_import, $checkbox) {
 
         echo '<h3>' . __('List of imports','teachpress') . '</h3>';
         echo '<form name="search" method="get" action="admin.php">';
         echo '<input name="page" type="hidden" value="teachpress/import.php" />';
         echo '<input name="tab" type="hidden" value="exist" />';
+        
+        wp_nonce_field( 'verify_teachpress_import', 'tp_nonce', false, true );
 
         // Delete imports part 2
-        if ( isset($_GET['delete_import_ok']) ) {
+        if ( isset( $_GET['delete_import_ok']) ) {
+            // Check nonce field
+            TP_Import_Publication_Page::check_nonce_field_get();
+        
             tp_publication_imports::delete_import($checkbox);
             $message = __('Removing successful','teachpress');
             get_tp_message($message);
@@ -529,6 +533,18 @@ class TP_Import_Publication_Page {
     public static function check_nonce_field () {
         if ( ! isset( $_POST['tp_nonce'] ) 
             || ! wp_verify_nonce( $_POST['tp_nonce'], 'verify_teachpress_import' ) 
+        ) {
+           wp_die('teachPress error: This request could not be verified!');
+           exit;
+        }
+    }
+    
+    /**
+     * Checks the nonce field of the form. If the check fails wp_die() will be executed
+     */
+    public static function check_nonce_field_get() {
+        if ( ! isset( $_GET['tp_nonce'] ) 
+            || ! wp_verify_nonce( $_GET['tp_nonce'], 'verify_teachpress_import' ) 
         ) {
            wp_die('teachPress error: This request could not be verified!');
            exit;

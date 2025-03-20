@@ -4,9 +4,9 @@ Tags: publications, bibliography, BibTeX
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
-Tested up to: 6.7.1
+Tested up to: 6.7.2
 Requires PHP: 7.0
-Stable tag: 9.0.9
+Stable tag: 9.0.10
 
 Manage your publications with teachPress 
 
@@ -123,6 +123,9 @@ Please note that custom publication templates now requires the method get_image(
 Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/2016/12/30/teachpress-6-0-upgrade-information/)
 
 == Changelog ==
+
+= 9.0.10 (20.03.2025) =
+* Bugfix: Fixes another CSRF vulnerability in tp import dialog
 
 = 9.0.9 (11.03.2025)
 * Bugfix: Fix space handling in bibtex keys within publication exists check (#267)
