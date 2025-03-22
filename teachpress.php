@@ -5,7 +5,7 @@
  * Description:         Powerful publication management for WordPress
  * Author:              Michael Winkler
  * Author URI:          http://mtrv.wordpress.com/
- * Version:             9.0.10
+ * Version:             9.0.11
  * Requires at least:   3.9
  * Text Domain:         teachpress
  * Domain Path:         /languages
@@ -219,7 +219,7 @@ function tp_show_screen_options($current, $screen) {
  * @return string
  */
 function get_tp_version() {
-    return '9.0.10';
+    return '9.0.11';
 }
 
 /**
