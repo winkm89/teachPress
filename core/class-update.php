@@ -31,7 +31,7 @@ class TP_Update {
         
         // if is the current one
         if ( $db_version === $software_version ) {
-            get_tp_message( __('An update is not necessary.','teachpress') );
+            get_tp_message( esc_html__('An update is not necessary.','teachpress') );
             return;
         }
         
@@ -994,7 +994,7 @@ class TP_Update {
         }
         
         $relation = '';
-        get_tp_message( __('Step 1: Read data and add authors','teachpress') );
+        get_tp_message( esc_html__('Step 1: Read data and add authors','teachpress') );
         $pubs = $wpdb->get_results("SELECT pub_id, author, editor FROM " . TEACHPRESS_PUB . $limit, ARRAY_A);
         foreach ( $pubs as $row ) {
             if ( $row['author'] != '' ) {
@@ -1006,9 +1006,9 @@ class TP_Update {
         }
         $relation = substr($relation, 0, -2);
         $relation = str_replace(', ,', ',', $relation);
-        get_tp_message( __('Step 2: Add relations between authors and publications','teachpress') );
+        get_tp_message( esc_html__('Step 2: Add relations between authors and publications','teachpress') );
         $wpdb->query("INSERT INTO " . TEACHPRESS_REL_PUB_AUTH . " (`pub_id`, `author_id`, `is_author`, `is_editor`) VALUES $relation");
-        get_tp_message( __('Update successful','teachpress') );
+        get_tp_message( esc_html__('Update successful','teachpress') );
     }
     
     /**
@@ -1020,7 +1020,7 @@ class TP_Update {
         // Try to set the time limit for the script
         set_time_limit(TEACHPRESS_TIME_LIMIT);
         $relation = '';
-        get_tp_message( __('Step 1: Read and prepare data','teachpress') );
+        get_tp_message( esc_html__('Step 1: Read and prepare data','teachpress') );
         $students = $wpdb->get_results("SELECT wp_id, course_of_studies, birthday, semesternumber, matriculation_number FROM " . TEACHPRESS_STUD, ARRAY_A);
         foreach ( $students as $row ) {
             $relation .= "(" . $row['wp_id'] . ", 'course_of_studies', '" . $row['course_of_studies'] . "'), ";
@@ -1030,9 +1030,9 @@ class TP_Update {
         }
         
         $relation = substr($relation, 0, -2);
-        get_tp_message( __('Step 2: Insert data','teachpress') );
+        get_tp_message( esc_html__('Step 2: Insert data','teachpress') );
         $wpdb->query("INSERT INTO " . TEACHPRESS_STUD_META . " (`wp_id`, `meta_key`, `meta_value`) VALUES $relation");
-        get_tp_message( __('Update successful','teachpress') );
+        get_tp_message( esc_html__('Update successful','teachpress') );
     }
 
     /**
@@ -1136,6 +1136,6 @@ class TP_Update {
         global $wpdb;
         $version = htmlspecialchars( esc_sql( $version ) );
         $wpdb->query("UPDATE " . TEACHPRESS_SETTINGS . " SET `value` = '$version', `category` = 'system' WHERE `variable` = 'db-version'");
-        get_tp_message( __('Update successful','teachpress') );
+        get_tp_message( esc_html__('Update successful','teachpress') );
     }
 }

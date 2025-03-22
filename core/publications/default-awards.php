@@ -8,8 +8,8 @@ function tp_register_all_awards() {
     tp_register_award(
         array(
             'award_slug'        => 'none',
-            'i18n_singular'     => __('None','teachpress'),
-            'i18n_plural'       => __('None','teachpress'),
+            'i18n_singular'     => esc_html__('None','teachpress'),
+            'i18n_plural'       => esc_html__('None','teachpress'),
             'icon'              => ''
         ) );
     
@@ -17,8 +17,8 @@ function tp_register_all_awards() {
     tp_register_award(
         array(
             'award_slug'        => 'best',
-            'i18n_singular'     => __('Best Paper','teachpress'),
-            'i18n_plural'       => __('Best Papers','teachpress'),
+            'i18n_singular'     => esc_html__('Best Paper','teachpress'),
+            'i18n_plural'       => esc_html__('Best Papers','teachpress'),
             'icon'              => 'fas fa-trophy'
         ) );
     
@@ -26,8 +26,8 @@ function tp_register_all_awards() {
     tp_register_award(
         array(
             'award_slug'        => 'honorable',
-            'i18n_singular'     => __('Honorable Mention','teachpress'),
-            'i18n_plural'       => __('Honorable Mentions','teachpress'),
+            'i18n_singular'     => esc_html__('Honorable Mention','teachpress'),
+            'i18n_plural'       => esc_html__('Honorable Mentions','teachpress'),
             'icon'              => 'fas fa-award'
         ) );
 

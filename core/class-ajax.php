@@ -18,10 +18,11 @@ class TP_Ajax {
      * @param int $course_id        The course ID
      * @since 5.0.0
      * @access public
+     * @return int Returns the ID of the new document
      */
     public static function add_document_headline( $doc_name, $course_id ) {
         $file_id = TP_Documents::add_document($doc_name, '', 0, $course_id);
-        echo $file_id;
+        echo intval($file_id);
     }
     
     /**
@@ -33,7 +34,7 @@ class TP_Ajax {
      */
     public static function change_document_name( $doc_id, $doc_name ) {
         TP_Documents::change_document_name($doc_id, $doc_name);
-        echo $doc_name;
+        echo esc_html($doc_name);
     }
     
     /**
@@ -77,14 +78,14 @@ class TP_Ajax {
         echo '<body>';
         echo '<div id="content">';
         echo '<form method="post">';
-        echo '<input name="tp_artefact_id" type="hidden" value="' . $artefact_id . '"/>';
+        echo '<input name="tp_artefact_id" type="hidden" value="' . intval($artefact_id) . '"/>';
         echo '<table class="form-table">';
         echo '<tr>';
-        echo '<td>' . __('Title','teachpress') . '</td>';
-        echo '<td><input name="tp_artefact_title" cols="50" value="' . stripslashes($artefact['title']) . '"/></td>';
+        echo '<td>' . esc_html__('Title','teachpress') . '</td>';
+        TP_HTML::line('<td><input name="tp_artefact_title" cols="50" value="' . stripslashes($artefact['title']) . '"/></td>');
         echo '</tr>';
         echo '</table>';
-        echo '<p><input name="tp_save_artefact" type="submit" class="button-primary" value="' . __('Save') . '"/> <input name="tp_delete_artefact" type="submit" class="button-secondary" value="' . __('Delete','teachpress') . '"/></p>';
+        echo '<p><input name="tp_save_artefact" type="submit" class="button-primary" value="' . esc_html__('Save') . '"/> <input name="tp_delete_artefact" type="submit" class="button-secondary" value="' . esc_html__('Delete','teachpress') . '"/></p>';
         echo '</form>';
         echo '</div>';
         echo '</body>';
@@ -111,7 +112,7 @@ class TP_Ajax {
             return;
         }
 
-        $artefact['title'] = ( $artefact['title'] == '' ) ? __('Complete Course','teachpress') : $artefact['title'];
+        $artefact['title'] = ( $artefact['title'] == '' ) ? esc_html__('Complete Course','teachpress') : $artefact['title'];
         echo '<!doctype html>';
         echo '<html>';
         echo '<head>';
@@ -121,42 +122,42 @@ class TP_Ajax {
         echo '<body>';
         echo '<div id="content">';
         echo '<form method="post">';
-        echo '<input name="tp_assessment_id" type="hidden" value="' . $assessment_id . '"/>';
+        echo '<input name="tp_assessment_id" type="hidden" value="' . intval($assessment_id) . '"/>';
         echo '<table class="form-table">';
         echo '<tr>';
-        echo '<td>' . __('Name','teachpress') . '</td>';
-        echo '<td>' . stripslashes($student['firstname']) . ' ' . stripslashes($student['lastname']) . '</td>';
+        echo '<td>' . esc_html__('Name','teachpress') . '</td>';
+        TP_HTML::line( '<td>' . stripslashes($student['firstname']) . ' ' . stripslashes($student['lastname']) . '</td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Artefact','teachpress') . '</td>';
-        echo '<td>' . stripslashes($artefact['title'])  . '</td>';
+        echo '<td>' . esc_html__('Artefact','teachpress') . '</td>';
+        TP_HTML::line( '<td>' . stripslashes($artefact['title'])  . '</td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Type','teachpress') . '</td>';
-        echo '<td>' . TP_Admin::get_assessment_type_field('tp_type', $assessment['type']) . '</td>';
+        echo '<td>' . esc_html__('Type','teachpress') . '</td>';
+        TP_HTML::line( '<td>' . TP_Admin::get_assessment_type_field('tp_type', $assessment['type']) . '</td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Value/Grade','teachpress') . '</td>';
-        echo '<td><input name="tp_value" type="text" size="50" value="' . $assessment['value'] . '" /></td>';
+        echo '<td>' . esc_html__('Value/Grade','teachpress') . '</td>';
+        TP_HTML::line( '<td><input name="tp_value" type="text" size="50" value="' . $assessment['value'] . '" /></td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Comment','teachpress') . '</td>';
-        echo '<td><textarea name="tp_comment" rows="4" cols="50">' . stripslashes($assessment['comment']) . '</textarea></td>';
+        echo '<td>' . esc_html__('Comment','teachpress') . '</td>';
+        TP_HTML::line( '<td><textarea name="tp_comment" rows="4" cols="50">' . stripslashes($assessment['comment']) . '</textarea></td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Has passed','teachpress') . '</td>';
-        echo '<td>' . TP_Admin::get_assessment_passed_field('tp_passed', $assessment['passed']) . '</td>';
+        echo '<td>' . esc_html__('Has passed','teachpress') . '</td>';
+        TP_HTML::line( '<td>' . TP_Admin::get_assessment_passed_field('tp_passed', $assessment['passed']) . '</td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Date','teachpress') . '</td>';
-        echo '<td>' . $assessment['exam_date'] . '</td>';
+        echo '<td>' . esc_html__('Date','teachpress') . '</td>';
+        TP_HTML::line( '<td>' . $assessment['exam_date'] . '</td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<td>' . __('Examiner','teachpress') . '</td>';
-        echo '<td>' . stripslashes($examiner->display_name) . '</td>';
+        echo '<td>' . esc_html__('Examiner','teachpress') . '</td>';
+        TP_HTML::line( '<td>' . stripslashes($examiner->display_name) . '</td>' );
         echo '</tr>';
         echo '</table>';
-        echo '<p><input name="tp_save_assessment" type="submit" class="button-primary" value="' . __('Save') . '"/> <input name="tp_delete_assessment" type="submit" class="button-secondary" value="' . __('Delete','teachpress') . '"/></p>';
+        echo '<p><input name="tp_save_assessment" type="submit" class="button-primary" value="' . esc_html__('Save') . '"/> <input name="tp_delete_assessment" type="submit" class="button-secondary" value="' . esc_html__('Delete','teachpress') . '"/></p>';
         echo '</form>';
         echo '</div>';
         echo '</body>';
@@ -175,12 +176,12 @@ class TP_Ajax {
         echo '<ol>';
         foreach ( $pubs as $pub) {
             echo '<li style="padding-left:10px;">';
-            echo '<a target="_blank" title="' . __('Edit publication','teachpress') .'" href="admin.php?page=teachpress/addpublications.php&pub_id=' . $pub['pub_id'] . '">' . TP_HTML::prepare_title($pub['title'], 'decode') . '</a>, ' . stripslashes($pub['type']) . ', ' . $pub['year'];
+            TP_HTML::line( '<a target="_blank" title="' . esc_html__('Edit publication','teachpress') .'" href="admin.php?page=teachpress/addpublications.php&pub_id=' . intval($pub['pub_id']) . '">' . TP_HTML::prepare_title($pub['title'], 'decode') . '</a>, ' . stripslashes($pub['type']) . ', ' . intval($pub['year']) );
             if ( $pub['is_author'] == 1 ) {
-                echo ' (' . __('as author','teachpress') . ')';
+                echo ' (' . esc_html__('as author','teachpress') . ')';
             }
             if ( $pub['is_editor'] == 1 ) {
-                echo ' (' . __('as editor','teachpress') . ')';
+                echo ' (' . esc_html__('as editor','teachpress') . ')';
             }
             echo '</li>';
         }
@@ -215,10 +216,10 @@ class TP_Ajax {
         echo '<body>';
         echo '<div class="content">';
         echo '<div class="wrap">';
-        echo '<h3 class="nav-tab-wrapper"><a class="nav-tab nav-tab-active tp_cite_text" id="tp_cite_text_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('Text','teachpress') . '</a> <a class="nav-tab tp_cite_bibtex" id="tp_cite_bibtex_' . $cite_id . '" pub_id="' . $cite_id . '">' . __('BibTeX','teachpress') . '</a></h3>';
+        TP_HTML::line( '<h3 class="nav-tab-wrapper"><a class="nav-tab nav-tab-active tp_cite_text" id="tp_cite_text_' . $cite_id . '" pub_id="' . $cite_id . '">' . esc_html__('Text','teachpress') . '</a> <a class="nav-tab tp_cite_bibtex" id="tp_cite_bibtex_' . $cite_id . '" pub_id="' . $cite_id . '">' . esc_html__('BibTeX','teachpress') . '</a></h3>' );
         echo '<form name="form_cite" method="post">';
         echo '<input name="tp_cite_id" type="hidden" value="' . '"/>';
-        echo '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="7" style="width:100%; border-top:none;" title="' . __('Publication entry','teachpress') . '">' . TP_Export::text_row($publication) . '</textarea>';
+        TP_HTML::line( '<textarea name="tp_cite_full" id="tp_cite_full_' . $cite_id . '" class="tp_cite_full" rows="7" style="width:100%; border-top:none;" title="' . esc_html__('Publication entry','teachpress') . '">' . TP_Export::text_row($publication) . '</textarea>' );
         echo '</form>';
         echo '</div>';
         echo '</div>';
@@ -237,11 +238,11 @@ class TP_Ajax {
         if ( $mode === 'bibtex' ) {
             $publication = TP_Publications::get_publication($cite_id, ARRAY_A);
             $tags = TP_Tags::get_tags(array('pub_id' => $cite_id, 'output_type' => ARRAY_A));
-            echo TP_Bibtex::get_single_publication_bibtex($publication, $tags);
+            TP_HTML::line( TP_Bibtex::get_single_publication_bibtex($publication, $tags) );
         }
         if ( $mode === 'text' ) {
             $publication = TP_Publications::get_publication($cite_id, ARRAY_A);
-            echo TP_Export::text_row($publication);
+            TP_HTML::line( TP_Export::text_row($publication) );
         }
     }
 
@@ -267,7 +268,7 @@ class TP_Ajax {
     public static function get_meta_field_screen ( $meta_field_id ) {
         $meta_field_id = intval( $meta_field_id );
         if ( $meta_field_id === 0 ) {
-            $data = array(
+            $data = [
                 'name'          => '',
                 'title'         => '',
                 'type'          => '',
@@ -276,7 +277,7 @@ class TP_Ajax {
                 'step'          => '',
                 'visibility'    => '',
                 'required'      => ''
-            );
+            ];
         }
         else {
             $field = TP_Options::get_option_by_id($meta_field_id);
@@ -292,36 +293,36 @@ class TP_Ajax {
         echo '<body>';
         echo '<div id="content">';
         echo '<form method="post">';
-        echo wp_nonce_field( 'verify_teachpress_settings', 'tp_nonce', true, false );
-        echo '<input name="field_edit" type="hidden" value="' . $meta_field_id . '">';
+        wp_nonce_field( 'verify_teachpress_settings', 'tp_nonce', true, true );
+        echo '<input name="field_edit" type="hidden" value="' . intval($meta_field_id) . '">';
         echo '<table class="form-table">';
         
         // field name
         if ( $meta_field_id === 0 ) {
             echo '<tr>';
-            echo '<td><label for="field_name">' . __('Field name','teachpress') . '</label></td>';
-            echo '<td><input name="field_name" type="text" id="field_name" size="30" title="' . __('Allowed chars','teachpress') . ': A-Z,a-z,0-9,_" value="' . $data['name'] . '"/></td>';
+            echo '<td><label for="field_name">' . esc_html__('Field name','teachpress') . '</label></td>';
+            TP_HTML::line( '<td><input name="field_name" type="text" id="field_name" size="30" title="' . esc_html__('Allowed chars','teachpress') . ': A-Z,a-z,0-9,_" value="' . $data['name'] . '"/></td>' );
             echo '</tr>';
         }
         else {
-            echo '<input name="field_name" id="field_name" type="hidden" value="' . $data['name'] . '">';
+            TP_HTML::line( '<input name="field_name" id="field_name" type="hidden" value="' . $data['name'] . '">' );
         }
         
         // label
         echo '<tr>';
-        echo '<td><label for="field_label">' . __('Label','teachpress') . '</label></td>';
-        echo '<td><input name="field_label" type="text" id="field_label" size="30" title="' . __('The visible name of the field','teachpress') . '" value="' . $data['title'] . '" /></td>';
+        echo '<td><label for="field_label">' . esc_html__('Label','teachpress') . '</label></td>';
+        TP_HTML::line( '<td><input name="field_label" type="text" id="field_label" size="30" title="' . esc_html__('The visible name of the field','teachpress') . '" value="' . $data['title'] . '" /></td>' );
         echo '</tr>';
         
         // field type
         $field_types = array('TEXT', 'TEXTAREA', 'INT', 'DATE', 'SELECT', 'CHECKBOX', 'RADIO');
         echo '<tr>';
-        echo '<td><label for="field_type">' . __('Field type','teachpress') . '</label></td>';
+        echo '<td><label for="field_type">' . esc_html__('Field type','teachpress') . '</label></td>';
         echo '<td>';
         echo '<select name="field_type" id="field_type">';
         foreach ( $field_types as $type ) {
             $selected = ( $data['type'] === $type ) ? 'selected="selected"' : '';
-            echo '<option value="' . $type . '" ' . $selected . '>' . $type . '</option>';
+            TP_HTML::line( '<option value="' . $type . '" ' . $selected . '>' . $type . '</option>' );
         }
         echo '</select>';
         echo '</td>';
@@ -330,41 +331,41 @@ class TP_Ajax {
         // min
         $min = ( $data['min'] === 'false' ) ? '' : intval($min);
         echo '<tr>';
-        echo '<td><label for="number_min">' . __('Min','teachpress') . ' (' . __('Only for INT fields','teachpress') . ')</label></td>';
-        echo '<td><input name="number_min" id="number_min" type="number" size="10" value="' . $min . '"/></td>';
+        echo '<td><label for="number_min">' . esc_html__('Min','teachpress') . ' (' . esc_html__('Only for INT fields','teachpress') . ')</label></td>';
+        TP_HTML::line( '<td><input name="number_min" id="number_min" type="number" size="10" value="' . $min . '"/></td>' );
         echo '</tr>';
         
         // max
         $max = ( $data['max'] === 'false' ) ? '' : intval($max);
         echo '<tr>';
-        echo '<td><label for="number_max">' . __('Max','teachpress') . ' (' . __('Only for INT fields','teachpress') . ')</label></td>';
-        echo '<td><input name="number_max" id="number_max" type="number" size="10" value="' . $max . '"/></td>';
+        echo '<td><label for="number_max">' . esc_html__('Max','teachpress') . ' (' . esc_html__('Only for INT fields','teachpress') . ')</label></td>';
+        TP_HTML::line( '<td><input name="number_max" id="number_max" type="number" size="10" value="' . $max . '"/></td>' );
         echo '</tr>';
         
         // step
         $step = ( $data['step'] === 'false' ) ? '' : intval($step);
         echo '<tr>';
-        echo '<td><label for="number_step">' . __('Step','teachpress') . ' (' . __('Only for INT fields','teachpress') . ')</label></td>';
-        echo '<td><input name="number_step" id="number_step" type="text" size="10" value="' . $step . '"/></td>';
+        echo '<td><label for="number_step">' . esc_html__('Step','teachpress') . ' (' . esc_html__('Only for INT fields','teachpress') . ')</label></td>';
+        TP_HTML::line( '<td><input name="number_step" id="number_step" type="text" size="10" value="' . $step . '"/></td>' );
         echo '</tr>';
         
         // visibility
         echo '<tr>';
-        echo '<td><label for="visibility">' . __('Visibility','teachpress') . '</label></td>';
+        echo '<td><label for="visibility">' . esc_html__('Visibility','teachpress') . '</label></td>';
         echo '<td>';
         echo '<select name="visibility" id="visibility">';
         
         // normal
         $vis_normal = ( $data['visibility'] === 'normal' ) ? 'selected="selected"' : '';
-        echo '<option value="normal" ' . $vis_normal . '>' . __('Normal','teachpress') . '</option>';
+        TP_HTML::line( '<option value="normal" ' . $vis_normal . '>' . esc_html__('Normal','teachpress') . '</option>' );
 
         // admin
         $vis_admin = ( $data['visibility'] === 'admin' ) ? 'selected="selected"' : '';
-        echo '<option value="admin" ' . $vis_admin . '>' . __('Admin','teachpress') . '</option>';
+        TP_HTML::line( '<option value="admin" ' . $vis_admin . '>' . esc_html__('Admin','teachpress') . '</option>' );
 
         // hidden
         $vis_hidden = ( $data['visibility'] === 'hidden' ) ? 'selected="selected"' : '';
-        echo '<option value="hidden" ' . $vis_hidden . '>' . __('Hidden','teachpress') . '</option>';
+        TP_HTML::line( '<option value="hidden" ' . $vis_hidden . '>' . esc_html__('Hidden','teachpress') . '</option>' );
         
         echo '</select>';
         echo '</td>';
@@ -373,11 +374,11 @@ class TP_Ajax {
         // required
         $req = ( $data['required'] === 'true' ) ? 'checked="checked"' : '';
         echo '<tr>';
-        echo '<td colspan="2"><input type="checkbox" name="is_required" id="is_required" ' . $req . '/> <label for="is_required">' . __('Required field','teachpress') . '</label></td>';
+        TP_HTML::line( '<td colspan="2"><input type="checkbox" name="is_required" id="is_required" ' . $req . '/> <label for="is_required">' . esc_html__('Required field','teachpress') . '</label></td>' );
         echo '</tr>';
            
         echo '</table>';
-        echo '<p><input type="submit" name="add_field" class="button-primary" value="' . __('Save','teachpress') . '"/></p>';
+        echo '<p><input type="submit" name="add_field" class="button-primary" value="' . esc_html__('Save','teachpress') . '"/></p>';
         echo '</form>';
         echo '</div>';
         echo '</body>';
@@ -391,7 +392,7 @@ class TP_Ajax {
      * @access public
      */
     public static function get_mimetype_image( $filename ) {
-        echo TP_Icons::get_class($filename);
+        echo esc_html( TP_Icons::get_class($filename) );
     }
 
     /**

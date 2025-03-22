@@ -26,15 +26,15 @@ class TP_Admin {
         if ($test != '') {
            $version = get_tp_version();
            if ($test !== $version) {
-               echo $before;
-               get_tp_message( __('A database update is necessary','teachpress') . '. <a href="options-general.php?page=teachpress/settings.php&up=1">' . __('Update to','teachpress') . ' ' . $version . '</a>.', 'orange' );
-               echo $after;
+               TP_HTML::line( $before );
+               get_tp_message( esc_html__('A database update is necessary','teachpress') . '. <a href="options-general.php?page=teachpress/settings.php&up=1">' . esc_html__('Update to','teachpress') . ' ' . $version . '</a>.', 'orange' );
+               TP_HTML::line( $after );
            }
         }
         else {
-            echo $before;
-            get_tp_message( '<a href="options-general.php?page=teachpress/settings.php&ins=1">' . __('Install database','teachpress') . '</a>', 'orange' );
-            echo $after;
+            TP_HTML::line( $before );
+            get_tp_message( '<a href="options-general.php?page=teachpress/settings.php&ins=1">' . esc_html__('Install database','teachpress') . '</a>', 'orange' );
+            TP_HTML::line( $after );
         }
     }
     
@@ -70,9 +70,9 @@ class TP_Admin {
         $return = '';
         $return .= '<select name="' . $field_name . '" id="' . $field_name . '" tabindex="' . $tabindex . '">';
         $options = array( 
-                    array( 'value' => 'grade', 'title' => __('Grade','teachpress') ),
-                    array( 'value' => 'percentage', 'title' => __('Percentage','teachpress') ),
-                    array( 'value' => 'points', 'title' => __('Points','teachpress') ) 
+                    array( 'value' => 'grade', 'title' => esc_html__('Grade','teachpress') ),
+                    array( 'value' => 'percentage', 'title' => esc_html__('Percentage','teachpress') ),
+                    array( 'value' => 'points', 'title' => esc_html__('Points','teachpress') ) 
                    );
         foreach ($options as $opt) {
             $selected = ( $value == $opt['value'] ) ? 'selected="selected"' : '';
@@ -93,8 +93,8 @@ class TP_Admin {
         $return = '';
         $return .= '<select name="' . $field_name . '" id="' . $field_name . '" tabindex="' . $tabindex . '">';
         $options = array( 
-                    array( 'value' => '0', 'title' => __('not passed','teachpress') ),
-                    array( 'value' => '1', 'title' => __('passed','teachpress') ) 
+                    array( 'value' => '0', 'title' => esc_html__('not passed','teachpress') ),
+                    array( 'value' => '1', 'title' => esc_html__('passed','teachpress') ) 
                    );
         foreach ($options as $opt) {
             $selected = ( $value == $opt['value'] ) ? 'selected="selected"' : '';
@@ -151,29 +151,29 @@ class TP_Admin {
         $month = ( $value != '' ) ? $b[0][1] : '01';
         $year = ( $value != '' ) ? $b[0][0] : '19xx';
         $months = array ( 
-            __('Jan','teachpress'), 
-            __('Feb','teachpress'), 
-            __('Mar','teachpress'), 
-            __('Apr','teachpress'), 
-            __('May','teachpress'), 
-            __('Jun','teachpress'), 
-            __('Jul','teachpress'), 
-            __('Aug','teachpress'), 
-            __('Sep','teachpress'), 
-            __('Oct','teachpress'), 
-            __('Nov','teachpress'), 
-            __('Dec','teachpress') );
+            esc_html__('Jan','teachpress'), 
+            esc_html__('Feb','teachpress'), 
+            esc_html__('Mar','teachpress'), 
+            esc_html__('Apr','teachpress'), 
+            esc_html__('May','teachpress'), 
+            esc_html__('Jun','teachpress'), 
+            esc_html__('Jul','teachpress'), 
+            esc_html__('Aug','teachpress'), 
+            esc_html__('Sep','teachpress'), 
+            esc_html__('Oct','teachpress'), 
+            esc_html__('Nov','teachpress'), 
+            esc_html__('Dec','teachpress') );
         $return = '';
         $return .= '<p><b>' . stripslashes($label) . '</b></p>';
         $return .= '<input name="' . $field_name . '_day" id="' . $field_name . '_day" type="text" title="Day" size="2" value="' . $day . '"/>';
-        $return .= '<select name="' . $field_name . '_month" id="' . $field_name . '_month" title="' . __('Month','teachpress') . '">';
+        $return .= '<select name="' . $field_name . '_month" id="' . $field_name . '_month" title="' . esc_html__('Month','teachpress') . '">';
         for ( $i = 1; $i <= 12; $i++ ) {
             $m = ( $i < 10 ) ? '0' . $i : $i;
             $selected = ($month == $m) ? 'selected="selected"' : '';
             $return .= '<option value="' . $m . '" ' . $selected . '>' . $months[$i-1] . '</option>';
         }
         $return .= '</select>';
-        $return .= '<input name="' . $field_name . '_year" id="' . $field_name . '_year" type="text" title="' . __('Year','teachpress') . '" size="4" value="' . $year . '"/>';
+        $return .= '<input name="' . $field_name . '_year" id="' . $field_name . '_year" type="text" title="' . esc_html__('Year','teachpress') . '" size="4" value="' . $year . '"/>';
         return $return;
     }
     
@@ -238,7 +238,7 @@ class TP_Admin {
         $return .= '<select name="' . $field_name . '" id="' . $field_name . '">';
         $options = $wpdb->get_results("SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = '" . esc_sql($field_name) . "' ORDER BY value ASC");
         if ( $value == '' ) {
-            $return .= '<option value="">- ' . __('none','teachpress') . ' -</option>';
+            $return .= '<option value="">- ' . esc_html__('none','teachpress') . ' -</option>';
         }
         foreach ($options as $opt) {
             $return .= TP_Admin::get_select_option(stripslashes($opt->value), stripslashes($opt->value), $value);
@@ -252,12 +252,21 @@ class TP_Admin {
      * @param string $value     The option value
      * @param string $label     The option label   
      * @param string $match     If $match is the same as $value the option is set as selected
+     * @param boolean $echo     Print directly (true) or not (false), default: false
      * @return string
      * @since 7.1.0
      */
-    public static function get_select_option($value, $label, $match) {
+    public static function get_select_option($value, $label, $match, $echo = false) {
         $s = ( $match == $value ) ? 'selected="selected"' : '';
-        return '<option value="' . $value . '" ' . $s . '>' . $label . '</option>';
+        $r = '<option value="' . $value . '" ' . $s . '>' . $label . '</option>';
+        
+        // Print directly
+        if ( $echo === true ) {
+            echo $r;
+            return;
+        }
+        
+        return $r;
     }
     
     /**
@@ -301,11 +310,12 @@ class TP_Admin {
      *      @type string $style             css style attributes
      *      @type string $container_misc    used for custom attributes of the enclosing div container
      * }
+     * @param boolean $echo     Print directly (true) or not (false), default: false
      * @return string
      * @since 5.0.0
      * @version 2
      */
-    public static function get_form_field ($atts) {
+    public static function get_form_field ($atts, $echo = false) {
         $param = shortcode_atts(array(
             'name'      => '',
             'title'     => '',
@@ -317,9 +327,12 @@ class TP_Admin {
             'style'     => ''
         ), $atts);
         
+        // For textareas
         if ( $param['type'] === 'textarea' ) {
             $field = '<textarea name="' . $param['name'] . '" id="' . $param['name'] . '" wrap="virtual" style="' . $param['style'] . '" tabindex="' . $param['tabindex'] . '" title="' . stripslashes($param['title']) . '">' . stripslashes($param['value']) . '</textarea>';
         }
+        
+        // For normal input fields
         else {
             $field = '<input name="' . $param['name'] . '" id="' . $param['name']. '" type="text" title="' . stripslashes($param['title']) . '" style="' . $param['style'] . '" value="' . stripslashes($param['value']) . '" tabindex="' . $param['tabindex'] . '" />';
         }
@@ -327,6 +340,13 @@ class TP_Admin {
         $a = '<div id="div_' . $param['name'] . '" style="display:' . $param['display']. '">
               <p><label for="' . $param['name'] . '" title="' . stripslashes($param['title']) . '"><strong>' . stripslashes($param['label']) . '</strong></label></p>
               ' . $field . '</div>';
+        
+        // Print directly
+        if ( $echo === true ) {
+            echo $a;
+            return;
+        }
+            
         return $a;
     }
     
@@ -335,17 +355,28 @@ class TP_Admin {
      * @param string $name          The field name of the checkbox
      * @param string $label         The label text for the checkbox 
      * @param string $value         The checkbox value
-     * @param description           A text which is displayed as hover over the label text
+     * @param string description    A text which is displayed as hover over the label text
      * @param boolean $disabled
+     * @param boolean $echo     Print directly (true) or not (false), default: false
      * @return string
      * @since 5.0.0
      * @version 2
      */
-    public static function get_checkbox($name, $label, $value, $description = '', $disabled = false) {
+    public static function get_checkbox($name, $label, $value, $description = '', $disabled = false, $echo = false) {
         $checked = ( $value == '1' ) ? 'checked="checked"' : '';
         $dis = ( $disabled === true ) ? ' disabled="disabled"' : '';
         $descr = ( $description != '' ) ? 'title="' . $description . '"' : '';
-        return '<input name="' . $name . '" id="' . $name . '" type="checkbox" value="1" ' . $checked . $dis .'/> <label for="' . $name . '" ' . $descr . '>' . stripslashes($label) . '</label>';
+        
+        $r = '<input name="' . $name . '" id="' . $name . '" type="checkbox" value="1" ' . $checked . $dis .'/> <label for="' . $name . '" ' . $descr . '>' . stripslashes($label) . '</label>';
+        
+        // Print directly
+        if ( $echo === true ) {
+            echo $r;
+            return;
+        }
+        
+        return $r;
+        
     }
     
     /**
@@ -357,14 +388,14 @@ class TP_Admin {
      */
     public static function get_course_option_box ( $title, $type, $options = array() ) {
         global $wpdb;
-        echo '<h3>' . $title . '</h3>';
+        TP_HTML::line( '<h3>' . $title . '</h3>' );
         echo '<table border="0" cellspacing="0" cellpadding="0" class="widefat">';
         echo '<thead>';
         echo '<tr>';
         echo '<th width="10"></th>';
-        echo '<th>' . $options['element_title'] . '</th>';
+        TP_HTML::line( '<th>' . $options['element_title'] . '</th>' );
         if ( $type === 'term' || $type === 'course_of_studies' || $type === 'type' ) {
-        echo '<th width="150">' . $options['count_title'] . '</th>';
+            TP_HTML::line( '<th width="150">' . $options['count_title'] . '</th>' );
         }
         echo '</tr>';
         echo '</thead>';
@@ -398,18 +429,18 @@ class TP_Admin {
             
             $del_url_nonce = wp_nonce_url('options-general.php?page=teachpress/settings.php&amp;delete=' . $row->setting_id . '&amp;tab=' . $options['tab'], 'verify_teachpress_settings', 'tp_nonce');
             
-            echo '<tr ' . $tr_class . '>';
-            echo '<td><a title="' . $options['delete_title'] . '" href="' . $del_url_nonce . '" class="teachpress_delete">X</a></td>';
-            echo '<td>' . stripslashes($row->value) . '</td>';
+            TP_HTML::line( '<tr ' . $tr_class . '>' );
+            TP_HTML::line( '<td><a title="' . $options['delete_title'] . '" href="' . $del_url_nonce . '" class="teachpress_delete">X</a></td>' );
+            TP_HTML::line( '<td>' . stripslashes($row->value) . '</td>' );
             if ( $type === 'term' || $type === 'course_of_studies' || $type === 'type' ) {
-                echo '<td>' . $row->number . '</td>';
+                TP_HTML::line( '<td>' . intval($row->number) . '</td>' );
             }
             echo '</tr>';              
         }
 
         echo '<tr>';
         echo '<td></td>';
-        echo '<td colspan="2"><input name="new_' . $type . '" type="text" id="new_' . $type . '" size="30" value="' . $options['add_title'] . '" onblur="if(this.value==' . "''" .') this.value='. "'" . $options['add_title'] . "'" . ';" onfocus="if(this.value=='. "'" . $options['add_title'] . "'" . ') this.value=' . "''" . ';"/> <input name="add_' . $type . '" type="submit" class="button-secondary" value="' . __('Create','teachpress') . '"/></td>'; 
+        TP_HTML::line( '<td colspan="2"><input name="new_' . $type . '" type="text" id="new_' . $type . '" size="30" value="' . $options['add_title'] . '" onblur="if(this.value==' . "''" .') this.value='. "'" . $options['add_title'] . "'" . ';" onfocus="if(this.value=='. "'" . $options['add_title'] . "'" . ') this.value=' . "''" . ';"/> <input name="add_' . $type . '" type="submit" class="button-secondary" value="' . esc_html__('Create','teachpress') . '"/></td>' ); 
         echo '</tr>'; 
 
         echo '</tbody>';
@@ -425,7 +456,7 @@ class TP_Admin {
     public static function display_meta_data($fields, $meta_input) {
     
         echo '<div class="postbox">';
-        echo '<h3 class="tp_postbox"><span>' . __('Custom meta data','teachpress') . '</span></h3>';
+        echo '<h3 class="tp_postbox"><span>' . esc_html__('Custom meta data','teachpress') . '</span></h3>';
     
         echo '<div class="inside">';   
         foreach ($fields as $row) {
@@ -439,28 +470,28 @@ class TP_Admin {
                 }
             }
             if ( $col_data['type'] === 'SELECT' ) {
-                echo TP_Admin::get_select_field($row['variable'], $col_data['title'], $value);
+                TP_HTML::line( TP_Admin::get_select_field($row['variable'], $col_data['title'], $value) );
             }
             elseif ( $col_data['type'] === 'DATE' ) {
-                echo TP_Admin::get_date_field($row['variable'], $col_data['title'], $value);
+                TP_HTML::line( TP_Admin::get_date_field($row['variable'], $col_data['title'], $value) );
             }
             elseif ( $col_data['type'] === 'RADIO' ) {
-                echo TP_Admin::get_radio_field($row['variable'], $col_data['title'], $value, false, $required);
+                TP_HTML::line( TP_Admin::get_radio_field($row['variable'], $col_data['title'], $value, false, $required) );
             }
             elseif ( $col_data['type'] === 'CHECKBOX' ) {
-                echo TP_Admin::get_checkbox_field($row['variable'], $col_data['title'], $value, false, $required);
+                TP_HTML::line( TP_Admin::get_checkbox_field($row['variable'], $col_data['title'], $value, false, $required) );
             }
             elseif ( $col_data['type'] === 'TEXTAREA' ) {
-                echo TP_Admin::get_textarea_field($row['variable'], $col_data['title'], $value);
+                TP_HTML::line( TP_Admin::get_textarea_field($row['variable'], $col_data['title'], $value) );
             }
             elseif ( $col_data['type'] === 'INT' ) {
                 $col_data['min'] = ( $col_data['min'] !== 'false' ) ? intval($col_data['min']) : 0;
                 $col_data['max'] = ( $col_data['max'] !== 'false' ) ? intval($col_data['max']) : 999;
                 $col_data['step'] = ( $col_data['step'] !== 'false' ) ? intval($col_data['step']) : 1;
-                echo TP_Admin::get_int_field($row['variable'], $col_data['title'], $value, $col_data['min'], $col_data['max'], $col_data['step'], false, $required);
+                TP_HTML::line( TP_Admin::get_int_field($row['variable'], $col_data['title'], $value, $col_data['min'], $col_data['max'], $col_data['step'], false, $required) );
             }
             else {
-                echo TP_Admin::get_text_field($row['variable'], $col_data['title'], $value);
+                TP_HTML::line( TP_Admin::get_text_field($row['variable'], $col_data['title'], $value) );
             }
         }
         echo '</div>';
@@ -507,7 +538,7 @@ class tp_copy_course {
             
             // Find parent course
             $new_parent = self::find_parent($new_courses, $max, $new_courses[$i]['data']['parent']);
-            echo $new_parent;
+            TP_HTML::line( $new_parent );
             if ( $new_courses[$i]['orig_semester'] === $copysem && $new_parent === 0 ) {
                 // use the old parent
             }
@@ -580,10 +611,10 @@ class tp_copy_course {
  */
 function get_tp_wp_drafts($post_type, $post_status = 'publish', $sort_column = 'menu_order', $sort_order = 'ASC') {
     global $wpdb;
-    echo "\n\t<option value='0'>" . __('none','teachpress') . "</option>";
+    echo "\n\t<option value='0'>" . esc_html__('none','teachpress') . "</option>";
     $items = $wpdb->get_results( "SELECT `ID`, `post_title` FROM $wpdb->posts WHERE `post_type` = '" . esc_sql($post_type) . "' AND `post_status` = '" . esc_sql($post_status) . "' ORDER BY " . TP_DB_Helpers::validate_qualifier($sort_column) . " " . TP_DB_Helpers::validate_qualifier($sort_order) );
     foreach ( $items as $item ) {
-        echo "\n\t<option value='$item->ID'>" . get_the_title($item->ID) . "</option>";
+        TP_HTML::line( "\n\t<option value='$item->ID'>" . get_the_title($item->ID) . "</option>" );
     }
 }
 
@@ -597,12 +628,12 @@ function tp_handle_document_uploads(){
     $status = tp_handle_upload($_FILES['async-upload'], array('action' => 'tp_document_upload'), $course_id);
     // print_r($status);
     if ( isset($status['error']) ) {
-        echo htmlspecialchars($status['error']);
+        echo esc_html($status['error']);
         exit;
     }
     $doc_id = TP_Documents::add_document($status['filename'], $status['path'], $status['size'], $course_id);
     $upload_dir = wp_upload_dir();
-    echo $doc_id . ' | ' . $course_id . ' | ' . esc_url($upload_dir['baseurl'] . $status['path']);
+    TP_HTML::line( $doc_id . ' | ' . $course_id . ' | ' . esc_url($upload_dir['baseurl'] . $status['path']) );
     exit;
 }
 
@@ -645,14 +676,14 @@ function tp_handle_upload( &$file, $overrides = false, $course_id = 0 ) {
 
 	// Courtesy of php.net, the strings that describe the error indicated in $_FILES[{form field}]['error'].
 	$upload_error_strings = array( false,
-		__( "The uploaded file exceeds the upload_max_filesize directive in php.ini." ),
-		__( "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form." ),
-		__( "The uploaded file was only partially uploaded." ),
-		__( "No file was uploaded." ),
+		esc_html__( "The uploaded file exceeds the upload_max_filesize directive in php.ini." ),
+		esc_html__( "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form." ),
+		esc_html__( "The uploaded file was only partially uploaded." ),
+		esc_html__( "No file was uploaded." ),
 		'',
-		__( "Missing a temporary folder." ),
-		__( "Failed to write file to disk." ),
-		__( "File upload stopped by extension." ));
+		esc_html__( "Missing a temporary folder." ),
+		esc_html__( "Failed to write file to disk." ),
+		esc_html__( "File upload stopped by extension." ));
 
 	// All tests are on by default. Most can be turned off by $overrides[{test_name}] = false;
 	$test_size = true;
@@ -674,13 +705,13 @@ function tp_handle_upload( &$file, $overrides = false, $course_id = 0 ) {
 
 	// A non-empty file will pass this test.
 	if ( $test_size && !($file['size'] > 0 ) ) {
-            $error_msg = __( 'File is empty. Please upload something more substantial.' );
+            $error_msg = esc_html__( 'File is empty. Please upload something more substantial.' );
             return call_user_func($upload_error_handler, $file, $error_msg);
 	}
 
 	// A properly uploaded file will pass this test. There should be no reason to override this one.
 	if ( $test_upload && ! @ is_uploaded_file( $file['tmp_name'] ) ) {
-            return call_user_func($upload_error_handler, $file, __( 'Specified file failed upload test.' ));
+            return call_user_func($upload_error_handler, $file, esc_html__( 'Specified file failed upload test.' ));
         }
         
 	// A correct MIME type will pass this test. Override $mimes or use the upload_mimes filter.
@@ -694,7 +725,7 @@ function tp_handle_upload( &$file, $overrides = false, $course_id = 0 ) {
                 $file['name'] = $proper_filename;
             }
             if ( ( !$type || !$ext ) && !current_user_can( 'unfiltered_upload' ) ) {
-                return call_user_func($upload_error_handler, $file, __( 'Sorry, this file type is not permitted for security reasons.' ));
+                return call_user_func($upload_error_handler, $file, esc_html__( 'Sorry, this file type is not permitted for security reasons.' ));
             }
             if ( !$ext ) {
                 $ext = ltrim(strrchr($file['name'], '.'), '.');
@@ -728,7 +759,7 @@ function tp_handle_upload( &$file, $overrides = false, $course_id = 0 ) {
             else {
                 $error_path = basename( $uploads['basedir'] ) . "/teachpress$extra_directory_part/$filename";
             }
-            return $upload_error_handler( $file, sprintf( __('The uploaded file could not be moved to %s.' ), $error_path ) );
+            return $upload_error_handler( $file, sprintf( esc_html__('The uploaded file could not be moved to %s.' ), $error_path ) );
 	}
 
 	// Set correct file permissions
@@ -791,7 +822,7 @@ function get_tp_wp_pages($sort_column = "menu_order", $sort_order = "ASC", $sele
         else {
             $current = '';
         }
-        echo "\n\t<option value='0'$current>$pad " . __('none','teachpress') . "</option>";
+        TP_HTML::line( "\n\t<option value='0'$current>$pad " . esc_html__('none','teachpress') . "</option>" );
     }
     $items = $wpdb->get_results( "SELECT `ID`, `post_parent`, `post_title` FROM $wpdb->posts WHERE `post_parent` = '" . intval($parent) . "' AND `post_type` = '" . esc_sql($post_type) . "' AND `post_status` = 'publish' ORDER BY " . TP_DB_Helpers::validate_qualifier($sort_column) . " " . TP_DB_Helpers::validate_qualifier($sort_order) );
     if ( $items ) {
@@ -806,7 +837,7 @@ function get_tp_wp_pages($sort_column = "menu_order", $sort_order = "ASC", $sele
             else {
                 $current = '';
             }	
-            echo "\n\t<option value='$item->ID'$current>$pad " . get_the_title($item->ID) . "</option>";
+            TP_HTML::line( "\n\t<option value='$item->ID'$current>$pad " . get_the_title($item->ID) . "</option>" );
             get_tp_wp_pages( $sort_column, $sort_order, $selected, $post_type, $item->ID,  $level + 1 );
         }
     } else {

@@ -12,9 +12,9 @@
 function tp_pub_rss_feed_func () {
     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
     $tag = isset($_GET['tag']) ? intval($_GET['tag']) : 0;
-    $url = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . esc_url($_SERVER['REQUEST_URI']);
+    $url = ( isset($_SERVER['HTTPS']) ? 'https' : 'http' ) . '://' . escl_url($_SERVER['HTTP_HOST']) . esc_url($_SERVER['REQUEST_URI']);
     header("Content-Type: application/xml;");
-    echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>' . chr(13) . chr(10);
+    echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>' . chr(13) . chr(10);
     echo '<rss version="2.0"
             xmlns:content="http://purl.org/rss/1.0/modules/content/"
             xmlns:wfw="http://wellformedweb.org/CommentAPI/"
@@ -34,12 +34,12 @@ function tp_pub_rss_feed_func () {
             <copyright>' . get_bloginfo('name') . '</copyright>
             <pubDate>' . date('r') . '</pubDate>
             <dc:creator>' . get_bloginfo('name') . '</dc:creator>' . chr(13) . chr(10);
-    $row = TP_Publications::get_publications(
-                array('user' => $id, 
-                      'tag' => $tag,
-                      'limit' => '0,30',
-                      'output_type' => ARRAY_A)
-            );
+    $row = TP_Publications::get_publications([
+                'user'        => $id, 
+                'tag'         => $tag,
+                'limit'       => '0,30',
+                'output_type' => ARRAY_A
+            ]);
     foreach ($row as $row) {
 
         // prepare url
@@ -56,7 +56,7 @@ function tp_pub_rss_feed_func () {
 
         // prepare author name
         if ( $row['type'] === 'collection' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = str_replace(' and ', ', ', TP_HTML::convert_special_chars( $row['editor'] ) ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = str_replace(' and ', ', ', TP_HTML::convert_special_chars( $row['editor'] ) ) . ' (' . esc_html__('Ed.','teachpress') . ')';
         }
         else {
             $all_authors = str_replace(' and ', ', ', TP_HTML::convert_special_chars( $row['author'] ) );
@@ -69,7 +69,7 @@ function tp_pub_rss_feed_func () {
             'editor_name'       => 'simple',
             'editor_separator'  => ',',
             'style'             => 'simple',
-            'meta_label_in'     => __('In','teachpress') . ': ',
+            'meta_label_in'     => esc_html__('In','teachpress') . ': ',
             'use_span'          => false
         );
         echo '

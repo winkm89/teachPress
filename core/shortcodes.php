@@ -51,7 +51,7 @@ class TP_Shortcodes {
             $defaults['url_slug'] = 'yr';
             $defaults['key'] = 'year';
             $defaults['row_key'] = 'year';
-            $defaults['title'] = __('All years','teachpress');
+            $defaults['title'] = esc_html__('All years','teachpress');
         }
 
         // type filter
@@ -62,7 +62,7 @@ class TP_Shortcodes {
             $defaults['url_slug'] = 'type';
             $defaults['key'] = 'type';
             $defaults['row_key'] = 'type';
-            $defaults['title'] = __('All types','teachpress');
+            $defaults['title'] = esc_html__('All types','teachpress');
         }
 
         // author filter
@@ -89,7 +89,7 @@ class TP_Shortcodes {
             $defaults['url_slug'] = 'auth';
             $defaults['key'] = 'author';
             $defaults['row_key'] = 'author_id';
-            $defaults['title'] = __('All authors','teachpress');
+            $defaults['title'] = esc_html__('All authors','teachpress');
         }
 
         // user filter
@@ -98,7 +98,7 @@ class TP_Shortcodes {
             $defaults['url_slug'] = 'usr';
             $defaults['key'] = 'user';
             $defaults['row_key'] = 'user';
-            $defaults['title'] = __('All users','teachpress');
+            $defaults['title'] = esc_html__('All users','teachpress');
         }
 
         // tag filter
@@ -111,7 +111,7 @@ class TP_Shortcodes {
             $defaults['url_slug'] = 'tgid';
             $defaults['key'] = 'tag';
             $defaults['row_key'] = 'tag_id';
-            $defaults['title'] = __('All tags','teachpress');
+            $defaults['title'] = esc_html__('All tags','teachpress');
         }
 
         // Generate filter
@@ -466,7 +466,7 @@ class TP_Shortcodes {
           $link_url = $settings['permalink'];
           $link_title = "";
           $link_class = "";
-          $pub = ( $tagcloud['tagPeak'] == 1 ) ? __('Publication', 'teachpress') : __('Publications', 'teachpress');
+          $pub = ( $tagcloud['tagPeak'] == 1 ) ? esc_html__('Publication', 'teachpress') : esc_html__('Publications', 'teachpress');
 
           // division through zero check
           $divisor = ( $max - $min === 0 ) ? 1 : $max - $min;
@@ -482,7 +482,7 @@ class TP_Shortcodes {
           // for current tags
           if ( $filter_parameter['tag'] == $tagcloud['tag_id'] ) {
               $link_class = "teachpress_cloud_active";
-              $link_title = __('Delete tag as filter','teachpress');
+              $link_title = esc_html__('Delete tag as filter','teachpress');
           }
           else {
               $link_title = $tagcloud['tagPeak'] . " $pub";
@@ -524,7 +524,7 @@ class TP_Shortcodes {
             return '';
         }
 
-        return '<a rel="nofollow" href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . __('Show all','teachpress') . '">' . __('Show all','teachpress') . '</a>';
+        return '<a rel="nofollow" href="' . $settings['permalink'] . $settings['html_anchor'] . '" title="' . esc_html__('Show all','teachpress') . '">' . esc_html__('Show all','teachpress') . '</a>';
 
     }
 
@@ -874,7 +874,7 @@ function tp_ref_shortcode($atts) {
        'style'              => 'simple',
        'title_ref'          => 'links',
        'link_style'         => ($param['show_links'] == 1) ? 'direct' : 'none',
-       'meta_label_in'      => __('In','teachpress') . ': ',
+       'meta_label_in'      => esc_html__('In','teachpress') . ': ',
        'use_span'           => false
     );
 
@@ -886,7 +886,7 @@ function tp_ref_shortcode($atts) {
         return;
     }
 
-    $ret = '<h3 class="teachpress_ref_headline">' . __('References','teachpress') . '</h3>';
+    $ret = '<h3 class="teachpress_ref_headline">' . esc_html__('References','teachpress') . '</h3>';
     $ret .= '<ol>';
     foreach ( $references as $row ) {
         $ret .= '<li id="tp_cite_' . $row['pub_id'] . '" class="tp_cite_entry"><span class="tp_single_author">' . stripslashes($row['author']) . '</span><span class="tp_single_year"> (' . $row['year'] . ')</span>: <span class="tp_single_title">' . TP_HTML_Publication_Template::prepare_publication_title($row, $settings, 1) . '</span>. <span class="tp_single_additional">' . TP_HTML_Publication_Template::get_publication_meta_row($row, $settings) . '</span></li>';
@@ -908,7 +908,7 @@ function tp_ref_shortcode($atts) {
  *      @type string date_format        The format for date; needed for the types: presentations, online; default: d.m.Y
  *      @type string image              none, left or right; default: none
  *      @type string image_size         image width in px; default: 0
- *      @type string meta_label_in      Default: __('In','teachpress') . ': '
+ *      @type string meta_label_in      Default: esc_html__('In','teachpress') . ': '
  *      @type string link               Set it to "true" if you want to show a link in addition of the publication title. If there are more than one link, the first one is used.
  * }
  * @return string
@@ -926,7 +926,7 @@ function tp_single_shortcode ($atts) {
        'date_format'        => 'd.m.Y',
        'image'              => 'none',
        'image_size'         => 0,
-       'meta_label_in'      => __('In','teachpress') . ': ',
+       'meta_label_in'      => esc_html__('In','teachpress') . ': ',
        'link'               => ''
     ], $atts);
 
@@ -957,7 +957,7 @@ function tp_single_shortcode ($atts) {
 
     // Set author name
     if ( $publication['type'] === 'collection' || $publication['type'] === 'periodical' || ( $publication['author'] === '' && $publication['editor'] !== '' ) ) {
-        $author = TP_Bibtex::parse_author($publication['editor'], $settings['author_separator'], $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+        $author = TP_Bibtex::parse_author($publication['editor'], $settings['author_separator'], $settings['editor_name'] ) . ' (' . esc_html__('Ed.','teachpress') . ')';
     }
     else {
         $author = TP_Bibtex::parse_author($publication['author'], $settings['author_separator'], $settings['author_name'] );
@@ -1043,7 +1043,7 @@ function tp_abstract_shortcode ($atts) {
     $publication = TP_Shortcodes::set_publication($param, $tp_single_publication);
 
     if ( isset($publication['abstract']) ) {
-        return '<h2 class="tp_abstract">' . __('Abstract','teachpress') . '</h2><p class="tp_abstract">' . TP_HTML::prepare_text($publication['abstract']) . '</p>';
+        return '<h2 class="tp_abstract">' . esc_html__('Abstract','teachpress') . '</h2><p class="tp_abstract">' . TP_HTML::prepare_text($publication['abstract']) . '</p>';
     }
     return;
 }
@@ -1070,7 +1070,7 @@ function tp_links_shortcode ($atts) {
     $publication = TP_Shortcodes::set_publication($param, $tp_single_publication);
 
     if ( isset($publication['url']) ) {
-        return '<h2 class="tp_links">' . __('Links','teachpress') . '</h2><p class="tp_abstract">' . TP_HTML_Publication_Template::prepare_url($publication['url'], $publication['doi'], 'list') . '</p>';
+        return '<h2 class="tp_links">' . esc_html__('Links','teachpress') . '</h2><p class="tp_abstract">' . TP_HTML_Publication_Template::prepare_url($publication['url'], $publication['doi'], 'list') . '</p>';
     }
     return;
 }
@@ -1382,14 +1382,14 @@ function tp_publist_shortcode ($args) {
     /****************/
 
     $searchbox = '';
-    $search_button = '<div class="teachpress_search_button"><input name="tps_button" class="tp_search_button" type="submit" tabindex="10" value="' . __('Search', 'teachpress') . '"/></div>';
+    $search_button = '<div class="teachpress_search_button"><input name="tps_button" class="tp_search_button" type="submit" tabindex="10" value="' . esc_html__('Search', 'teachpress') . '"/></div>';
 
     if ( $settings['show_search_filter'] === true ) {
         if ( !get_option('permalink_structure') ) {
             $searchbox .= '<input type="hidden" name="p" id="page_id" value="' . get_the_id() . '"/>';
         }
 
-        $searchbox .= '<input name="tsr" id="tp_search_input_field" type="search" placeholder="' . __('Enter search word','teachpress') .'" value="' . stripslashes($filter_parameter['search']) . '" tabindex="1"/>';
+        $searchbox .= '<input name="tsr" id="tp_search_input_field" type="search" placeholder="' . esc_html__('Enter search word','teachpress') .'" value="' . stripslashes($filter_parameter['search']) . '" tabindex="1"/>';
 
         $searchbox .= ( $filter === '' ) ? $search_button  : '';
         $filter .= ( $filter !== '' ) ? $search_button : '';
@@ -1560,7 +1560,7 @@ function tp_publist_shortcode ($args) {
     }
     // If there are no publications founded
     else {
-        $part2 = '<div class="teachpress_message_error"><p>' . __('Sorry, no publications matched your criteria.','teachpress') . '</p></div>';
+        $part2 = '<div class="teachpress_message_error"><p>' . esc_html__('Sorry, no publications matched your criteria.','teachpress') . '</p></div>';
     }
 
     // For debugging only:

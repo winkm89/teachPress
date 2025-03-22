@@ -97,7 +97,7 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
         $dois = preg_split( '/\s+/', $input );
         if ( false === $dois ) {
             get_tp_message(
-                __( "Error: No DOIs in {$input}", 'teachpress' ) );
+                esc_html__( "Error: No DOIs in {$input}", 'teachpress' ) );
             return null;
         }
 
@@ -141,7 +141,7 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
                 wp_remote_retrieve_response_code( $response ),
                 100 ) !== 2 ) {
                 get_tp_message(
-                    __( "Error: Failed to get DOI {$doi} from Crossref",
+                    esc_html__( "Error: Failed to get DOI {$doi} from Crossref",
                         'teachpress' ) );
                 return null;
             }
@@ -149,7 +149,7 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
             $object = json_decode( wp_remote_retrieve_body ( $response ) );
             if ( false === $object || $object->status !== 'ok' ) {
                 get_tp_message(
-                    __( "Error: Failed to parse Crossref JSON",
+                    esc_html__( "Error: Failed to parse Crossref JSON",
                         'teachpress' ) );
                 return null;
             }
@@ -171,7 +171,7 @@ class TP_Crossref_Import extends TP_Bibtex_Import {
                  || version_compare( $object->{'message-version'}, '1' ) < 0
                  || version_compare( $object->{'message-version'}, '2' ) >= 0) {
                 get_tp_message(
-                    __( "Error: Unsupported Crossref message",
+                    esc_html__( "Error: Unsupported Crossref message",
                         'teachpress' ) );
                 return null;
             }

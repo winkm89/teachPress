@@ -120,8 +120,8 @@ function tp_add_menu() {
     $pos = TEACHPRESS_MENU_POSITION;
 
     $tp_admin_all_pub_page = add_menu_page (
-            __('Publications','teachpress'),
-            __('Publications','teachpress'),
+            esc_html__('Publications','teachpress'),
+            esc_html__('Publications','teachpress'),
             'use_teachpress',
             'publications.php',
             'tp_show_publications_page',
@@ -129,43 +129,43 @@ function tp_add_menu() {
             $pos);
     $tp_admin_your_pub_page = add_submenu_page(
             'publications.php',
-            __('Your publications','teachpress'),
-            __('Your publications','teachpress'),
+            esc_html__('Your publications','teachpress'),
+            esc_html__('Your publications','teachpress'),
             'use_teachpress',
             'teachpress/publications.php',
             'tp_show_publications_page');
     $tp_admin_add_pub_page = add_submenu_page(
             'publications.php',
-            __('Add new', 'teachpress'),
-            __('Add new','teachpress'),
+            esc_html__('Add new', 'teachpress'),
+            esc_html__('Add new','teachpress'),
             'use_teachpress',
             'teachpress/addpublications.php',
             'tp_add_publication_page');
     $tp_admin_import_page = add_submenu_page(
             'publications.php',
-            __('Import/Export'),
-            __('Import/Export'),
+            esc_html__('Import/Export'),
+            esc_html__('Import/Export'),
             'use_teachpress',
             'teachpress/import.php',
             'tp_show_import_publication_page');
     $tp_admin_sources_page = add_submenu_page(
             'publications.php',
-            __('Auto-publish'),
-            __('Auto-publish'),
+            esc_html__('Auto-publish'),
+            esc_html__('Auto-publish'),
             'use_teachpress',
             'teachpress/sources.php',
             'tp_show_publication_sources_page');
     $tp_admin_show_authors_page = add_submenu_page(
             'publications.php',
-            __('Authors', 'teachpress'),
-            __('Authors', 'teachpress'),
+            esc_html__('Authors', 'teachpress'),
+            esc_html__('Authors', 'teachpress'),
             'use_teachpress',
             'teachpress/authors.php',
             array('TP_Authors_Page','init'));
     $tp_admin_edit_tags_page = add_submenu_page(
             'publications.php',
-            __('Tags'),
-            __('Tags'),
+            esc_html__('Tags'),
+            esc_html__('Tags'),
             'use_teachpress',
             'teachpress/tags.php',
             array('TP_Tags_Page','init'));
@@ -186,7 +186,7 @@ function tp_add_menu() {
  * @since 4.2.0
  */
 function tp_add_menu_settings() {
-    add_options_page(__('teachPress Settings','teachpress'),'teachPress','administrator','teachpress/settings.php', array('TP_Settings_Page','load_page') );
+    add_options_page(esc_html__('teachPress Settings','teachpress'),'teachPress','administrator','teachpress/settings.php', array('TP_Settings_Page','load_page') );
 }
 
 /**
@@ -441,7 +441,7 @@ function tp_frontend_scripts() {
     /* tp-frontend style */
     $value = get_tp_option('stylesheet');
     if ($value == '1') {
-        echo '<link type="text/css" href="' . plugins_url( 'styles/teachpress_front.css?ver=' . $version, __FILE__ ) . '" rel="stylesheet" />' . PHP_EOL;
+        wp_enqueue_style('teachpress_front', plugins_url( 'styles/teachpress_front.css?ver=' . $version, __FILE__ ) );
     }
 
     /* altmetric support */
@@ -497,7 +497,7 @@ function tp_language_support() {
  */
 function tp_plugin_link($links, $file){
     if ($file == plugin_basename(__FILE__)) {
-        return array_merge($links, array( sprintf('<a href="options-general.php?page=teachpress/settings.php">%s</a>', __('Settings') ) ));
+        return array_merge($links, array( sprintf('<a href="options-general.php?page=teachpress/settings.php">%s</a>', esc_html__('Settings') ) ));
     }
     return $links;
 }

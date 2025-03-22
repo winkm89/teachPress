@@ -16,9 +16,9 @@ function tp_import_publication_sources_help() {
     $screen = get_current_screen();  
     $screen->add_help_tab( array(
         'id'        => 'tp_import_publication_sources_help',
-        'title'     => __('Sources'),
-        'content'   => '<p><strong>' . __('Publication sources') . '</strong></p>
-                        <p>' . __("Additional publication sources to scan regularly.",'teachpress') . '</p>',
+        'title'     => esc_html__('Sources'),
+        'content'   => '<p><strong>' . esc_html__('Publication sources') . '</strong></p>
+                        <p>' . esc_html__("Additional publication sources to scan regularly.",'teachpress') . '</p>',
      ) );
 }
 
@@ -83,11 +83,11 @@ class TP_Publication_Sources_Page {
         foreach ($current_pages as $src_url) {
             $last_res = $src_url['last_res'];
             if (strlen($last_res) == 0) {
-                $last_res = __("URL not scanned yet.", "teachpress");
+                $last_res = esc_html__("URL not scanned yet.", "teachpress");
             }
             $result .= sprintf("<tr class='%s'><td class='tp_url'>%s</td><td>%s</td><td>%s</td></tr>",
                                $alternate ? "alternate" : "", $src_url['src_url'],
-                               __($last_res, "teachpress"), $src_url['update_time']);
+                               esc_html__($last_res, "teachpress"), $src_url['update_time']);
             $alternate = ! $alternate;
         }
         
@@ -103,26 +103,26 @@ class TP_Publication_Sources_Page {
         ?>
 
         <div class="wrap">
-            <h2><?php echo __('Auto-publish','teachpress'); ?></h2>
+            <h2><?php echo esc_html__('Auto-publish','teachpress'); ?></h2>
             <div class="teachpress_message teachpress_message_blue">
-            <?php echo __("The following URLs can be scanned regularly and their bibtex entries
+            <?php echo esc_html__("The following URLs can be scanned regularly and their bibtex entries
                automatically imported if they have changed. The publication log can
                be consulted on the Import/Export page.", "teachpress");?><br/><br/>
-            <?php echo __("Zotero group bibliographies can be downloaded in BibTeX format by using special URLs such as <code>zotero://group/&lt;group_id&gt;/</code>,
+            <?php echo esc_html__("Zotero group bibliographies can be downloaded in BibTeX format by using special URLs such as <code>zotero://group/&lt;group_id&gt;/</code>,
                 where <code>group_id</code> is the group id (numerical) found on zotero.org.", "teachpress");?>
             </div>
             <form id="tp_sources" name="tp_sources"
                   action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" enctype="multipart/form-data" method="post">
                 <p>
-                    <label for="tp_source_freq"><? echo __("Update frequency:", "teachpress");?></label>
+                    <label for="tp_source_freq"><? echo esc_html__("Update frequency:", "teachpress");?></label>
 
                     <select name="tp_source_freq" id="tp_source_freq" onchange="tp_source_freq_changed()" >
                         <?php
                             $cur_freq = TP_Publication_Sources_Page::get_update_freq();
-                            $all_freqs = array("never" => __("Never (disable updates)", "teachpress"),
-                                               "hourly" => __("Hourly", "teachpress"),
-                                               "twicedaily" => __("Twice a day", "teachpress"),
-                                               "daily" => __("Daily (recommended)", "teachpress"));
+                            $all_freqs = array("never" => esc_html__("Never (disable updates)", "teachpress"),
+                                               "hourly" => esc_html__("Hourly", "teachpress"),
+                                               "twicedaily" => esc_html__("Twice a day", "teachpress"),
+                                               "daily" => esc_html__("Daily (recommended)", "teachpress"));
                             foreach ($all_freqs as $val => $render) {
                                 print(sprintf("<option value='%s' %s>%s</option>", $val, $val == $cur_freq ? "selected='selected'" : "", $render));
                             }
@@ -135,8 +135,8 @@ class TP_Publication_Sources_Page {
                         <thead>
                             <tr>
                                 <td>URL</td>
-                                <td><?php echo __("Previous update result", "teachpress");?></td>
-                                <td><?php echo __("Date", "teachpress") . " (UTC)";?></td>
+                                <td><?php echo esc_html__("Previous update result", "teachpress");?></td>
+                                <td><?php echo esc_html__("Date", "teachpress") . " (UTC)";?></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -145,7 +145,7 @@ class TP_Publication_Sources_Page {
                         <tbody>
                     </table>
                     <label style="display:none;" id="tp_sources_area_lbl" for="tp_sources_area">
-                        <?php echo __("One URL per line. Start each URL with http://, https:// or zotero://.", "teachpress"); ?></label>
+                        <?php echo esc_html__("One URL per line. Start each URL with http://, https:// or zotero://.", "teachpress"); ?></label>
                 <textarea id="tp_sources_area" name="tp_sources_area" style="width: 100%; display: none;"><?php
                               $cur_sources = TP_Publication_Sources_Page::get_current_sources();
                               print(implode("\n", array_map('tp_get_source_url', $cur_sources)));
@@ -154,14 +154,14 @@ class TP_Publication_Sources_Page {
 
                 <p><button class="button-secondary" name="tp_edit_sources" id="tp_edit_sources"
                            type="button" onclick="teachpress_edit_sources()">
-                                <?php echo __("Edit URL list", "teachpress");?></button>
+                                <?php echo esc_html__("Edit URL list", "teachpress");?></button>
                     <button class="button-secondary" name="tp_sources_cancel" id="tp_sources_cancel"
                     type="button" onclick="teachpress_edit_sources()" style="display: none;">
-                        <?php echo __("Cancel", "teachpress");?></button></p>
+                        <?php echo esc_html__("Cancel", "teachpress");?></button></p>
 
                 <p style="margin-top: 60px;"><button class="button-primary disabled"
                    name="tp_sources_save" id="tp_sources_save" type="submit" >
-                    <?php echo __("Save configuration", "teachpress");?></button></p>
+                    <?php echo esc_html__("Save configuration", "teachpress");?></button></p>
                 <?php wp_nonce_field( 'verify_teachpress_auto_publish', 'tp_nonce', false, true ); ?>
             </form>
         </div>
@@ -196,7 +196,7 @@ class TP_Publication_Sources_Page {
         }
         
         $new_freq = TP_Publication_Sources_Page::get_update_freq();
-        get_tp_message( sprintf(__('Configuration updated with %d URL(s) at frequency "%s".', "teachpress"),
+        get_tp_message( sprintf(esc_html__('Configuration updated with %d URL(s) at frequency "%s".', "teachpress"),
                                  count($sources_to_monitor), $new_freq) );
     }
 

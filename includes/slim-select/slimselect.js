@@ -13,7 +13,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	var installedModules = {};
 /******/
 /******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/ 	function __webpack_requireesc_html__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId]) {
@@ -64,7 +64,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// mode & 4: return value when already ns object
 /******/ 	// mode & 8|1: behave like require
 /******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 1) value = __webpack_requireesc_html__(value);
 /******/ 		if(mode & 8) return value;
 /******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
 /******/ 		var ns = Object.create(null);
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_requireesc_html__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -567,11 +567,11 @@ exports.validateOption = validateOption;
 "use strict";
 
 exports.__esModule = true;
-var config_1 = __webpack_require__(3);
-var select_1 = __webpack_require__(4);
-var slim_1 = __webpack_require__(5);
-var data_1 = __webpack_require__(1);
-var helper_1 = __webpack_require__(0);
+var config_1 = __webpack_requireesc_html__(3);
+var select_1 = __webpack_requireesc_html__(4);
+var slim_1 = __webpack_requireesc_html__(5);
+var data_1 = __webpack_requireesc_html__(1);
+var helper_1 = __webpack_requireesc_html__(0);
 var SlimSelect = (function () {
     function SlimSelect(info) {
         var _this = this;
@@ -1137,7 +1137,7 @@ exports.Config = Config;
 "use strict";
 
 exports.__esModule = true;
-var helper_1 = __webpack_require__(0);
+var helper_1 = __webpack_requireesc_html__(0);
 var Select = (function () {
     function Select(info) {
         this.triggerMutationObserver = true;
@@ -1290,8 +1290,8 @@ exports.Select = Select;
 "use strict";
 
 exports.__esModule = true;
-var helper_1 = __webpack_require__(0);
-var data_1 = __webpack_require__(1);
+var helper_1 = __webpack_requireesc_html__(0);
+var data_1 = __webpack_requireesc_html__(1);
 var Slim = (function () {
     function Slim(info) {
         this.main = info.main;

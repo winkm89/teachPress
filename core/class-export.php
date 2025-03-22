@@ -23,22 +23,27 @@ class TP_Export {
      * @access private
      */
     private static function get_course_registration_table($course_id, $option, $waitinglist = '') {
-        $row = TP_Courses::get_signups( array('course_id' => $course_id, 'waitinglist' => $waitinglist, 'output_type' => ARRAY_A, 'order' => 'st.lastname ASC') );
+        $row = TP_Courses::get_signups( [
+                    'course_id'     => $course_id, 
+                    'waitinglist'   => $waitinglist, 
+                    'output_type'   => ARRAY_A, 
+                    'order'         => 'st.lastname ASC'] 
+                );
         echo '<table border="1" cellpadding="5" cellspacing="0">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th>' . __('Last name','teachpress') . '</th>';
-        echo '<th>' . __('First name','teachpress') . '</th>';
-        echo '<th>' . __('User account','teachpress') . '</th>';
-        echo '<th>' . __('E-Mail') . '</th>';
+        echo '<th>' . esc_html__('Last name','teachpress') . '</th>';
+        echo '<th>' . esc_html__('First name','teachpress') . '</th>';
+        echo '<th>' . esc_html__('User account','teachpress') . '</th>';
+        echo '<th>' . esc_html__('E-Mail') . '</th>';
         $fields = get_tp_options('teachpress_stud','`setting_id` ASC');
         foreach ( $fields as $field ) {
             $data = TP_DB_Helpers::extract_column_data($field->value);
             if ( $data['visibility'] === 'admin') {
-                echo '<th>' . stripslashes(utf8_decode($data['title'])) . '</th>';
+                TP_HTML::line( '<th>' . stripslashes(utf8_decode($data['title'])) . '</th>' );
             }
         }
-        echo '<th>' . __('Registered at','teachpress') . '</th>';
+        echo '<th>' . esc_html__('Registered at','teachpress') . '</th>';
         echo '</tr>';
         echo '</thead>';  
         echo '<tbody>';
@@ -47,17 +52,17 @@ class TP_Export {
             $row['lastname'] = TP_Export::decode($row['lastname']);
             $row['course_of_studies'] = TP_Export::decode($row['course_of_studies']);
             echo '<tr>';
-            echo '<td>' . stripslashes(utf8_decode($row['lastname'])) . '</td>';
-            echo '<td>' . stripslashes(utf8_decode($row['firstname'])) . '</td>';
-            echo '<td>' . stripslashes(utf8_decode($row['userlogin'])) . '</td>';
-            echo '<td>' . $row['email'] . '</td>';
+            TP_HTML::line( '<td>' . stripslashes(utf8_decode($row['lastname'])) . '</td>' );
+            TP_HTML::line( '<td>' . stripslashes(utf8_decode($row['firstname'])) . '</td>' );
+            TP_HTML::line( '<td>' . stripslashes(utf8_decode($row['userlogin'])) . '</td>' );
+            TP_HTML::line( '<td>' . $row['email'] . '</td>' );
             foreach ( $fields as $field ) {
                 $data = TP_DB_Helpers::extract_column_data($field->value);
                 if ( $data['visibility'] === 'admin') {
-                    echo '<td>' . stripslashes( utf8_decode( TP_Export::decode($row[$field->variable]) ) ) . '</td>';
+                    TP_HTML::line( '<td>' . stripslashes( utf8_decode( TP_Export::decode($row[$field->variable]) ) ) . '</td>' );
                 }
             }
-            echo '<td>' . $row['date'] . '</td>';
+            TP_HTML::line( '<td>' . $row['date'] . '</td>' );
             echo '</tr>';
 
         }
@@ -77,7 +82,7 @@ class TP_Export {
         // check capabilities
         $capability = TP_Courses::get_capability($course_id, $current_user->ID);
         if ( $capability !== 'owner' && $capability !== 'approved' ) {
-            echo __('Access denied','teachpress');
+            echo esc_html__('Access denied','teachpress');
             return;
         }
 
@@ -93,40 +98,40 @@ class TP_Export {
         $option['regnum'] = get_tp_option('regnum');
         $option['studies'] = get_tp_option('studies');
 
-        echo '<h2>' . stripslashes(utf8_decode($course_name)) . ' ' . stripslashes(utf8_decode($data['semester'])) . '</h2>';
+        TP_HTML::line( '<h2>' . stripslashes(utf8_decode($course_name)) . ' ' . stripslashes(utf8_decode($data['semester'])) . '</h2>' );
         echo '<table border="1" cellspacing="0" cellpadding="5">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th>' . __('Lecturer','teachpress') . '</th>';
-        echo '<td>' . stripslashes(utf8_decode($data['lecturer'])) . '</td>';
-        echo '<th>' . __('Date','teachpress') . '</th>';
-        echo '<td>' . $data['date'] . '</td>';
-        echo '<th>' . __('Room','teachpress') . '</th>';
-        echo '<td>' . stripslashes(utf8_decode($data['room'])) . '</td>';
+        echo '<th>' . esc_html__('Lecturer','teachpress') . '</th>';
+        TP_HTML::line( '<td>' . stripslashes(utf8_decode($data['lecturer'])) . '</td>' );
+        echo '<th>' . esc_html__('Date','teachpress') . '</th>';
+        TP_HTML::line( '<td>' . $data['date'] . '</td>' );
+        echo '<th>' . esc_html__('Room','teachpress') . '</th>';
+        TP_HTML::line( '<td>' . stripslashes(utf8_decode($data['room'])) . '</td>' );
         echo '</tr>';
         echo '<tr>';
-        echo '<th>' . __('Places','teachpress') . '</th>';
-        echo '<td>' . $data['places'] . '</td>';
-        echo '<th>' . __('free places','teachpress') . '</th>';
+        echo '<th>' . esc_html__('Places','teachpress') . '</th>';
+        TP_HTML::line( '<td>' . $data['places'] . '</td>' );
+        echo '<th>' . esc_html__('free places','teachpress') . '</th>';
         $free_places = TP_Courses::get_free_places($data["course_id"], $data["places"]);
-        echo '<td>' . $free_places . '</td>';
+        TP_HTML::line( '<td>' . $free_places . '</td>' );
         echo '<td>&nbsp;</td>';
         echo '<td>&nbsp;</td>';
         echo '</tr>';
         echo '<tr>';
-        echo '<th>' . __('Comment','teachpress') . '</th>';
-        echo '<td colspan="5">' . stripslashes(utf8_decode($data['comment'])) . '</td>';
+        echo '<th>' . esc_html__('Comment','teachpress') . '</th>';
+        TP_HTML::line( '<td colspan="5">' . stripslashes(utf8_decode($data['comment'])) . '</td>' );
         echo '</tr>';
         echo '</thead>';
         echo '</table>';
 
-        echo '<h3>' . __('Registered participants','teachpress') . '</h3>'; 
+        echo '<h3>' . esc_html__('Registered participants','teachpress') . '</h3>'; 
         self::get_course_registration_table($course_id, $option, 0);
-        echo '<h3>' . __('Waiting list','teachpress') . '</h3>'; 
+        echo '<h3>' . esc_html__('Waiting list','teachpress') . '</h3>'; 
         self::get_course_registration_table($course_id, $option, 1);
 
         global $tp_version;
-        echo '<p style="font-size:11px; font-style:italic;">' . __('Created on','teachpress') . ': ' . date("d.m.Y") . ' | teachPress ' . $tp_version . '</p>';
+        TP_HTML::line( '<p style="font-size:11px; font-style:italic;">' . esc_html__('Created on','teachpress') . ': ' . date("d.m.Y") . ' | teachPress ' . $tp_version . '</p>' );
     }
 
     /**
@@ -141,7 +146,7 @@ class TP_Export {
         // check capabilities
         $capability = TP_Courses::get_capability($course_id, $current_user->ID);
         if ( $capability !== 'owner' && $capability !== 'approved' ) {
-            echo __('Access denied','teachpress');
+            echo esc_html__('Access denied','teachpress');
             return;
         }
         
@@ -159,9 +164,9 @@ class TP_Export {
             }
         }
 
-        $headline = '"' . __('Last name','teachpress') . '";"' . __('First name','teachpress') . '";"' . __('User account','teachpress') . '";"' . __('E-Mail') . '";' . $extra_headlines . '"' . __('Registered at','teachpress') . '";"' . __('Record-ID','teachpress') . '";"' . __('Waiting list','teachpress') . '"' . "\r\n";
+        $headline = '"' . esc_html__('Last name','teachpress') . '";"' . esc_html__('First name','teachpress') . '";"' . esc_html__('User account','teachpress') . '";"' . esc_html__('E-Mail') . '";' . $extra_headlines . '"' . esc_html__('Registered at','teachpress') . '";"' . esc_html__('Record-ID','teachpress') . '";"' . esc_html__('Waiting list','teachpress') . '"';
         $headline = TP_Export::decode($headline);
-        echo $headline;
+        TP_HTML::line( $headline );
         foreach($row as $row) {
             $row['firstname'] = TP_Export::decode($row['firstname']);
             $row['lastname'] = TP_Export::decode($row['lastname']);
@@ -170,11 +175,11 @@ class TP_Export {
             foreach ( $fields as $field ) {
                 $data = TP_DB_Helpers::extract_column_data($field->value);
                 if ( $data['visibility'] === 'admin') {
-                    $values .= '"' . stripslashes( utf8_decode( TP_Export::decode($row[$field->variable]) ) ) . '";';
+                    $values .= '"' . stripslashes( utf8_decode( TP_Export::decode( $row[$field->variable] ) ) ) . '";';
                 }
             }
 
-            echo '"' . stripslashes(utf8_decode($row['lastname'])) . '";"' . stripslashes(utf8_decode($row['firstname'])) . '";"' . stripslashes(utf8_decode($row['userlogin'])) . '";"' . $row['email'] . '";' . $values . '"' . $row['date'] . '";"' . $row['con_id'] . '";"' . $row['waitinglist'] . '"' . "\r\n";
+            TP_HTML::line( '"' . stripslashes(utf8_decode($row['lastname'])) . '";"' . stripslashes(utf8_decode($row['firstname'])) . '";"' . stripslashes(utf8_decode($row['userlogin'])) . '";"' . $row['email'] . '";' . $values . '"' . $row['date'] . '";"' . $row['con_id'] . '";"' . $row['waitinglist'] . '"');
         }
     }
 
@@ -197,13 +202,13 @@ class TP_Export {
         if ( $format === 'bibtex' ) {
             foreach ($row as $row) {
                 $tags = TP_Tags::get_tags( array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A ) );
-                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex, $private_comments);
+                TP_HTML::line( TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex, $private_comments) );
             }
         }
         
         // Export RTF
         if ( $format === 'rtf' ) {
-            echo self::rtf($row);
+            TP_HTML::line( self::rtf($row) );
         }
     }
     
@@ -221,11 +226,11 @@ class TP_Export {
         if ( $format === 'bibtex' ) {
             foreach ($row as $row) {
                 $tags = TP_Tags::get_tags( array('pub_id' => $row['pub_id'], 'output_type' => ARRAY_A) );
-                echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex, $private_comment);
+                TP_HTML::line( TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex, $private_comment) );
             }
         }     
         if ( $format === 'rtf' ) {
-            echo self::rtf($row);
+            TP_HTML::line( self::rtf($row) );
         }
     }
 
@@ -239,7 +244,7 @@ class TP_Export {
         $convert_bibtex = ( get_tp_option('convert_bibtex') == '1' ) ? true : false;
         $row = TP_Publications::get_publication_by_key($bibtex_key, ARRAY_A);
         $tags = TP_Tags::get_tags( array( 'pub_id' => $row['pub_id'], 'output_type' => ARRAY_A ) );
-        echo TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex);
+        TP_HTML::line( TP_Bibtex::get_single_publication_bibtex($row, $tags, $convert_bibtex) );
     }
 
     /**
@@ -272,11 +277,11 @@ class TP_Export {
             'editor_name'       => 'initials',
             'editor_separator'  => ';',
             'style'             => 'simple',
-            'meta_label_in'     => __('In','teachpress') . ': ',
+            'meta_label_in'     => esc_html__('In','teachpress') . ': ',
             'use_span'          => false
         );
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = TP_Bibtex::parse_author($row['editor'], ';', $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = TP_Bibtex::parse_author($row['editor'], ';', $settings['editor_name'] ) . ' (' . esc_html__('Ed.','teachpress') . ')';
         }
         else {
             $all_authors = TP_Bibtex::parse_author($row['author'], ';', $settings['author_name'] );
@@ -301,11 +306,11 @@ class TP_Export {
             'editor_name'       => 'initials',
             'editor_separator'  => ';',
             'style'             => 'simple',
-            'meta_label_in'     => __('In','teachpress') . ': ',
+            'meta_label_in'     => esc_html__('In','teachpress') . ': ',
             'use_span'          => false
         );
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = TP_Bibtex::parse_author($row['editor'], ';', $settings['editor_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = TP_Bibtex::parse_author($row['editor'], ';', $settings['editor_name'] ) . ' (' . esc_html__('Ed.','teachpress') . ')';
         }
         else {
             $all_authors = TP_Bibtex::parse_author($row['author'], ';', $settings['author_name'] );

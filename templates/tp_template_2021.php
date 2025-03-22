@@ -17,9 +17,9 @@ class TP_Template_2021 implements TP_Publication_Template {
                       'author'              => 'Michael Winkler',
                       'version'             => '1.0',
                       'button_separator'    => ' | ',
-                      'menu_label_tags'     => __('Tags') . ': ',
-                      'menu_label_links'    => __('Links','teachpress') . ': ',
-                      'meta_label_in'       => __('In','teachpress') . ': ',
+                      'menu_label_tags'     => esc_html__('Tags') . ': ',
+                      'menu_label_links'    => esc_html__('Links','teachpress') . ': ',
+                      'meta_label_in'       => esc_html__('In','teachpress') . ': ',
                       'citation_style'      => 'teachPress'
         );
     }

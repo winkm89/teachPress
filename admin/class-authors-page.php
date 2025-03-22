@@ -38,17 +38,17 @@ class TP_Authors_Page {
     private static function actions ($action, $checkbox, $page, $search, $curr_page) {
         // Delete tags - part 1
         if ( $action === 'delete' ) {
-            echo '<div class="teachpress_message teachpress_message_orange">
-                <p class="teachpress_message_headline">' . __('Do you want to delete the selected items?','teachpress') . '</p>
-                <p><input name="delete_ok" type="submit" class="button-secondary" value="' . __('Delete','teachpress') . '"/>
-                <a href="admin.php?page=' . $page . '&search=' . $search . '&amp;limit=' . $curr_page . '"> ' . __('Cancel','teachpress') . '</a></p>
-                </div>';
+            TP_HTML::line( '<div class="teachpress_message teachpress_message_orange">
+                <p class="teachpress_message_headline">' . esc_html__('Do you want to delete the selected items?','teachpress') . '</p>
+                <p><input name="delete_ok" type="submit" class="button-secondary" value="' . esc_html__('Delete','teachpress') . '"/>
+                <a href="admin.php?page=' . $page . '&search=' . $search . '&amp;limit=' . $curr_page . '"> ' . esc_html__('Cancel','teachpress') . '</a></p>
+                </div>' );
         }
         // delete tags - part 2
         if ( isset( $_GET['delete_ok'] ) ) {
             TP_Authors_Page::check_nonce_field();
             TP_Authors::delete_authors($checkbox);
-            get_tp_message( __('Removing successful','teachpress') );
+            get_tp_message( esc_html__('Removing successful','teachpress') );
         }
     }
     
@@ -105,21 +105,21 @@ class TP_Authors_Page {
         }
         
         echo '<div class="wrap" style="max-width:900px;">';
-        echo '<h2>' . __('Authors','teachpress') . '</h2>';
+        echo '<h2>' . esc_html__('Authors','teachpress') . '</h2>';
         echo '<form id="form1" name="form1" method="get" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
-        echo '<input name="page" type="hidden" value="' . $page . '" />';
-        echo wp_nonce_field( 'verify_teachpress_author_edit', 'tp_nonce', false, false );
+        echo '<input name="page" type="hidden" value="' . esc_html($page) . '" />';
+        wp_nonce_field( 'verify_teachpress_author_edit', 'tp_nonce', false, true );
 
         // actions
         self::actions($action, $checkbox, $page, $search, $curr_page);
 
         // Searchbox
         echo '<div id="tp_searchbox">';
-        if ($search != "") {
-            echo '<a href="admin.php?page=teachpress/authors.php" class="tp_search_cancel" title="' . __('Cancel the search','teachpress') . '">X</a>';
+        if ( $search != "" ) {
+            echo '<a href="admin.php?page=teachpress/authors.php" class="tp_search_cancel" title="' . esc_html__('Cancel the search','teachpress') . '">X</a>';
         }
         echo '<input type="search" name="search" id="pub_search_field" value="' . stripslashes($search) . '"/>';
-        echo '<input type="submit" name="button" id="button" value="' . __('Search','teachpress') . '" class="button-secondary"/>';
+        echo '<input type="submit" name="button" id="button" value="' . esc_html__('Search','teachpress') . '" class="button-secondary"/>';
         echo '</div>';
         // END Searchbox
         
@@ -127,13 +127,13 @@ class TP_Authors_Page {
         echo '<div class="tablenav" style="padding-bottom:5px;">';
         echo '<div class="alignleft actions">';
         echo '<select name="action1">';
-        echo '<option value="">- ' . __('Bulk actions','teachpress') . ' -</option>';
-        echo '<option value="delete">' . __('Delete','teachpress') . '</option>';
+        echo '<option value="">- ' . esc_html__('Bulk actions','teachpress') . ' -</option>';
+        echo '<option value="delete">' . esc_html__('Delete','teachpress') . '</option>';
         echo '</select>';
         echo '<select name="filter">';
-        echo '<option>- ' . __('Select filter','teachpress') . ' -</option>';
+        echo '<option>- ' . esc_html__('Select filter','teachpress') . ' -</option>';
         $selected = ( $only_zero === true ) ? 'selected="selected"' : '';
-        echo '<option value="only_zero"' . $selected . '>' . __('Occurrence = 0','teachpress') . '</option>';
+        TP_HTML::line( '<option value="only_zero"' . $selected . '>' . esc_html__('Occurrence = 0','teachpress') . '</option>' );
         echo '</select>';
         echo '<input name="OK" value="OK" type="submit" class="button-secondary"/>';
         echo '</div>';
@@ -149,7 +149,7 @@ class TP_Authors_Page {
                     'entry_limit'       => $entry_limit,
                     'page_link'         => "admin.php?page=$page&amp;",
                     'link_attributes'   => "search=$search"];
-        echo tp_page_menu($args);
+        tp_page_menu($args, true);
         echo '</div>';
         // END Tablenav actions
 
@@ -157,13 +157,13 @@ class TP_Authors_Page {
         echo '<table class="widefat">';
         echo '<thead id="tp_authors_table_header">';
         echo '<td class="check-column"><input name="tp_check_all" id="tp_check_all" type="checkbox" value="" /></td>';
-        echo '<th>' . __('Name','teachpress') . '</th>';
-        echo '<th>' . __('ID','teachpress') . '</th>';
-        echo '<th>' . __('Number publications','teachpress') . '</th>';
+        echo '<th>' . esc_html__('Name','teachpress') . '</th>';
+        echo '<th>' . esc_html__('ID','teachpress') . '</th>';
+        echo '<th>' . esc_html__('Number publications','teachpress') . '</th>';
         echo '</thead>';
         echo '<tbody id="tp_authors_table_content">';
         if ( intval($test) === 0 ) {
-            echo '<tr><td colspan="4"><strong>' . __('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
+            echo '<tr><td colspan="4"><strong>' . esc_html__('Sorry, no entries matched your criteria.','teachpress') . '</strong></td></tr>';
             }
         else {
             
@@ -192,14 +192,14 @@ class TP_Authors_Page {
                         'page_link'           => "admin.php?page=$page&amp;",
                         'link_attributes'     => "search=$search",
                         'mode'                => 'bottom');
-            echo tp_page_menu($args);
+            tp_page_menu($args, true);
         } 
         else {
            if ( $test === 1 ) {
-              echo $test . ' ' . __('entry','teachpress');
+              echo intval($test) . ' ' . esc_html__('entry','teachpress');
            }
            else {
-              echo $test . ' ' . __('entries','teachpress');
+              echo intval($test) . ' ' . esc_html__('entries','teachpress');
            }
         }
         echo '</div>';
@@ -241,11 +241,11 @@ class TP_Authors_Page {
             
             TP_HTML::line('<tr class="' . $tr_class . '" id="resultbox_' . $row['author_id'] . '">');
             TP_HTML::line('<th class="check-column"><input name="checkbox[]" class="tp_checkbox" type="checkbox" ' . $checked . ' value="' . $row['author_id'] . '"></th>');
-            TP_HTML::line('<td><a class="tp_show_pub_info" author_id="' . $row['author_id'] . '" title="' . __('Show publications','teachpress') . '" style_class="' . $tr_class . '" style="cursor:pointer;"><b>' . TP_Bibtex::parse_author_simple($row['name']) . '</b></a>');
+            TP_HTML::line('<td><a class="tp_show_pub_info" author_id="' . $row['author_id'] . '" title="' . esc_html__('Show publications','teachpress') . '" style_class="' . $tr_class . '" style="cursor:pointer;"><b>' . TP_Bibtex::parse_author_simple($row['name']) . '</b></a>');
             
             // Row actions
             TP_HTML::line('<div class="tp_row_actions">');
-            TP_HTML::line('<a class="tp_row_delete" href="' . $link . '&amp;checkbox%5B%5D=' . $row['author_id'] . '" title="' . __('Delete','teachpress') . '">' . __('Delete', 'teachpress') . '</a>');
+            TP_HTML::line('<a class="tp_row_delete" href="' . $link . '&amp;checkbox%5B%5D=' . $row['author_id'] . '" title="' . esc_html__('Delete','teachpress') . '">' . esc_html__('Delete', 'teachpress') . '</a>');
             TP_HTML::line('</div>');
             // END Row actions
             
@@ -270,7 +270,7 @@ class TP_Authors_Page {
         }
 
         $args = [
-            'label'     => __('Items per page', 'teachpress'),
+            'label'     => esc_html__('Items per page', 'teachpress'),
             'default'   => 50,
             'option'    => 'tp_authors_per_page'
         ];
@@ -295,22 +295,22 @@ class TP_Authors_Page {
         // Available options
         $options[] = [
             'key'   => 'firstname',
-            'label' => __('First name', 'teachpress')
+            'label' => esc_html__('First name', 'teachpress')
         ];
         $options[] = [
             'key'   => 'lastname',
-            'label' => __('Last name', 'teachpress')
+            'label' => esc_html__('Last name', 'teachpress')
         ];
         $options[] = [
             'key'   => 'number_desc',
-            'label' => __('Number of publications (Descending)', 'teachpress')
+            'label' => esc_html__('Number of publications (Descending)', 'teachpress')
         ];
         $options[] = [
             'key'   => 'number_asc',
-            'label' => __('Number of publications (Ascending)', 'teachpress')
+            'label' => esc_html__('Number of publications (Ascending)', 'teachpress')
         ];
         
-        $r = '<label for="tp_authors_sorting"><b>' . __('Sorting', 'teachpress') . '</b></label><br/>';
+        $r = '<label for="tp_authors_sorting"><b>' . esc_html__('Sorting', 'teachpress') . '</b></label><br/>';
         $r .= '<select name="tp_authors_sorting" id="tp_authors_sorting">';
         foreach ( $options as $row ) {
             $selected = ( $row['key'] == $value ) ? 'selected="selected"' : '';
@@ -365,7 +365,7 @@ class TP_Authors_Page {
                         var current = $(tr).next();
                         current.attr('class', tr_class);
                         current.attr('id', 'pub_info_' + author_id);
-                        ret = ret + '<td id="pub_details_' + author_id + '" colspan="4" style="padding-left:40px;"><b><?php echo __('Publications','teachpress') ;?></b><br />' + text + '</td>';
+                        ret = ret + '<td id="pub_details_' + author_id + '" colspan="4" style="padding-left:40px;"><b><?php echo esc_html__('Publications','teachpress') ;?></b><br />' + text + '</td>';
                         current.html(ret);
                         $('<a class="button-secondary" style="cursor:pointer;" onclick="javascript:teachpress_del_node(' + "'#pub_info_" + author_id + "'" + ');">Close</a>').appendTo('#pub_details_' + author_id);
 

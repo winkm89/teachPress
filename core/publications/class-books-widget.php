@@ -17,9 +17,12 @@ class TP_Books_Widget extends WP_Widget {
      * constructor 
      */
     function __construct() {
-        $widget_ops = array('classname' => 'widget_teachpress_books', 'description' => __('Shows a random book in the sidebar', 'teachpress') );
+        $widget_ops = [
+            'classname'     => 'widget_teachpress_books', 
+            'description'   => esc_html__('Shows a random book in the sidebar', 'teachpress') 
+        ];
         $control_ops = array('width' => 500, 'height' => 300);
-        parent::__construct(false, $name = __('teachPress books','teachpress'), $widget_ops, $control_ops);
+        parent::__construct(false, $name = esc_html__('teachPress books','teachpress'), $widget_ops, $control_ops);
     }
 
     /** 
@@ -40,8 +43,8 @@ class TP_Books_Widget extends WP_Widget {
         if ( $title ) {
             echo $before_title . $title . $after_title;
         }
-        echo '<p style="text-align:center"><a href="' . get_permalink($row->rel_page) . '" title="' . $row->title . '"><img class="tp_image" src="' . $row->image_url . '" alt="' . $row->title . '" title="' . $row->title . '" /></a></p>';
-        echo '<p style="text-align:center" class="tp_allbooks_link"><a href="' . $all_url . '" title="' . __('All books','teachpress') . '">' . __('All books','teachpress') . '</a></p>';
+        TP_HTML::line( '<p style="text-align:center"><a href="' . get_permalink($row->rel_page) . '" title="' . $row->title . '"><img class="tp_image" src="' . $row->image_url . '" alt="' . $row->title . '" title="' . $row->title . '" /></a></p>');
+        TP_HTML::line( '<p style="text-align:center" class="tp_allbooks_link"><a href="' . $all_url . '" title="' . esc_html__('All books','teachpress') . '">' . esc_html__('All books','teachpress') . '</a></p>' );
         echo $after_widget;
     }
 
@@ -64,19 +67,19 @@ class TP_Books_Widget extends WP_Widget {
         $title = isset ($instance['title']) ? esc_attr($instance['title']) : '';
         $url = isset ($instance['url']) ? esc_attr($instance['url']) : '';
         $books = isset ($instance['books']) ? $instance['books'] : array();
-        echo '<p><label for="' . $this->get_field_id('title') . '">' . __('Title', 'teachpress') . ': <input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" /></label></p>';
+        TP_HTML::line( '<p><label for="' . $this->get_field_id('title') . '">' . esc_html__('Title', 'teachpress') . ': <input class="widefat" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" /></label></p>' );
 
-        echo '<p><label for="' . $this->get_field_id('books') . '">' . __('Books', 'teachpress') . ': <select class="widefat" id="' . $this->get_field_id('books') . '" name="' . $this->get_field_name('books') . '[]" style="height:auto; max-height:25em" multiple="multiple" size="10">';
+        TP_HTML::line( '<p><label for="' . $this->get_field_id('books') . '">' . esc_html__('Books', 'teachpress') . ': <select class="widefat" id="' . $this->get_field_id('books') . '" name="' . $this->get_field_name('books') . '[]" style="height:auto; max-height:25em" multiple="multiple" size="10">' );
 
         $row = TP_Publications::get_publications( array('type' => 'book', 'order' => 'title DESC') );
         foreach ($row as $row) {
             $selected = ( in_array($row->pub_id, $books) ) ? '" selected="selected"' : '';
-            echo '<option value="' . $row->pub_id . '" ' . $selected . '>(ID: ' . $row->pub_id . ') ' . $row->title . ' </option>';  
+            TP_HTML::line( '<option value="' . $row->pub_id . '" ' . $selected . '>(ID: ' . $row->pub_id . ') ' . $row->title . ' </option>' );  
         }
-        echo '</select></label><small class="setting-description">' . __('use &lt;Ctrl&gt; key to select multiple books', 'teachpress') . '</small></p>';
+        echo '</select></label><small class="setting-description">' . esc_html__('use &lt;Ctrl&gt; key to select multiple books', 'teachpress') . '</small></p>';
 
-        echo '<p><label for="' . $this->get_field_id('url') . '">' . __('Releated Page for &laquo;all books&raquo; link:', 'teachpress') . ' <select class="widefat" id="' . $this->get_field_id('url') . '" name="' . $this->get_field_name('url') . '>';
-        echo '<option value="">' . __('none','teachpress') . '</option>';
+        TP_HTML::line( '<p><label for="' . $this->get_field_id('url') . '">' . esc_html__('Releated Page for &laquo;all books&raquo; link:', 'teachpress') . ' <select class="widefat" id="' . $this->get_field_id('url') . '" name="' . $this->get_field_name('url') . '>' );
+        echo '<option value="">' . esc_html__('none','teachpress') . '</option>';
 
         $post_type = get_tp_option('rel_page_publications');
         get_tp_wp_pages("menu_order","ASC",$url,$post_type,0,0);

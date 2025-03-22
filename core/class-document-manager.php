@@ -43,7 +43,7 @@ class TP_Document_Manager {
           'url'                 => admin_url('admin-ajax.php'),
           'flash_swf_url'       => includes_url('js/plupload/plupload.flash.swf'),
           'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
-          'filters'             => array(array('title' => __('Allowed Files'), 'extensions' => '*')),
+          'filters'             => array(array('title' => esc_html__('Allowed Files'), 'extensions' => '*')),
           'multipart'           => true,
           'urlstream_upload'    => true,
 
@@ -67,16 +67,16 @@ class TP_Document_Manager {
         <div id="plupload-upload-ui" class="hide-if-no-js">
             <div id="drag-drop-area">
                 <div class="drag-drop-inside">
-                 <p class="drag-drop-info"><?php _e('Drop files here'); ?></p>
-                 <p><?php _ex('or', 'Uploader: Drop files here - or - Select Files'); ?></p>
-                 <p class="drag-drop-buttons"><input id="plupload-browse-button" type="button" value="<?php esc_attr_e('Select Files'); ?>" class="button" /></p>
+                 <p class="drag-drop-info"><?php esc_html_e('Drop files here'); ?></p>
+                 <p><?php esc_html_x('or', 'Uploader: Drop files here - or - Select Files'); ?></p>
+                 <p class="drag-drop-buttons"><input id="plupload-browse-button" type="button" value="<?php esc_attresc_html_e('Select Files'); ?>" class="button" /></p>
                 </div>
             </div>
-            <h3 id="document_headline"><?php _e('Documents','teachpress') ?></h3>
+            <h3 id="document_headline"><?php esc_html_e('Documents','teachpress') ?></h3>
             <div id="tp_add_headline">
-                <?php _e('Add headline','teachpress'); ?>
+                <?php esc_html_e('Add headline','teachpress'); ?>
                 <input id="tp_add_headline_name" name="tp_add_headline_name" type="text" value="" style="width: 400px;"/>
-                <a id="tp_add_headline_button" class="button-secondary"><?php _e('Add','teachpress'); ?></a>
+                <a id="tp_add_headline_button" class="button-secondary"><?php esc_html_e('Add','teachpress'); ?></a>
             </div>
             <ul class="tp_filelist" id="tp_sortable">
                 <?php
@@ -96,7 +96,7 @@ class TP_Document_Manager {
                         $checkbox = '<input type="checkbox" name="tp_file_checkbox[]" id="tp_file_checkbox_' . $row['doc_id'] . '" class="tp_file_checkbox" data_1="' . esc_js($row['name']) . '" data_2="' . esc_url($upload_dir['baseurl'] . $row['path']) . '" value="' . $row['doc_id'] . '" />';
                         $name = '<label class="tp_file_label" for="tp_file_checkbox_' . $row['doc_id'] . '"><span class="tp_file_name">' . stripslashes($row['name']) . '</span></label>';
                     }
-                    echo '<li class="' . $class . '" id="tp_file_' . $row['doc_id'] . '">' . $checkbox . $name . ' ' . $size . ' <span class="tp_file_actions"><a class="tp_file_view" href="' . $upload_dir['baseurl'] . $row['path'] . '" target="_blank">' . __('Show','teachpress') . '</a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Edit','teachpress') . '</a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . __('Delete','teachpress') . '</a></span></li>';
+                    TP_HTML::line( '<li class="' . $class . '" id="tp_file_' . $row['doc_id'] . '">' . $checkbox . $name . ' ' . $size . ' <span class="tp_file_actions"><a class="tp_file_view" href="' . $upload_dir['baseurl'] . $row['path'] . '" target="_blank">' . esc_html__('Show','teachpress') . '</a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . esc_html__('Edit','teachpress') . '</a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' . $row['doc_id'] . '" >' . esc_html__('Delete','teachpress') . '</a></span></li>' );
                 }
                 ?>
             </ul>
@@ -190,7 +190,7 @@ class TP_Document_Manager {
                 
                 // Change DOM and update values
                 $('#' + file.id + " .tp_fileprogress").width("0%");
-                $('<span class="tp_file_actions"><a class="tp_file_view" href="' + response_splitted[2] + '" target="_blank"><?php _e('Show','teachpress'); ?></a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php _e('Edit','teachpress'); ?></a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php _e('Delete','teachpress'); ?></a></span>').appendTo('#' + file.id);
+                $('<span class="tp_file_actions"><a class="tp_file_view" href="' + response_splitted[2] + '" target="_blank"><?php esc_html_e('Show','teachpress'); ?></a> | <a class="tp_file_edit" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php esc_html_e('Edit','teachpress'); ?></a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' + response_splitted[0] + '" ><?php esc_html_e('Delete','teachpress'); ?></a></span>').appendTo('#' + file.id);
                 $('#' + file.id).attr("id","tp_file_" + response_splitted[0]);
                 $('#tp_file_checkbox_' + file.id).attr("value",response_splitted[0]);
                 $('#tp_file_checkbox_' + file.id).attr("data_2",response_splitted[2]);
@@ -224,11 +224,11 @@ class TP_Document_Manager {
             $("body").on("click", "#tp_add_headline_button", function() {
                 var value = $("#tp_add_headline_name").val();
                 if ( value !== '' ) {
-                    $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&add_document=" + value + "&course_id=<?php echo $course_id; ?>", 
+                    $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&add_document=" + value + "&course_id=<?php echo intval($course_id); ?>", 
                     function(new_doc_id){
                         new_doc_id = parseInt(new_doc_id);
                         $('.tp_filelist').append('<li class="tp_file tp_file_headline" id="tp_file_' + new_doc_id + '" document_id="' + new_doc_id + '"><span class="tp_file_name">' + value + '</span> ' + '</li>');
-                        $('<span class="tp_file_actions"><a class="tp_file_edit" style="cursor:pointer;" document_id="' + new_doc_id + '" ><?php _e('Edit','teachpress'); ?></a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' + new_doc_id + '" ><?php _e('Delete','teachpress'); ?></a></span>').appendTo('#tp_file_' + new_doc_id);
+                        $('<span class="tp_file_actions"><a class="tp_file_edit" style="cursor:pointer;" document_id="' + new_doc_id + '" ><?php esc_html_e('Edit','teachpress'); ?></a> | <a class="tp_file_delete" style="cursor:pointer;" document_id="' + new_doc_id + '" ><?php esc_html_e('Delete','teachpress'); ?></a></span>').appendTo('#tp_file_' + new_doc_id);
                         $("#tp_add_headline_name").val('');
                         
                         // Save new sort order
@@ -276,7 +276,7 @@ class TP_Document_Manager {
                 
                 $.get("<?php echo admin_url( 'admin-ajax.php' ); ?>?action=teachpress&get_document_name=" + document_id, 
                 function(text){
-                    $("#tp_file_" + document_id).append('<div id="tp_file_edit_' + document_id + '"><input id="tp_file_edit_text_' + document_id + '" type="text" value="' + text + '" style="width:75%;" /><p><a class="button-primary tp_file_edit_save" document_id="' + document_id + '"><?php _e('Save'); ?></a> <a class="button-secondary tp_file_edit_cancel" document_id="' + document_id + '"><?php _e('Cancel'); ?></a></p></div>');
+                    $("#tp_file_" + document_id).append('<div id="tp_file_edit_' + document_id + '"><input id="tp_file_edit_text_' + document_id + '" type="text" value="' + text + '" style="width:75%;" /><p><a class="button-primary tp_file_edit_save" document_id="' + document_id + '"><?php esc_html_e('Save'); ?></a> <a class="button-secondary tp_file_edit_cancel" document_id="' + document_id + '"><?php esc_html_e('Cancel'); ?></a></p></div>');
                 });
             });
             
@@ -305,10 +305,10 @@ class TP_Document_Manager {
                 $.get("<?php echo admin_url( 'admin-ajax.php' ) ;?>?action=teachpress&del_document=" + document_id, 
                 function(text){
                     if ( text.search('true') !== -1 ) {
-                        $('<div class="teachpress_message teachpress_message_green"><strong><?php _e('Removing successful','teachpress'); ?></strong></div>').prependTo(".wrap");
+                        $('<div class="teachpress_message teachpress_message_green"><strong><?php esc_html_e('Removing successful','teachpress'); ?></strong></div>').prependTo(".wrap");
                     }
                     else {
-                        $('<div class="teachpress_message teachpress_message_red"><strong><?php _e('Removing failed','teachpress'); ?></strong></div>').prependTo(".wrap");
+                        $('<div class="teachpress_message teachpress_message_red"><strong><?php esc_html_e('Removing failed','teachpress'); ?></strong></div>').prependTo(".wrap");
                     }
                     $('.teachpress_message').delay( 2400 ).fadeOut('slow');
                 });
@@ -359,25 +359,25 @@ class TP_Document_Manager {
     private static function get_course_selector ($course_id) {
         echo '<div id="tp_select_course">';
         echo '<select name="sel_course_id">';
-        echo '<option value="">- ' . __('Select Course','teachpress') . ' -</option>';
+        echo '<option value="">- ' . esc_html__('Select Course','teachpress') . ' -</option>';
         
         // List of courses
         $semester = get_tp_options('semester', '`setting_id` DESC');
         foreach ( $semester as $row ) {
             $courses = TP_Courses::get_courses( array('parent' => 0, 'semester' => $row->value) );
             if ( count($courses) !== 0 ) {
-                echo '<optgroup label="' . $row->value . '">';
+                TP_HTML::line( '<optgroup label="' . $row->value . '">' );
             }
             foreach ($courses as $course) {
                 $selected = ( $course_id == $course->course_id ) ? 'selected="selected"' : '';
-                echo '<option value="' . $course->course_id . '" ' . $selected . '>' . $course->name . ' (' . $course->semester . ')</option>/r/n';
+                TP_HTML::line( '<option value="' . $course->course_id . '" ' . $selected . '>' . $course->name . ' (' . $course->semester . ')</option>' );
             }
             if ( count($courses) > 0 ) {
                 echo '</optgroup>';
             }
         }
         echo '</select>';   
-        echo '<input type="submit" name="sel_course_submit" class="button-secondary" value="' . __('Select','teachpress') . '"/>';
+        echo '<input type="submit" name="sel_course_submit" class="button-secondary" value="' . esc_html__('Select','teachpress') . '"/>';
         echo '</div>';
     }
 
@@ -431,7 +431,7 @@ class TP_Document_Manager {
                 $capability = TP_Courses::get_capability($course_id, $current_user->ID);
                 // check capabilities
                 if ( $capability !== 'owner' && $capability !== 'approved' ) {
-                    get_tp_message(__('You have no capabilities to use this course','teachpress'), 'red');
+                    get_tp_message(esc_html__('You have no capabilities to use this course','teachpress'), 'red');
                 }
                 else {
                     TP_Document_Manager::init($course_id, 'tinyMCE');

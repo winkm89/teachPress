@@ -20,10 +20,11 @@
  *      @type string container_suffix  The optional suffix from the shortcode container 
  *      @type string mode              top or bottom, default: top
  * }
+ * @param boolean $echo     Print directly (true) or not (false), default: false
  * @return string
  * @since 5.0.0
 */
-function tp_page_menu ($atts) {
+function tp_page_menu ($atts, $echo = false) {
     $atts = shortcode_atts(array(
        'number_entries'     => 0,
        'entries_per_page'   => 50,
@@ -57,31 +58,41 @@ function tp_page_menu ($atts) {
     }
     
     // Defaults
-    $page_input = ' <input name="' . $limit_name . '" type="text" size="2" value="' .  $current_page . '" style="text-align:center;" /> ' . __('of','teachpress') . ' ' . $num_pages . ' ';
-    $entries = '<span class="displaying-num">' . $number_entries . ' ' . __('entries','teachpress') . '</span> ';
+    $page_input = ' <input name="' . $limit_name . '" type="text" size="2" value="' .  $current_page . '" style="text-align:center;" /> ' . esc_html__('of','teachpress') . ' ' . $num_pages . ' ';
+    $entries = '<span class="displaying-num">' . $number_entries . ' ' . esc_html__('entries','teachpress') . '</span> ';
     $back_links = '<a class="page-numbers button disabled">&laquo;</a> <a class="page-numbers button disabled">&lsaquo;</a> ';
     $next_links = '<a class="page-numbers button disabled">&rsaquo;</a> <a class="page-numbers button disabled">&raquo;</a> ';
 
     // first page / previous page
     if ( $entry_limit != 0 ) {
-        $first_page = '<a href="' . $page_link . '=1&amp;' . $atts['link_attributes'] . '" title="' . __('first page','teachpress') . '" class="page-numbers button">&laquo;</a>';
-        $prev_page = ' <a href="' . $page_link . '=' . ($current_page - 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('previous page','teachpress') . '" class="page-numbers button">&lsaquo;</a> ';
+        $first_page = '<a href="' . $page_link . '=1&amp;' . $atts['link_attributes'] . '" title="' . esc_html__('first page','teachpress') . '" class="page-numbers button">&laquo;</a>';
+        $prev_page = ' <a href="' . $page_link . '=' . ($current_page - 1) . '&amp;' . $atts['link_attributes'] . '" title="' . esc_html__('previous page','teachpress') . '" class="page-numbers button">&lsaquo;</a> ';
         $back_links = $first_page . $prev_page;
     }
 
     // next page/ last page
     if ( ( $entry_limit + $entries_per_page ) <= ($number_entries)) { 
-        $next_page = '<a href="' . $page_link . '=' . ($current_page + 1) . '&amp;' . $atts['link_attributes'] . '" title="' . __('next page','teachpress') . '" class="page-numbers button">&rsaquo;</a>';
-        $last_page = ' <a href="' . $page_link . '=' . $num_pages . '&amp;' . $atts['link_attributes'] . '" title="' . __('last page','teachpress') . '" class="page-numbers button">&raquo;</a> ';
+        $next_page = '<a href="' . $page_link . '=' . ($current_page + 1) . '&amp;' . $atts['link_attributes'] . '" title="' . esc_html__('next page','teachpress') . '" class="page-numbers button">&rsaquo;</a>';
+        $last_page = ' <a href="' . $page_link . '=' . $num_pages . '&amp;' . $atts['link_attributes'] . '" title="' . esc_html__('last page','teachpress') . '" class="page-numbers button">&raquo;</a> ';
         $next_links = $next_page . $last_page;
     }
 
     // return
     if ($atts['mode'] === 'top') {
-        return $atts['before'] . '<div class="' . $atts['class'] . '">' . $entries . $back_links . $page_input . $next_links . '</div>' . $atts['after'];
+        $r = $atts['before'] . '<div class="' . $atts['class'] . '">' . $entries . $back_links . $page_input . $next_links . '</div>' . $atts['after'];
+    }
+    else {
+        $r = $atts['before'] . '<div class="' . $atts['class'] . '">' . $entries . $back_links . $current_page . ' ' . esc_html__('of','teachpress') . ' ' . $num_pages . ' ' . $next_links . '</div>' . $atts['after'];
     }
     
-    return $atts['before'] . '<div class="' . $atts['class'] . '">' . $entries . $back_links . $current_page . ' ' . __('of','teachpress') . ' ' . $num_pages . ' ' . $next_links . '</div>' . $atts['after'];
+    // Print directly
+    if ( $echo === true ) {
+        echo $r;
+        return;
+    }
+
+    return $r;
+    
 
 }
 
@@ -372,7 +383,7 @@ function tp_write_data_for_tinymce () {
     
     // List of publication users
     $pub_user_list = array();
-    $pub_user_list[] = array( 'text' => __('All','teachpress') , 'value' => '' );
+    $pub_user_list[] = array( 'text' => esc_html__('All','teachpress') , 'value' => '' );
     $pub_users = TP_Publications::get_pub_users();
     foreach ($pub_users as $row) { 
         $user_data = get_userdata($row->user);
@@ -383,7 +394,7 @@ function tp_write_data_for_tinymce () {
     
     // List of publication tags
     $pub_tag_list = array();
-    $pub_tag_list[] = array( 'text' => __('All','teachpress'), 'value' => null );
+    $pub_tag_list[] = array( 'text' => esc_html__('All','teachpress'), 'value' => null );
     $pub_tags = TP_Tags::get_tags(array( 'group_by' => true ));
     foreach($pub_tags as $pub_tag){
 	$pub_tag_list[] = array( 'text' => $pub_tag->name, 'value' => intval($pub_tag->tag_id) );
@@ -414,7 +425,7 @@ function tp_write_data_for_tinymce () {
         var teachpress_pub_types = <?php echo json_encode($pub_type_list); ?>;
         var teachpress_pub_tags = <?php echo json_encode($pub_tag_list) ?>;
         var teachpress_pub_templates = <?php echo json_encode($pub_templates_list); ?>;
-        var teachpress_editor_url = '<?php echo admin_url( 'admin-ajax.php' ) . '?action=teachpressdocman&post_id=' . $post_id; ?>';
+        var teachpress_editor_url = '<?php echo admin_url( 'admin-ajax.php' ) . '?action=teachpressdocman&post_id=' . intval($post_id); ?>';
         var teachpress_cookie_path = '<?php echo SITECOOKIEPATH; ?>';
         var teachpress_file_link_css_class = '<?php echo TEACHPRESS_FILE_LINK_CSS_CLASS; ?>';
         var teachpress_publication_module = true;

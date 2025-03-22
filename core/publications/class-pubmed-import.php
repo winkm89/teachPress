@@ -41,7 +41,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
         $pmids = array();
         if ( preg_match_all( '/\d{8}/', $input, $pmids ) < 1 ) {
             get_tp_message(
-                __( "Error: No PMIDs in {$input}", 'teachpress' ) );
+                esc_html__( "Error: No PMIDs in {$input}", 'teachpress' ) );
             return null;
         }
 
@@ -69,7 +69,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             wp_remote_retrieve_response_code( $response ),
             100 ) !== 2 ) {
             get_tp_message(
-                __( "Error: Failed to get PMID {$input} from PubMed",
+                esc_html__( "Error: Failed to get PMID {$input} from PubMed",
                     'teachpress' ) );
             return null;
         }
@@ -78,7 +78,7 @@ class TP_PubMed_Import extends TP_Bibtex_Import {
             wp_remote_retrieve_body ( $response ) );
         if ( false === $object ) {
             get_tp_message(
-                __( 'Error: Failed to parse PubMed XML', 'teachpress' ) );
+                esc_html__( 'Error: Failed to parse PubMed XML', 'teachpress' ) );
             return null;
         }
 

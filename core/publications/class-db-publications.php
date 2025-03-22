@@ -397,7 +397,7 @@ class TP_Publications {
                 'bibtex'        => stripslashes( TP_Publications::generate_unique_bibtex_key($data['bibtex']) ),
                 'type'          => $data['type'],
                 'award'         => $data['award'],
-                'title'         => ( $data['title'] === '' ) ? '[' . __('No title','teachpress') . ']' : stripslashes($data['title']),
+                'title'         => ( $data['title'] === '' ) ? '[' . esc_html__('No title','teachpress') . ']' : stripslashes($data['title']),
                 'author'        => stripslashes($data['author']),
                 'editor'        => stripslashes($data['editor']),
                 'isbn'          => $data['isbn'],
