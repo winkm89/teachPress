@@ -6,7 +6,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.9
 Tested up to: 6.7.2
 Requires PHP: 7.0
-Stable tag: 9.0.11
+Stable tag: 9.0.12
 
 Manage your publications with teachPress 
 
@@ -124,18 +124,21 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
+= 9.0.12 =
+* Bugfix: Fix an authenticated (Contributor) SQL Injection issue
+
 = 9.0.11 (22.03.2025) =
 * Bugfix: Change used gettext functions
 
 = 9.0.10 (20.03.2025) =
-* Bugfix: Fixes another CSRF vulnerability in tp import dialog
+* Bugfix: Fixes another CSRF vulnerability in tp import dialog (CVE-2025-1320) (Thanks to Krzysztof Zając for reporting)
 
 = 9.0.9 (11.03.2025)
 * Bugfix: Fix space handling in bibtex keys within publication exists check (#267)
 * Bugfix: Unknown column 'r.name' in 'where clause' error in function TP:Authors::get_authors() (#262)
 
 = 9.0.8 (25.02.2025) =
-* Bugfix: Fix an authenticated (Contributor) SQL Injection issue (Thanks to truonghuuphuc for reporting)
+* Bugfix: Fix an authenticated (Contributor) SQL Injection issue (CVE-2025-1321	) (Thanks to Krzysztof Zając for reporting)
 
 = 9.0.7 (18.01.2025) =
 * New: Meta keys search to shortcodes added (Thanks to Juma7C9) (#259)

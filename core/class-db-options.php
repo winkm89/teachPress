@@ -99,7 +99,8 @@ function get_tp_option($var, $category = 'system') {
  */
 function get_tp_options($category, $order = "`setting_id` DESC", $output_type = OBJECT) {
     global $wpdb;
-    $order = esc_sql($order);
+    
+    $order = TP_DB_Helpers::validate_qualifier($order);
     $result = $wpdb->get_results( 
         $wpdb->prepare( "SELECT * FROM " . TEACHPRESS_SETTINGS . " WHERE `category` = %s ORDER BY " . $order,  $category ), $output_type
         

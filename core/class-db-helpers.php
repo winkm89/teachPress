@@ -220,7 +220,7 @@ class TP_DB_Helpers {
      * @since 9.0.8
      */
     public static function validate_qualifier ($input, $default = '') {
-        if ( preg_match("#^[a-zA-Z0-9 \.,_\]]+$#", $input) ) {
+        if ( preg_match("#^[a-zA-Z0-9 \.,`_\]]+$#", $input) ) {
             return $input;
         } else {
             return $default;

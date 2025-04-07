@@ -895,8 +895,8 @@ class TP_Update {
         
         global $wpdb;
         // Check if the old table exists
-        if( $wpdb->get_var("SHOW TABLES LIKE '" . esc_sql($oldname) . "'") == esc_sql($oldname) ) {
-            $wpdb->query('RENAME TABLE ' . esc_sql($oldname) . ' TO ' . esc_sql($newname) . '');
+        if( $wpdb->get_var("SHOW TABLES LIKE '" . TP_DB_Helpers::validate_qualifier($oldname) . "'") == TP_DB_Helpers::validate_qualifier($oldname) ) {
+            $wpdb->query('RENAME TABLE ' . TP_DB_Helpers::validate_qualifier($oldname) . ' TO ' . TP_DB_Helpers::validate_qualifier($newname) . '');
             return true;
         }
         return false;
