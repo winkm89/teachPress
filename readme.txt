@@ -124,7 +124,7 @@ Please note the [teachPress 6.0 Upgrade Information](https://mtrv.wordpress.com/
 
 == Changelog ==
 
-= 9.0.12 =
+= 9.0.12 (07.04.2025) =
 * Bugfix: Fix an authenticated (Contributor) SQL Injection issue
 
 = 9.0.11 (22.03.2025) =
