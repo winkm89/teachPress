@@ -29,6 +29,10 @@ class TP_Cite_Object {
 
         // add the citation
         if ($ref_grouped) {
+            // If there is no publication found
+            if ( !$cite ) {
+                return $this->get_count();
+            }
             // did we already added this citation?
             $existing_index = array_search($cite['pub_id'], array_keys($this->cite_object));
             if ($existing_index === false) {

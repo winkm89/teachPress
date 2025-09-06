@@ -829,6 +829,17 @@ function tp_cite_shortcode ($atts) {
     else {
         $publication = TP_Publications::get_publication($param['id'], ARRAY_A);
     }
+    
+    // If the publication was not found
+    if ( !$publication ) {
+        if ( $param['key'] != '' ) {
+            $input = esc_html($param['key']);
+        }
+        else {
+            $input = 'pub_ID ' . esc_html($param['id']);
+        }
+        return '<sup>[' . $input . ' ' . esc_html__('Not found','teachpress') . ']</sup>';
+    }
 
     // Add ref to cite object
     $index = $tp_cite_object->add_ref($publication);
