@@ -12,7 +12,7 @@
 function tp_pub_rss_feed_func () {
     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
     $tag = isset($_GET['tag']) ? intval($_GET['tag']) : 0;
-    $url = ( isset($_SERVER['HTTPS']) ? 'https' : 'http' ) . '://' . escl_url($_SERVER['HTTP_HOST']) . esc_url($_SERVER['REQUEST_URI']);
+    $url = ( isset($_SERVER['HTTPS']) ? 'https' : 'http' ) . '://' . esc_url($_SERVER['HTTP_HOST']) . esc_url($_SERVER['REQUEST_URI']);
     header("Content-Type: application/xml;");
     echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?'.'>' . chr(13) . chr(10);
     echo '<rss version="2.0"
