@@ -97,6 +97,9 @@ class TP_Import_Publication_Page {
 
         // delete publication
         if ( $tp_delete !== '' && $checkbox !== '' ) {
+            // Check nonce field
+            TP_Import_Publication_Page::check_nonce_field();
+            
             TP_Publications::delete_publications($post['checkbox']);
             get_tp_message( esc_html__('Removing successful','teachpress') );
         }
@@ -326,6 +329,7 @@ class TP_Import_Publication_Page {
         }
         echo '<h3>' . esc_html__('Imported Publications','teachpress') . '</h3>';
         echo '<form id="import_publications" name="import_publications" method="post" action="' . esc_url($_SERVER['REQUEST_URI']) . '">';
+        wp_nonce_field( 'verify_teachpress_import', 'tp_nonce', false, true );
         echo '<p><input type="submit" class="button-primary" name="tp_bookmark" value="' . esc_html__('Add to your own list','teachpress') . '"/> <input type="submit" class="button-secondary" name="tp_delete" value="' . esc_html__('Delete','teachpress') . '"</p>';
         echo '<table class="widefat">';
         echo '<thead>';
