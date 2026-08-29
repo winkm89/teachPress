@@ -356,9 +356,10 @@ class TP_Publication_Template_API {
         // The badge type is controlled by the 'show_altmetric_type' shortcode parameter.
         // Falls back to 'donut' when no type is specified, ensuring backward compatibility.
         if ( $settings['show_altmetric_entry'] && $row['doi'] !== '' ) {
-            $altm_type = ( ! empty( $settings['show_altmetric_type'] ) ) ? $settings['show_altmetric_type'] : 'donut';
+            $altm_type    = ( ! empty( $settings['show_altmetric_type'] ) ) ? $settings['show_altmetric_type'] : 'donut';
+            $altm_display = ( ! empty( $settings['show_altmetric_display'] ) ) ? $settings['show_altmetric_display'] : '';
             $content .= TP_HTML_Publication_Template::get_info_container(
-                TP_HTML_Publication_Template::prepare_altmetric( $row['doi'], $altm_type ),
+                TP_HTML_Publication_Template::prepare_altmetric( $row['doi'], $altm_type, $altm_display ),
                 'altmetric',
                 $container_id
             );
@@ -858,6 +859,19 @@ class TP_HTML_Publication_Template {
  * can be customised via the $altm_type parameter. If no type is provided,
  * 'large-donut' is used as the default to preserve backward compatibility.
  *
+ * The $display parameter controls the detail display mode, mapping to the
+ * corresponding Altmetric data attribute:
+ *
+ * ''               → no detail attribute (badge only)
+ * 'details-right'  → data-badge-details="right" (always-visible panel)
+ * 'popover-right'  → data-badge-popover="right" (hover popover, right)
+ * 'popover-left'   → data-badge-popover="left"  (hover popover, left)
+ * 'popover-top'    → data-badge-popover="top"   (hover popover, top)
+ * 'popover-bottom' → data-badge-popover="bottom"(hover popover, bottom)
+ *
+ * Note: data-badge-details only supports 'right'. data-badge-popover supports
+ * all four directions. The two attributes are mutually exclusive per Altmetric docs.
+ *
  * For available badge types see:
  * https://badge-docs.altmetric.com/customizations.html#badge-types
  *
@@ -866,15 +880,33 @@ class TP_HTML_Publication_Template {
  *                          Accepted values: 'donut', 'medium-donut', 'large-donut',
  *                          'bar', 'medium-bar', 'large-bar', '1', '4'.
  *                          Defaults to 'large-donut'.
+ * @param string $display   Display mode for badge details. Accepted values:
+ *                          '', 'details-right', 'popover-right', 'popover-left',
+ *                          'popover-top', 'popover-bottom'. Defaults to ''.
  * @return string           The HTML string for the Altmetric embed, or empty string if no DOI.
  * @since 3.0.0
  * @access public
  */
-public static function prepare_altmetric( $doi = '', $altm_type = 'large-donut' ) {
+public static function prepare_altmetric( $doi = '', $altm_type = 'large-donut', $display = '' ) {
     if ( $doi === '' ) {
         return '';
     }
-    return '<div data-badge-details="right" data-badge-type="' . esc_attr( $altm_type ) . '" data-doi="' . esc_attr( $doi ) . '" data-condensed="true" class="altmetric-embed"></div>';
+
+    // Resolve display attribute from the $display parameter.
+    // 'popover-{direction}' maps to data-badge-popover="{direction}".
+    // 'details-right' maps to data-badge-details="right" (only value supported by Altmetric).
+    // Empty string produces no detail attribute (badge only).
+    $display_attr = '';
+    if ( $display !== '' ) {
+        if ( strpos( $display, 'popover-' ) === 0 ) {
+            $position     = substr( $display, 8 ); // e.g. 'right', 'left', 'top', 'bottom'
+            $display_attr = ' data-badge-popover="' . esc_attr( $position ) . '"';
+        } elseif ( $display === 'details-right' ) {
+            $display_attr = ' data-badge-details="right"';
+        }
+    }
+
+    return '<div class="altmetric-embed" data-badge-type="' . esc_attr( $altm_type ) . '" data-doi="' . esc_attr( $doi ) . '" data-condensed="true"' . $display_attr . '></div>';
 }
 
 

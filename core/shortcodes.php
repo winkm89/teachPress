@@ -1152,6 +1152,12 @@ function tp_links_shortcode ($atts) {
  *                                         'large-donut', 'bar', 'medium-bar', 'large-bar', '1', '4'.
  *                                         Defaults to 'donut' when empty. Default: ''
  *                                         See: https://badge-docs.altmetric.com/customizations.html#badge-types
+ *      @type string show_altmetric_display Altmetric detail display mode. Controls whether and how
+ *                                         additional article details are shown alongside the badge.
+ *                                         Accepted values: '' (badge only), 'details-right' (always-visible
+ *                                         panel to the right), 'popover-right', 'popover-left',
+ *                                         'popover-top', 'popover-bottom' (hover popover in that direction).
+ *                                         Default: '' (no details shown)
  *      @type int show_dimensions_badge    0 (false) or 1 (true), default: 0
  *      @type int show_plumx_widget        0 (false) or 1 (true), default: 0
  *      @type int use_jumpmenu             Use filter as jumpmenu (1) or not (0), default: 1
@@ -1219,6 +1225,9 @@ function tp_publist_shortcode ($args) {
         // 'bar', 'medium-bar', 'large-bar'. Defaults to 'donut' when empty.
         // See: https://badge-docs.altmetric.com/customizations.html#badge-types
         'show_altmetric_type'   => '',
+        // Altmetric detail display mode. Accepted values: '' (badge only), 'details-right',
+        // 'popover-right', 'popover-left', 'popover-top', 'popover-bottom'. Default: ''
+        'show_altmetric_display' => '',
         'show_dimensions_badge' => 0,
         'show_plumx_widget'     => 0,
         'use_jumpmenu'          => 1,
@@ -1266,6 +1275,7 @@ function tp_publist_shortcode ($args) {
         'show_altmetric_entry'  => ( $atts['show_altmetric_entry'] == '1') ? true : false,
         'show_altmetric_donut'  => ( $atts['show_altmetric_donut'] == '1') ? true : false,
         'show_altmetric_type'   => tp_sanitize_key( $atts['show_altmetric_type'] ),
+        'show_altmetric_display' => tp_sanitize_key( $atts['show_altmetric_display'] ),
         'show_dimensions_badge' => ( $atts['show_dimensions_badge'] == '1') ? true : false,
         'show_plumx_widget'     => ( $atts['show_plumx_widget'] == '1') ? true : false,
         'use_jumpmenu'          => ( $atts['use_jumpmenu'] == '1' ) ? true : false
@@ -1668,6 +1678,9 @@ function tp_cloud_shortcode($atts) {
         // 'bar', 'medium-bar', 'large-bar'. Defaults to 'donut' when empty.
         // See: https://badge-docs.altmetric.com/customizations.html#badge-types
         'show_altmetric_type'       => '',
+        // Altmetric detail display mode. Accepted values: '' (badge only), 'details-right',
+        // 'popover-right', 'popover-left', 'popover-top', 'popover-bottom'. Default: ''
+        'show_altmetric_display'    => '',
         'show_dimensions_badge'     => 0,
         'show_plumx_widget'         => 0,
         'use_jumpmenu'              => 1,
@@ -1741,6 +1754,9 @@ function tp_list_shortcode($atts){
        // 'bar', 'medium-bar', 'large-bar'. Defaults to 'donut' when empty.
        // See: https://badge-docs.altmetric.com/customizations.html#badge-types
        'show_altmetric_type'        => '',
+       // Altmetric detail display mode. Accepted values: '' (badge only), 'details-right',
+       // 'popover-right', 'popover-left', 'popover-top', 'popover-bottom'. Default: ''
+       'show_altmetric_display'     => '',
        'show_dimensions_badge'      => 0,
        'show_plumx_widget'          => 0,
        'use_jumpmenu'               => 1,
@@ -1811,6 +1827,9 @@ function tp_search_shortcode ($atts) {
         // 'bar', 'medium-bar', 'large-bar'. Defaults to 'donut' when empty.
         // See: https://badge-docs.altmetric.com/customizations.html#badge-types
         'show_altmetric_type'       => '',
+        // Altmetric detail display mode. Accepted values: '' (badge only), 'details-right',
+        // 'popover-right', 'popover-left', 'popover-top', 'popover-bottom'. Default: ''
+        'show_altmetric_display'    => '',
        'show_dimensions_badge'      => 0,
        'show_plumx_widget'          => 0,
        'use_jumpmenu'               => 0,
