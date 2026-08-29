@@ -74,6 +74,7 @@ include_once('core/publications/default-publication-types.php');
 include_once('core/publications/default-awards.php');
 include_once('core/publications/templates.php');
 include_once('core/publications/class-books-widget.php');
+include_once('core/publications/class-filter-widget.php');
 
 // Admin menus
 if ( is_admin() ) {
@@ -564,3 +565,5 @@ add_shortcode('tplinks', 'tp_links_shortcode');
 add_shortcode('tpsearch', 'tp_search_shortcode');
 add_shortcode('tpcite', 'tp_cite_shortcode');
 add_shortcode('tpref','tp_ref_shortcode');
+add_action('init', 'tp_register_filter_block');
+add_action('widgets_init', function(){ register_widget( 'TP_Filter_Widget' ); });

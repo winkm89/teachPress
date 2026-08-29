@@ -116,3 +116,13 @@ li.tp_cite_entry {font-size:0.9rem;}
 .tp_lvs_name {font-size:14px;}
 td.tp_lvs_container {margin:5px; border-bottom:1px solid silver; border-right:1px solid silver; padding:7px 5px 7px 5px;}
 .tp_lvs_comments {padding-top:5px; margin:0; min-height:17px;}
+
+/****************************/
+/* teachPress Filter widget */
+/****************************/
+.tp_filter_years,
+.tp_filter_tags { list-style: none; padding: 0; margin: 0; }
+.tp_filter_years li,
+.tp_filter_tags li { padding: 2px 0; }
+.tp_filter_years li.active a,
+.tp_filter_tags li.active a { font-weight: bold; }
