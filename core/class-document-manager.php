@@ -68,7 +68,7 @@ class TP_Document_Manager {
             <div id="drag-drop-area">
                 <div class="drag-drop-inside">
                  <p class="drag-drop-info"><?php esc_html_e('Drop files here'); ?></p>
-                 <p><?php esc_html_x('or', 'Uploader: Drop files here - or - Select Files'); ?></p>
+                 <p><?php echo esc_html_x('or', 'Uploader: Drop files here - or - Select Files'); ?></p>
                  <p class="drag-drop-buttons"><input id="plupload-browse-button" type="button" value="<?php esc_html_e('Select Files'); ?>" class="button" /></p>
                 </div>
             </div>
