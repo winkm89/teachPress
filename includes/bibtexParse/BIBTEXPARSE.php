@@ -404,29 +404,25 @@ class BIBTEXPARSE {
      * @return int (0)
      */
     public function closingDelimiter($val, $delimitBegin, $delimitEnd) {
-        $valLen = mb_strlen($val);
-        $DelimLen = mb_strlen($delimitEnd);
-
-        $openquote = 0;
+        // byte scan: the delimiters are ASCII and never appear inside a UTF-8 multibyte char
+        $len = strlen($val);
+        $openquote = false;
         $bracelevel = 0;
-        $i = 0;
-        while ($i < $valLen && ($valLen - $i >= $DelimLen)) {
-            $s = mb_substr($val, $i, $DelimLen);
-            // a '"' found at brace level 0 defines a value such as "ss{\"o}ss"
-            if ($s == '"' && !$bracelevel) {
+        $chars = '"' . $delimitBegin . $delimitEnd;
+        for ($i = strcspn($val, $chars); $i < $len; $i += 1 + strcspn($val, $chars, $i + 1)) {
+            $c = $val[$i];
+            if ($c === '"' && !$bracelevel) {
                 $openquote = !$openquote;
             }
-            elseif ($s == $delimitBegin) {
+            elseif ($c === $delimitBegin) {
                 $bracelevel++;
             }
-            elseif ($s == $delimitEnd) {
+            elseif ($c === $delimitEnd) {
                 $bracelevel--;
+                if (!$openquote && !$bracelevel) {
+                    return $i;
+                }
             }
-            if ($s == $delimitEnd && !$openquote && !$bracelevel) {
-                return $i;
-            }
-
-            $i += $DelimLen;
         }
         return 0;
     }
@@ -501,8 +497,8 @@ class BIBTEXPARSE {
                 if ( $j = $this->closingDelimiter($entry, $delimitBegin, $delimitEnd) ) {
                     // all characters after the delimiter are thrown but the remaining 
                     // characters must be kept since they may start the next entry !!!
-                    $lastLine = mb_substr($entry, $j + 1);
-                    $entry = mb_substr($entry, 0, $j + 1);
+                    $lastLine = substr($entry, $j + 1);
+                    $entry = substr($entry, 0, $j + 1);
                     // Strip excess whitespaces from the entry 
                     $entry = preg_replace('/\s\s+/u', ' ', $entry);
                     $this->parseEntry($entry);
